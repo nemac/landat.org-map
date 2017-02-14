@@ -1,6 +1,7 @@
-html, body {
+html, body, .wrapper {
     width: 100%;
     height: 100%;
+    position: relative;
 }
 
 * {
@@ -11,6 +12,57 @@ html, body {
     -moz-box-sizing: border-box;
 }
 
+#map-wrapper {
+    height: 100%;
+    width: 100%;
+    padding-right: 500px;
+}
+
 #map {
-    height: 180px;
+    height: 100%;
+}
+
+#graphs {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 500px;
+    display: inline-block;
+    margin-left: -.3%;
+    vertical-align: top;
+}
+
+.graph-header {
+    height: 50px;
+    border-bottom: 1px solid #666;
+    vertical-align: top;
+    position: relative;
+    z-index: 10;
+    background: #fff;
+}
+
+.header-btn {
+    display: inline-block;
+    border-right: 1px solid #666;
+    text-align: center;
+    padding-top: 15px;
+    width: 60px;
+    height: 100%;
+    cursor: pointer;
+}
+
+.header-btn.active {
+    background-color: #80e890;
+}
+
+.graph-list {
+    overflow: scroll;
+    max-height: 100%;
+    margin-top: -50px;
+    padding: 50px 10px 0;
+}
+
+.graph-active #map {
+    cursor: crosshair;
 }

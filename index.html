@@ -7,7 +7,17 @@
     <title>Test map for LandDat graphing</title>
   </head>
   <body>
-    <div id="map"></div>
+    <div class="wrapper graph-active">
+      <div id="map-wrapper">
+        <div id="map"></div>
+      </div>
+      <div id="graphs">
+        <div class="graph-header">
+          <div id="drag-btn" class="header-btn">Pan</div><div id="graph-btn" class="header-btn active">Graph</div>
+        </div>
+        <div class="graph-list"></div>
+      </div>
+    </div>
     <script src="map.js"></script>
   </body>
 </html>
