@@ -60,7 +60,12 @@ html, body, .wrapper {
     overflow: scroll;
     max-height: 100%;
     margin-top: -50px;
-    padding: 50px 10px 0;
+    padding-top: 50px;
+}
+
+.graph-elem {
+    border-bottom: 1px solid #aaa;
+    padding: 20px 15px
 }
 
 .graph-active #map {
