@@ -2,6 +2,8 @@ var map = L.map('map', {"scrollWheelZoom" : false}).setView(["38.5", "-81"], 6);
 
 var baselayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>' }).addTo(map);
 
+var tip = d3.tip().attr('class', 'd3-tip').html(function (d) { return d; });
+
 function handleMapClick (e) {
     var lat = e.latlng.lat;
     var lng = e.latlng.lng;
@@ -80,7 +82,7 @@ function makeUpDownLineGraph (data, div, averages) {
             .attr("transform", 
                   "translate(" + margin.left + "," + margin.top + ")");
 
-//    svg.call(tip);
+    svg.call(tip);
 
     // Add the valueline path.
     svg.append("path")
@@ -101,23 +103,21 @@ function makeUpDownLineGraph (data, div, averages) {
      * This block of code draws the point at each data point
      */
     svg.selectAll("point")
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("class", "point")
-      .attr("transform", function(d) {
-        var coors = valueline([d]).slice(1).slice(0, -1);
-        return "translate(" + coors + ")"
-      })
-      .attr("r", 3)
-      .attr("stroke", "#000")
-      .attr("fill",function(d,i){
-        return computeColor(d[1], averages[i%46], 3);
-      });
-/*
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("class", "point")
+        .attr("transform", function(d) {
+            var coors = valueline([d]).slice(1).slice(0, -1);
+            return "translate(" + coors + ")"
+        })
+        .attr("r", 3)
+        .attr("stroke", "#000")
+        .attr("fill",function(d,i){
+            return computeColor(d[1], averages[i%46], 3);
+        })
         .on("mouseover", function(d) {
-            var date = dateToMonthDay(d.year)
-            tip.show(date[1] + ", " + date[0] + ": "  + d[l]);
+            tip.show(formatDate(d[0]) + ": "  + d[1]);
             this.setAttribute("r", 5);
             this.setAttribute("stroke-width", "2px");
             d3.select(this).classed("active", true);
@@ -128,7 +128,6 @@ function makeUpDownLineGraph (data, div, averages) {
             this.setAttribute("stroke-width", "1px");
             d3.select(this).classed("active", true);
         });
-*/
 }
 
 function createMarker (lat, lng) {
@@ -194,4 +193,55 @@ function parseDate (date) {
     var day = date.substring(6, 8);
 
     return new Date(year, month, day);
+}
+
+function formatDate (date) {
+    if (date === "Average") { return date; }
+
+    date = parseDate(date);
+    return formatMonth(date.getMonth()) + " " + ordinal_suffix_of(date.getDate()) + ", " + date.getFullYear();
+}
+
+function formatMonth (month) {
+    switch (month) {
+        case 0:
+            return "Jan."
+        case 1:
+            return "Feb."
+        case 2:
+            return "Mar."
+        case 3:
+            return "Apr."
+        case 4:
+            return "May"
+        case 5:
+            return "Jun."
+        case 6:
+            return "Jul."
+        case 7:
+            return "Aug."
+        case 8:
+            return "Sep."
+        case 9:
+            return "Oct."
+        case 10:
+            return "Nov."
+        case 11:
+            return "Dec."
+    }
+}
+
+function ordinal_suffix_of(day) {
+    var j = day % 10,
+        k = day % 100;
+    if (j === 1 && k !== 11) {
+        return day + "st";
+    }
+    if (j === 2 && k !== 12) {
+        return day + "nd";
+    }
+    if (j === 3 && k !== 13) {
+        return day + "rd";
+    }
+    return day + "th";
 }

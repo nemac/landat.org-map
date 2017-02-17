@@ -4,6 +4,10 @@ html, body, .wrapper {
     position: relative;
 }
 
+body {
+    font: 12px Arial;
+}
+
 * {
     margin: 0;
     border: 0;
