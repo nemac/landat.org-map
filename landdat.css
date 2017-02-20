@@ -54,8 +54,12 @@ body {
     width: 33.333%;
     height: 100%;
     cursor: pointer;
-    background-color: #c2ebff;
+    background-color: #8dbed6;
     font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: .75px;
+    text-shadow: -1px 1px #0878af;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -64,8 +68,12 @@ body {
     user-select: none;
 }
 
+.header-btn:hover {
+    background-color: #4eb3e4;
+}
+
 .header-btn.active {
-    background-color: #80e890;
+    background-color: #06c8f7;
 }
 
 .header-btn:last-child {
