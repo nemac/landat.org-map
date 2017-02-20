@@ -1,3 +1,19 @@
+Date.prototype.isLeapYear = function() {
+    var year = this.getFullYear();
+    if((year & 3) != 0) return false;
+    return ((year % 100) != 0 || (year % 400) == 0);
+};
+
+// Get Day of Year
+Date.prototype.getDOY = function() {
+    var dayCount = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    var mn = this.getMonth();
+    var dn = this.getDate();
+    var dayOfYear = dayCount[mn] + dn;
+    if(mn > 1 && this.isLeapYear()) dayOfYear++;
+    return dayOfYear;
+};
+
 var map = L.map('map', {"scrollWheelZoom" : false}).setView(["38.5", "-81"], 6);
 
 var baselayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', { attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>' }).addTo(map);
@@ -38,6 +54,7 @@ function drawGraph(data, div) {
     data = splitData(data);
     var reprocessedData = reprocessData(data);
     makeUpDownLineGraph(data, div, reprocessedData["medians"]);
+    makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div);
     console.log(reprocessedData);
     var list = document.getElementById("graph-list");
     list.appendChild(div);
@@ -85,9 +102,7 @@ function makeUpDownLineGraph (data, div, averages) {
     svg.call(tip);
 
     // Add the valueline path.
-    svg.append("path")
-        .attr("class", "line")
-        .attr("d", valueline(data));
+    drawLinearPath(data, valueline, svg);
 
     // Add the X Axis
     svg.append("g")
@@ -102,13 +117,104 @@ function makeUpDownLineGraph (data, div, averages) {
     /**
      * This block of code draws the point at each data point
      */
-    svg.selectAll("point")
+    drawLinearPoints(data, valueline, svg, averages);
+}
+
+function makeUpDownOverlapingLineGraphWithCheckboxes (data, div) {
+    var year = "2015";
+
+    var charts = {};
+
+    // Set the dimensions of the canvas / graph
+    var margin = {top: 30, right: 20, bottom: 30, left: 25},
+        width = 580 - margin.left - margin.right,
+        height = 270 - margin.top - margin.bottom;
+
+    var averages = data.medians;
+
+    var x = d3.scaleLinear().range([0, width])
+        .domain([0, 365]);
+    var y = d3.scaleLinear().range([height, 0])
+        .domain([0, 100]);
+
+    // Define the axes
+    function formatMonthTick (d) {
+        return (MONTH_LABELS[(d-15)/30]);
+    }
+    var xAxis = d3.axisBottom(x)
+        .ticks(11)
+        .tickValues([15, 45, 75, 105, 135, 165, 195, 225, 255, 285, 315, 345])
+        .tickFormat(formatMonthTick);
+    
+    var yAxis = d3.axisLeft(y)
+        .ticks(6);
+
+    // Define the line
+    var valueline = d3.line()
+        .x(function(d, i) { return (Array.isArray(d) ? x(parseJulianDay(d[0])) : (i * 8) + 3 ); })
+        .y(function(d) { return (Array.isArray(d) ? y(d[1]) : y(d)); });
+
+    var wrapper = d3.select(div).append("div");
+    
+    // Adds the svg canvas
+    var svg = wrapper
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform", 
+                  "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.call(tip);
+
+    // Add the X Axis
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    // Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+    charts["medians"] = {
+        "path" : drawLinearPath(data["medians"], valueline, svg)
+    };
+
+    charts[year] = {
+        "path" : drawLinearPath(data[year], valueline, svg)
+    };
+
+    /**
+     * This block of code draws the point at each data point
+     */
+    charts["medians"]["points"] = drawLinearPoints(data["medians"], valueline, svg, averages);
+    charts[year]["points"] = drawLinearPoints(data[year], valueline, svg, averages);
+
+    var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
+
+    data.keys.forEach(function (key) {
+        createCheckbox(inputwrapper, key, "timeseries", year, charts, data, valueline, svg, averages);
+    });
+
+    createCheckbox(inputwrapper, "medians", "timeseries", "medians", charts, data, valueline, svg, averages);
+}
+
+function drawLinearPath(data, line, svg) {
+    return svg.append("path")
+        .attr("class", "line")
+        .attr("d", line(data))
+}
+
+function drawLinearPoints(data, line, svg, averages) {
+    return svg.selectAll("point")
         .data(data)
         .enter()
         .append("circle")
         .attr("class", "point")
         .attr("transform", function(d) {
-            var coors = valueline([d]).slice(1).slice(0, -1);
+            var coors = line([d]).slice(1).slice(0, -1);
             return "translate(" + coors + ")"
         })
         .attr("r", 3)
@@ -116,18 +222,48 @@ function makeUpDownLineGraph (data, div, averages) {
         .attr("fill",function(d,i){
             return computeColor(d[1], averages[i%46], 3);
         })
-        .on("mouseover", function(d) {
-            tip.show(formatDate(d[0]) + ": "  + d[1]);
-            this.setAttribute("r", 5);
-            this.setAttribute("stroke-width", "2px");
-            d3.select(this).classed("active", true);
-        })
-        .on("mouseout", function (d) {
-            tip.hide();
-            this.setAttribute("r", 3);
-            this.setAttribute("stroke-width", "1px");
-            d3.select(this).classed("active", true);
+        .on("mouseover", handlePointMouseover)
+        .on("mouseout", handlePointMouseout);
+}
+
+function handlePointMouseover(d) {
+    var tipString = Array.isArray(d) ? formatDate(d[0]) + ": "  + d[1] : "Average: "  + d;
+    tip.show(tipString);
+    this.setAttribute("r", 5);
+    this.setAttribute("stroke-width", "2px");
+}
+
+function handlePointMouseout(d) {
+    tip.hide();
+    this.setAttribute("r", 3);
+    this.setAttribute("stroke-width", "1px");
+}
+
+function createCheckbox(wrapper, key, type, year, charts, data, line, svg, averages) {
+    var checkboxWrapper = wrapper.append("div");
+
+    checkboxWrapper.append("input")
+        .attr("type", "checkbox")
+        .attr("id", type + "-" + key)
+        .attr("value", key)
+        .property("checked", (key === year) ? true : false)
+        .on("change", function (e) {
+            var newYear = this.value;
+            if (!this.checked) {
+                charts[newYear].path.remove();
+                charts[newYear].points.remove();
+            } else {
+                if (!charts.hasOwnProperty(newYear)) {
+                    charts[newYear] = {};
+                }
+                charts[newYear].path = drawLinearPath(data[newYear], line, svg);
+                charts[newYear].points = drawLinearPoints(data[newYear], line, svg, averages);
+            }
         });
+
+    checkboxWrapper.append("label")
+        .text(key)
+        .attr("for", type + "-" + key);
 }
 
 function createMarker (lat, lng) {
@@ -195,6 +331,11 @@ function parseDate (date) {
     return new Date(year, month, day);
 }
 
+function parseJulianDay (date) {
+    date = parseDate(date);
+    return date.getDOY();
+}
+
 function formatDate (date) {
     if (date === "Average") { return date; }
 
@@ -245,3 +386,18 @@ function ordinal_suffix_of(day) {
     }
     return day + "th";
 }
+
+var MONTH_LABELS = {
+    0: "Jan",
+    1: "Feb",
+    2: "Mar",
+    3: "Apr",
+    4: "May",
+    5: "Jun",
+    6: "Jul",
+    7: "Aug",
+    8: "Sep",
+    9: "Oct",
+    10: "Nov",
+    11: "Dec"
+};

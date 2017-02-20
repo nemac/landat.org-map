@@ -51,7 +51,7 @@ body {
     border-right: 1px solid #666;
     text-align: center;
     padding-top: 15px;
-    width: 60px;
+    width: 33.333%;
     height: 100%;
     cursor: pointer;
     background-color: #fff;
@@ -59,6 +59,10 @@ body {
 
 .header-btn.active {
     background-color: #80e890;
+}
+
+.header-btn:last-child {
+    border-right: 0;
 }
 
 .graph-list {
