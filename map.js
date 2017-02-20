@@ -785,3 +785,22 @@ var MONTH_LABELS = {
     10: "Nov",
     11: "Dec"
 };
+
+function handleBtnClick (e) {
+    var type = this.dataset.type;
+    var activeElem = document.getElementsByClassName("header-btn active")[0];
+    var activeType = activeElem.dataset.type;
+
+    if (type === activeType) {
+        return;
+    }
+
+    d3.select("#graph-list")
+        .classed("graph-" + activeType, false)
+        .classed("graph-" + type, true);
+
+    d3.select(activeElem).classed("active", false);
+    d3.select(this).classed("active", true);
+}
+
+d3.selectAll(".header-btn").on("click", handleBtnClick);
