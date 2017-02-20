@@ -127,7 +127,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div) {
 
     // Set the dimensions of the canvas / graph
     var margin = {top: 30, right: 20, bottom: 30, left: 25},
-        width = 580 - margin.left - margin.right,
+        width = 500 - margin.left - margin.right,
         height = 270 - margin.top - margin.bottom;
 
     var averages = data.medians;
@@ -151,7 +151,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div) {
 
     // Define the line
     var valueline = d3.line()
-        .x(function(d, i) { return (Array.isArray(d) ? x(parseJulianDay(d[0])) : (i * 8) + 3 ); })
+        .x(function(d, i) { return (Array.isArray(d) ? x(parseJulianDay(d[0])) : x((i * 8) + 3 )); })
         .y(function(d) { return (Array.isArray(d) ? y(d[1]) : y(d)); });
 
     var wrapper = d3.select(div).append("div");
@@ -195,6 +195,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div) {
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
 
     data.keys.forEach(function (key) {
+        console.log(key)
         createCheckbox(inputwrapper, key, "timeseries", year, charts, data, valueline, svg, averages);
     });
 
@@ -213,14 +214,16 @@ function drawLinearPoints(data, line, svg, averages) {
         .enter()
         .append("circle")
         .attr("class", "point")
-        .attr("transform", function(d) {
-            var coors = line([d]).slice(1).slice(0, -1);
+        .attr("transform", function(d, i) {
+            var point = Array.isArray(d) ? d : [(i*8) + 3, d];
+            var coors = line([point]).slice(1).slice(0, -1);
             return "translate(" + coors + ")"
         })
         .attr("r", 3)
         .attr("stroke", "#000")
         .attr("fill",function(d,i){
-            return computeColor(d[1], averages[i%46], 3);
+            var val = Array.isArray(d) ? d[1] : d;
+            return computeColor(val, averages[i%46], 3);
         })
         .on("mouseover", handlePointMouseover)
         .on("mouseout", handlePointMouseout);
@@ -290,6 +293,7 @@ function reprocessData (origdata) {
         key = point[0].substring(0,4);
         if (!data.hasOwnProperty(key)) {
             data[key] = [];
+            data["keys"].push(key);
         }
         data[key].push(point);
     }
@@ -325,15 +329,19 @@ function computeColor (value, median, scale) {
 function parseDate (date) {
     date = date.toString();
     var year = date.substring(0, 4);
-    var month = date.substring(4, 6);
+    var month = parseInt(date.substring(4, 6), 10) - 1;
     var day = date.substring(6, 8);
 
     return new Date(year, month, day);
 }
 
 function parseJulianDay (date) {
-    date = parseDate(date);
-    return date.getDOY();
+    if (typeof(date) === "string") {
+        date = parseDate(date);
+        return date.getDOY();
+    } else {
+        return date;
+    }
 }
 
 function formatDate (date) {

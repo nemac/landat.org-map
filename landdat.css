@@ -171,3 +171,16 @@ circle {
 circle.active {
     z-index: 100;
 }
+
+.input-wrapper {
+    display: inline-block;
+}
+
+.input-wrapper label {
+    padding-left: 5px;
+    cursor: pointer;
+}
+
+.input-wrapper input {
+    cursor: pointer;
+}
