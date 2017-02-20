@@ -43,20 +43,18 @@ function getData(lat, lng, div) {
     oReq.addEventListener("load", function () {
         var response = this.responseText;
         response = response.replace(/\[|\]|\'/g, "").split(", ");
-        drawGraph(response, div);
-//        console.log(response)
+        drawGraph(response, div, lat, lng);
     });
     oReq.open("GET", url);
     oReq.send()
 }
 
-function drawGraph(data, div) {
+function drawGraph(data, div, lat, lng) {
     data = splitData(data);
     var reprocessedData = reprocessData(data);
     makeUpDownLineGraph(data, div, reprocessedData["medians"]);
-    makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div);
-    drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div);
-//    console.log(reprocessedData);
+    makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, lat, lng);
+    drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, lat, lng);
     var list = document.getElementById("graph-list");
     list.appendChild(div);
 }
@@ -123,7 +121,7 @@ function makeUpDownLineGraph (data, div, averages) {
     drawLinearPoints(data, valueline, svg, averages);
 }
 
-function makeUpDownOverlapingLineGraphWithCheckboxes (data, div) {
+function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
     var year = "2015";
 
     var charts = {};
@@ -198,10 +196,10 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div) {
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
 
     data.keys.forEach(function (key) {
-        createCheckbox(inputwrapper, key, "timeseries", year, charts, data, valueline, svg, averages);
+        createCheckbox(inputwrapper, key, "timeseries", year, charts, data, valueline, svg, averages, lat, lng);
     });
 
-    createCheckbox(inputwrapper, "medians", "timeseries", "medians", charts, data, valueline, svg, averages);
+    createCheckbox(inputwrapper, "medians", "timeseries", "medians", charts, data, valueline, svg, averages, lat, lng);
 }
 
 function findPolarCenter (data) {
@@ -245,7 +243,6 @@ function findPolarCenter (data) {
         }
         checkDiff = Math.abs(leftArea - rightArea);
         if (checkDiff < areaDiff) {
-            console.log("hey")
             areaDiff = checkDiff;
             areaIndex = i;
         }
@@ -336,7 +333,7 @@ function findPolarThresholds (data, startDay) {
     ];
 }
 
-function drawUpDownPolarWithCheckboxesAndThresholds (data, div) {
+function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
     var year = "2015";
     var width = 490,
         height = 490,
@@ -508,9 +505,9 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div) {
 
         checkboxWrapper.append("input")
             .attr("type", "checkbox")
-            .attr("id", "polar-threshold-" + key)
+            .attr("id", "polar-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
             .attr("value", key)
-            .property("checked", (key === "2015") ? true : false)
+            .property("checked", (key === year) ? true : false)
             .on("change", function (e) {
                 var newYear = this.value;
                 if (!this.checked) {
@@ -528,14 +525,14 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div) {
 
         checkboxWrapper.append("label")
             .text(key)
-            .attr("for", "polar-threshold-" + key);
+            .attr("for", "polar-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
     });
 
     var checkboxWrapper = inputwrapper.append("div");
 
     checkboxWrapper.append("input")
         .attr("type", "checkbox")
-        .attr("id", "polar-average-threshold")
+        .attr("id", "polar-average-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
         .attr("value", "medians")
         .property("checked", true)
         .on("change", function (e) {
@@ -556,14 +553,14 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div) {
 
     checkboxWrapper.append("label")
         .text("Baseline")
-        .attr("for", "polar-average-threshold");
+        .attr("for", "polar-average-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
 
     var thresholdCheckbox= inputwrapper.append("div")
         .classed("threshold-checkbox", true);
 
     thresholdCheckbox.append("input")
         .attr("type", "checkbox")
-        .attr("id", "threshold-checkbox")
+        .attr("id", "threshold-checkbox-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
         .property("checked", true)
         .on("change", function (e) {
             thresholdElem.style("opacity", (this.checked) ? 1 : 0);
@@ -571,7 +568,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div) {
 
     thresholdCheckbox.append("label")
         .text("Thresholds")
-        .attr("for", "threshold-checkbox");
+        .attr("for", "threshold-checkbox-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
 }
 
 function drawLinearPath(data, line, svg) {
@@ -621,12 +618,12 @@ function handlePointMouseout(d) {
     this.setAttribute("stroke-width", "1px");
 }
 
-function createCheckbox(wrapper, key, type, year, charts, data, line, svg, averages) {
+function createCheckbox(wrapper, key, type, year, charts, data, line, svg, averages, lat, lng) {
     var checkboxWrapper = wrapper.append("div");
 
     checkboxWrapper.append("input")
         .attr("type", "checkbox")
-        .attr("id", type + "-" + key)
+        .attr("id", type + "-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
         .attr("value", key)
         .property("checked", (key === year) ? true : false)
         .on("change", function (e) {
@@ -645,7 +642,7 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
 
     checkboxWrapper.append("label")
         .text(key)
-        .attr("for", type + "-" + key);
+        .attr("for", type + "-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
 }
 
 function createMarker (lat, lng) {
