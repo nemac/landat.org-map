@@ -90,8 +90,10 @@ function makeUpDownLineGraph (data, div, averages) {
         .x(function(d) { return x(parseDate(d[0])); })
         .y(function(d) { return y(d[1]); });
     
+    var wrapper = d3.select(div).append("div").classed("timeseries-graph", true);
+
     // Adds the svg canvas
-    var svg = d3.select(div)
+    var svg = wrapper
         .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -154,7 +156,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div) {
         .x(function(d, i) { return (Array.isArray(d) ? x(parseJulianDay(d[0])) : x((i * 8) + 3 )); })
         .y(function(d) { return (Array.isArray(d) ? y(d[1]) : y(d)); });
 
-    var wrapper = d3.select(div).append("div");
+    var wrapper = d3.select(div).append("div").classed("overlapping-graph", true);
     
     // Adds the svg canvas
     var svg = wrapper
