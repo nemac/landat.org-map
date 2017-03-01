@@ -14,11 +14,17 @@
       <div id="map-wrapper">
         <div id="map"></div>
       </div>
-      <div id="graphs">
-        <div class="graph-header">
-          <div class="header-btn active" data-type="timeseries">Timeseries</div><div class="header-btn" data-type="overlapping">Overlapping</div><div class="header-btn" data-type="polar">Polar</div>
+      <div id="right-panel">
+        <div id="layer-list-wrapper">
+          <div class='layer-list-header'>Layers</div>
+          <div class='layer-list'></div>
         </div>
-        <div id="graph-list" class="graph-list graph-timeseries">
+        <div id="graphs-wrapper">
+          <div class="graph-header">
+            <div class="header-btn active" data-type="timeseries">Timeseries</div><div class="header-btn" data-type="overlapping">Overlapping</div><div class="header-btn" data-type="polar">Polar</div>
+          </div>
+          <div id="graph-list" class="graph-list graph-timeseries">
+          </div>
         </div>
       </div>
     </div>
