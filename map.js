@@ -21,16 +21,36 @@ Date.prototype.getDOY = function() {
 ////////////////////// SETTINGS /////////////////////////////////////
 
 const mapserverBaseUrl = 'http://gis.nemac.org/landat'
-const defaultActive = 'MeanNDVI'
+const defaultActiveLayerId = 'MeanNDVI'
 
-var layers = ['MeanNDVI', 'Phenoclasses_2014'].map(layerName => { 
-  return {
-    layers: layerName,
-    url: mapserverBaseUrl,
-    active: layerName === defaultActive ? true : false
+var layers = [
+  {
+    'id': 'MeanNDVI',
+    'name': 'Mean Growing Season NDVI',
+  },
+  {
+    'id': 'Seasonality',
+    'name': 'Seasonality',
+  },
+    {
+    'id': 'BeginningGrowingSeason',
+    'name': 'Beginning of Growing Season',
+  },
+    {
+    'id': 'Midpoint',
+    'name': 'Growing Season Peak',
+  },
+    {
+    'id': 'NDVIStdDv',
+    'name': 'Variability in Greenness',
   }
-})
+]
 
+layers = layers.map(layer => { 
+  layer.url = mapserverBaseUrl,
+  layer.active = layer.id === defaultActiveLayerId ? true : false
+  return layer
+})
 
 /////////////////////////// RUNTIME ///////////////////////////
 
@@ -45,9 +65,27 @@ var tip = d3.tip().attr('class', 'd3-tip').html(function (d) { return d; });
 
 map.on("click", handleMapClick);
 
-d3.selectAll(".header-btn").on("click", handleBtnClick);
+d3.selectAll(".tab-header-btn").on("click", handleTabHeaderBtnClick);
+d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
 
 renderLayerList()
+
+/////////////////////// TOP-LEVEL INTERFACE //////////////////////
+
+function handleTabHeaderBtnClick () {
+  // If the section is already active, do nothing
+  if (this.classList.contains('active')) return
+
+  [
+    d3.selectAll('.tab-header-btn'),
+    d3.selectAll('.panel-section-wrapper')
+  ].forEach((selection) => {
+    selection.classed('active', function () {
+      return !d3.select(this).classed('active')
+    })
+  })
+
+}
 
 
 /////////////////////////// MAP LAYERS ////////////////////////////
@@ -60,7 +98,7 @@ function renderLayerList () {
       .each(function(layer) {
         d3.select(this).append('input')
           .attr('type', 'checkbox')
-          .attr('label', layer => layer.layers)
+          .attr('label', layer => layer.id)
           .attr('checked', layer => layer.active ? 'checked' : null)
           .each(toggleLayer)
           .on('click', layer => {
@@ -70,7 +108,7 @@ function renderLayerList () {
       })
       .append('span')
       .attr('class', 'layer-label')
-      .html(layer => layer.layers)
+      .html(layer => layer.name)
 
 }
 
@@ -85,7 +123,7 @@ function toggleLayer (layer) {
 
 function makeWmsTileLayer (layer) {
   return L.tileLayer.wms(layer.url || mapserverBaseUrl, {
-    layers: layer.layers,
+    layers: layer.id,
     transparent: layer.transparent || true,
     version: layer.version || '1.3.0',
     'crs': layer.crs || L.CRS.EPSG4326,
@@ -164,9 +202,9 @@ function reprocessData (origdata) {
 
 ////////////////////// GRAPH INTERFACE ///////////////////////////
 
-function handleBtnClick (e) {
+function handleGraphTypeBtnClick () {
   var type = this.dataset.type;
-  var activeElem = document.getElementsByClassName("header-btn active")[0];
+  var activeElem = document.getElementsByClassName("graph-type-btn active")[0];
   var activeType = activeElem.dataset.type;
 
   if (type === activeType) {
@@ -180,6 +218,7 @@ function handleBtnClick (e) {
   d3.select(activeElem).classed("active", false);
   d3.select(this).classed("active", true);
 }
+
 
 function createGraphDiv (lat, lng) {
   var div = document.createElement("div");

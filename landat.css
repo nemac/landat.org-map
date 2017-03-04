@@ -12,6 +12,7 @@ body {
 }
 
 * {
+    white-space: nowrap;
     margin: 0;
     border: 0;
     padding: 0;
@@ -43,63 +44,11 @@ body {
     vertical-align: top;
 }
 
-/* Layer List */
-
-#layer-list-wrapper {
-    position: relative;
-    width: 100%;
-    height: 25%;
+.tab-header-btn {
+    width: 50%;
 }
 
-.layer-list-header {
-    display: inline-block;
-    height: 50px;
-    width: 100%;
-    padding-top: 15px;
-    padding-left: 15px;
-    background-color: #06c8f7;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    letter-spacing: .75px;
-    text-shadow: -1px 1px #0878af;
-    text-align: left;
-    border-bottom: 1px solid #666;
-}
-
-.layer-list {
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-}
-
-.layer-select {
-    width: 100%;
-    padding-bottom: 10px;
-}
-
-.layer-select input {
-    margin-right: 5px;
-    width: 18px;
-    height: 18px;
-}
-
-.layer-select .layer-label {
-    font: 15px sans-serif;
-    font-weight: bold;
-    vertical-align: top;
-}
-
-/* Graphs */
-
-#graphs-wrapper {
-    display: inline-block;
-    height: 75%;
-    width: 100%;
-}
-
-.graph-header {
+.panel-header-wrapper {
     height: 50px;
     border-bottom: 1px solid #666;
     vertical-align: top;
@@ -108,12 +57,21 @@ body {
     background: #c7c7c7;
 }
 
+.panel-section-wrapper {
+    display: none;
+}
+
+.panel-section-wrapper.active {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+}
+
 .header-btn {
     display: inline-block;
     border-right: 1px solid #666;
     text-align: center;
     padding-top: 15px;
-    width: 33.333%;
     height: 100%;
     cursor: pointer;
     background-color: #8dbed6;
@@ -142,8 +100,68 @@ body {
     border-right: 0;
 }
 
+
+/* Layer List */
+
+.layer-tab-header {
+    display: inline-block;
+    height: 50px;
+    width: 50%;
+    padding-top: 15px;
+    padding-left: 15px;
+    background-color: #06c8f7;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: .75px;
+    text-shadow: -1px 1px #0878af;
+    text-align: left;
+    border-bottom: 1px solid #666;
+}
+
+#layer-list-wrapper.active {
+    height: 25%;
+}
+
+#layer-list-wrapper.active .layer-list {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+}
+
+#layer-list-wrapper .layer-list {
+    display: none;
+}
+
+.layer-select {
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.layer-select input {
+    margin-right: 5px;
+    width: 18px;
+    height: 18px;
+}
+
+.layer-select .layer-label {
+    font: 15px sans-serif;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+/* Graphs */
+
+.graph-type-btn {
+    width: 33.333%;
+}
+
+#graphs-wrapper {
+    max-height: 100%;
+}
+
 .graph-list {
-    overflow-y: scroll;
+    overflow: scroll;
     max-height: 100%;
     margin-top: -50px;
     padding-top: 50px;
