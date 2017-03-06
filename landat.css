@@ -142,12 +142,14 @@ body {
     margin-right: 5px;
     width: 18px;
     height: 18px;
+    cursor: pointer;
 }
 
 .layer-select .layer-label {
     font: 15px sans-serif;
     font-weight: bold;
     vertical-align: top;
+    cursor: pointer;
 }
 
 /* Graphs */

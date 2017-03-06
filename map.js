@@ -98,7 +98,7 @@ function renderLayerList () {
       .each(function(layer) {
         d3.select(this).append('input')
           .attr('type', 'checkbox')
-          .attr('label', layer => layer.id)
+          .attr('id', layer => layer.id)
           .attr('checked', layer => layer.active ? 'checked' : null)
           .each(toggleLayer)
           .on('click', layer => {
@@ -106,7 +106,8 @@ function renderLayerList () {
             toggleLayer(layer)
           })
       })
-      .append('span')
+      .append('label')
+      .attr('for', layer => layer.id)
       .attr('class', 'layer-label')
       .html(layer => layer.name)
 
