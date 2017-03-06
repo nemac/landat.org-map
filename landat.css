@@ -24,7 +24,7 @@ body {
 
 #map-wrapper {
     height: 100%;
-    width: 55%;
+    padding-right: 620px;
 }
 
 #map {
@@ -38,10 +38,9 @@ body {
     top: 0;
     right: 0;
     height: 100%;
-    width: 45%;
-    display: inline-block;
-    margin-left: -.3%;
+    width: 620px;
     vertical-align: top;
+    overflow-x: hidden;
 }
 
 .tab-header-btn {
