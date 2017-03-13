@@ -1,0 +1,24 @@
+{
+    "Layers" : [
+        {
+            'id': 'MeanNDVI',
+            'name': 'Mean Growing Season NDVI',
+        },
+        {
+            'id': 'Seasonality',
+            'name': 'Seasonality',
+        },
+        {
+            'id': 'BeginningGrowingSeason',
+            'name': 'Beginning of Growing Season',
+        },
+        {
+            'id': 'Midpoint',
+            'name': 'Growing Season Peak',
+        },
+        {
+            'id': 'NDVIStdDv',
+            'name': 'Variability in Greenness',
+        }
+    ]
+}
