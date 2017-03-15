@@ -9,16 +9,11 @@ function ParseConfig (configFile, callback) {
 }
 
 function GetConfig (configFile, callback) {
-    console.log(configFile)
-    $.getJSON(configFile, function (json) {
-        console.log(json)
-    });
-}
-
-function GetConfigVanilla (configFile, callback) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        console.log("sup")
+        console.log(xmlhttp)
+        if (xmlhttp.readyState == 4) {
             try {
                 var data = JSON.parse(xmlhttp.responseText);
                 console.log(data)
