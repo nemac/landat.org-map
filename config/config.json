@@ -1,24 +1,30 @@
 {
-    "Layers": [
+    "layers": [
         {
             "id": "MeanNDVI",
-            "name": "Mean Growing Season NDVI"
+            "name": "Mean Growing Season NDVI",
+            "url": "http://gis.nemac.org/landat",
+            "active": true
         },
         {
             "id": "Seasonality",
-            "name": "Seasonality"
+            "name": "Seasonality",
+            "url": "http://gis.nemac.org/landat"
         },
         {
             "id": "BeginningGrowingSeason",
-            "name": "Beginning of Growing Season"
+            "name": "Beginning of Growing Season",
+            "url": "http://gis.nemac.org/landat"
         },
         {
             "id": "Midpoint",
-            "name": "Growing Season Peak"
+            "name": "Growing Season Peak",
+            "url": "http://gis.nemac.org/landat"
         },
         {
             "id": "NDVIStdDv",
-            "name": "Variability in Greenness"
+            "name": "Variability in Greenness",
+            "url": "http://gis.nemac.org/landat"
         }
     ]
 }

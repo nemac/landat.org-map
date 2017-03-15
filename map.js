@@ -17,41 +17,6 @@ Date.prototype.getDOY = function() {
   return dayOfYear;
 };
 
-
-////////////////////// SETTINGS /////////////////////////////////////
-
-const mapserverBaseUrl = 'http://gis.nemac.org/landat'
-const defaultActiveLayerId = 'MeanNDVI'
-
-var layers = [
-  {
-    'id': 'MeanNDVI',
-    'name': 'Mean Growing Season NDVI',
-  },
-  {
-    'id': 'Seasonality',
-    'name': 'Seasonality',
-  },
-    {
-    'id': 'BeginningGrowingSeason',
-    'name': 'Beginning of Growing Season',
-  },
-    {
-    'id': 'Midpoint',
-    'name': 'Growing Season Peak',
-  },
-    {
-    'id': 'NDVIStdDv',
-    'name': 'Variability in Greenness',
-  }
-]
-
-layers = layers.map(layer => { 
-  layer.url = mapserverBaseUrl,
-  layer.active = layer.id === defaultActiveLayerId ? true : false
-  return layer
-})
-
 /////////////////////////// RUNTIME ///////////////////////////
 
 var map = L.map('map', {"scrollWheelZoom" : false}).setView(["38.5", "-81"], 6);
@@ -68,7 +33,7 @@ map.on("click", handleMapClick);
 d3.selectAll(".tab-header-btn").on("click", handleTabHeaderBtnClick);
 d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
 
-renderLayerList()
+//renderLayerList(layers);
 
 /////////////////////// TOP-LEVEL INTERFACE //////////////////////
 
@@ -84,13 +49,13 @@ function handleTabHeaderBtnClick () {
       return !d3.select(this).classed('active')
     })
   })
-
 }
 
 
 /////////////////////////// MAP LAYERS ////////////////////////////
 
-function renderLayerList () {
+function renderLayerList (layers) {
+    console.log(layers)
   var layerList = d3.select('.layer-list').selectAll('.layer-select')
     .data(layers)
     .enter().append('div')
@@ -110,7 +75,6 @@ function renderLayerList () {
       .attr('for', layer => layer.id)
       .attr('class', 'layer-label')
       .html(layer => layer.name)
-
 }
 
 function toggleLayer (layer) {

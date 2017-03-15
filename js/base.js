@@ -3,5 +3,5 @@ var Base = function (config) {
 }
 
 var callback = function (data) {
-    console.log(data);
+    renderLayerList(data.layers)
 }

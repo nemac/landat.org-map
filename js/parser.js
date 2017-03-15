@@ -11,12 +11,9 @@ function ParseConfig (configFile, callback) {
 function GetConfig (configFile, callback) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
-        console.log("sup")
-        console.log(xmlhttp)
         if (xmlhttp.readyState == 4) {
             try {
                 var data = JSON.parse(xmlhttp.responseText);
-                console.log(data)
             } catch(err) {
                 console.log("ERROR: Malformed JSON in config file.");
                 console.log(err);
