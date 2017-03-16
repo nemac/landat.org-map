@@ -52,18 +52,6 @@ function handleTabHeaderBtnClick () {
 
 /////////////////////////// MAP LAYERS ////////////////////////////
 
-function isLayerDefaultActive(layer, group, activeLayers) {
-  var active = false
-  activeLayers.forEach(layerPath => {
-    layerPath = layerPath.split(' ')
-    active = active ||
-      layerPath[0] === group &&
-      layerPath[1] === layer.id
-  })
-  layer.active = active
-  return active
-}
-
 function renderLayerList (layers, layout) {
   var layerGroups = d3.select('.layer-list')
     .selectAll('.layer-group')
@@ -90,32 +78,68 @@ function renderLayerList (layers, layout) {
       .attr('class', 'layer-select')
       .each(function(layer) {
         var groupName = this.parentNode.id
-        d3.select(this).append('input')
+        var layerDiv = d3.select(this)
+        var isActive = isLayerDefaultActive(layer, groupName, layout['active-layers'])
+        layer.active = isActive
+
+        // Checkbox
+        layerDiv.append('input')
           .attr('type', 'checkbox')
           .attr('id', layer => layer.id)
-          .attr('checked', (layer, i) => {
-            var active = isLayerDefaultActive(layer, groupName, layout['active-layers'])
-            return active ? 'checked' : null
+          .attr('checked', (layer) => {
+            return isActive ? 'checked' : null
           })
-          .each(toggleLayer)
           .on('click', layer => {
             layer.active = !layer.active
-            toggleLayer(layer)
+            toggleLayer(layer, layerDiv)
           })
+
+        // Label
+        layerDiv.append('label')
+          .attr('for', layer => layer.id)
+          .attr('class', 'layer-label')
+          .html(layer => layer.name)
+
+        // Description
+        if (layer.info && layer.info !== '') {
+          layerDiv.append('div')
+          .attr('class', 'layer-info-button')
+          .text('(?)')
+          .on('click', () => { alert(layer.info) })
+        }
+
+        // Legend
+        layerDiv.append('div')
+          .attr('class', 'legend')
+          .classed('active', isActive)
+
+        if (isActive) { toggleLayer(layer, layerDiv) }
+
       })
-      .append('label')
-      .attr('for', layer => layer.id)
-      .attr('class', 'layer-label')
-      .html(layer => layer.name)
+
 }
 
-function toggleLayer (layer) {
+function toggleLayer (layer, layerDiv) {
+  // If we are activating a default layer, leave active.layer alone
   layer.mapLayer = layer.mapLayer || makeWmsTileLayer(layer)
+  layerDiv.select('.legend').classed('active', layer.active)
+
   if (layer.active) {
     map.addLayer(layer.mapLayer)
   } else {
     map.removeLayer(layer.mapLayer)
   }
+}
+
+function isLayerDefaultActive(layer, group, activeLayers) {
+  var active = false
+  activeLayers.forEach(layerPath => {
+    layerPath = layerPath.split(' ')
+    active = active ||
+      layerPath[0] === group &&
+      layerPath[1] === layer.id
+  })
+  return active
 }
 
 function makeWmsTileLayer (layer) {

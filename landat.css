@@ -165,16 +165,29 @@ body {
     cursor: pointer;
 }
 
-.layer-select .layer-label {
+.layer-select .layer-label, .layer-info-button {
     font: 15px sans-serif;
     font-weight: bold;
     vertical-align: top;
     cursor: pointer;
 }
 
-.legend-stub {
+.layer-info-button {
+    padding-left: 12px;
+    display: inline-block;
+    font-color: blue;
+}
+
+.legend {
+    display: none;
+}
+
+.legend.active {
+    display: block;
     width: 100px;
     height: 100px;
+    padding: 15px;
+    border: 2px solid black;
 }
 
 /* Graphs */
