@@ -25,6 +25,11 @@
             "id": "NDVIStdDv",
             "name": "Variability in Greenness",
             "url": "http://gis.nemac.org/landat"
+        },
+        {
+            "id": "Midpoint",
+            "name": "Growing Season Peak",
+            "url": "http://gis.nemac.org/landat"
         }
     ]
 }
