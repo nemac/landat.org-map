@@ -172,6 +172,11 @@ body {
     cursor: pointer;
 }
 
+.legend-stub {
+    width: 100px;
+    height: 100px;
+}
+
 /* Graphs */
 
 .graph-type-btn {

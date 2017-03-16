@@ -1,5 +1,5 @@
 var config = {
-  "mapserverUrl": "https://gis.nemac.org/landat",
+  "mapserverUrl": "http://gis.nemac.org/landat",
   "layout" : {
     "layer-groups-order": [
       {
