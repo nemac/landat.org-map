@@ -132,7 +132,28 @@ body {
     display: none;
 }
 
-.layer-select {
+.layer-group-header {
+    font: 18px sans-serif;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
+.layer-group .layer-select {
+    display: none;
+}
+
+.layer-group {
+    padding: 10px;
+}
+
+.layer-group {
+    border: 1px solid black;
+}
+
+.layer-group.active .layer-select {
+    display: block;
     width: 100%;
     padding-bottom: 10px;
 }
@@ -162,7 +183,6 @@ body {
 }
 
 .graph-list {
-    overflow: scroll;
     max-height: 100%;
     margin-top: -50px;
     padding-top: 50px;

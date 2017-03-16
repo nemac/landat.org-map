@@ -33,8 +33,6 @@ map.on("click", handleMapClick);
 d3.selectAll(".tab-header-btn").on("click", handleTabHeaderBtnClick);
 d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
 
-//renderLayerList(layers);
-
 /////////////////////// TOP-LEVEL INTERFACE //////////////////////
 
 function handleTabHeaderBtnClick () {
@@ -54,17 +52,51 @@ function handleTabHeaderBtnClick () {
 
 /////////////////////////// MAP LAYERS ////////////////////////////
 
-function renderLayerList (layers) {
-    console.log(layers)
-  var layerList = d3.select('.layer-list').selectAll('.layer-select')
-    .data(layers)
+function isLayerDefaultActive(layer, group, activeLayers) {
+  var active = false
+  activeLayers.forEach(layerPath => {
+    layerPath = layerPath.split(' ')
+    active = active ||
+      layerPath[0] === group &&
+      layerPath[1] === layer.id
+  })
+  layer.active = active
+  return active
+}
+
+function renderLayerList (layers, layout) {
+  var layerGroups = d3.select('.layer-list')
+    .selectAll('.layer-group')
+    .data(layout['layer-groups-order'])
+    .enter()
+      .append('div')
+      .each(function (layerGroup) {
+        d3.select(this).append('div')
+          .attr('class', 'layer-group-header')
+          .on('click', function (layerGroup) {
+            layerGroup.active = !layerGroup.active
+            d3.select(this.parentNode).classed('active', () => layerGroup.active)
+          })
+          .append('h3')
+            .text(layerGroup.name)
+      })
+      .attr('class', 'layer-group')
+      .attr('id', layerGroup => layerGroup.id)
+      .classed('active', layerGroup => layerGroup.active)
+
+  var layerList = layerGroups.selectAll('.layer-select')
+    .data(layerGroup => layers[layerGroup.id])
     .enter().append('div')
       .attr('class', 'layer-select')
       .each(function(layer) {
+        var groupName = this.parentNode.id
         d3.select(this).append('input')
           .attr('type', 'checkbox')
           .attr('id', layer => layer.id)
-          .attr('checked', layer => layer.active ? 'checked' : null)
+          .attr('checked', (layer, i) => {
+            var active = isLayerDefaultActive(layer, groupName, layout['active-layers'])
+            return active ? 'checked' : null
+          })
           .each(toggleLayer)
           .on('click', layer => {
             layer.active = !layer.active
@@ -87,11 +119,11 @@ function toggleLayer (layer) {
 }
 
 function makeWmsTileLayer (layer) {
-  return L.tileLayer.wms(layer.url || mapserverBaseUrl, {
+  return L.tileLayer.wms(layer.url || config.mapserverUrl, {
     layers: layer.id,
     transparent: layer.transparent || true,
     version: layer.version || '1.3.0',
-    'crs': layer.crs || L.CRS.EPSG4326,
+    crs: layer.crs || L.CRS.EPSG4326,
     format: layer.format || 'image/png'
   })
 }

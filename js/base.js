@@ -1,7 +1,8 @@
-var Base = function (config) {
-    ParseConfig(config, callback);
+var Base = function () {
+    //ParseConfig(config, callback);
+    callback(config)
 }
 
 var callback = function (data) {
-    renderLayerList(data.layers)
+    renderLayerList(data.layers, data.layout)
 }
