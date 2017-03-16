@@ -58,6 +58,9 @@ function renderLayerList (layers, layout) {
     .data(layout['layer-groups-order'])
     .enter()
       .append('div')
+      .attr('class', 'layer-group')
+      .attr('id', layerGroup => layerGroup.id)
+      .classed('active', layerGroup => layerGroup.active)
       .each(function (layerGroup) {
         d3.select(this).append('div')
           .attr('class', 'layer-group-header')
@@ -68,9 +71,6 @@ function renderLayerList (layers, layout) {
           .append('h3')
             .text(layerGroup.name)
       })
-      .attr('class', 'layer-group')
-      .attr('id', layerGroup => layerGroup.id)
-      .classed('active', layerGroup => layerGroup.active)
 
   var layerList = layerGroups.selectAll('.layer-select')
     .data(layerGroup => layers[layerGroup.id])
@@ -79,15 +79,14 @@ function renderLayerList (layers, layout) {
       .each(function(layer) {
         var groupName = this.parentNode.id
         var layerDiv = d3.select(this)
-        var isActive = isLayerDefaultActive(layer, groupName, layout['active-layers'])
-        layer.active = isActive
+        layer.active = isLayerDefaultActive(layer, groupName, layout['active-layers'])
 
         // Checkbox
         layerDiv.append('input')
           .attr('type', 'checkbox')
           .attr('id', layer => layer.id)
           .attr('checked', (layer) => {
-            return isActive ? 'checked' : null
+            return layer.active ? 'checked' : null
           })
           .on('click', layer => {
             layer.active = !layer.active
@@ -111,9 +110,9 @@ function renderLayerList (layers, layout) {
         // Legend
         layerDiv.append('div')
           .attr('class', 'legend')
-          .classed('active', isActive)
+          .classed('active', layer.active)
 
-        if (isActive) { toggleLayer(layer, layerDiv) }
+        if (layer.active) { toggleLayer(layer, layerDiv) }
 
       })
 
