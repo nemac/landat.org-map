@@ -3,6 +3,11 @@ var config = {
   "layout" : {
     "layer-groups-order": [
       {
+        "id": "phenology-variables",
+        "name": "Phenology Variables",
+        "active": true
+      },
+      {
         "id": "phenoclass-derived",
         "name": "Phenoclass-derived Products",
         "active": false
@@ -11,11 +16,6 @@ var config = {
         "id": "it-metrics",
         "name": "IT Metrics",
         "active": false
-      },
-      {
-        "id": "phenology-variables",
-        "name": "Phenology Variables",
-        "active": true
       },
       {
         "id": "phenoclasses",

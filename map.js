@@ -77,7 +77,7 @@ function renderLayerList (layers, layout) {
     .enter().append('div')
       .attr('class', 'layer-select')
       .each(function(layer) {
-        var groupName = this.parentNode.id
+        var groupName = this.parentNode.parentNode.id
         var layerDiv = d3.select(this)
         layer.active = isLayerDefaultActive(layer, groupName, layout['active-layers'])
 
@@ -108,9 +108,11 @@ function renderLayerList (layers, layout) {
         }
 
         // Legend
-        layerDiv.append('div')
-          .attr('class', 'legend')
+        var legend = layerDiv.append('div')
+          .attr('class', 'legend-wrapper')
           .classed('active', layer.active)
+          .append('img')
+          .attr('src', 'mean_ndvi_legend.jpg')
 
         if (layer.active) { toggleLayer(layer, layerDiv) }
 
@@ -121,7 +123,7 @@ function renderLayerList (layers, layout) {
 function toggleLayer (layer, layerDiv) {
   // If we are activating a default layer, leave active.layer alone
   layer.mapLayer = layer.mapLayer || makeWmsTileLayer(layer)
-  layerDiv.select('.legend').classed('active', layer.active)
+  layerDiv.select('.legend-wrapper').classed('active', layer.active)
 
   if (layer.active) {
     map.addLayer(layer.mapLayer)

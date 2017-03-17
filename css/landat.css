@@ -222,15 +222,12 @@ body {
   padding-left: 12px;
   display: inline-block; }
 
-.legend {
+.legend-wrapper {
   display: none; }
 
-.legend.active {
+.legend-wrapper.active {
   display: block;
-  width: 200px;
-  height: 120px;
-  margin: 15px;
-  border: 2px solid #666; }
+  margin: 15px; }
 
 /* Graph UI */
 .graph-type-btn {

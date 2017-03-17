@@ -179,16 +179,13 @@ body {
     display: inline-block;
 }
 
-.legend {
+.legend-wrapper {
     display: none;
 }
 
-.legend.active {
+.legend-wrapper.active {
     display: block;
-    width: 200px;
-    height: 120px;
     margin: 15px;
-    border: 2px solid $border-color;
 }
 
 /* Graph UI */
