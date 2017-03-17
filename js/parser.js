@@ -4,7 +4,7 @@
  * of using the config file, since we do not know how long it
  * will take to grab the file.
  */
-function ParseConfig (configFile, callback) {
+export default function ParseConfig (configFile, callback) {
     GetConfig(configFile, callback);
 }
 

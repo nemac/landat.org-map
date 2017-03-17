@@ -1,6 +1,7 @@
-var Base = function () {
-    //ParseConfig(config, callback);
-    callback(config)
+import ParseConfig from './parser.js';
+
+var Base = function (config) {
+    ParseConfig(config, callback);
 }
 
 var callback = function (data) {
