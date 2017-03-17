@@ -23,8 +23,6 @@ var config = {
         "active": false
       }
     ],
-    // String of the form "<layer-group-id> <layer-group-id> ..."
-    // or just "all" for all layer groups open by default
     "active-layers": [
       // String of the form "<layer-group-id> <layer-id>"
       "phenology-variables MeanNDVI"

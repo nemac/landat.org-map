@@ -6,7 +6,7 @@
     <script src="d3-tip/d3-tip.js"></script>
     <link href="d3-tip/d3-tip.css" media="all" rel="stylesheet"></link>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-    <link rel="stylesheet" href="landat.css" />
+    <link rel="stylesheet" href="css/landat.css" />
     <title>Test map for LandDat graphing</title>
   </head>
   <body>
@@ -16,14 +16,14 @@
       </div>
       <div id="right-panel">
         <div id="right-panel-header" class="panel-header-wrapper">
-          <div id="layer-tab-header-btn" class="header-btn tab-header-btn active">Layers</div><div id="graphs-tab-header-btn" class="header-btn tab-header-btn">Graphs</div>
+          <div class="panel-btn panel-top-btn btn active">Layers</div><div id="graphs-tab-btn" class="panel-btn btn panel-top-btn">Graphs</div>
         </div>
         <div id="layer-list-wrapper" class="panel-section-wrapper active">
           <div class='layer-list'></div>
         </div>
         <div id="graphs-wrapper" class="panel-section-wrapper">
           <div id="graph-type-header" class="panel-header-wrapper">
-            <div class="header-btn graph-type-btn active" data-type="timeseries">Timeseries</div><div class="header-btn graph-type-btn" data-type="overlapping">Overlapping</div><div class="header-btn graph-type-btn" data-type="polar">Polar</div>
+            <div class="panel-btn btn graph-type-btn active" data-type="timeseries">Timeseries</div><div class="panel-btn graph-type-btn btn" data-type="overlapping">Overlapping</div><div class="panel-btn graph-type-btn btn" data-type="polar">Polar</div>
           </div>
           <div id="graph-list" class="graph-list graph-timeseries">
           </div>

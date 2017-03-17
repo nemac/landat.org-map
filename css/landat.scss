@@ -1,0 +1,235 @@
+@import 'graphs';
+
+$panel-width: 620px;
+
+$border-color: #666;
+
+$btn-color: #8dbed6;
+$btn-color-hover: #4eb3e4;
+$btn-color-active: #06c8f7;
+$btn-font-size: 16px;
+$btn-font-color: #fff;
+$btn-text-shadow-color: #0878af;
+
+$layer-select-text-color: #22333B;
+$layer-select-color-primary: #D9F0F9;
+$layer-select-color-secondary: #C7DCE5;
+
+html, body, .wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+body {
+    font: 12px Arial;
+}
+
+* {
+    white-space: nowrap;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+/* Map */
+
+#map-wrapper {
+    height: 100%;
+    padding-right: $panel-width
+}
+
+#map {
+    height: 100%;
+}
+
+/* Side Panel */
+
+#right-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: $panel-width;
+    vertical-align: top;
+    overflow-x: hidden;
+}
+
+.panel-top-btn {
+    width: 50%;
+}
+
+.panel-header-wrapper {
+    height: 50px;
+    border-bottom: 1px solid $border-color;
+    vertical-align: top;
+    position: relative;
+    z-index: 10;
+}
+
+.panel-section-wrapper {
+    display: none;
+}
+
+.panel-section-wrapper.active {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+}
+
+.btn {
+    cursor: pointer;
+    background-color: $btn-color;
+    font-size: $btn-font-size;
+    font-weight: bold;
+    color: $btn-font-color;
+    letter-spacing: .75px;
+    text-shadow: -1px 1px $btn-text-shadow-color;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.btn:hover {
+    background-color: $btn-color-hover;
+}
+
+.btn.active {
+    background-color: $btn-color-active;
+}
+
+.panel-btn {
+    display: inline-block;
+    border-right: 1px solid $border-color;
+    text-align: center;
+    padding-top: 15px;
+    height: 100%;
+}
+
+.panel-btn:last-child {
+    border-right: 0;
+}
+
+/* Layer List */
+
+#layer-list-wrapper.active {
+
+}
+
+#layer-list-wrapper.active .layer-list {
+    display: inline-block;
+    width: 100%;
+    padding-top: 10px;
+}
+
+#layer-list-wrapper .layer-list {
+    display: none;
+}
+
+.layer-group-btn {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    border: 1px solid $border-color;
+}
+
+.layer-select {
+    display: none;
+}
+
+.layer-group-wrapper.active .layer-select {
+    display: block;
+    width: 100%;
+}
+
+.layer-group-wrapper.active .layer-select:nth-child(even) {
+    background-color: $layer-select-color-primary
+}
+
+.layer-group-wrapper.active .layer-select:nth-child(odd) {
+    background-color: $layer-select-color-secondary
+}
+
+.layer-group-wrapper.active .layer-select {
+    padding: 10px 0px 10px 10px;
+    color: $layer-select-text-color
+}
+
+.layer-select input {
+    margin-right: 5px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.layer-select .layer-label, .layer-info-btn {
+    font: 15px sans-serif;
+    font-weight: bold;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.layer-info-btn {
+    padding-left: 12px;
+    display: inline-block;
+}
+
+.legend {
+    display: none;
+}
+
+.legend.active {
+    display: block;
+    width: 200px;
+    height: 120px;
+    margin: 15px;
+    border: 2px solid $border-color;
+}
+
+/* Graph UI */
+
+.graph-type-btn {
+    width: 33.333%;
+}
+
+#graphs-wrapper {
+    max-height: 100%;
+}
+
+.graph-list {
+    max-height: 100%;
+    margin-top: -50px;
+    padding-top: 50px;
+}
+
+.graph-elem {
+    border-bottom: 1px solid #aaa;
+    padding: 20px 15px
+}
+
+.graph-active #map {
+    cursor: crosshair;
+}
+
+.timeseries-graph, .overlapping-graph, .polar-graph {
+    display: none;
+}
+
+.graph-timeseries .timeseries-graph {
+    display: block;
+}
+
+.graph-overlapping .overlapping-graph {
+    display: block;
+}
+
+.graph-polar .polar-graph {
+    display: block;
+}
+
+

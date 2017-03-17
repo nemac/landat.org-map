@@ -30,7 +30,7 @@ var tip = d3.tip().attr('class', 'd3-tip').html(function (d) { return d; });
 
 map.on("click", handleMapClick);
 
-d3.selectAll(".tab-header-btn").on("click", handleTabHeaderBtnClick);
+d3.selectAll(".panel-top-btn").on("click", handleTabHeaderBtnClick);
 d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
 
 /////////////////////// TOP-LEVEL INTERFACE //////////////////////
@@ -40,7 +40,7 @@ function handleTabHeaderBtnClick () {
   if (this.classList.contains('active')) return
 
   [
-    d3.selectAll('.tab-header-btn'),
+    d3.selectAll('.panel-top-btn'),
     d3.selectAll('.panel-section-wrapper')
   ].forEach((selection) => {
     selection.classed('active', function () {
@@ -54,25 +54,25 @@ function handleTabHeaderBtnClick () {
 
 function renderLayerList (layers, layout) {
   var layerGroups = d3.select('.layer-list')
-    .selectAll('.layer-group')
+    .selectAll('.layer-group-wrapper')
     .data(layout['layer-groups-order'])
     .enter()
       .append('div')
-      .attr('class', 'layer-group')
+      .attr('class', 'layer-group-wrapper')
       .attr('id', layerGroup => layerGroup.id)
       .classed('active', layerGroup => layerGroup.active)
       .each(function (layerGroup) {
         d3.select(this).append('div')
-          .attr('class', 'layer-group-header')
+          .attr('class', 'layer-group-btn btn')
           .on('click', function (layerGroup) {
             layerGroup.active = !layerGroup.active
             d3.select(this.parentNode).classed('active', () => layerGroup.active)
           })
-          .append('h3')
-            .text(layerGroup.name)
+          .text(layerGroup.name)
       })
 
-  var layerList = layerGroups.selectAll('.layer-select')
+  var layerList = layerGroups.append('div').attr('class', 'layer-group')
+    .selectAll('.layer-select')
     .data(layerGroup => layers[layerGroup.id])
     .enter().append('div')
       .attr('class', 'layer-select')
@@ -102,7 +102,7 @@ function renderLayerList (layers, layout) {
         // Description
         if (layer.info && layer.info !== '') {
           layerDiv.append('div')
-          .attr('class', 'layer-info-button')
+          .attr('class', 'layer-info-btn')
           .text('(?)')
           .on('click', () => { alert(layer.info) })
         }
