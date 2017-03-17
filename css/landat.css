@@ -123,7 +123,11 @@ body {
   height: 100%;
   width: 620px;
   vertical-align: top;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  border-left: 1px solid #666; }
+
+#right-panel-header {
+  border-bottom: 1px solid #666; }
 
 .panel-top-btn {
   width: 50%; }
@@ -143,6 +147,7 @@ body {
   position: relative;
   width: 100%; }
 
+/* Panel Buttons */
 .btn {
   cursor: pointer;
   background-color: #8dbed6;
@@ -177,8 +182,7 @@ body {
 /* Layer List */
 #layer-list-wrapper.active .layer-list {
   display: inline-block;
-  width: 100%;
-  padding-top: 10px; }
+  width: 100%; }
 
 #layer-list-wrapper .layer-list {
   display: none; }
@@ -186,10 +190,14 @@ body {
 .layer-group-btn {
   padding-top: 12px;
   padding-bottom: 12px;
-  padding-left: 10px;
-  border: 1px solid #666; }
+  padding-left: 10px; }
 
+.layer-group {
+  border-top: 1px solid #666; }
+
+/* Layer Row */
 .layer-select {
+  border-bottom: 1px solid #666;
   display: none; }
 
 .layer-group-wrapper.active .layer-select {
@@ -222,6 +230,7 @@ body {
   padding-left: 12px;
   display: inline-block; }
 
+/* Layer Legend */
 .legend-wrapper {
   display: none; }
 

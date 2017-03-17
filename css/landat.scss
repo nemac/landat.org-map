@@ -45,6 +45,7 @@ body {
     height: 100%;
 }
 
+
 /* Side Panel */
 
 #right-panel {
@@ -55,6 +56,11 @@ body {
     width: $panel-width;
     vertical-align: top;
     overflow-x: hidden;
+    border-left: 1px solid $border-color;
+}
+
+#right-panel-header {
+    border-bottom: 1px solid $border-color;
 }
 
 .panel-top-btn {
@@ -78,6 +84,8 @@ body {
     position: relative;
     width: 100%;
 }
+
+/* Panel Buttons */
 
 .btn {
     cursor: pointer;
@@ -117,28 +125,32 @@ body {
 
 /* Layer List */
 
-#layer-list-wrapper.active {
-
-}
-
 #layer-list-wrapper.active .layer-list {
     display: inline-block;
     width: 100%;
-    padding-top: 10px;
 }
 
 #layer-list-wrapper .layer-list {
     display: none;
 }
 
+.layer-list:nth-child(1) {
+}
+
 .layer-group-btn {
     padding-top: 12px;
     padding-bottom: 12px;
     padding-left: 10px;
-    border: 1px solid $border-color;
 }
 
+.layer-group {
+    border-top: 1px solid $border-color;
+}
+
+/* Layer Row */
+
 .layer-select {
+    border-bottom: 1px solid $border-color;
     display: none;
 }
 
@@ -179,6 +191,8 @@ body {
     display: inline-block;
 }
 
+/* Layer Legend */
+
 .legend-wrapper {
     display: none;
 }
@@ -187,6 +201,12 @@ body {
     display: block;
     margin: 15px;
 }
+
+
+
+
+
+
 
 /* Graph UI */
 
