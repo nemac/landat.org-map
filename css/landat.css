@@ -226,9 +226,21 @@ body {
   vertical-align: top;
   cursor: pointer; }
 
+/* Layer Description */
 .layer-info-btn {
-  padding-left: 12px;
+  margin-left: 23px;
   display: inline-block; }
+
+.layer-info-wrapper {
+  display: none; }
+
+.layer-info-wrapper.active {
+  display: block;
+  width: 100%;
+  margin: 10px 0px 0px 23px;
+  width: 100%;
+  font: 13px sans-serif;
+  font-weight: bold; }
 
 /* Layer Legend */
 .legend-wrapper {
@@ -236,7 +248,9 @@ body {
 
 .legend-wrapper.active {
   display: block;
-  margin: 15px; }
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 23px; }
 
 /* Graph UI */
 .graph-type-btn {

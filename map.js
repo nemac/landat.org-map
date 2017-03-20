@@ -33,6 +33,7 @@ map.on("click", handleMapClick);
 d3.selectAll(".panel-top-btn").on("click", handleTabHeaderBtnClick);
 d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
 
+
 /////////////////////// TOP-LEVEL INTERFACE //////////////////////
 
 function handleTabHeaderBtnClick () {
@@ -70,8 +71,9 @@ function renderLayerList (layers, layout) {
           })
           .text(layerGroup.name)
       })
+      .append('div').attr('class', 'layer-group')
 
-  var layerList = layerGroups.append('div').attr('class', 'layer-group')
+  var layerList = layerGroups
     .selectAll('.layer-select')
     .data(layerGroup => layers[layerGroup.id])
     .enter().append('div')
@@ -102,9 +104,19 @@ function renderLayerList (layers, layout) {
         // Description
         if (layer.info && layer.info !== '') {
           layerDiv.append('div')
-          .attr('class', 'layer-info-btn')
-          .text('(?)')
-          .on('click', () => { alert(layer.info) })
+            .attr('class', 'layer-info-btn')
+            .text('(?)')
+            .on('click', function () {
+              d3.select(this.parentNode)
+                .select('.layer-info-wrapper')
+                .classed('active', function () {
+                  return !d3.select(this).classed('active')
+                })
+            })
+
+          layerDiv.append('div')
+            .attr('class', 'layer-info-wrapper')
+            .text(layer => '(' + layer.info + ')')
         }
 
         // Legend

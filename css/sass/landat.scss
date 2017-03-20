@@ -2,6 +2,8 @@
 
 $panel-width: 620px;
 
+$panel-header-wrapper-height: 50px;
+
 $border-color: #666;
 
 $btn-color: #8dbed6;
@@ -14,6 +16,14 @@ $btn-text-shadow-color: #0878af;
 $layer-select-text-color: #22333B;
 $layer-select-color-primary: #D9F0F9;
 $layer-select-color-secondary: #C7DCE5;
+
+$layer-checkbox-length: 18px;
+$layer-checkbox-margin-right: 5px;
+
+$layer-div-content-margin-left: $layer-checkbox-length + $layer-checkbox-margin-right;
+$layer-info-content-font-size: 13px;
+
+$legend-wrapper-margin-vert: 10px;
 
 html, body, .wrapper {
     width: 100%;
@@ -68,7 +78,7 @@ body {
 }
 
 .panel-header-wrapper {
-    height: 50px;
+    height: $panel-header-wrapper-height;
     border-bottom: 1px solid $border-color;
     vertical-align: top;
     position: relative;
@@ -173,9 +183,9 @@ body {
 }
 
 .layer-select input {
-    margin-right: 5px;
-    width: 18px;
-    height: 18px;
+    margin-right: $layer-checkbox-margin-right;
+    width: $layer-checkbox-length;
+    height: $layer-checkbox-length;
     cursor: pointer;
 }
 
@@ -186,9 +196,24 @@ body {
     cursor: pointer;
 }
 
+/* Layer Description */
+
 .layer-info-btn {
-    padding-left: 12px;
+    margin-left: $layer-div-content-margin-left;
     display: inline-block;
+}
+
+.layer-info-wrapper {
+    display: none;
+}
+
+.layer-info-wrapper.active {
+    display: block;
+    width: 100%;
+    margin: 10px 0px 0px $layer-div-content-margin-left;
+    width: 100%;
+    font: $layer-info-content-font-size sans-serif;
+    font-weight: bold;
 }
 
 /* Layer Legend */
@@ -199,11 +224,10 @@ body {
 
 .legend-wrapper.active {
     display: block;
-    margin: 15px;
+    margin-top: $legend-wrapper-margin-vert;
+    margin-bottom: $legend-wrapper-margin-vert;
+    margin-left: $layer-div-content-margin-left;
 }
-
-
-
 
 
 
