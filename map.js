@@ -83,6 +83,8 @@ function renderLayerList (layers, layout) {
         var layerDiv = d3.select(this)
         layer.active = isLayerDefaultActive(layer, groupName, layout['active-layers'])
 
+        if (layer.active) { toggleLayer(layer, layerDiv) }
+
         // Checkbox
         layerDiv.append('input')
           .attr('type', 'checkbox')
@@ -126,17 +128,70 @@ function renderLayerList (layers, layout) {
           .append('img')
           .attr('src', 'mean_ndvi_legend.jpg')
 
-        if (layer.active) { toggleLayer(layer, layerDiv) }
+        // Layer Opacity Slider
+        var opacityScale = d3.scaleLinear()
+          .domain([0, 300])
+          .range([0, 1])
+          .clamp(true)
+
+        var opacitySliderWrapper = layerDiv.append('div')
+          .attr('class', 'opacity-slider-wrapper')
+          .classed('active', layer.active)
+
+        var opacitySliderSvg = opacitySliderWrapper
+          .append('svg').append('g')
+          .attr('class', 'opacity-slider')
+          .attr('transform', 'translate(20, 20)')
+
+        opacitySliderSvg.append('circle')
+          .attr('r', 6)
+          .attr('cx', 300)
+          .attr('class', 'opacity-slider-circle')
+
+        opacitySliderSvg.append('line')
+          .attr('class', 'opacity-slider-track-overlay')
+          .attr('x1', 0)
+          .attr('x2', 315)
+          .attr('stroke', '#000000')
+          .attr('stroke-width', '20px')
+          .attr('stroke-opacity', '0.0')
+          .call(d3.drag()
+            .on('start drag', function () {
+              updateOpacity(layer, this.parentNode, opacityScale, d3.event.x)
+            }))
+
+        opacitySliderSvg.append('line')
+          .attr('class', 'opacity-slider-track')
+          .attr('x1', 0).attr('x2', 300)
+          .attr('stroke-width', '20px')
+          .attr('stroke', '#666')
+          .attr('stroke-width', '2px')
+
+        opacitySliderSvg.append('text')
+          .attr('class', 'opacity-indicator')
+          .attr('x', 315).attr('y', 5)
+          .text(opacityScale(300)*100 + '%')
 
       })
 
+
+}
+
+function updateOpacity(layer, slider, scale, xPos) {
+  // clamp the x position to be within the scale's domain
+  var xPos = scale.invert(scale(xPos))
+  slider = d3.select(slider)
+
+  slider.select('circle').attr('cx', xPos)
+  slider.select('text').text(parseInt(scale(xPos)*100) + '%')
+  layer.mapLayer.setOpacity(scale(d3.event.x))
 }
 
 function toggleLayer (layer, layerDiv) {
-  // If we are activating a default layer, leave active.layer alone
   layer.mapLayer = layer.mapLayer || makeWmsTileLayer(layer)
-  layerDiv.select('.legend-wrapper').classed('active', layer.active)
 
+  layerDiv.selectAll('.legend-wrapper, .opacity-slider-wrapper')
+    .classed('active', layer.active)
   if (layer.active) {
     map.addLayer(layer.mapLayer)
   } else {

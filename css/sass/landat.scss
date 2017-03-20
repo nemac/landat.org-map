@@ -229,7 +229,21 @@ body {
     margin-left: $layer-div-content-margin-left;
 }
 
+/* Layer Opacity Slider */
 
+.opacity-slider-wrapper.active {
+    display: block;
+}
+
+.opacity-slider-wrapper {
+
+    display: none;
+
+    svg {
+        width: 400px;
+        height: 40px;
+    }
+}
 
 
 /* Graph UI */
