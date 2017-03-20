@@ -18,6 +18,7 @@ function GetConfig (configFile, callback) {
                 console.log("ERROR: Malformed JSON in config file.");
                 console.log(err);
             }
+            formatLayers(data);
             callback(data);
         }
     };
@@ -25,4 +26,21 @@ function GetConfig (configFile, callback) {
     xmlhttp.open("GET", configFile, true);
     xmlhttp.send();
     console.log("hi")
+}
+
+function formatLayers (data) {
+    var layers = data.layers;
+    var defaultMapserverUrl = data.mapserverUrl;
+    var layergroup;
+    var i;
+
+    for (var prop in layers) {
+        if (!layers.hasOwnProperty(prop)) return;
+        layergroup = layers[prop];
+        for (i = 0; i < layergroup.length; i++) setMapserverUrl(layergroup[i], defaultMapserverUrl);
+    }
+}
+
+function setMapserverUrl (layer, url) {
+    layer.url = layer.url || url;
 }

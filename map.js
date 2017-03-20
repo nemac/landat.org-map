@@ -211,7 +211,7 @@ function isLayerDefaultActive(layer, group, activeLayers) {
 }
 
 function makeWmsTileLayer (layer) {
-  return L.tileLayer.wms(layer.url || config.mapserverUrl, {
+  return L.tileLayer.wms(layer.url, {
     layers: layer.id,
     transparent: layer.transparent || true,
     version: layer.version || '1.3.0',
