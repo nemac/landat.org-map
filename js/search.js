@@ -9,4 +9,8 @@ export default function CreateSearch (map) {
     });
 
     map.addControl(searchControl);
+
+    L.DomEvent.on(searchControl.searchElement.elements.container, "click", function (ev) {
+        L.DomEvent.stopPropagation(ev);
+    });
 }
