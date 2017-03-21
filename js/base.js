@@ -1,12 +1,13 @@
 import ParseConfig from './parser';
 import CreateSearch from './search';
+import renderLayerList from './renderLayerList';
 
 var Base = function (config) {
     ParseConfig(config, callback);
 }
 
 var callback = function (data) {
-    renderLayerList(data.layers, data.layout);
+    renderLayerList(map, data.layers, data.layout);
     CreateSearch(map);
 }
 
