@@ -4,6 +4,7 @@ import renderLayerList from './renderLayerList';
 import CreateBaseLayers from './baselayer';
 import {SetupGraphs, BindGraphEvents} from './graph'
 import BindTabEvents from './tabs'
+import {CreateMap} from './map'
 
 // Does not rely on map object or config file
 var Base = function (config) {
@@ -14,6 +15,7 @@ var Base = function (config) {
 
 // Does rely on map object or config file
 var callback = function (data) {
+    var map = CreateMap({});
     CreateBaseLayers(map, data.baselayers);
     renderLayerList(map, data.layers, data.layout);
     CreateSearch(map);

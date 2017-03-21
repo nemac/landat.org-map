@@ -28,7 +28,7 @@ export default function renderLayerList (map, layers, layout) {
         var layerDiv = d3.select(this)
         layer.active = isLayerDefaultActive(layer, groupName, layout['active-layers'])
 
-        if (layer.active) { toggleLayer(layer, layerDiv) }
+        if (layer.active) { toggleLayer(map, layer, layerDiv) }
 
         // Checkbox
         layerDiv.append('input')
@@ -39,7 +39,7 @@ export default function renderLayerList (map, layers, layout) {
           })
           .on('click', layer => {
             layer.active = !layer.active
-            toggleLayer(layer, layerDiv)
+            toggleLayer(map, layer, layerDiv)
           })
 
         // Label
@@ -120,7 +120,7 @@ export default function renderLayerList (map, layers, layout) {
       })
 }
 
-function toggleLayer (layer, layerDiv) {
+function toggleLayer (map, layer, layerDiv) {
   layer.mapLayer = layer.mapLayer || makeWmsTileLayer(layer)
 
   layerDiv.selectAll('.legend-wrapper, .opacity-slider-wrapper')
