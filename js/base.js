@@ -6,6 +6,8 @@ import {SetupGraphs, BindGraphEvents} from './graph'
 import BindTabEvents from './tabs'
 import {CreateMap} from './map'
 
+var css = require('../css/sass/landat.scss')
+
 // Does not rely on map object or config file
 var Base = function (config) {
     ParseConfig(config, callback);
