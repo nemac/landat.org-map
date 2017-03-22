@@ -28,16 +28,62 @@ export function BindGraphEvents (map) {
     map.on("click", handleMapClick);
 }
 
+var baseIcon = L.Icon.extend({});
+
+var graphIcon = new baseIcon({
+    iconUrl: 'imgs/blue_icon.png',
+    shadowUrl: 'imgs/marker_shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
+var hoverIcon = new baseIcon({
+    iconUrl: 'imgs/orange_icon.png',
+    shadowUrl: 'imgs/marker_shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
 function handleMapClick (e) {
     var map = this;
     var lat = e.latlng.lat;
     var lng = e.latlng.lng;
-    createGraphDiv(lat, lng);
-    createMarker(map, lat, lng);
+
+    var div = createGraphDiv(lat, lng);
+    var marker = createMarker(map, lat, lng);
+    d3.select(div).on("mouseenter", function () {
+        marker.setIcon(hoverIcon);
+    })
+    d3.select(div).on("mouseleave", function () {
+        marker.setIcon(graphIcon);
+    })
+    createGraphRemover(map, div, marker);
 }
 
 function createMarker (map, lat, lng) {
-    var marker = L.marker([lat, lng]).addTo(map);
+    return L.marker([lat, lng], {icon: graphIcon}).addTo(map);
+}
+
+function createGraphRemover (map, div, marker) {
+    var elem = createGraphRemoverElem();
+    div.appendChild(elem);
+    d3.select(elem).on("click", function () {
+        var list = document.getElementById("graph-list");
+        list.removeChild(div);
+        map.removeLayer(marker);
+    });
+}
+
+function createGraphRemoverElem () {
+    var elem = document.createElement("button");
+    elem.className = "remove-graph";
+    elem.innerText = String.fromCharCode("10005");
+    elem.setAttribute("title", "Remove graph");
+    return elem;
 }
 
 ////////////////////// GRAPH DATA PROCESSING ///////////////////////////////
@@ -120,6 +166,7 @@ function createGraphDiv (lat, lng) {
     div.appendChild(content);
     div.classList.add("graph-elem")
     getData(lat, lng, div);
+    return div;
 }
 
 function drawGraph(data, div, lat, lng) {
