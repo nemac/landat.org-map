@@ -1,5 +1,8 @@
 var webpack = require('webpack');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
+const extractSass = new ExtractTextPlugin('../css/landat.css')
 
 module.exports = {
   devtool: '#inline-source-map',
@@ -28,11 +31,13 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ["style-loader", "css-loader?sourceMap", "sass-loader?sourceMap"]
+        loader: extractSass.extract(['css-loader?sourceMap', 'sass-loader?sourceMap'])
+        //loaders: ["style-loader", "css-loader?sourceMap", "sass-loader?sourceMap"]
       }
     ]
   },
   plugins: [
+    extractSass,
     new UglifyJSPlugin({
       sourceMap: true,
       // Needed so uglify does not drop "unreachable" sass file in entry file

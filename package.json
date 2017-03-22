@@ -17,6 +17,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
     "css-loader": "^0.27.3",
+    "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.12.0",
     "node-sass": "^4.5.1",
     "nodent-runtime": "^3.0.4",
