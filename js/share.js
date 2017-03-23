@@ -78,8 +78,7 @@ function formatCenterParam (val) {
 
 export function AddShareSettingsToConfig (config) {
     var share = parseShareUrl();
-
-    if (!config.map) config.map = {};
+    if (!share) return;
     if (share.center) config.map.initialCenter = share.center;
     if (share.zoom) config.map.initialZoom = share.zoom;
 }

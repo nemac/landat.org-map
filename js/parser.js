@@ -18,6 +18,7 @@ function GetConfig (configFile, callback) {
                 console.log("ERROR: Malformed JSON in config file.");
                 console.log(err);
             }
+            formatMap(data);
             formatLayers(data);
             callback(data);
         }
@@ -26,6 +27,10 @@ function GetConfig (configFile, callback) {
     xmlhttp.open("GET", configFile, true);
     xmlhttp.send();
     console.log("hi")
+}
+
+function formatMap (data) {
+    if (!data.map) data.map = {};
 }
 
 function formatLayers (data) {
