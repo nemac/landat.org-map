@@ -1,4 +1,5 @@
 @import 'graphs';
+@import 'search';
 
 $panel-width: 620px;
 
@@ -40,6 +41,9 @@ body {
     margin: 0;
     border: 0;
     padding: 0;
+}
+
+*, *:before, *:after {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
