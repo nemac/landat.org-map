@@ -45,20 +45,10 @@ function formatLayers (data) {
         layergroup = layers[prop];
         for (i = 0; i < layergroup.length; i++) {
             setMapserverUrl(layergroup[i], defaultMapserverUrl);
-            setDefaultLayers(layergroup[i], defaultEnabledLayers);
         }
     }
 }
 
 function setMapserverUrl (layer, url) {
     layer.url = layer.url || url;
-}
-
-function setDefaultLayers (layer, defaultLayers) {
-    if (!defaultLayers || defaultLayers.length ===  0) return;
-    if (defaultLayers.indexOf(layer.id) !== -1) {
-        layer.active = true;
-    } else {
-        layer.active = false;
-    }
 }

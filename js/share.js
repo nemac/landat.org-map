@@ -90,15 +90,18 @@ function formatCenterParam (center) {
 }
 
 function formatLayerParam (layers) {
-    var formattedLayers = [];
+    var formattedLayers = {
+        "enabledLayers": [],
+        "opacityVals": {}
+    };
+    var layerId;
     var i;
 
     layers = layers.split(",");
     for (i = 0; i < layers.length; i = i + 2) {
-        formattedLayers.push({
-            "name": layers[i],
-            "opacity": layers[i+1],
-        });
+        layerId = layers[i];
+        formattedLayers.enabledLayers.push(layerId);
+        formattedLayers.opacityVals[layerId] = layers[i+1];
     }
 
     return formattedLayers;
@@ -109,4 +112,32 @@ export function AddShareSettingsToConfig (config) {
     if (!share) return;
     if (share.center) config.map.initialCenter = share.center;
     if (share.zoom) config.map.initialZoom = share.zoom;
+    if (share.layers) addLayerSettingsToConfig(share.layers, config);
+}
+
+function addLayerSettingsToConfig (shareLayerSettings, config) {
+    var enabledLayers = shareLayerSettings.enabledLayers;
+    config["active-layers"] = enabledLayers;
+
+    var i, j, prop, layergroup;
+    var enabledLayer;
+    var foundLayer;
+    var layers = config.layers;
+
+    for (i = 0; i < enabledLayers.length; i++) {
+        foundLayer = false;
+        enabledLayer = enabledLayers[i];
+        for (prop in layers) {
+            if (!layers.hasOwnProperty(prop)) return;
+            layergroup = layers[prop];
+            for (j = 0; j < layergroup.length; j++) {
+                if (layergroup[j].id === enabledLayer) {
+                    layergroup[j].opacity = shareLayerSettings.opacityVals[enabledLayer];
+                    foundLayer = true;
+                    break;
+                }
+            }
+            if (foundLayer) break;
+        }
+    }
 }

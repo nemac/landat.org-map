@@ -1,4 +1,4 @@
-import {toggleLayer, enableLayer} from "./toggleLayer";
+import {toggleLayer} from "./toggleLayer";
 
 export default function renderLayerList (map, layers, layout) {
     var layerGroups = makeLayerGroups(layout['layer-groups-order']);
