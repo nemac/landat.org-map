@@ -1,4 +1,5 @@
 @import 'graphs';
+@import 'search';
 
 $panel-width: 620px;
 
@@ -40,6 +41,9 @@ body {
     margin: 0;
     border: 0;
     padding: 0;
+}
+
+*, *:before, *:after {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
@@ -83,12 +87,12 @@ body {
 
 .panel-section-wrapper {
     display: none;
-}
 
-.panel-section-wrapper.active {
-    display: inline-block;
-    position: relative;
-    width: 100%;
+    &.active {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+    }
 }
 
 /* Panel Buttons */
@@ -107,14 +111,14 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
 
-.btn:hover {
-    background-color: $btn-color-hover;
-}
+    &:hover {
+        background-color: $btn-color-hover;
+    }
 
-.btn.active {
-    background-color: $btn-color-active;
+    &.active {
+        background-color: $btn-color-active;
+    }
 }
 
 .panel-btn {
@@ -123,25 +127,26 @@ body {
     text-align: center;
     padding-top: 15px;
     height: 100%;
-}
 
-.panel-btn:last-child {
-    border-right: 0;
+    &:last-child {
+        border-right: 0;
+    }
 }
 
 /* Layer List */
 
-#layer-list-wrapper.active .layer-list {
-    display: inline-block;
-    width: 100%;
+#layer-list-wrapper {
+    &.active .layer-list {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .layer-list {
+        display: none;
+    }
 }
 
-#layer-list-wrapper .layer-list {
-    display: none;
-}
-
-.layer-list:nth-child(1) {
-}
+.layer-list:nth-child(1) {}
 
 .layer-group-btn {
     padding-top: 12px;
@@ -163,19 +168,16 @@ body {
 .layer-group-wrapper.active .layer-select {
     display: block;
     width: 100%;
-}
-
-.layer-group-wrapper.active .layer-select:nth-child(even) {
-    background-color: $layer-select-color-primary
-}
-
-.layer-group-wrapper.active .layer-select:nth-child(odd) {
-    background-color: $layer-select-color-secondary
-}
-
-.layer-group-wrapper.active .layer-select {
     padding: 10px 0px 10px 10px;
     color: $layer-select-text-color
+
+    &:nth-child(even) {
+        background-color: $layer-select-color-primary
+    }
+
+    &:nth-child(odd) {
+        background-color: $layer-select-color-secondary
+    }
 }
 
 .layer-select input {
@@ -201,46 +203,44 @@ body {
 
 .layer-info-wrapper {
     display: none;
-}
 
-.layer-info-wrapper.active {
-    display: block;
-    width: 100%;
-    margin: 10px 0px 0px $layer-div-content-margin-left;
-    width: 100%;
-    font: $layer-info-content-font-size sans-serif;
-    font-weight: bold;
+    &.active {
+        display: block;
+        width: 100%;
+        margin: 10px 0px 0px $layer-div-content-margin-left;
+        width: 100%;
+        font: $layer-info-content-font-size sans-serif;
+        font-weight: bold;
+    }
 }
 
 /* Layer Legend */
 
 .legend-wrapper {
     display: none;
-}
 
-.legend-wrapper.active {
-    display: block;
-    margin-top: $legend-wrapper-margin-vert;
-    margin-bottom: $legend-wrapper-margin-vert;
-    margin-left: $layer-div-content-margin-left;
+    &.active {
+        display: block;
+        margin-top: $legend-wrapper-margin-vert;
+        margin-bottom: $legend-wrapper-margin-vert;
+        margin-left: $layer-div-content-margin-left;
+    }
 }
 
 /* Layer Opacity Slider */
 
-.opacity-slider-wrapper.active {
-    display: block;
-}
-
 .opacity-slider-wrapper {
-
     display: none;
+
+    &.active {
+        display: block;
+    }
 
     svg {
         width: 400px;
         height: 40px;
     }
 }
-
 
 /* Graph UI */
 

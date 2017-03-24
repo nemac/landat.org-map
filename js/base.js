@@ -5,6 +5,7 @@ import CreateBaseLayers from './baselayer';
 import {SetupGraphs, BindGraphEvents} from './graph'
 import BindTabEvents from './tabs'
 import {CreateMap} from './map'
+import {BindUpdateShareUrl, AddShareSettingsToConfig} from './share'
 
 var css = require('../css/sass/landat.scss')
 
@@ -17,11 +18,13 @@ var Base = function (config) {
 
 // Does rely on map object or config file
 var callback = function (data) {
-    var map = CreateMap({});
+    AddShareSettingsToConfig(data)
+    var map = CreateMap(data.map);
     CreateBaseLayers(map, data.baselayers);
     renderLayerList(map, data.layers, data.layout);
     CreateSearch(map);
     BindGraphEvents(map);
+    BindUpdateShareUrl(map);
 }
 
 window.Base = Base;
