@@ -23,7 +23,7 @@ var callback = function (data) {
     var map = CreateMap(data.map);
     CreateBaseLayers(map, data.baselayers);
     CreateDefaultLayers(data.layers, data["active-layers"]);
-    renderLayerList(map, data.layers, data.layout);
+    renderLayerList(data.layers, data.layout);
     CreateSearch(map);
     BindGraphEvents(map);
     BindUpdateShareUrl(map);

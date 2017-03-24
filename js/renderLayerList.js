@@ -1,8 +1,8 @@
 import {toggleLayer} from "./toggleLayer";
 
-export default function renderLayerList (map, layers, layout) {
+export default function renderLayerList (layers, layout) {
     var layerGroups = makeLayerGroups(layout['layer-groups-order']);
-    makeLayerElems(layerGroups, layers, layout['active-layers'], map);
+    makeLayerElems(layerGroups, layers);
 }
 
 function makeLayerGroups (layout) {
@@ -26,7 +26,7 @@ function makeLayerGroups (layout) {
             .append('div').attr('class', 'layer-group');
 }
 
-function makeLayerElems (layerGroups, layers, activeLayers) {
+function makeLayerElems (layerGroups, layers) {
     layerGroups.selectAll('.layer-select')
         .data(layerGroup => layers[layerGroup.id])
         .enter().append('div')
@@ -35,7 +35,7 @@ function makeLayerElems (layerGroups, layers, activeLayers) {
             var groupName = this.parentNode.parentNode.id;
             var layerDiv = d3.select(this);
 
-            makeCheckbox(layer, layerDiv, map);
+            makeCheckbox(layer, layerDiv);
             makeLabel(layer, layerDiv);
             makeDescription(layer, layerDiv);
             makeLegend(layer, layerDiv);
@@ -43,7 +43,7 @@ function makeLayerElems (layerGroups, layers, activeLayers) {
         });
 }
 
-function makeCheckbox (layer, layerDiv, map) {
+function makeCheckbox (layer, layerDiv) {
     layerDiv.append('input')
         .attr('type', 'checkbox')
         .attr('id', layer => layer.id)
