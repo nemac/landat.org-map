@@ -135,7 +135,7 @@ function toggleLayer (map, layer, layerDiv) {
 function makeWmsTileLayer (layer) {
   return L.tileLayer.wms(layer.url, {
     layers: layer.id,
-    transparent: layer.transparent || true,
+    transparent: true,
     version: layer.version || '1.3.0',
     crs: layer.crs || L.CRS.EPSG4326,
     format: layer.format || 'image/png'
