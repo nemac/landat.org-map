@@ -36,16 +36,29 @@ function formatMap (data) {
 function formatLayers (data) {
     var layers = data.layers;
     var defaultMapserverUrl = data.mapserverUrl;
+    var defaultEnabledLayers = data["active-layers"];
     var layergroup;
     var i;
 
     for (var prop in layers) {
         if (!layers.hasOwnProperty(prop)) return;
         layergroup = layers[prop];
-        for (i = 0; i < layergroup.length; i++) setMapserverUrl(layergroup[i], defaultMapserverUrl);
+        for (i = 0; i < layergroup.length; i++) {
+            setMapserverUrl(layergroup[i], defaultMapserverUrl);
+            setDefaultLayers(layergroup[i], defaultEnabledLayers);
+        }
     }
 }
 
 function setMapserverUrl (layer, url) {
     layer.url = layer.url || url;
+}
+
+function setDefaultLayers (layer, defaultLayers) {
+    if (!defaultLayers || defaultLayers.length ===  0) return;
+    if (defaultLayers.indexOf(layer.id) !== -1) {
+        layer.active = true;
+    } else {
+        layer.active = false;
+    }
 }

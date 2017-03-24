@@ -1,3 +1,5 @@
+import {toggleLayer, enableLayer} from "./toggleLayer";
+
 export default function renderLayerList (map, layers, layout) {
     var layerGroups = makeLayerGroups(layout['layer-groups-order']);
     makeLayerElems(layerGroups, layers, layout['active-layers'], map);
@@ -24,7 +26,7 @@ function makeLayerGroups (layout) {
             .append('div').attr('class', 'layer-group');
 }
 
-function makeLayerElems (layerGroups, layers, activeLayers, map) {
+function makeLayerElems (layerGroups, layers, activeLayers) {
     layerGroups.selectAll('.layer-select')
         .data(layerGroup => layers[layerGroup.id])
         .enter().append('div')
@@ -32,9 +34,6 @@ function makeLayerElems (layerGroups, layers, activeLayers, map) {
         .each(function (layer) {
             var groupName = this.parentNode.parentNode.id;
             var layerDiv = d3.select(this);
-            layer.active = isLayerDefaultActive(layer, groupName, activeLayers);
-
-            if (layer.active) { toggleLayer(map, layer, layerDiv) }
 
             makeCheckbox(layer, layerDiv, map);
             makeLabel(layer, layerDiv);
@@ -52,8 +51,9 @@ function makeCheckbox (layer, layerDiv, map) {
             return layer.active ? 'checked' : null;
         })
         .on('click', layer => {
-            layer.active = !layer.active;
-            toggleLayer(map, layer, layerDiv);
+            toggleLayer(layer);
+            layerDiv.selectAll('.legend-wrapper, .opacity-slider-wrapper')
+                .classed('active', layer.active);
         });
 }
 
@@ -134,39 +134,6 @@ function makeOpacitySlider (layer, layerDiv) {
         .attr('class', 'opacity-indicator')
         .attr('x', 315).attr('y', 5)
         .text(opacityScale(300)*100 + '%');
-}
-
-function toggleLayer (map, layer, layerDiv) {
-  layer.mapLayer = layer.mapLayer || makeWmsTileLayer(layer)
-
-  layerDiv.selectAll('.legend-wrapper, .opacity-slider-wrapper')
-    .classed('active', layer.active)
-  if (layer.active) {
-    map.addLayer(layer.mapLayer)
-  } else {
-    map.removeLayer(layer.mapLayer)
-  }
-}
-
-function makeWmsTileLayer (layer) {
-  return L.tileLayer.wms(layer.url, {
-    layers: layer.id,
-    transparent: true,
-    version: layer.version || '1.3.0',
-    crs: layer.crs || L.CRS.EPSG4326,
-    format: layer.format || 'image/png'
-  })
-}
-
-function isLayerDefaultActive(layer, group, activeLayers) {
-  var active = false
-  activeLayers.forEach(layerPath => {
-    layerPath = layerPath.split(' ')
-    active = active ||
-      layerPath[0] === group &&
-      layerPath[1] === layer.id
-  })
-  return active
 }
 
 function updateOpacity(layer, slider, scale, xPos) {

@@ -6,6 +6,7 @@ import {SetupGraphs, BindGraphEvents} from './graph'
 import BindTabEvents from './tabs'
 import {CreateMap} from './map'
 import {BindUpdateShareUrl, AddShareSettingsToConfig} from './share'
+import {CreateDefaultLayers} from './toggleLayer'
 
 var css = require('../css/sass/landat.scss')
 
@@ -21,6 +22,7 @@ var callback = function (data) {
     AddShareSettingsToConfig(data)
     var map = CreateMap(data.map);
     CreateBaseLayers(map, data.baselayers);
+    CreateDefaultLayers(data.layers, data["active-layers"]);
     renderLayerList(map, data.layers, data.layout);
     CreateSearch(map);
     BindGraphEvents(map);
