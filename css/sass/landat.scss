@@ -52,7 +52,7 @@ body {
 
 #map-wrapper {
     height: 100%;
-    padding-right: $panel-width
+    padding-right: $panel-width;
 }
 
 #map {
@@ -169,14 +169,14 @@ body {
     display: block;
     width: 100%;
     padding: 10px 0px 10px 10px;
-    color: $layer-select-text-color
+    color: $layer-select-text-color;
 
     &:nth-child(even) {
-        background-color: $layer-select-color-primary
+        background-color: $layer-select-color-primary;
     }
 
     &:nth-child(odd) {
-        background-color: $layer-select-color-secondary
+        background-color: $layer-select-color-secondary;
     }
 }
 
