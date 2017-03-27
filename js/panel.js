@@ -113,10 +113,15 @@ function makeLegend (layer, layerDiv) {
 }
 
 function makeOpacitySlider (layer, layerDiv) {
+    const MAX_OPACITY_LOC = 300;
+
     var opacityScale = d3.scaleLinear()
-        .domain([0, 300])
+        .domain([0, MAX_OPACITY_LOC])
         .range([0, 1])
         .clamp(true);
+
+    var layerOpacity = layer.opacity ? layer.opacity : 1
+    var opacityStartingLocation = 300 * (layerOpacity);
 
     var opacitySliderWrapper = layerDiv.append('div')
         .attr('class', 'opacity-slider-wrapper')
@@ -129,13 +134,13 @@ function makeOpacitySlider (layer, layerDiv) {
 
     opacitySliderSvg.append('circle')
         .attr('r', 6)
-        .attr('cx', 300)
+        .attr('cx', opacityStartingLocation)
         .attr('class', 'opacity-slider-circle');
 
     opacitySliderSvg.append('line')
         .attr('class', 'opacity-slider-track-overlay')
         .attr('x1', 0)
-        .attr('x2', 315)
+        .attr('x2', MAX_OPACITY_LOC + 15)
         .attr('stroke', '#000000')
         .attr('stroke-width', '20px')
         .attr('stroke-opacity', '0.0')
@@ -146,15 +151,15 @@ function makeOpacitySlider (layer, layerDiv) {
 
     opacitySliderSvg.append('line')
         .attr('class', 'opacity-slider-track')
-        .attr('x1', 0).attr('x2', 300)
+        .attr('x1', 0).attr('x2', MAX_OPACITY_LOC)
         .attr('stroke-width', '20px')
         .attr('stroke', '#666')
         .attr('stroke-width', '2px');
 
     opacitySliderSvg.append('text')
         .attr('class', 'opacity-indicator')
-        .attr('x', 315).attr('y', 5)
-        .text(opacityScale(300)*100 + '%');
+        .attr('x', MAX_OPACITY_LOC + 15).attr('y', 5)
+        .text(parseInt(layerOpacity * 100, 10) + '%');
 }
 
 function updateOpacity(layer, slider, scale, xPos) {
@@ -163,7 +168,7 @@ function updateOpacity(layer, slider, scale, xPos) {
   slider = d3.select(slider)
 
   slider.select('circle').attr('cx', xPos)
-  slider.select('text').text(parseInt(scale(xPos)*100) + '%')
+  slider.select('text').text(parseInt(scale(xPos)*100, 10) + '%')
   layer.mapLayer.setOpacity(scale(d3.event.x))
 }
 
