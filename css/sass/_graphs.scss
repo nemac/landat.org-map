@@ -1,3 +1,7 @@
+
+$graph-close-button-color: #f31616;
+
+
 /* Graph UI */
 
 .graph-type-btn {
@@ -39,8 +43,8 @@
     display: block;
 }
 
+
 /* Graph Tooltips */
-$graph-close-button: #f31616;
 
 div.tooltip {
     position: absolute;
@@ -70,6 +74,7 @@ div.tooltip:after {
 }
 
 /* SVG */
+
 svg {
     position: relative;
 }
@@ -135,6 +140,7 @@ path {
 }
 
 /* UI */
+
 .graph-elem {
     position: relative;
 }
@@ -145,10 +151,10 @@ path {
     top: 20px;
     background: white;
     background: transparent;
-    color: $graph-close-button;
+    color: $graph-close-button-color;
     font-size: 19px;
     padding: 2px 6px;
-    border: 1px solid $graph-close-button;
+    border: 1px solid $graph-close-button-color;
     border-radius: 4px;
     z-index: 100;
     cursor: pointer;
