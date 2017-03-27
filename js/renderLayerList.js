@@ -79,7 +79,7 @@ function makeDescription (layer, layerDiv) {
 
         layerDiv.append('div')
             .attr('class', 'layer-info-wrapper')
-            .text(layer => '(' + layer.info + ')');
+            .text(layer => layer.info);
     }
 }
 

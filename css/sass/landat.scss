@@ -39,7 +39,6 @@ body {
 }
 
 * {
-    white-space: nowrap;
     margin: 0;
     border: 0;
     padding: 0;
@@ -80,7 +79,7 @@ body {
     }
 
     &.layers-active {
-        min-width: $panel-width-layers;
+        width: $panel-width-layers;
     }
 }
 
@@ -217,8 +216,7 @@ body {
 
     &.active {
         display: block;
-        width: 100%;
-        margin: 10px 0px 0px $layer-div-content-margin-left;
+        margin: 5px 10px 0px $layer-div-content-margin-left;
         width: 100%;
         font: $layer-info-content-font-size sans-serif;
         font-weight: bold;
