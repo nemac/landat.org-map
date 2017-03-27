@@ -1,6 +1,6 @@
 import ParseConfig from './parser';
 import CreateSearch from './search';
-import renderLayerList from './renderLayerList';
+import setupPanel from './panel';
 import CreateBaseLayers from './baselayer';
 import {SetupGraphs, BindGraphEvents} from './graph'
 import BindTabEvents from './tabs'
@@ -23,7 +23,7 @@ var callback = function (data) {
     var map = CreateMap(data.map);
     CreateBaseLayers(map, data.baselayers);
     CreateDefaultLayers(data.layers, data["active-layers"]);
-    renderLayerList(data.layers, data.layout);
+    setupPanel(data.layers, data.layout);
     CreateSearch(map);
     BindGraphEvents(map);
     BindUpdateShareUrl(map);

@@ -1,8 +1,29 @@
 import {toggleLayer} from "./toggleLayer";
 
-export default function renderLayerList (layers, layout) {
+export default function setupPanel (layers, layout) {
     var layerGroups = makeLayerGroups(layout['layer-groups-order']);
     makeLayerElems(layerGroups, layers);
+    makePanelDraggable()
+}
+
+function makePanelDraggable() {
+  var overlay = d3.select('#right-panel-drag-overlay')
+
+  overlay.call(d3.drag()
+    .on('drag', function () {
+      handleDragEvent.call(this)
+    }));
+
+  function handleDragEvent() {
+    var panel = document.getElementById('right-panel')
+    var wrapper = document.getElementById('wrapper')
+    var panelWidth = panel.clientWidth
+    var wrapperWidth = wrapper.clientWidth
+    var mouseX = d3.event.sourceEvent.x
+    var xDelta = (wrapperWidth - mouseX) - panelWidth
+    var newWidth = panelWidth + xDelta
+    d3.select(panel).style('width', '' + newWidth + 'px')
+  }
 }
 
 function makeLayerGroups (layout) {

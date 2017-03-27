@@ -5,7 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const extractSass = new ExtractTextPlugin('../css/landat.css')
 
 module.exports = {
-  devtool: '#cheap-inline-source-map',
+  devtool: '#inline-source-map',
   entry: [
     './js/base.js'
   ],
