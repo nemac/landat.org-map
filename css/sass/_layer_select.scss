@@ -63,6 +63,7 @@ $legend-wrapper-margin-vert: 10px;
         width: 100%;
         font: $layer-info-content-font-size sans-serif;
         font-weight: bold;
+        word-break: break-all;
     }
 }
 

@@ -26,10 +26,12 @@ $btn-text-shadow-color: #0878af;
 
     &.graphs-active {
         min-width: $panel-width-graphs;
+        width: $panel-width-graphs;
     }
 
     &.layers-active {
         min-width: $panel-width-layers;
+        width: $panel-width-layers;
     }
 }
 
