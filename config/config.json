@@ -1,5 +1,13 @@
 {
   "mapserverUrl": "http://gis.nemac.org/landat",
+  "baselayers" : [
+    {
+      "id": "carto-light",
+      "url": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+      "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
+      "active": true
+    }
+  ],
   "layout" : {
     "layer-groups-order": [
       {
