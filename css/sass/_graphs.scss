@@ -1,3 +1,44 @@
+/* Graph UI */
+
+.graph-type-btn {
+    width: 33.333%;
+}
+
+#graphs-wrapper {
+    max-height: 100%;
+}
+
+.graph-list {
+    max-height: 100%;
+    margin-top: -50px;
+    padding-top: 50px;
+}
+
+.graph-elem {
+    border-bottom: 1px solid #aaa;
+    padding: 20px 15px
+}
+
+.graphs-active #map {
+    cursor: crosshair;
+}
+
+.timeseries-graph, .overlapping-graph, .polar-graph {
+    display: none;
+}
+
+.graph-timeseries .timeseries-graph {
+    display: block;
+}
+
+.graph-overlapping .overlapping-graph {
+    display: block;
+}
+
+.graph-polar .polar-graph {
+    display: block;
+}
+
 /* Graph Tooltips */
 $graph-close-button: #f31616;
 

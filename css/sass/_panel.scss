@@ -1,0 +1,100 @@
+$panel-width-layers: 400px;
+$panel-width-graphs: 620px;
+
+$panel-header-wrapper-height: 50px;
+
+$border-color: #666;
+
+$btn-color: #8dbed6;
+$btn-color-hover: #4eb3e4;
+$btn-color-active: #06c8f7;
+$btn-font-size: 16px;
+$btn-font-color: #fff;
+$btn-text-shadow-color: #0878af;
+
+#right-panel {
+    background-color: white;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    vertical-align: top;
+    overflow-x: hidden;
+    border-left: 1px solid $border-color;
+
+    &.graphs-active {
+        min-width: $panel-width-graphs;
+    }
+
+    &.layers-active {
+        min-width: $panel-width-layers;
+    }
+}
+
+#right-panel-drag-overlay {
+    z-index: 5;
+    cursor: ew-resize;
+    height: 100%;
+    padding: 5px;
+    position: absolute;
+}
+
+.panel-top-btn {
+    width: 50%;
+}
+
+.panel-header-wrapper {
+    height: $panel-header-wrapper-height;
+    border-bottom: 1px solid $border-color;
+    vertical-align: top;
+    position: relative;
+}
+
+.panel-section-wrapper {
+    display: none;
+
+    &.active {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+    }
+}
+
+/* Panel Buttons */
+
+.btn {
+    cursor: pointer;
+    background-color: $btn-color;
+    font-size: $btn-font-size;
+    font-weight: bold;
+    color: $btn-font-color;
+    letter-spacing: .75px;
+    text-shadow: -1px 1px $btn-text-shadow-color;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    &:hover {
+        background-color: $btn-color-hover;
+    }
+
+    &.active {
+        background-color: $btn-color-active;
+    }
+}
+
+.panel-btn {
+    display: inline-block;
+    border-right: 1px solid $border-color;
+    text-align: center;
+    padding-top: 15px;
+    height: 100%;
+
+    &:last-child {
+        border-right: 0;
+    }
+}
