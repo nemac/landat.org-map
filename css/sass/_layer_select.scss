@@ -59,11 +59,9 @@ $legend-wrapper-margin-vert: 10px;
 
     &.active {
         display: block;
-        margin: 5px 10px 0px $layer-div-content-margin-left;
-        width: 100%;
+        margin: 5px 0px 0px $layer-div-content-margin-left;
         font: $layer-info-content-font-size sans-serif;
         font-weight: bold;
-        word-break: break-all;
     }
 }
 
