@@ -36,13 +36,16 @@ function formatMap (data) {
 function formatLayers (data) {
     var layers = data.layers;
     var defaultMapserverUrl = data.mapserverUrl;
+    var defaultEnabledLayers = data["active-layers"];
     var layergroup;
     var i;
 
     for (var prop in layers) {
         if (!layers.hasOwnProperty(prop)) return;
         layergroup = layers[prop];
-        for (i = 0; i < layergroup.length; i++) setMapserverUrl(layergroup[i], defaultMapserverUrl);
+        for (i = 0; i < layergroup.length; i++) {
+            setMapserverUrl(layergroup[i], defaultMapserverUrl);
+        }
     }
 }
 

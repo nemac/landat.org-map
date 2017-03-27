@@ -10,6 +10,7 @@ function updateShareUrl (e) {
     var params = [
         makeCenterString(map),
         makeZoomString(map),
+        makeLayerString(map),
     ];
 
     setShareUrl(makeShareUrl(params));
@@ -32,6 +33,17 @@ function makeCenterString (map) {
 
 function makeZoomString (map) {
     return "zoom=" + map.getZoom();
+}
+
+function makeLayerString (map) {
+    var layers = [];
+    map.eachLayer(function (layer) {
+        if (layer.options && layer.options.layers) {
+            layers.push(layer.options.layers);
+            layers.push(layer.options.hasOwnProperty("opacity") ? layer.options.opacity : "1");
+        }
+    });
+    return "layers=" + layers.join(",");
 }
 
 function parseShareUrl () {
@@ -70,10 +82,29 @@ function makeKeyedParamsObject (paramsArr) {
 
 function formatParams (params) {
     if (params.center) params.center = formatCenterParam(params.center);
+    if (params.layers) params.layers = formatLayerParam(params.layers);
 }
 
-function formatCenterParam (val) {
-    return val.split(",");
+function formatCenterParam (center) {
+    return center.split(",");
+}
+
+function formatLayerParam (layers) {
+    var formattedLayers = {
+        "enabledLayers": [],
+        "opacityVals": {}
+    };
+    var layerId;
+    var i;
+
+    layers = layers.split(",");
+    for (i = 0; i < layers.length; i = i + 2) {
+        layerId = layers[i];
+        formattedLayers.enabledLayers.push(layerId);
+        formattedLayers.opacityVals[layerId] = layers[i+1];
+    }
+
+    return formattedLayers;
 }
 
 export function AddShareSettingsToConfig (config) {
@@ -81,4 +112,32 @@ export function AddShareSettingsToConfig (config) {
     if (!share) return;
     if (share.center) config.map.initialCenter = share.center;
     if (share.zoom) config.map.initialZoom = share.zoom;
+    if (share.layers) addLayerSettingsToConfig(share.layers, config);
+}
+
+function addLayerSettingsToConfig (shareLayerSettings, config) {
+    var enabledLayers = shareLayerSettings.enabledLayers;
+    config["active-layers"] = enabledLayers;
+
+    var i, j, prop, layergroup;
+    var enabledLayer;
+    var foundLayer;
+    var layers = config.layers;
+
+    for (i = 0; i < enabledLayers.length; i++) {
+        foundLayer = false;
+        enabledLayer = enabledLayers[i];
+        for (prop in layers) {
+            if (!layers.hasOwnProperty(prop)) return;
+            layergroup = layers[prop];
+            for (j = 0; j < layergroup.length; j++) {
+                if (layergroup[j].id === enabledLayer) {
+                    layergroup[j].opacity = shareLayerSettings.opacityVals[enabledLayer];
+                    foundLayer = true;
+                    break;
+                }
+            }
+            if (foundLayer) break;
+        }
+    }
 }

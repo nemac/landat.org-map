@@ -22,11 +22,11 @@
         "name": "Phenoclasses",
         "active": false
       }
-    ],
-    "active-layers": [
-      "phenology-variables MeanNDVI"
     ]
   },
+  "active-layers": [
+    "MeanNDVI"
+  ],
   "layers" : {
     "it-metrics": [
       {
