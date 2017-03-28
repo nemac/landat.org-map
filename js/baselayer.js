@@ -1,15 +1,21 @@
-export default function CreateBaseLayers (map, layerConfig) {
+export const BASE_LAYER_TYPE = "baselayer";
+
+export function CreateBaseLayers (map, layerConfig) {
     layerConfig = layerConfig || 
         [{
+            "id" : "carto-light-default",
             "url" : "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
             "attribution" : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
         }];
-
     var i;
     var baseLayer;
+    var config;
 
     for (i = 0; i< layerConfig.length; i++) {
-        baseLayer = createBaseLayer(layerConfig[i]);
+        config = layerConfig[i];
+
+        if (!config.active) continue;
+        baseLayer = createBaseLayer(config);
         baseLayer.addTo(map);
     }
 }
@@ -17,6 +23,10 @@ export default function CreateBaseLayers (map, layerConfig) {
 function createBaseLayer (layerConfig) {
     return L.tileLayer(
         layerConfig.url,
-        { attribution: layerConfig.attribution }
+        {
+            id: layerConfig.id,
+            type: BASE_LAYER_TYPE,
+            attribution: layerConfig.attribution
+        }
     );
 }

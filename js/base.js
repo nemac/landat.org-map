@@ -1,7 +1,7 @@
 import ParseConfig from './parser';
 import CreateSearch from './search';
 import setupPanel from './panel';
-import CreateBaseLayers from './baselayer';
+import {CreateBaseLayers} from './baselayer';
 import {SetupGraphs, BindGraphEvents} from './graph'
 import BindTabEvents from './tabs'
 import {CreateMap} from './map'

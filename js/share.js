@@ -1,4 +1,6 @@
 import {GetMap} from './map';
+import {BASE_LAYER_TYPE} from './baselayer';
+import {GetCurrentLayers} from './toggleLayer';
 
 export function BindUpdateShareUrl (map) {
     map.on("moveend", updateShareUrl);
@@ -11,6 +13,7 @@ function updateShareUrl (e) {
         makeCenterString(map),
         makeZoomString(map),
         makeLayerString(map),
+        makeBaseLayerString(map),
     ];
 
     setShareUrl(makeShareUrl(params));
@@ -37,13 +40,34 @@ function makeZoomString (map) {
 
 function makeLayerString (map) {
     var layers = [];
+    var opacityVals = {};
+    var currentLayers = GetCurrentLayers();
+
     map.eachLayer(function (layer) {
-        if (layer.options && layer.options.layers) {
-            layers.push(layer.options.layers);
-            layers.push(layer.options.hasOwnProperty("opacity") ? layer.options.opacity : "1");
+        var options = layer.options;
+        if (options && options.layers) {
+            opacityVals[options.layers] = options.hasOwnProperty("opacity") ? options.opacity : "1";
         }
     });
+
+    var currentLayer;
+    var i;
+    for (i = 0; i < currentLayers.length; i++) {
+        currentLayer = currentLayers[i];
+        layers.push(currentLayer);
+        layers.push(opacityVals[currentLayer]);
+    }
     return "layers=" + layers.join(",");
+}
+
+function makeBaseLayerString (map) {
+    var layers = [];
+    map.eachLayer(function (layer) {
+        if (layer.options && layer.options.type === BASE_LAYER_TYPE) {
+            layers.push(layer.options.id);
+        }
+    });
+    return "baselayers=" + layers.join(",");
 }
 
 function parseShareUrl () {
@@ -83,6 +107,7 @@ function makeKeyedParamsObject (paramsArr) {
 function formatParams (params) {
     if (params.center) params.center = formatCenterParam(params.center);
     if (params.layers) params.layers = formatLayerParam(params.layers);
+    if (params.baselayers) params.baselayers = formatBaseLayerParam(params.baselayers);
 }
 
 function formatCenterParam (center) {
@@ -107,12 +132,17 @@ function formatLayerParam (layers) {
     return formattedLayers;
 }
 
+function formatBaseLayerParam (baselayers) {
+    return baselayers.split(",");
+}
+
 export function AddShareSettingsToConfig (config) {
     var share = parseShareUrl();
     if (!share) return;
     if (share.center) config.map.initialCenter = share.center;
     if (share.zoom) config.map.initialZoom = share.zoom;
     if (share.layers) addLayerSettingsToConfig(share.layers, config);
+    if (share.baselayers) addBaseLayerSettingsToConfig(share.baselayers, config);
 }
 
 function addLayerSettingsToConfig (shareLayerSettings, config) {
@@ -139,5 +169,16 @@ function addLayerSettingsToConfig (shareLayerSettings, config) {
             }
             if (foundLayer) break;
         }
+    }
+}
+
+function addBaseLayerSettingsToConfig (shareBaseLayerSettings, config) {
+    var baselayers = config.baselayers;
+    var baselayer;
+    var i;
+
+    for (i = 0; i < baselayers.length; i++) {
+        baselayer = baselayers[i];
+        baselayer.active = (shareBaseLayerSettings.indexOf(baselayer.id) !== -1) ? true : false;
     }
 }
