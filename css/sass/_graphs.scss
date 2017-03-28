@@ -20,7 +20,13 @@ $graph-close-button-color: #f31616;
 
 .graph-elem {
     border-bottom: 1px solid #aaa;
-    padding: 20px 15px
+    padding: 20px 15px;
+
+    svg {
+        position: relative;
+        min-height: 270px;
+        height: 100%;
+    }
 }
 
 .graphs-active #map {
@@ -33,14 +39,27 @@ $graph-close-button-color: #f31616;
 
 .graph-timeseries .timeseries-graph {
     display: block;
+    
+    svg {
+        width: 100%;
+    }
 }
 
 .graph-overlapping .overlapping-graph {
     display: block;
+
+    svg {
+        width: 85%;
+    }
 }
 
 .graph-polar .polar-graph {
     display: block;
+
+    svg {
+        width: 85%;
+        min-height: 490px;
+    }
 }
 
 
@@ -57,7 +76,7 @@ div.tooltip {
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
-    z-index: 10;
+    z-index: 100;
 }
 
 div.tooltip:after {
@@ -70,14 +89,10 @@ div.tooltip:after {
     bottom: -8px;
     left: 40px;
     content: "";
-    z-index: 10;
+    z-index: 100;
 }
 
 /* SVG */
-
-svg {
-    position: relative;
-}
 
 circle {
     position: relative;
@@ -163,6 +178,7 @@ path {
 .input-wrapper {
     display: inline-block;
     vertical-align: top;
+    width: 15%;
 
     div {
         margin-top: 2px;

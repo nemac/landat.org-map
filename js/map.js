@@ -7,6 +7,7 @@ export function CreateMap (mapConfig) {
     var initialZoom = mapConfig.initialZoom || 6;
 
     map = L.map(id, options).setView(initialCenter, initialZoom);
+    L.control.attribution({ position: 'bottomleft' }).addTo(map)
     return map;
 }
 

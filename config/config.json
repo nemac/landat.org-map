@@ -1,5 +1,10 @@
 {
   "mapserverUrl": "http://gis.nemac.org/landat",
+  "map": {
+    "options": {
+      "attributionControl": false
+    }
+  },
   "baselayers" : [
     {
       "id": "carto-light",

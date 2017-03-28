@@ -211,16 +211,23 @@ function makeUpDownLineGraph (data, div, averages) {
         .x(function(d) { return x(parseDate(d[0])); })
         .y(function(d) { return y(d[1]); });
 
-    var wrapper = d3.select(div).append("div").classed("timeseries-graph", true);
+    var wrapper = d3.select(div)
+        .append("div")
+        .classed("timeseries-graph", true);
 
     // Adds the svg canvas
     var svg = wrapper
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
+        //.attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
+        .attr('viewBox', function () {
+            var w = width + margin.left + margin.right
+            var h = height + margin.top + margin.bottom
+            return '0 0 ' + w + ' ' + h
+        })
+        .attr('preserveAspectRatio', 'xMidYMid')
         .append("g")
-            .attr("transform", 
-                  "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     svg.call(tip);
 
@@ -284,8 +291,14 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
     // Adds the svg canvas
     var svg = wrapper
         .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr('viewBox', function () {
+                var w = width + margin.left + margin.right
+                var h = height + margin.top + margin.bottom
+                return '0 0 ' + w + ' ' + h
+            })
+            .attr('preserveAspectRatio', 'xMidYMid')
+            //.attr("width", width + margin.left + margin.right)
+            //.attr("height", height + margin.top + margin.bottom)
         .append("g")
             .attr("transform", 
                   "translate(" + margin.left + "," + margin.top + ")");
@@ -367,8 +380,12 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
      */
     var wrapper = d3.select(div).append("div").classed("polar-graph", true);
     var svg = wrapper.append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        //.attr("width", width)
+        //.attr("height", height)
+        .attr('viewBox', function () {
+            return '0 0 '+ width + ' ' + height
+        })
+        .attr('preserveAspectRatio', 'xMidYMid')
         .append("g")
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
