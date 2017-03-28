@@ -1,4 +1,6 @@
-export default function CreateBaseLayers (map, layerConfig) {
+export const BASE_LAYER_TYPE = "baselayer";
+
+export function CreateBaseLayers (map, layerConfig) {
     layerConfig = layerConfig || 
         [{
             "id" : "carto-light-default",
@@ -23,7 +25,7 @@ function createBaseLayer (layerConfig) {
         layerConfig.url,
         {
             id: layerConfig.id,
-            type: "baselayer",
+            type: BASE_LAYER_TYPE,
             attribution: layerConfig.attribution
         }
     );

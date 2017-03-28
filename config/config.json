@@ -3,9 +3,15 @@
   "baselayers" : [
     {
       "id": "carto-light",
-      "url": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+      "url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
       "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
       "active": true
+    },
+    {
+      "id": "carto-dark",
+      "url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
+      "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
+      "active": false
     }
   ],
   "layout" : {
