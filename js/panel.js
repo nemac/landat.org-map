@@ -1,4 +1,5 @@
 import {toggleLayer} from "./toggleLayer";
+import {updateShareUrl} from "./share";
 
 export default function setupPanel (layers, layout) {
     var layerGroups = makeLayerGroups(layout['layer-groups-order']);
@@ -147,6 +148,9 @@ function makeOpacitySlider (layer, layerDiv) {
         .call(d3.drag()
               .on('start drag', function () {
                   updateOpacity(layer, this.parentNode, opacityScale, d3.event.x);
+              })
+              .on('end', function () {
+                  updateShareUrl();
               }));
 
     opacitySliderSvg.append('line')
