@@ -1,10 +1,20 @@
 import {GetMap} from "./map";
 
 /**
+ * Needed for the share url since Leaflet does not have a default way to surface
+ * the order of layers in the map
+ */
+var _current_layers = [];
+
+/**
  * Note: layer is not the leaflet concept of a layer, but rather the internal
  *       object which tracks them. layer.mapLayer is the pointer to the
  *       leaflet layer.
  */
+
+export function GetCurrentLayers () {
+    return _current_layers;
+}
 
 export function CreateDefaultLayers (layers, defaultLayers) {
     var i, j, prop, layergroup;
@@ -45,6 +55,11 @@ export function enableLayer (layer) {
     layer.active = true;
     layer.mapLayer = layer.mapLayer || makeWmsTileLayer(layer);
     map.addLayer(layer.mapLayer);
+    addLayerToInternalTracker(layer);
+}
+
+function addLayerToInternalTracker (layer) {
+    _current_layers.push(layer.id);
 }
 
 export function disableLayer (layer) {
@@ -54,6 +69,13 @@ export function disableLayer (layer) {
     if (layer.mapLayer && map.hasLayer(layer.mapLayer)) {
         map.removeLayer(layer.mapLayer);
     }
+    removeLayerFromInternalTracker(layer);
+}
+
+function removeLayerFromInternalTracker (layer) {
+    var loc = _current_layers.indexOf(layer.id);
+    if (loc === -1) return;
+    _current_layers.splice(loc, 1);
 }
 
 function makeWmsTileLayer (layer) {

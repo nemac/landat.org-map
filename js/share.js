@@ -1,5 +1,6 @@
 import {GetMap} from './map';
-import {BASE_LAYER_TYPE} from './baselayer'
+import {BASE_LAYER_TYPE} from './baselayer';
+import {GetCurrentLayers} from './toggleLayer';
 
 export function BindUpdateShareUrl (map) {
     map.on("moveend", updateShareUrl);
@@ -39,12 +40,23 @@ function makeZoomString (map) {
 
 function makeLayerString (map) {
     var layers = [];
+    var opacityVals = {};
+    var currentLayers = GetCurrentLayers();
+
     map.eachLayer(function (layer) {
-        if (layer.options && layer.options.layers) {
-            layers.push(layer.options.layers);
-            layers.push(layer.options.hasOwnProperty("opacity") ? layer.options.opacity : "1");
+        var options = layer.options;
+        if (options && options.layers) {
+            opacityVals[options.layers] = options.hasOwnProperty("opacity") ? options.opacity : "1";
         }
     });
+
+    var currentLayer;
+    var i;
+    for (i = 0; i < currentLayers.length; i++) {
+        currentLayer = currentLayers[i];
+        layers.push(currentLayer);
+        layers.push(opacityVals[currentLayer]);
+    }
     return "layers=" + layers.join(",");
 }
 
