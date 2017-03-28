@@ -1,4 +1,5 @@
 import {GetMap} from "./map";
+import {updateShareUrl} from "./share";
 
 /**
  * Needed for the share url since Leaflet does not have a default way to surface
@@ -56,6 +57,7 @@ export function enableLayer (layer) {
     layer.mapLayer = layer.mapLayer || makeWmsTileLayer(layer);
     map.addLayer(layer.mapLayer);
     addLayerToInternalTracker(layer);
+    updateShareUrl();
 }
 
 function addLayerToInternalTracker (layer) {
@@ -70,6 +72,7 @@ export function disableLayer (layer) {
         map.removeLayer(layer.mapLayer);
     }
     removeLayerFromInternalTracker(layer);
+    updateShareUrl();
 }
 
 function removeLayerFromInternalTracker (layer) {

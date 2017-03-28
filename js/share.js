@@ -6,7 +6,7 @@ export function BindUpdateShareUrl (map) {
     map.on("moveend", updateShareUrl);
 }
 
-function updateShareUrl (e) {
+export function updateShareUrl (e) {
     var map = GetMap();
 
     var params = [
