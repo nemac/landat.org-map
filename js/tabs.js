@@ -7,6 +7,7 @@ function handleTabHeaderBtnClick () {
   if (this.classList.contains('active')) return
 
   togglePanelWidth()
+  toggleMapPadding();
 
   d3.selectAll('.panel-top-btn, .panel-section-wrapper')
     .classed('active', function () {
@@ -24,4 +25,9 @@ function togglePanelWidth() {
   wrappers
     .classed('layers-active', !layersActive)
     .classed('graphs-active', !graphsActive)
+}
+
+function toggleMapPadding () {
+    var paddingRight = document.getElementById("right-panel").offsetWidth;
+    document.getElementById("map-wrapper").style.paddingRight = paddingRight + "px";
 }
