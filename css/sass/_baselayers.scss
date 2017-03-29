@@ -1,0 +1,43 @@
+#map .base-selector {
+    display: inline-block;
+    border: 4px solid white;
+    position: relative;
+    width: 88px;
+    height: 88px;
+    margin-right: 30px;
+    box-shadow: 0px 0px 5px black;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.active {
+        display: none;
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+
+    div {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 5px;
+        line-height: 1em;
+        background: linear-gradient(0deg,rgba(52,61,70,0.035),rgba(52,61,70,.45));
+        color: #fff;
+    }
+
+}
+
+.leaflet-bottom.leaflet-left {
+    pointer-events: all;
+}
+
+.baselayer-ui {
+    padding: 30px;
+}
