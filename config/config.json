@@ -56,6 +56,11 @@
         "id": "phenoclasses",
         "name": "Phenoclasses",
         "active": false
+      },
+      {
+        "id": "fires",
+        "name": "Historical Fires",
+        "active": false
       }
     ]
   },
@@ -323,6 +328,20 @@
         "id": "LowNDVI",
         "name": "Low NDVI",
         "info": "Lowest mean annual NDVI reached, from 2000 to 2015."
+      }
+    ],
+    "fires": [
+      {
+        "id": "mtbs-raster-00-16",
+        "name": "Historical fires from 2000 to 2016",
+        "info": "Shows locations and intensities of fires that occured from 2000 to 2016",
+        "url": "http://fswms.nemac.org/rlayers"
+      },
+      {
+        "id": "mtbs-raster-84-99",
+        "name": "Historical fires from 1984 to 1999",
+        "info": "Shows locations and intensities of fires that occured from 1984 to 1999",
+        "url": "http://fswms.nemac.org/rlayers"
       }
     ]
   }
