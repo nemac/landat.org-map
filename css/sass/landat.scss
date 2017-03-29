@@ -3,12 +3,45 @@
 @import 'layer_select';
 @import 'panel';
 @import 'search';
-@import 'map';
+
+$panel-min-width-layers: 400px;
+$panel-min-width-graphs: 600px;
 
 html, body, #wrapper {
     width: 100%;
     height: 100%;
     position: relative;
+}
+
+#right-panel {
+    background-color: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    vertical-align: top;
+    overflow-x: hidden;
+    border-left: 1px solid $border-color;
+
+    &.graphs-active {
+        min-width: $panel-min-width-graphs;
+        width: $panel-min-width-graphs;
+    }
+
+    &.layers-active {
+        min-width: $panel-min-width-layers;
+        width: $panel-min-width-layers;
+    }
+}
+
+#map-wrapper {
+    height: 100%;
+    padding-right: $panel-min-width-layers;
+}
+
+#map {
+    z-index: 0;
+    height: 100%;
 }
 
 body {
@@ -25,8 +58,6 @@ body {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
-
-
 
 
 

@@ -16,14 +16,22 @@ function makePanelDraggable() {
     }));
 
   function handleDragEvent() {
-    var panel = document.getElementById('right-panel')
-    var wrapper = document.getElementById('wrapper')
-    var panelWidth = panel.clientWidth
-    var wrapperWidth = wrapper.clientWidth
+    var panel = d3.select('#right-panel')
+    var mapWrapper = d3.select('#map-wrapper')
+    var wrapper = d3.select('#wrapper')
+
+    var wrapperWidth = wrapper.property('clientWidth')
+    var panelWidth = panel.property('clientWidth')
+    var panelMinWidth = +panel.style('min-width').slice(0, -2)
+    
     var mouseX = d3.event.sourceEvent.x
     var xDelta = (wrapperWidth - mouseX) - panelWidth
-    var newWidth = panelWidth + xDelta
-    d3.select(panel).style('width', '' + newWidth + 'px')
+    
+    var newPanelWidth = panelWidth + xDelta
+    newPanelWidth = newPanelWidth < panelMinWidth ? panelMinWidth : newPanelWidth
+    
+    mapWrapper.style('padding-right', '' + newPanelWidth + 'px')
+    panel.style('width', '' + newPanelWidth + 'px')
   }
 }
 

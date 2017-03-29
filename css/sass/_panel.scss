@@ -1,6 +1,3 @@
-$panel-width-layers: 400px;
-$panel-width-graphs: 600px;
-
 $panel-header-wrapper-height: 50px;
 
 $border-color: #666;
@@ -11,29 +8,6 @@ $btn-color-active: #06c8f7;
 $btn-font-size: 16px;
 $btn-font-color: #fff;
 $btn-text-shadow-color: #0878af;
-
-
-#right-panel {
-    background-color: white;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    vertical-align: top;
-    overflow-x: hidden;
-    border-left: 1px solid $border-color;
-
-    &.graphs-active {
-        min-width: $panel-width-graphs;
-        width: $panel-width-graphs;
-    }
-
-    &.layers-active {
-        min-width: $panel-width-layers;
-        width: $panel-width-layers;
-    }
-}
 
 #right-panel-drag-overlay {
     z-index: 5;
