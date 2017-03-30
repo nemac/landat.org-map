@@ -78,15 +78,21 @@ $legend-wrapper-margin-vert: 10px;
     }
 }
 
+
+/* Opacity Slider */
+
 .opacity-slider-wrapper {
     display: none;
 
     &.active {
-        display: block;
+        width: 95%;
+        padding: 10px;
+        display: inline-block;
     }
 
-    svg {
-        width: 100%;
-        height: 40px;
+    .opacity-slider-indicator {
+        width: 5%;
+        display: inline-block;
     }
 }
+
