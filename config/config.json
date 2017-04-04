@@ -9,7 +9,7 @@
     {
       "id": "esri-imagery",
       "url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      "attribution": "DigitalGlobe, GeoEye, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community",
+      "attribution": "Powered by <a href='https://www.esri.com/'>ESRI</a> | ESRI, DigitalGlobe, GeoEye, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community",
       "subdomains": ["server", "services"],
       "label": "ESRI Imagery",
       "image": "imgs/esri-imagery.jpg",
