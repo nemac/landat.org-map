@@ -63,8 +63,11 @@ function updatePanelWidth() {
     var xDelta = (wrapperWidth - mouseX) - panelClientWidth
 
     var newPanelWidth = panelClientWidth + xDelta
-    newPanelWidth = newPanelWidth < panelMinWidth ? panelMinWidth : newPanelWidth
-
+    newPanelWidth = newPanelWidth < panelMinWidth ?
+        panelMinWidth
+    :   newPanelWidth > wrapperWidth ?
+        wrapperWidth
+    :   newPanelWidth
     mapWrapper.style.paddingRight = `${newPanelWidth}`+'px'
     panel.style('width', `${newPanelWidth}`+'px')
 }
