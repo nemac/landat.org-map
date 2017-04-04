@@ -1,6 +1,6 @@
 import {GetMap} from './map';
 import {BASE_LAYER_TYPE} from './baselayer';
-import {GetCurrentLayers} from './toggleLayer';
+import {GetCurrentLayers} from './layer';
 
 export function BindUpdateShareUrl (map) {
     map.on("moveend", updateShareUrl);

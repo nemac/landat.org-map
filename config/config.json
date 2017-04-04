@@ -7,10 +7,21 @@
   },
   "baselayers" : [
     {
+      "id": "esri-imagery",
+      "url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      "attribution": "DigitalGlobe, GeoEye, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community",
+      "subdomains": ["server", "services"],
+      "label": "ESRI Imagery",
+      "image": "imgs/esri-imagery.jpg",
+      "active": true
+    },
+    {
       "id": "carto-light",
       "url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
       "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
-      "active": true
+      "label": "CARTO Streets",
+      "image": "imgs/carto-light.jpg",
+      "active": false
     },
     {
       "id": "carto-dark",
@@ -44,6 +55,11 @@
       {
         "id": "phenoclasses",
         "name": "Phenoclasses",
+        "active": false
+      },
+      {
+        "id": "fires",
+        "name": "Historical Fires",
         "active": false
       }
     ]
@@ -312,6 +328,20 @@
         "id": "LowNDVI",
         "name": "Low NDVI",
         "info": "Lowest mean annual NDVI reached, from 2000 to 2015."
+      }
+    ],
+    "fires": [
+      {
+        "id": "mtbs-raster-00-16",
+        "name": "Historical fires from 2000 to 2016",
+        "info": "Shows locations and intensities of fires that occured from 2000 to 2016",
+        "url": "http://fswms.nemac.org/rlayers"
+      },
+      {
+        "id": "mtbs-raster-84-99",
+        "name": "Historical fires from 1984 to 1999",
+        "info": "Shows locations and intensities of fires that occured from 1984 to 1999",
+        "url": "http://fswms.nemac.org/rlayers"
       }
     ]
   }

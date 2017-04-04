@@ -6,7 +6,7 @@ import {SetupGraphs, BindGraphEvents} from './graph'
 import BindTabEvents from './tabs'
 import {CreateMap} from './map'
 import {BindUpdateShareUrl, AddShareSettingsToConfig} from './share'
-import {CreateDefaultLayers} from './toggleLayer'
+import {CreateDefaultLayers} from './layer'
 
 var css = require('../css/sass/landat.scss')
 

@@ -7,8 +7,9 @@ $layer-select-text-color: #22333B;
 $layer-select-color-primary: #D9F0F9;
 $layer-select-color-secondary: #C7DCE5;
 
-$layer-div-content-margin-left: $layer-checkbox-length + $layer-checkbox-margin-right;
 $layer-info-content-font-size: 13px;
+
+$layer-div-content-margin-left: $layer-checkbox-length + $layer-checkbox-margin-right;
 
 $legend-wrapper-margin-vert: 10px;
 
@@ -23,6 +24,7 @@ $legend-wrapper-margin-vert: 10px;
     width: 100%;
     padding: 10px;
     color: $layer-select-text-color;
+    padding-right: 40px;
 
     &:nth-child(even) {
         background-color: $layer-select-color-primary;
@@ -65,33 +67,82 @@ $legend-wrapper-margin-vert: 10px;
     }
 }
 
-/* Layer Legend */
+/* Layer Tools (legend and opacity) */
 
-.legend-wrapper {
+.layer-tools-wrapper {
     display: none;
 
     &.active {
         display: block;
-        margin-top: $legend-wrapper-margin-vert;
-        margin-bottom: $legend-wrapper-margin-vert;
-        margin-left: $layer-div-content-margin-left;
+        height: 100px;
+        margin-top: 10px;
+    }
+}
+
+/* Layer Legend */
+
+.legend-wrapper {
+    
+    display: inline-block;
+    margin-left: $layer-div-content-margin-left;
+
+    img {
+       height: 100%; 
     }
 }
 
 
 /* Opacity Slider */
 
-.opacity-slider-wrapper {
-    display: none;
+$opacity-slider-wrapper-height: 100%;
+$opacity-slider-wrapper-padding: 10px;
 
-    &.active {
-        width: 95%;
-        padding: 10px;
+$opacity-indicator-width: 3px;
+$opacity-indicator-height: 10px;
+
+$slider-handle-width: 20px;
+$slider-handle-height: 10px;
+
+$opacity-slider-track-overlay-width: $slider-handle-width;
+$opacity-slider-track-overlay-height: 100%;
+$opacity-slider-track-overlay-padding-horiz: $slider-handle-width/2;
+
+$opacity-slider-track-width: 2px;
+$opacity-slider-track-height: calc(100% - #{$slider-handle-height});
+
+.opacity-slider-wrapper {
+    display: inline-block;
+    height: $opacity-slider-wrapper-height;
+    margin-left: 25px;
+
+
+    .opacity-slider-track-overlay {
         display: inline-block;
+        position: relative;
+        width: $opacity-slider-track-overlay-width;
+        height: 100%;
+    }
+
+    .opacity-slider-track {
+        display: inline-block;
+        width: $opacity-slider-track-width;
+        height: $opacity-slider-track-height;
+        background-color: black;
+        position: relative;
+        top: $slider-handle-height/2;
+        left: $slider-handle-width/2 - $opacity-slider-track-width/2;
+    }
+
+    .opacity-slider-handle {
+        display: inline-block;
+        background-color: red;
+        width: $slider-handle-width;
+        height: $slider-handle-height;
+        position: absolute;
+        right: 0px;
     }
 
     .opacity-slider-indicator {
-        width: 5%;
         display: inline-block;
     }
 }

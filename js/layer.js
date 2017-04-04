@@ -44,13 +44,13 @@ export function CreateDefaultLayers (layers, defaultLayers) {
 
 export function toggleLayer (layer, layerDiv) {
     if (!layer.active) {
-        enableLayer(layer, layerDiv);
+        enableLayer(layer);
     } else {
-        disableLayer(layer, layerDiv);
+        disableLayer(layer);
     }
 }
 
-export function enableLayer (layer) {
+export function enableLayer (layer, layerDiv) {
     var map = GetMap();
 
     layer.active = true;
@@ -79,6 +79,11 @@ function removeLayerFromInternalTracker (layer) {
     var loc = _current_layers.indexOf(layer.id);
     if (loc === -1) return;
     _current_layers.splice(loc, 1);
+}
+
+export function updateLayerOpacity (layer, newOpacity) {
+    layer.opacity = newOpacity
+    layer.mapLayer.setOpacity(newOpacity)
 }
 
 function makeWmsTileLayer (layer) {

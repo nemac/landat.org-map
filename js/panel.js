@@ -1,5 +1,6 @@
-import {toggleLayer} from "./toggleLayer";
+import {toggleLayer} from "./layer";
 import {makeOpacitySlider} from "./opacitySlider"
+import {setSliderInitialPos} from "./opacitySlider"
 import {updateShareUrl} from "./share";
 
 export default function setupPanel (layers, layout) {
@@ -18,13 +19,13 @@ function makePanelDraggable() {
 }
 
 function panelDragEventHandler() {
-    var panel = document.getElementById('right-panel')
+    var panel = d3.select('#right-panel')
     var mapWrapper = document.getElementById('map-wrapper')
     var wrapper = document.getElementById('wrapper')
     var wrapperWidth = wrapper.clientWidth
 
-    var panelWidth = panel.clientWidth
-    var panelMinWidth = +panel.style.minWidth.slice(0, -2)
+    var panelWidth = panel.property('clientWidth')
+    var panelMinWidth = +panel.style('min-width').slice(0, -2)
 
     var mouseX = d3.event.sourceEvent.x
     var xDelta = (wrapperWidth - mouseX) - panelWidth
@@ -32,8 +33,8 @@ function panelDragEventHandler() {
     var newPanelWidth = panelWidth + xDelta
     newPanelWidth = newPanelWidth < panelMinWidth ? panelMinWidth : newPanelWidth
 
-    mapWrapper.style.paddingRight = `${newPanelWidth}px`
-    panel.style.width = `${newPanelWidth}px`
+    mapWrapper.style.paddingRight = `${newPanelWidth}`+'px'
+    panel.style('width', `${newPanelWidth}`+'px')
 }
 
 function makeLayerGroups (layout) {
@@ -69,8 +70,7 @@ function makeLayerElems (layerGroups, layers) {
             makeCheckbox(layer, layerDiv);
             makeLabel(layer, layerDiv);
             makeDescription(layer, layerDiv);
-            makeLegend(layer, layerDiv);
-            makeOpacitySlider(layer, layerDiv);
+            makeLayerTools(layer, layerDiv);
         });
 }
 
@@ -81,10 +81,11 @@ function makeCheckbox (layer, layerDiv) {
         .attr('checked', (layer) => {
             return layer.active ? 'checked' : null;
         })
-        .on('click', layer => {
+        .on('click', function(layer) {
             toggleLayer(layer);
-            layerDiv.selectAll('.legend-wrapper, .opacity-slider-wrapper')
+            layerDiv.select('.layer-tools-wrapper')
                 .classed('active', layer.active);
+            if (layer.active) setSliderInitialPos(layer, layerDiv)
         });
 }
 
@@ -114,12 +115,22 @@ function makeDescription (layer, layerDiv) {
     }
 }
 
-function makeLegend (layer, layerDiv) {
-    layerDiv.append('div')
-        .attr('class', 'legend-wrapper')
-        .classed('active', layer.active)
+function makeLayerTools(layer, layerDiv) {
+    var layerToolsDiv = layerDiv.append('div')
+        .attr('class', 'layer-tools-wrapper')
+        .classed('active', function () {
+            return layer.active
+        })
+    makeLegend(layer, layerToolsDiv);
+    makeOpacitySlider(layer, layerToolsDiv);
+}
+
+function makeLegend (layer, layerToolsWrapper) {
+    layerToolsWrapper
+        .append('div')
+            .attr('class', 'legend-wrapper')
         .append('img')
-        .attr('src', layer.legend || 'mean_ndvi_legend.jpg');
+            .attr('src', layer.legend || 'mean_ndvi_legend.jpg');
 }
 
 
