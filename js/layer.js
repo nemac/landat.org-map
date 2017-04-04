@@ -42,7 +42,7 @@ export function CreateDefaultLayers (layers, defaultLayers) {
     }
 }
 
-export function toggleLayer (layer, layerDiv) {
+export function toggleLayer (layer) {
     if (!layer.active) {
         enableLayer(layer);
     } else {
@@ -50,7 +50,7 @@ export function toggleLayer (layer, layerDiv) {
     }
 }
 
-export function enableLayer (layer, layerDiv) {
+export function enableLayer (layer) {
     var map = GetMap();
 
     layer.active = true;
