@@ -1,3 +1,5 @@
+import {updatePanelDragOverlayHeight} from './panel'
+
 var tip;
 
 export function SetupGraphs () {
@@ -75,6 +77,7 @@ function createGraphRemover (map, div, marker) {
         var list = document.getElementById("graph-list");
         list.removeChild(div);
         map.removeLayer(marker);
+        updatePanelDragOverlayHeight()
     });
 }
 
@@ -95,6 +98,7 @@ function getData(lat, lng, div) {
         var response = this.responseText;
         response = response.replace(/\[|\]|\'/g, "").split(", ");
         drawGraph(response, div, lat, lng);
+        updatePanelDragOverlayHeight()
     });
     oReq.open("GET", url);
     oReq.send()

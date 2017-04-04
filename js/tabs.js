@@ -1,3 +1,5 @@
+import {updatePanelDragOverlayHeight} from './panel'
+
 export default function BindTabEvents () {
   d3.selectAll(".panel-top-btn").on("click", handleTabHeaderBtnClick);
 }
@@ -6,17 +8,19 @@ function handleTabHeaderBtnClick () {
   // If the section is already active, do nothing
   if (this.classList.contains('active')) return
 
-  togglePanelWidth()
-  toggleMapPadding();
+  toggleWrapperActiveStates()
+  toggleMapPadding()
+  updatePanelDragOverlayHeight()
 
   d3.selectAll('.panel-top-btn, .panel-section-wrapper')
     .classed('active', function () {
       return !d3.select(this).classed('active');
     });
+
 }
 
 
-function togglePanelWidth() {
+function toggleWrapperActiveStates() {
   var wrappers = d3.selectAll('#map-wrapper, #right-panel')
 
   var layersActive = wrappers.classed('layers-active')

@@ -3,34 +3,66 @@ import {makeOpacitySlider} from "./opacitySlider"
 import {setSliderInitialPos} from "./opacitySlider"
 import {updateShareUrl} from "./share";
 
-export default function setupPanel (layers, layout) {
+export function SetupPanel (layers, layout) {
     var layerGroups = makeLayerGroups(layout['layer-groups-order']);
     makeLayerElems(layerGroups, layers);
     makePanelDraggable()
+    setPanelScrollHandler()
+}
+
+function setPanelScrollHandler() {
+    var panel = document.getElementById('right-panel')
+    panel.onscroll = updatePanelDragOverlayHeight
 }
 
 function makePanelDraggable() {
-  var overlay = d3.select('#right-panel-drag-overlay')
+    var overlay = d3.select('#right-panel-drag-overlay')
 
-  overlay.call(d3.drag()
-    .on('drag', function () {
-      panelDragEventHandler.call(this)
+    overlay.call(d3.drag()
+        .on('drag', function () {
+        panelDragEventHandler.call(this)
     }));
 }
 
 function panelDragEventHandler() {
+    updatePanelDragOverlayHeight()
+    updatePanelWidth()
+}
+
+export function updatePanelDragOverlayHeight () {
     var panel = d3.select('#right-panel')
-    var mapWrapper = document.getElementById('map-wrapper')
+    var panelOffsetHeight = panel.property('offsetHeight')
+    var panelDragOverlay = document.getElementById('right-panel-drag-overlay')
+    var header = document.getElementById('right-panel-header')
+
+    var newHeight
+
+    if (panel.classed('graphs-active')) {
+        var graphList = document.getElementById('graph-list')
+        newHeight = header.scrollHeight + graphList.scrollHeight
+    }
+    else { // panel.classed('layers-active')
+        var layerList = document.getElementById('layer-list')
+        newHeight = header.scrollHeight + layerList.scrollHeight
+    }
+    newHeight = newHeight > panelOffsetHeight ? `${newHeight}`+'px' : null
+    panelDragOverlay.style.height = newHeight
+}
+
+function updatePanelWidth() {
+    var panel = d3.select('#right-panel')
+    var panelMinWidth = +panel.style('min-width').slice(0, -2)
+    var panelClientWidth = panel.property('clientWidth')
+
     var wrapper = document.getElementById('wrapper')
     var wrapperWidth = wrapper.clientWidth
 
-    var panelWidth = panel.property('clientWidth')
-    var panelMinWidth = +panel.style('min-width').slice(0, -2)
+    var mapWrapper = document.getElementById('map-wrapper')
 
     var mouseX = d3.event.sourceEvent.x
-    var xDelta = (wrapperWidth - mouseX) - panelWidth
+    var xDelta = (wrapperWidth - mouseX) - panelClientWidth
 
-    var newPanelWidth = panelWidth + xDelta
+    var newPanelWidth = panelClientWidth + xDelta
     newPanelWidth = newPanelWidth < panelMinWidth ? panelMinWidth : newPanelWidth
 
     mapWrapper.style.paddingRight = `${newPanelWidth}`+'px'
@@ -38,7 +70,7 @@ function panelDragEventHandler() {
 }
 
 function makeLayerGroups (layout) {
-    return d3.select('.layer-list')
+    return d3.select('#layer-list')
         .selectAll('.layer-group-wrapper')
         .data(layout)
         .enter()
@@ -52,6 +84,7 @@ function makeLayerGroups (layout) {
                     .on('click', function (layerGroup) {
                         layerGroup.active = !layerGroup.active;
                         d3.select(this.parentNode).classed('active', () => layerGroup.active);
+                        updatePanelDragOverlayHeight()
                     })
                     .text(layerGroup.name)
             })
@@ -121,8 +154,9 @@ function makeLayerTools(layer, layerDiv) {
         .classed('active', function () {
             return layer.active
         })
-    makeLegend(layer, layerToolsDiv);
+
     makeOpacitySlider(layer, layerToolsDiv);
+    makeLegend(layer, layerToolsDiv);
 }
 
 function makeLegend (layer, layerToolsWrapper) {

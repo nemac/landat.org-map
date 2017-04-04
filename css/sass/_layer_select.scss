@@ -1,11 +1,8 @@
 @import 'layer_list';
+@import 'mixins';
 
-$layer-checkbox-length: 18px;
+$layer-checkbox-length: 20px;
 $layer-checkbox-margin-right: 5px;
-
-$layer-select-text-color: #22333B;
-$layer-select-color-primary: #D9F0F9;
-$layer-select-color-secondary: #C7DCE5;
 
 $layer-info-content-font-size: 13px;
 
@@ -13,6 +10,14 @@ $layer-div-content-margin-left: $layer-checkbox-length + $layer-checkbox-margin-
 
 $legend-wrapper-margin-vert: 10px;
 
+$layer-select-text-color: #22333B;
+$layer-select-color-primary: #D9F0F9;
+$layer-select-color-secondary: #C7DCE5;
+
+$layer-select-padding-top: 10px;
+$layer-select-padding-right: 30px;
+$layer-select-padding-bottom: 15px;
+$layer-select-padding-left: 15px;
 
 .layer-select {
     border-bottom: 1px solid $border-color;
@@ -22,9 +27,11 @@ $legend-wrapper-margin-vert: 10px;
 .layer-group-wrapper.active .layer-select {
     display: block;
     width: 100%;
-    padding: 10px;
     color: $layer-select-text-color;
-    padding-right: 40px;
+    padding-top: $layer-select-padding-top;
+    padding-right: $layer-select-padding-right;
+    padding-bottom: $layer-select-padding-bottom;
+    padding-left: $layer-select-padding-left;
 
     &:nth-child(even) {
         background-color: $layer-select-color-primary;
@@ -35,6 +42,7 @@ $legend-wrapper-margin-vert: 10px;
     }
 }
 
+
 .layer-select input {
     margin-right: $layer-checkbox-margin-right;
     width: $layer-checkbox-length;
@@ -42,18 +50,19 @@ $legend-wrapper-margin-vert: 10px;
     cursor: pointer;
 }
 
-.layer-select .layer-label, .layer-info-btn {
+.layer-label, .layer-info-btn {
     font: 15px sans-serif;
     font-weight: bold;
     vertical-align: top;
     cursor: pointer;
+    @include user-select(none);
 }
 
 /* Layer Description */
 
 .layer-info-btn {
-    margin-left: $layer-div-content-margin-left;
     display: inline-block;
+    float: right;
 }
 
 .layer-info-wrapper {
@@ -61,11 +70,13 @@ $legend-wrapper-margin-vert: 10px;
 
     &.active {
         display: block;
-        margin: 5px 0px 0px $layer-div-content-margin-left;
+        margin: 5px 0px 0px 0px;
         font: $layer-info-content-font-size sans-serif;
         font-weight: bold;
     }
 }
+
+
 
 /* Layer Tools (legend and opacity) */
 
@@ -75,7 +86,7 @@ $legend-wrapper-margin-vert: 10px;
     &.active {
         display: block;
         height: 100px;
-        margin-top: 10px;
+        margin-top: 15px;
     }
 }
 
@@ -84,7 +95,6 @@ $legend-wrapper-margin-vert: 10px;
 .legend-wrapper {
     
     display: inline-block;
-    margin-left: $layer-div-content-margin-left;
 
     img {
        height: 100%; 
@@ -100,7 +110,7 @@ $opacity-slider-wrapper-padding: 10px;
 $opacity-indicator-width: 3px;
 $opacity-indicator-height: 10px;
 
-$slider-handle-width: 20px;
+$slider-handle-width: $layer-checkbox-length;
 $slider-handle-height: 10px;
 
 $opacity-slider-track-overlay-width: $slider-handle-width;
@@ -109,18 +119,19 @@ $opacity-slider-track-overlay-padding-horiz: $slider-handle-width/2;
 
 $opacity-slider-track-width: 2px;
 $opacity-slider-track-height: calc(100% - #{$slider-handle-height});
+$opacity-slider-track-offset-top: $slider-handle-height/2;
 
 .opacity-slider-wrapper {
     display: inline-block;
     height: $opacity-slider-wrapper-height;
-    margin-left: 25px;
-
+    margin-right: 30px;
 
     .opacity-slider-track-overlay {
         display: inline-block;
         position: relative;
         width: $opacity-slider-track-overlay-width;
         height: 100%;
+        top: -$opacity-slider-track-offset-top;
     }
 
     .opacity-slider-track {
@@ -129,13 +140,15 @@ $opacity-slider-track-height: calc(100% - #{$slider-handle-height});
         height: $opacity-slider-track-height;
         background-color: black;
         position: relative;
-        top: $slider-handle-height/2;
+        top: $opacity-slider-track-offset-top;
         left: $slider-handle-width/2 - $opacity-slider-track-width/2;
     }
 
     .opacity-slider-handle {
         display: inline-block;
-        background-color: red;
+        border: .5px solid $border-color;
+        border-radius: 2px;
+        background-color: $btn-color;
         width: $slider-handle-width;
         height: $slider-handle-height;
         position: absolute;

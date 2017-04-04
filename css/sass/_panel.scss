@@ -1,3 +1,6 @@
+
+@import 'mixins';
+
 $panel-header-wrapper-height: 50px;
 
 $border-color: #666;
@@ -12,7 +15,7 @@ $btn-text-shadow-color: #0878af;
 #right-panel-drag-overlay {
     z-index: 5;
     cursor: ew-resize;
-    height: 100%;
+    height: inherit;
     padding: 5px;
     position: absolute;
 }
@@ -48,12 +51,7 @@ $btn-text-shadow-color: #0878af;
     color: $btn-font-color;
     letter-spacing: .75px;
     text-shadow: -1px 1px $btn-text-shadow-color;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    @include user-select(none)
 
     &:hover {
         background-color: $btn-color-hover;
