@@ -1,6 +1,9 @@
 {
   "mapserverUrl": "http://gis.nemac.org/landat",
   "map": {
+    "id": "map",
+    "center": ["38.5", "-81"],
+    "zoom": "6",
     "options": {
       "attributionControl": false
     }
