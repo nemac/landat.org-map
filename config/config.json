@@ -19,6 +19,15 @@
       "active": true
     },
     {
+      "id": "esri-topo",
+      "url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+      "attribution": "Powered by <a href='https://www.esri.com/'>ESRI</a> | ESRI, USGS, NOAA",
+      "subdomains": ["server", "services"],
+      "label": "ESRI Topo",
+      "image": "imgs/esri-topo.jpg",
+      "active": true
+    },
+    {
       "id": "carto-light",
       "url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
       "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
