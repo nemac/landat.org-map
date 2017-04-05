@@ -42,6 +42,12 @@ $layer-select-padding-left: 15px;
     }
 }
 
+.layer-label-wrapper {
+    display: inline-block;
+    vertical-align: top;
+    max-width: 85%;
+}
+
 
 .layer-select input {
     margin-right: $layer-checkbox-margin-right;

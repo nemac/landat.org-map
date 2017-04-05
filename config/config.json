@@ -64,6 +64,16 @@
         "id": "fires",
         "name": "Historical Fires",
         "active": false
+      },
+      {
+        "id": "boundaries",
+        "name": "Boundaries",
+        "active": false
+      },
+      {
+        "id": "ancillary",
+        "name": "Ancillary Data",
+        "active": false
       }
     ]
   },
@@ -83,7 +93,48 @@
         "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with only the day-of-year variables such as the beginning, middle, and end of the growing season."
       }
     ],
+    "boundaries" : [
+      {
+        "id": "States",
+        "name": "States",
+        "info": "",
+        "url": "http://gis.nemac.org/landat-vector"
+      },
+      {
+        "id": "CountiesBlack",
+        "name": "Counties",
+        "info": "",
+        "url": "http://gis.nemac.org/landat-vector"
+      },
+      {
+        "id": "AppLCCRegionBlk",
+        "name": "AppLCC region",
+        "info": "",
+        "url": "http://gis.nemac.org/landat-vector"
+      },
+      {
+        "id": "GSMNP",
+        "name": "Great Smoky Mountains National Park",
+        "info": "",
+        "url": "http://gis.nemac.org/landat-vector"
+      }
+    ],
     "ancillary": [
+      {
+        "id": "Riitters_ForestDensity",
+        "name": "Forest density",
+        "info": ""
+      },
+      {
+        "id": "TotalBasalArea",
+        "name": "Total tree basal area",
+        "info": "Estimated total tree basal area. USFS Forest Health Technology Enterprise Team, 2012."
+      },
+      {
+        "id": "PercentBasalRisk",
+        "name": "Tree basal area at risk from insect and disease pathogens",
+        "info": "Percent of basal area estimated to be at risk. USFS Forest Health Technology Enterprise Team, 2012."
+      },
       {
         "id": "HousingDensity",
         "name": "Housing Density (2010)",
@@ -98,16 +149,6 @@
         "id": "PalmerAnnual",
         "name": "Palmer Drought Severity Index, 2000-2015 variability",
         "info": "Self-calibrated drought index (scPDSI); inter-annual variability, 2000-2015. Higher values indicate more year-to-year variation."
-      },
-      {
-        "id": "PercentBasalRisk",
-        "name": "Tree basal area at risk from insect and disease pathogens",
-        "info": "Percent of basal area estimated to be at risk. USFS Forest Health Technology Enterprise Team, 2012."
-      },
-      {
-        "id": "TotalBasalArea",
-        "name": "Total tree basal area",
-        "info": "Estimated total tree basal area. USFS Forest Health Technology Enterprise Team, 2012."
       }
     ],
     "it-metrics": [

@@ -101,8 +101,7 @@ function makeLayerElems (layerGroups, layers) {
         .attr('class', 'layer-select')
         .each(function (layer) {
             var groupName = this.parentNode.parentNode.id;
-            var layerDiv = d3.select(this);
-
+            var layerDiv = d3.select(this)
             makeCheckbox(layer, layerDiv);
             makeLabel(layer, layerDiv);
             makeDescription(layer, layerDiv);
@@ -126,10 +125,13 @@ function makeCheckbox (layer, layerDiv) {
 }
 
 function makeLabel(layer, layerDiv) {
-    layerDiv.append('label')
-        .attr('for', layer => layer.id)
-        .attr('class', 'layer-label')
-        .html(layer => layer.name);
+    layerDiv
+        .append('div')
+            .attr('class', 'layer-label-wrapper')
+        .append('label')
+            .attr('for', layer => layer.id)
+            .attr('class', 'layer-label')
+            .html(layer => layer.name);
 }
 
 function makeDescription (layer, layerDiv) {
