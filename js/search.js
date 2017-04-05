@@ -6,6 +6,7 @@ export default function CreateSearch (map) {
     const searchControl = new GeoSearchControl({
         provider: provider,
         showMarker: false,
+        autoComplete: false,
     });
 
     map.addControl(searchControl);
