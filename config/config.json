@@ -1,5 +1,11 @@
 {
   "mapserverUrl": "http://gis.nemac.org/landat",
+  "logo": {
+    "image": "imgs/landat_logo_blue.png",
+    "label": "Logo for the LanDat project",
+    "link": "https://landat-dev.nemac.org",
+    "location": "leaflet-bottom leaflet-right"
+  },
   "map": {
     "id": "map",
     "center": ["38.5", "-81"],

@@ -7,6 +7,7 @@ import BindTabEvents from './tabs'
 import {CreateMap} from './map'
 import {BindUpdateShareUrl, AddShareSettingsToConfig} from './share'
 import {CreateDefaultLayers} from './layer'
+import CreateLogo from './logo';
 
 var css = require('../css/sass/landat.scss')
 
@@ -25,6 +26,7 @@ var callback = function (data) {
     CreateDefaultLayers(data.layers, data["active-layers"]);
     SetupPanel(data.layers, data.layout);
     CreateSearch(map);
+    CreateLogo(data.logo);
     BindGraphEvents(map);
     BindUpdateShareUrl(map);
 }
