@@ -1,34 +1,37 @@
 import {updatePanelDragOverlayHeight} from './panel'
 
 export default function BindTabEvents () {
-  d3.selectAll(".panel-top-btn").on("click", handleTabHeaderBtnClick);
+    d3.selectAll(".panel-top-btn").on("click", handleTabHeaderBtnClick);
 }
 
 function handleTabHeaderBtnClick () {
-  // If the section is already active, do nothing
-  if (this.classList.contains('active')) return
+    // If the section is already active, do nothing
+    if (this.classList.contains("active")) return;
 
-  toggleWrapperActiveStates()
-  toggleMapPadding()
-  updatePanelDragOverlayHeight()
-
-  d3.selectAll('.panel-top-btn, .panel-section-wrapper')
-    .classed('active', function () {
-      return !d3.select(this).classed('active');
-    });
-
+    disableActiveTab();
+    enableTab(this.getAttribute("data-active"));
 }
 
+function enableTab (activeClass) {
+    d3.select(".panel-top-btn[data-active='" + activeClass + "']").classed("active", true);
 
-function toggleWrapperActiveStates() {
-  var wrappers = d3.selectAll('#map-wrapper, #right-panel')
+    d3.selectAll("#map-wrapper, #right-panel")
+        .classed(activeClass, true);
 
-  var layersActive = wrappers.classed('layers-active')
-  var graphsActive = wrappers.classed('graphs-active')
+    d3.select(".panel-section-wrapper[data-active='" + activeClass + "']").classed("active", true);
 
-  wrappers
-    .classed('layers-active', !layersActive)
-    .classed('graphs-active', !graphsActive)
+    toggleMapPadding();
+    updatePanelDragOverlayHeight();
+}
+
+function disableActiveTab () {
+    var activeClass = d3.select(".panel-top-btn.active").attr("data-active");
+
+    d3.selectAll('#map-wrapper, #right-panel')
+        .classed(activeClass, false);
+
+    d3.selectAll('.panel-top-btn.active, .panel-section-wrapper.active')
+        .classed('active', false);
 }
 
 function toggleMapPadding () {
