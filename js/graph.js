@@ -165,6 +165,9 @@ function handleGraphTypeBtnClick () {
 }
 
 function createGraphDiv (lat, lng) {
+    var decimalPlaces = 3
+    lat = roundFloat(lat, decimalPlaces)
+    lng = roundFloat(lng, decimalPlaces)
     var div = document.createElement("div");
     var content = document.createTextNode("Lat: " + lat + ", Lon: " + lng);
     div.appendChild(content);
@@ -181,6 +184,10 @@ function drawGraph(data, div, lat, lng) {
     drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, lat, lng);
     var list = document.getElementById("graph-list");
     list.appendChild(div);
+}
+
+function roundFloat(number, decimalPlaces) {
+    return Math.round(number * Math.pow(10, decimalPlaces)) / (Math.pow(10, decimalPlaces))
 }
 
 ///////////////////// TIMESERIES LINE GRAPH ////////////////////////////////

@@ -139,8 +139,8 @@ function formatBaseLayerParam (baselayers) {
 export function AddShareSettingsToConfig (config) {
     var share = parseShareUrl();
     if (!share) return;
-    if (share.center) config.map.initialCenter = share.center;
-    if (share.zoom) config.map.initialZoom = share.zoom;
+    if (share.center) config.map.center = share.center;
+    if (share.zoom) config.map.zoom = share.zoom;
     if (share.layers) addLayerSettingsToConfig(share.layers, config);
     if (share.baselayers) addBaseLayerSettingsToConfig(share.baselayers, config);
 }

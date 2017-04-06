@@ -1,5 +1,11 @@
 {
   "mapserverUrl": "http://gis.nemac.org/landat",
+  "logo": {
+    "image": "imgs/landat_logo_blue.png",
+    "label": "Logo for the LanDat project",
+    "link": "https://landat-dev.nemac.org",
+    "location": "leaflet-bottom leaflet-right"
+  },
   "map": {
     "id": "map",
     "center": ["38.5", "-81"],
@@ -16,6 +22,15 @@
       "subdomains": ["server", "services"],
       "label": "ESRI Imagery",
       "image": "imgs/esri-imagery.jpg",
+      "active": true
+    },
+    {
+      "id": "esri-topo",
+      "url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+      "attribution": "Powered by <a href='https://www.esri.com/'>ESRI</a> | ESRI, USGS, NOAA",
+      "subdomains": ["server", "services"],
+      "label": "ESRI Topo",
+      "image": "imgs/esri-topo.jpg",
       "active": true
     },
     {
