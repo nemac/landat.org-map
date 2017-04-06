@@ -3,7 +3,7 @@ import CreateSearch from './search';
 import {SetupPanel} from './panel';
 import {CreateBaseLayers} from './baselayer';
 import {SetupGraphs, BindGraphEvents} from './graph'
-import BindTabEvents from './tabs'
+import {BindTabEvents, HandleTabChange} from './tabs'
 import {CreateMap} from './map'
 import {BindUpdateShareUrl, AddShareSettingsToConfig} from './share'
 import {CreateDefaultLayers} from './layer'
@@ -27,6 +27,7 @@ var callback = function (data) {
     SetupPanel(data.layers, data.layout);
     CreateSearch(map);
     CreateLogo(data.logo);
+    if (data.tab) HandleTabChange(data.tab);
     BindGraphEvents(map);
     BindUpdateShareUrl(map);
 }

@@ -14,6 +14,7 @@ export function updateShareUrl (e) {
         makeZoomString(map),
         makeLayerString(map),
         makeBaseLayerString(map),
+        makeActiveTabString(),
     ];
 
     setShareUrl(makeShareUrl(params));
@@ -68,6 +69,10 @@ function makeBaseLayerString (map) {
         }
     });
     return "baselayers=" + layers.join(",");
+}
+
+function makeActiveTabString () {
+    return "tab=" + d3.select(".panel-top-btn.active").attr("data-active");
 }
 
 function parseShareUrl () {
@@ -143,6 +148,7 @@ export function AddShareSettingsToConfig (config) {
     if (share.zoom) config.map.zoom = share.zoom;
     if (share.layers) addLayerSettingsToConfig(share.layers, config);
     if (share.baselayers) addBaseLayerSettingsToConfig(share.baselayers, config);
+    if (share.tab) config.tab = share.tab;
 }
 
 function addLayerSettingsToConfig (shareLayerSettings, config) {
