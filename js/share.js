@@ -1,6 +1,7 @@
 import {GetMap} from './map';
 import {BASE_LAYER_TYPE} from './baselayer';
 import {GetCurrentLayers} from './layer';
+import {GetAllPointsOfInterest} from './poi';
 
 export function BindUpdateShareUrl (map) {
     map.on("moveend", updateShareUrl);
@@ -14,6 +15,7 @@ export function updateShareUrl (e) {
         makeZoomString(map),
         makeLayerString(map),
         makeBaseLayerString(map),
+        makePointsOfInterestString()
     ];
 
     setShareUrl(makeShareUrl(params));
@@ -70,6 +72,16 @@ function makeBaseLayerString (map) {
     return "baselayers=" + layers.join(",");
 }
 
+function makePointsOfInterestString () {
+    var pois = GetAllPointsOfInterest()
+    if (!pois.length) return
+    var poiString = "pois="
+    pois.forEach(poi => {
+        poiString += poi.lat + ',' + poi.lng + ';'
+    })
+    return poiString
+}
+
 function parseShareUrl () {
     var params = window.location.search;
     if (params === "") return;
@@ -88,7 +100,7 @@ function getParamsArray (params) {
 }
 
 function unmangleParamString (params) {
-    return params.replace(/\%2[c|C]/g, ",");
+    return params.replace(/\%2[c|C]/g, ",").replace(/\%3[b|B]/g, ";")
 }
 
 function makeKeyedParamsObject (paramsArr) {
@@ -108,6 +120,7 @@ function formatParams (params) {
     if (params.center) params.center = formatCenterParam(params.center);
     if (params.layers) params.layers = formatLayerParam(params.layers);
     if (params.baselayers) params.baselayers = formatBaseLayerParam(params.baselayers);
+    if (params.pois) params.pois = formatPointsOfInterestParam(params.pois)
 }
 
 function formatCenterParam (center) {
@@ -136,6 +149,19 @@ function formatBaseLayerParam (baselayers) {
     return baselayers.split(",");
 }
 
+function formatPointsOfInterestParam (pois) {
+    return pois.split(';')
+        .filter((str) => str !== '')
+        .map((poi) => {
+            poi = poi.split(',')
+            return {
+                lat: poi[0],
+                lng: poi[1]
+            }
+        })
+}
+
+
 export function AddShareSettingsToConfig (config) {
     var share = parseShareUrl();
     if (!share) return;
@@ -143,6 +169,7 @@ export function AddShareSettingsToConfig (config) {
     if (share.zoom) config.map.zoom = share.zoom;
     if (share.layers) addLayerSettingsToConfig(share.layers, config);
     if (share.baselayers) addBaseLayerSettingsToConfig(share.baselayers, config);
+    if (share.pois) addPointsOfInterestToConfig(share.pois, config)
 }
 
 function addLayerSettingsToConfig (shareLayerSettings, config) {
@@ -182,3 +209,9 @@ function addBaseLayerSettingsToConfig (shareBaseLayerSettings, config) {
         baselayer.active = (shareBaseLayerSettings.indexOf(baselayer.id) !== -1) ? true : false;
     }
 }
+
+function addPointsOfInterestToConfig(pois, config) {
+    console.log(pois)
+    config["pois"] = pois
+}
+

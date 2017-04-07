@@ -6,6 +6,7 @@
     "link": "https://landat-dev.nemac.org",
     "location": "leaflet-bottom leaflet-right"
   },
+  "pois": [],
   "map": {
     "id": "map",
     "center": ["38.5", "-81"],

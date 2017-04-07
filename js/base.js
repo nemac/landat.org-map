@@ -8,6 +8,8 @@ import {CreateMap} from './map'
 import {BindUpdateShareUrl, AddShareSettingsToConfig} from './share'
 import {CreateDefaultLayers} from './layer'
 import CreateLogo from './logo';
+import {BindPointsOfInterest} from './poi';
+import {updateShareUrl} from './share';
 
 var css = require('../css/sass/landat.scss')
 
@@ -29,6 +31,8 @@ var callback = function (data) {
     CreateLogo(data.logo);
     BindGraphEvents(map);
     BindUpdateShareUrl(map);
+    BindPointsOfInterest(map, data.pois)
+    updateShareUrl()
 }
 
 window.Base = Base;

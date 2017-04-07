@@ -1,4 +1,6 @@
 import {updatePanelDragOverlayHeight} from './panel'
+import {AddPointOfInterestToTracker} from './poi'
+import {updateShareUrl} from './share'
 
 var tip;
 
@@ -55,28 +57,36 @@ function handleMapClick (e) {
     var lat = e.latlng.lat;
     var lng = e.latlng.lng;
 
-    var div = createGraphDiv(lat, lng);
-    var marker = createMarker(map, lat, lng);
-    d3.select(div).on("mouseenter", function () {
-        marker.setIcon(hoverIcon);
-    })
-    d3.select(div).on("mouseleave", function () {
-        marker.setIcon(graphIcon);
-    })
-    createGraphRemover(map, div, marker);
+    var poi = AddPointOfInterestToTracker(lat, lng)
+    SetupPointOfInterestUI(map, poi)
+    updateShareUrl()
 }
 
 function createMarker (map, lat, lng) {
     return L.marker([lat, lng], {icon: graphIcon}).addTo(map);
 }
 
-function createGraphRemover (map, div, marker) {
+export function SetupPointOfInterestUI (map, poi) {
+    var div = createGraphDiv(poi.lat, poi.lng);
+    var marker = createMarker(map, poi.lat, poi.lng);
+
+    d3.select(div).on("mouseenter", function () {
+        marker.setIcon(hoverIcon);
+    })
+    d3.select(div).on("mouseleave", function () {
+        marker.setIcon(graphIcon);
+    })
+    createGraphRemover(map, div, marker, poi);
+}
+
+function createGraphRemover (map, div, marker, poi) {
     var elem = createGraphRemoverElem();
     div.appendChild(elem);
     d3.select(elem).on("click", function () {
         var list = document.getElementById("graph-list");
         list.removeChild(div);
         map.removeLayer(marker);
+        RemovePointOfInterestFromTracker(poi)
         updatePanelDragOverlayHeight()
     });
 }
