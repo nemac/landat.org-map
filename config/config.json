@@ -54,7 +54,7 @@
        {
         "id": "boundaries",
         "name": "Reference and Boundaries",
-        "active": true
+        "active": false
       },
       {
         "id": "summary-phenology",
