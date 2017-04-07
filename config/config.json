@@ -23,7 +23,7 @@
       "subdomains": ["server", "services"],
       "label": "ESRI Imagery",
       "image": "imgs/esri-imagery.jpg",
-      "active": true
+      "active": false
     },
     {
       "id": "esri-topo",
