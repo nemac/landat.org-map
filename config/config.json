@@ -81,16 +81,6 @@
         "active": false
       },
       {
-        "id": "lt-landscape-shift",
-        "name": "Long-term Landscape Shift",
-        "active": false
-      },
-      {
-        "id": "carbon-models",
-        "name": "Carbon Models",
-        "active": false
-      }, 
-      {
         "id": "ancillary",
         "name": "Landscape and Climate Characteristics",
         "active": false
