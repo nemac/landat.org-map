@@ -15,10 +15,22 @@ export function updateShareUrl (e) {
         makeZoomString(map),
         makeLayerString(map),
         makeBaseLayerString(map),
-        makePointsOfInterestString()
+        makePointsOfInterestString(),
+        makeActiveTabString()
     ];
 
     setShareUrl(makeShareUrl(params));
+}
+
+export function AddShareSettingsToConfig (config) {
+    var share = parseShareUrl();
+    if (!share) return;
+    if (share.center) config.map.center = share.center;
+    if (share.zoom) config.map.zoom = share.zoom;
+    if (share.layers) addLayerSettingsToConfig(share.layers, config);
+    if (share.baselayers) addBaseLayerSettingsToConfig(share.baselayers, config);
+    if (share.pois) addPointsOfInterestToConfig(share.pois, config)
+    if (share.tab) config.tab = share.tab;
 }
 
 function makeShareUrl (params) {
@@ -80,6 +92,10 @@ function makePointsOfInterestString () {
         poiString += poi.lat + ',' + poi.lng + ';'
     })
     return poiString
+}
+
+function makeActiveTabString () {
+    return "tab=" + d3.select(".panel-top-btn.active").attr("data-active");
 }
 
 function parseShareUrl () {
@@ -161,16 +177,6 @@ function formatPointsOfInterestParam (pois) {
         })
 }
 
-
-export function AddShareSettingsToConfig (config) {
-    var share = parseShareUrl();
-    if (!share) return;
-    if (share.center) config.map.center = share.center;
-    if (share.zoom) config.map.zoom = share.zoom;
-    if (share.layers) addLayerSettingsToConfig(share.layers, config);
-    if (share.baselayers) addBaseLayerSettingsToConfig(share.baselayers, config);
-    if (share.pois) addPointsOfInterestToConfig(share.pois, config)
-}
 
 function addLayerSettingsToConfig (shareLayerSettings, config) {
     var enabledLayers = shareLayerSettings.enabledLayers;

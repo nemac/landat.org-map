@@ -1,34 +1,42 @@
-import {updatePanelDragOverlayHeight} from './panel'
+import {updatePanelDragOverlayHeight} from "./panel";
+import {updateShareUrl} from "./share";
 
-export default function BindTabEvents () {
-  d3.selectAll(".panel-top-btn").on("click", handleTabHeaderBtnClick);
+export function BindTabEvents () {
+    d3.selectAll(".panel-top-btn").on("click", handleTabHeaderBtnClick);
 }
 
 function handleTabHeaderBtnClick () {
-  // If the section is already active, do nothing
-  if (this.classList.contains('active')) return
-
-  toggleWrapperActiveStates()
-  toggleMapPadding()
-  updatePanelDragOverlayHeight()
-
-  d3.selectAll('.panel-top-btn, .panel-section-wrapper')
-    .classed('active', function () {
-      return !d3.select(this).classed('active');
-    });
-
+    // If the section is already active, do nothing
+    if (this.classList.contains("active")) return;
+    HandleTabChange(this.getAttribute("data-active"));
 }
 
+export function HandleTabChange (newClass) {
+    disableActiveTab();
+    enableTab(newClass);
+    updateShareUrl();
+}
 
-function toggleWrapperActiveStates() {
-  var wrappers = d3.selectAll('#map-wrapper, #right-panel')
+function enableTab (newClass) {
+    d3.select(".panel-top-btn[data-active='" + newClass + "']").classed("active", true);
 
-  var layersActive = wrappers.classed('layers-active')
-  var graphsActive = wrappers.classed('graphs-active')
+    d3.selectAll("#map-wrapper, #right-panel")
+        .classed(newClass, true);
 
-  wrappers
-    .classed('layers-active', !layersActive)
-    .classed('graphs-active', !graphsActive)
+    d3.select(".panel-section-wrapper[data-active='" + newClass + "']").classed("active", true);
+
+    toggleMapPadding();
+    updatePanelDragOverlayHeight();
+}
+
+function disableActiveTab () {
+    var activeClass = d3.select(".panel-top-btn.active").attr("data-active");
+
+    d3.selectAll('#map-wrapper, #right-panel')
+        .classed(activeClass, false);
+
+    d3.selectAll('.panel-top-btn.active, .panel-section-wrapper.active')
+        .classed('active', false);
 }
 
 function toggleMapPadding () {
