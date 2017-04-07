@@ -12,7 +12,8 @@
     "center": ["38.5", "-81"],
     "zoom": "6",
     "options": {
-      "attributionControl": false
+      "attributionControl": false,
+      "doubleClickZoom": false
     }
   },
   "baselayers" : [

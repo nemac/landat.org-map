@@ -93,6 +93,7 @@ function makeWmsTileLayer (layer) {
         version: layer.version || '1.3.0',
         crs: layer.crs || L.CRS.EPSG4326,
         format: layer.format || 'image/png',
-        opacity: layer.opacity || "1"
+        opacity: layer.opacity || 1.0,
+        tileSize: layer.tileSize || 256
     });
 }
