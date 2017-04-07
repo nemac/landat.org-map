@@ -50,10 +50,15 @@
   ],
   "layout" : {
     "layer-groups-order": [
+       {
+        "id": "boundaries",
+        "name": "Reference and Boundaries",
+        "active": true
+      },
       {
         "id": "summary-phenology",
         "name": "Summary Phenology Variables",
-        "active": true
+        "active": false
       },
       {
         "id": "phenology-variables",
@@ -62,12 +67,7 @@
       },
       {
         "id": "phenoclass-derived",
-        "name": "Phenoclass-derived Products",
-        "active": false
-      },
-      {
-        "id": "it-metrics",
-        "name": "IT Metrics",
+        "name": "Phenological Change Metrics",
         "active": false
       },
       {
@@ -76,31 +76,35 @@
         "active": false
       },
       {
-        "id": "fires",
-        "name": "Historical Fires",
+        "id": "it-metrics",
+        "name": "Landscape Information Metrics",
         "active": false
       },
       {
-        "id": "boundaries",
-        "name": "Boundaries",
+        "id": "lt-landscape-shift",
+        "name": "Long-term Landscape Shift",
         "active": false
       },
+      {
+        "id": "carbon-models",
+        "name": "Carbon Models",
+        "active": false
+      }, 
       {
         "id": "ancillary",
-        "name": "Ancillary Data",
+        "name": "Landscape and Climate Characteristics",
         "active": false
       }
     ]
   },
   "active-layers": [
-    "Factor123"
-  ],
+      ],
   "layers" : {
     "summary-phenology": [
       {
         "id": "Factor123",
         "name": "Summary phenology: seasonality and timing",
-        "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with (1) seasonality, and with (2) the day-of-year variables such as the middle of the growing season." 
+        "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with (1) seasonality, and with (2) the day-of-year variables such as the middle of the growing season.", 
       },
       {
         "id": "Factor23",
@@ -138,12 +142,11 @@
       {
         "id": "Riitters_ForestDensity",
         "name": "Forest density",
-        "info": ""
-      },
+        "info": "",
       {
         "id": "TotalBasalArea",
         "name": "Total tree basal area",
-        "info": "Estimated total tree basal area. USFS Forest Health Technology Enterprise Team, 2012."
+        "info": "Estimated total tree basal area. USFS Forest Health Technology Enterprise Team, 2012.",
       },
       {
         "id": "PercentBasalRisk",
@@ -164,6 +167,18 @@
         "id": "PalmerAnnual",
         "name": "Palmer Drought Severity Index, 2000-2015 variability",
         "info": "Self-calibrated drought index (scPDSI); inter-annual variability, 2000-2015. Higher values indicate more year-to-year variation."
+      }, 
+      {
+        "id": "mtbs-raster-00-16",
+        "name": "Historical fires from 2000 to 2016",
+        "info": "Shows locations and intensities of fires that occured from 2000 to 2016",
+        "url": "http://fswms.nemac.org/rlayers"
+      },
+      {
+        "id": "mtbs-raster-84-99",
+        "name": "Historical fires from 1984 to 1999",
+        "info": "Shows locations and intensities of fires that occured from 1984 to 1999",
+        "url": "http://fswms.nemac.org/rlayers" 
       }
     ],
     "it-metrics": [
@@ -342,65 +357,61 @@
         "id": "TotalPath",
         "name": "Total year-to-year path length",
         "info": "Total summed amount or 'length' of all annual phenological changes from 2000 to 2015; a measure of the cumulative degree of change."
+        "legend": "legends/aaq.png"
       },
       {
         "id": "FinalDistance",
         "name": "Final between-years distance",
         "info": "Amount of phenological difference between the first and last years, 2000 and 2015; analogous to a straight-line distance rather than the path length. "
+        "legend": "legends/aar.png"
       },
       {
         "id": "MaximumStep",
         "name": "Maximum year-to-year step",
         "info": "The single largest annual phenological change observed between any two consecutive years."
+        "legend": "legends/aas.png"
       },
       {
         "id": "MeanStep",
         "name": "Mean year-to-year step",
         "info": "The mean annual phenological change observed between consecutive years."
+        "legend": "legends/aat.png"
       },
       {
         "id": "MinimumStep",
         "name": "Minimum year-to-year step",
         "info": "The smallest annual phenological change observed between any two consecutive years."
+        "legend": "legends/aau.png"
       },
       {
         "id": "MaximumDistance",
         "name": "Maximum between-years distance",
         "info": "The amount of phenological difference between the two most different years, from 2000 to 2015."
+        "legend": "legends/aav.png"
       },
       {
         "id": "MeanDistance",
         "name": "Mean between-years distance",
         "info": "The mean phenological difference between any two years, regardless of order, from 2000 to 2015."
+        "legend": "legends/aaw.png"
       },
       {
         "id": "MinimumDistance",
         "name": "Minimum between-years distance",
         "info": "The amount of phenological difference between the two most similar years, from 2000 to 2015."
+        "legend": "legends/aax.png"
       },
       {
         "id": "HighNDVI",
         "name": "High NDVI",
         "info": "Highest mean annual NDVI reached, from 2000 to 2015."
+        "legend": "legends/aap.png"
       },
       {
         "id": "LowNDVI",
         "name": "Low NDVI",
         "info": "Lowest mean annual NDVI reached, from 2000 to 2015."
-      }
-    ],
-    "fires": [
-      {
-        "id": "mtbs-raster-00-16",
-        "name": "Historical fires from 2000 to 2016",
-        "info": "Shows locations and intensities of fires that occured from 2000 to 2016",
-        "url": "http://fswms.nemac.org/rlayers"
-      },
-      {
-        "id": "mtbs-raster-84-99",
-        "name": "Historical fires from 1984 to 1999",
-        "info": "Shows locations and intensities of fires that occured from 1984 to 1999",
-        "url": "http://fswms.nemac.org/rlayers"
+        "legend": "legends/aao.png"
       }
     ]
   }
