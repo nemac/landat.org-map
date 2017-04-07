@@ -6,6 +6,7 @@ import {
 } from './poi'
 import {updatePanelDragOverlayHeight} from './panel'
 import {updateShareUrl} from './share'
+import {GetMap} from './map'
 
 var tip;
 
@@ -72,7 +73,7 @@ function handleMapClick (e) {
 }
 
 export function createMarker (map, lat, lng) {
-    return L.marker([lat, lng], {icon: graphIcon}).addTo(map);
+    return L.marker([lat, lng], {icon: graphIcon});
 }
 
 export function createGraphRemover (map, div, marker, poi) {
@@ -169,16 +170,29 @@ function handleGraphTypeBtnClick () {
     d3.select(this).classed("active", true);
 }
 
-export function createGraphDiv (lat, lng) {
+export function createGraphDiv (poi) {
     var decimalPlaces = 3
-    lat = roundFloat(lat, decimalPlaces)
-    lng = roundFloat(lng, decimalPlaces)
+    var latShort = roundFloat(poi.lat, decimalPlaces)
+    var lngShort = roundFloat(poi.lng, decimalPlaces)
     var div = document.createElement("div");
-    var content = document.createTextNode("Lat: " + lat + ", Lon: " + lng);
+    var zoomToMarkerButton = makeZoomToMapMarkerButton(poi)
+    var content = document.createTextNode("Lat: " + latShort + ", Lon: " + lngShort);
+    div.appendChild(zoomToMarkerButton)
     div.appendChild(content);
     div.classList.add("graph-elem")
-    getData(lat, lng, div);
+    getData(poi.lat, poi.lng, div);
     return div;
+}
+
+function makeZoomToMapMarkerButton(poi) {
+    var button = document.createElement("button")
+    button.classList.add('btn', 'pan-to-marker-btn')
+    button.textContent = "Show On Map"
+    button.onclick = function (poi, e) {
+        var map = GetMap()
+        map.panTo([poi.lat, poi.lng])
+    }.bind(button, poi)
+    return button
 }
 
 function drawGraph(data, div, lat, lng) {

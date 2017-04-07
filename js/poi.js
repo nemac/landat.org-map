@@ -42,18 +42,20 @@ export function RemovePointOfInterestFromTracker(poiToRemove) {
 }
 
 export function SetupPointOfInterestUI (map, poi) {
-    var div = createGraphDiv(poi.lat, poi.lng);
+    var div = createGraphDiv(poi);
     var marker = createMarker(map, poi.lat, poi.lng);
+    marker.addTo(map)
+    createGraphRemover(map, div, marker, poi);
 
     d3.select(div).on("mouseenter", function (e) {
         marker.setIcon(getIcon('hover'));
-      }
-    )
+    })
     d3.select(div).on("mouseleave", function () {
         marker.setIcon(getIcon('graph'));
-      }
-    )
-    createGraphRemover(map, div, marker, poi);
+    })
+    marker.on('click dblclick', function (e) {
+      e.originalEvent.stopPropagation()
+    })
 }
 
 export function RemovePointOfInterestUI (map, div, marker) {
