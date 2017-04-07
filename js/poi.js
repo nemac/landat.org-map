@@ -1,15 +1,13 @@
+import {
+  createGraphDiv,
+  createMarker,
+  createGraphRemover,
+  getIcon
+} from './graph'
 import {updateShareUrl} from './share'
-import {SetupPointOfInterestUI} from './graph'
+import {GetMap} from './map'
 
 var _points_of_interest = []
-/*
-  {
-    lat: lat,
-    lng: lng,
-    graphElem: d3 selection (classed 'graph-elem')
-    marker: leaflet marker
-  }
-*/
 
 export function GetAllPointsOfInterest () {
   return _points_of_interest
@@ -24,13 +22,44 @@ export function AddPointOfInterestToTracker (lat, lng) {
   return poi
 }
 
-export function BindPointsOfInterest (map, newPois) {
+export function SetupPointsOfInterest (map, newPois) {
   AddMultiplePointsOfInterest(newPois)
-
-  d3.select("graph-list")
+  var pois = GetAllPointsOfInterest()
+  var map = GetMap()
+  pois.forEach(poi => {
+    SetupPointOfInterestUI(map, poi)
+  })
 }
 
 export function AddMultiplePointsOfInterest (pois) {
   Array.prototype.push.apply(_points_of_interest, pois)
+}
+
+export function RemovePointOfInterestFromTracker(poiToRemove) {
+  _points_of_interest = _points_of_interest.filter(poi => {
+    return !Object.is(poi, poiToRemove)
+  })
+}
+
+export function SetupPointOfInterestUI (map, poi) {
+    var div = createGraphDiv(poi.lat, poi.lng);
+    var marker = createMarker(map, poi.lat, poi.lng);
+
+    d3.select(div).on("mouseenter", function (e) {
+        marker.setIcon(getIcon('hover'));
+      }
+    )
+    d3.select(div).on("mouseleave", function () {
+        marker.setIcon(getIcon('graph'));
+      }
+    )
+    createGraphRemover(map, div, marker, poi);
+}
+
+export function RemovePointOfInterestUI (map, div, marker) {
+    var list = document.getElementById("graph-list");
+    list.removeChild(div);
+    map.removeLayer(marker);
+    updateShareUrl()
 }
 

@@ -1,5 +1,10 @@
+import {
+    AddPointOfInterestToTracker,
+    RemovePointOfInterestFromTracker,
+    SetupPointOfInterestUI,
+    RemovePointOfInterestUI
+} from './poi'
 import {updatePanelDragOverlayHeight} from './panel'
-import {AddPointOfInterestToTracker} from './poi'
 import {updateShareUrl} from './share'
 
 var tip;
@@ -52,42 +57,32 @@ var hoverIcon = new baseIcon({
     shadowSize: [41, 41]
 });
 
+export function getIcon(type) {
+    return type === 'hover' ? hoverIcon : graphIcon
+}
+
 function handleMapClick (e) {
     var map = this;
     var lat = e.latlng.lat;
     var lng = e.latlng.lng;
 
     var poi = AddPointOfInterestToTracker(lat, lng)
-    SetupPointOfInterestUI(map, poi)
+    SetupPointOfInterestUI(map, poi, hoverIcon, graphIcon)
     updateShareUrl()
 }
 
-function createMarker (map, lat, lng) {
+export function createMarker (map, lat, lng) {
     return L.marker([lat, lng], {icon: graphIcon}).addTo(map);
 }
 
-export function SetupPointOfInterestUI (map, poi) {
-    var div = createGraphDiv(poi.lat, poi.lng);
-    var marker = createMarker(map, poi.lat, poi.lng);
-
-    d3.select(div).on("mouseenter", function () {
-        marker.setIcon(hoverIcon);
-    })
-    d3.select(div).on("mouseleave", function () {
-        marker.setIcon(graphIcon);
-    })
-    createGraphRemover(map, div, marker, poi);
-}
-
-function createGraphRemover (map, div, marker, poi) {
+export function createGraphRemover (map, div, marker, poi) {
     var elem = createGraphRemoverElem();
     div.appendChild(elem);
     d3.select(elem).on("click", function () {
-        var list = document.getElementById("graph-list");
-        list.removeChild(div);
-        map.removeLayer(marker);
         RemovePointOfInterestFromTracker(poi)
+        RemovePointOfInterestUI(map, div, marker)
         updatePanelDragOverlayHeight()
+        updateShareUrl()
     });
 }
 
@@ -174,7 +169,7 @@ function handleGraphTypeBtnClick () {
     d3.select(this).classed("active", true);
 }
 
-function createGraphDiv (lat, lng) {
+export function createGraphDiv (lat, lng) {
     var decimalPlaces = 3
     lat = roundFloat(lat, decimalPlaces)
     lng = roundFloat(lng, decimalPlaces)

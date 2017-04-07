@@ -217,7 +217,6 @@ function addBaseLayerSettingsToConfig (shareBaseLayerSettings, config) {
 }
 
 function addPointsOfInterestToConfig(pois, config) {
-    console.log(pois)
     config["pois"] = pois
 }
 
