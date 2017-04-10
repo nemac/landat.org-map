@@ -6,7 +6,7 @@ import {
 } from './graph'
 import {updateShareUrl} from './share'
 import {GetMap} from './map'
-import {GetActiveTab} from './tabs'
+import {GetActiveTab, HandleTabChange} from './tabs'
 
 var _points_of_interest = []
 
@@ -61,27 +61,25 @@ export function SetupPointOfInterestUI (map, poi) {
     })
     marker.on('mouseover', function (e) {
       marker.setIcon(getIcon('hover'))
-      handleMarkerMouseEvent(e, poi)
     })
     marker.on('mouseout', function (e) {
       marker.setIcon(getIcon('graph'))
+      poi.graphDiv.getElementsByClassName('pan-to-marker-btn')[0].classList.remove('animate')
     })
 }
 
 function handleMarkerMouseEvent (e, poi) {
   e.originalEvent.stopPropagation()
-  if (e.originalEvent.type === 'click') {
-    HandleTabChange('graphs-active')
-    scrollToPointOfInterestGraph(poi)
-  }
-  if (GetActiveTab() === 'graphs-active' &&
-      e.originalEvent.type === 'mouseover') {
-    scrollToPointOfInterestGraph(poi)
-  }
-  
+  HandleTabChange('graphs-active')
+  scrollToPointOfInterestGraph(poi)
+  triggerGraphBackgroundAnimation(poi)
 }
 
-function scrollToPointOfInterestGraph(poi) {
+function triggerGraphBackgroundAnimation (poi) {
+  poi.graphDiv.getElementsByClassName('pan-to-marker-btn')[0].classList.add('animate')
+}
+
+function scrollToPointOfInterestGraph (poi) {
   var rightPanel = document.getElementById('right-panel')
   var header = document.getElementById('right-panel-header')
   rightPanel.scrollTop = poi.graphDiv.offsetTop + header.scrollHeight
