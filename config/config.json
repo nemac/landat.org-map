@@ -60,7 +60,7 @@
       {
         "id": "summary-phenology",
         "name": "Summary Phenology Variables",
-        "active": false
+        "active": true
       },
       {
         "id": "phenology-variables",
@@ -78,6 +78,11 @@
         "active": false
       },
       {
+        "id": "carbon-models",
+        "name": "Carbon Models",
+        "active": false
+      },
+      {
         "id": "it-metrics",
         "name": "Landscape Information Metrics",
         "active": false
@@ -90,13 +95,31 @@
     ]
   },
   "active-layers": [
-      ],
+    "Factor123"
+  ],
   "layers" : {
+    "carbon-models": [
+      {
+        "id": "FIACarbonStorage",
+        "name": "Estimated carbon storage, 2000-2009",
+        "info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. USFS Forest Inventory and Analysis (FIA) program."
+      },
+      {
+        "id": "LanDATCStorage",
+        "name": "LanDAT carbon storage model",
+        "info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. LanDAT model using 2000-2015 MODIS data, trained on FIA estimates."
+      },
+      {
+        "id": "ShiftCarbonStorage",
+        "name": "Landscape Shift in Carbon Storage",
+        "info": "Long-term (decadal) expected gains and losses in carbon density, estimated from observed annual changes in LanDAT phenological variables."
+      }
+    ],
     "summary-phenology": [
       {
         "id": "Factor123",
         "name": "Summary phenology: seasonality and timing",
-        "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with (1) seasonality, and with (2) the day-of-year variables such as the middle of the growing season." 
+        "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with (1) seasonality, and with (2) the day-of-year variables such as the middle of the growing season."
       },
       {
         "id": "Factor23",
