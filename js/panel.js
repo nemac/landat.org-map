@@ -38,8 +38,9 @@ export function updatePanelDragOverlayHeight () {
     var newHeight
 
     if (panel.classed('graphs-active')) {
+        var graphListExtraSpace = 700
         var graphList = document.getElementById('graph-list')
-        newHeight = header.scrollHeight + graphList.scrollHeight
+        newHeight = header.scrollHeight + graphList.scrollHeight + graphListExtraSpace
     }
     else { // panel.classed('layers-active')
         var layerList = document.getElementById('layer-list')

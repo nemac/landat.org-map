@@ -6,6 +6,7 @@ import {
 } from './graph'
 import {updateShareUrl} from './share'
 import {GetMap} from './map'
+import {GetActiveTab} from './tabs'
 
 var _points_of_interest = []
 
@@ -44,6 +45,8 @@ export function RemovePointOfInterestFromTracker(poiToRemove) {
 export function SetupPointOfInterestUI (map, poi) {
     var div = createGraphDiv(poi);
     var marker = createMarker(map, poi.lat, poi.lng);
+    poi.graphDiv = div
+    poi.marker = marker
     marker.addTo(map)
     createGraphRemover(map, div, marker, poi);
 
@@ -54,12 +57,38 @@ export function SetupPointOfInterestUI (map, poi) {
         marker.setIcon(getIcon('graph'));
     })
     marker.on('click dblclick', function (e) {
-      e.originalEvent.stopPropagation()
+      handleMarkerMouseEvent(e, poi)
+    })
+    marker.on('mouseover', function (e) {
+      marker.setIcon(getIcon('hover'))
+      handleMarkerMouseEvent(e, poi)
+    })
+    marker.on('mouseout', function (e) {
+      marker.setIcon(getIcon('graph'))
     })
 }
 
+function handleMarkerMouseEvent (e, poi) {
+  e.originalEvent.stopPropagation()
+  if (e.originalEvent.type === 'click') {
+    HandleTabChange('graphs-active')
+    scrollToPointOfInterestGraph(poi)
+  }
+  if (GetActiveTab() === 'graphs-active' &&
+      e.originalEvent.type === 'mouseover') {
+    scrollToPointOfInterestGraph(poi)
+  }
+  
+}
+
+function scrollToPointOfInterestGraph(poi) {
+  var rightPanel = document.getElementById('right-panel')
+  var header = document.getElementById('right-panel-header')
+  rightPanel.scrollTop = poi.graphDiv.offsetTop + header.scrollHeight
+}
+
 export function RemovePointOfInterestUI (map, div, marker) {
-    var list = document.getElementById("graph-list");
+    var list = document.getElementById('graph-list');
     list.removeChild(div);
     map.removeLayer(marker);
     updateShareUrl()

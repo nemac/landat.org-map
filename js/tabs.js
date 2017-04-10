@@ -5,6 +5,11 @@ export function BindTabEvents () {
     d3.selectAll(".panel-top-btn").on("click", handleTabHeaderBtnClick);
 }
 
+export function GetActiveTab () {
+    return d3.select('#right-panel').classed('graphs-active') ?
+        'graphs-active' : 'layers-active'
+}
+
 function handleTabHeaderBtnClick () {
     // If the section is already active, do nothing
     if (this.classList.contains("active")) return;
