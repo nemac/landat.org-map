@@ -119,6 +119,7 @@ function splitData(data) {
 }
 
 function reprocessData (origdata) {
+    var expectedYearLength = 46;
     var data = {};
     var point;
     var key;
@@ -135,12 +136,26 @@ function reprocessData (origdata) {
         data[key].push(point);
     }
 
+    var keysToBeDeleted = [];
+    for (i = 0; i < data.keys.length; i++) {
+        key = data.keys[i];
+        if (data[key].length !== expectedYearLength) {
+            keysToBeDeleted.push(key);
+        }
+    }
+
+    for (i = 0; i < keysToBeDeleted.length; i++) {
+        key = keysToBeDeleted[i];
+        delete data[key];
+        data.keys.splice(data.keys.indexOf(key), 1);
+    }
+
     var dataForMedians;
     var median;
     data["medians"] = [];
-    for (i = 0; i < 46; i++) {
+    for (i = 0; i < expectedYearLength; i++) {
         dataForMedians = [];
-        for (j = i; j < origdata.length; j += 46) {
+        for (j = i; j < origdata.length; j += expectedYearLength) {
             dataForMedians.push(origdata[j][1]);
         }
 
