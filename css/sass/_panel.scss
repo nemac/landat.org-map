@@ -9,16 +9,18 @@
 }
 
 .panel-header-wrapper {
-    border-bottom: 1px solid $border-color;
+
 }
 
 #right-panel-header {
     height: $panel-header-wrapper-height;
     position: relative;
+    border-bottom: 1px solid $border-color;
 }
 
 #graph-type-header {
     height: $panel-header-wrapper-height/1.5;
+    margin-top: 12px;
 }
 
 .panel-section-wrapper {
@@ -72,5 +74,18 @@
 }
 
 .graph-type-btn {
-    border-radius: 5px 5px 0px 0px;
+    &:first-child {
+        border-radius: 15px 0px 0px 15px;
+    }
+    &:last-child {
+        border-radius: 0px 15px 15px 0px;
+    }
+}
+
+#about-text {
+    p {
+        padding: 15px 15px 0px 15px;
+        line-height: 1.5;
+        font-size: 1.3em;        
+    }
 }
