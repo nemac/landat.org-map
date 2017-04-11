@@ -529,9 +529,9 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
             var coors = line([d]).slice(1).slice(0, -1);
             return "translate(" + coors + ")"
         })
-        .attr("r", 2.5)
+        .attr("r", 4)
         .attr("stroke", "#000")
-        .attr("fill", "#dd82d2")
+        .attr("fill", "#ea0c48")
         .on("mouseover", function(d) {
             tip.show("Center: "  + String(d[1]).substring(0, 7));
             this.setAttribute("r", 5);
@@ -540,7 +540,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         })
         .on("mouseout", function (d) {
             tip.hide();
-            this.setAttribute("r", 2.5);
+            this.setAttribute("r", 4);
             this.setAttribute("stroke-width", "1px");
             d3.select(this).classed("active", true);
         });
