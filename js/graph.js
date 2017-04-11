@@ -700,11 +700,9 @@ function findPolarThresholds (data, startDay) {
 
     var fifteenThreshold = totalSum * .15;
     var eightyThreshold = totalSum * .80;
-    var eightyfiveThreshold = totalSum * .85;
     var fifteenIndexFound = false, 
-        eightyIndexFound = false,
-        eightyfiveIndexFound = false;
-    var fifteenIndex, eightyIndex, eightyfiveIndex;
+        eightyIndexFound = false;
+    var fifteenIndex, eightyIndex;
 
     totalSum = 0;
     for (i = 0; i < length; i++) {
@@ -720,18 +718,12 @@ function findPolarThresholds (data, startDay) {
             eightyIndexFound = true;
             continue;
         }
-        if (!eightyfiveIndexFound && totalSum > eightyfiveThreshold) {
-            eightyfiveIndex = j;
-            eightyfiveIndexFound = true;
-            break;
-        }
     }
 
     var circleCenter = [0, 0];
 
     var fifteenEnd = [(fifteenIndex * 8) + 3, 100];
     var eightyEnd = [(eightyIndex * 8) + 3, 100];
-    var eightyfiveEnd = [(eightyfiveIndex * 8) + 3, 100];
 
     return [
         {
@@ -741,10 +733,6 @@ function findPolarThresholds (data, startDay) {
         {
             "label" : "80%",
             "data" : [circleCenter, eightyEnd]
-        },
-        {
-            "label" : "85%",
-            "data" : [circleCenter, eightyfiveEnd]
         }
     ];
 }
