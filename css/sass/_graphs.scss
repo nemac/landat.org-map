@@ -170,12 +170,15 @@ path {
 
 .graph-elem {
     position: relative;
+
+    /* The Graph */
+    div {
+        clear: both;
+    }
 }
 
 .remove-graph {
     float: right;
-    top: 20px;
-    background: white;
     background: transparent;
     color: $graph-close-button-color;
     font-size: 19px;

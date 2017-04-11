@@ -78,7 +78,7 @@ export function createMarker (map, lat, lng) {
 
 export function createGraphRemover (map, div, marker, poi) {
     var elem = createGraphRemoverElem();
-    div.appendChild(elem);
+    div.getElementsByClassName("graph-elem-header")[0].appendChild(elem);
     d3.select(elem).on("click", function () {
         RemovePointOfInterestFromTracker(poi)
         RemovePointOfInterestUI(map, div, marker)
@@ -174,14 +174,17 @@ export function createGraphDiv (poi) {
     var decimalPlaces = 3
     var latShort = roundFloat(poi.lat, decimalPlaces)
     var lngShort = roundFloat(poi.lng, decimalPlaces)
-    var div = document.createElement("div");
+    var wrapper = document.createElement("div");
+    var header = document.createElement("div");
+    wrapper.appendChild(header)
     var zoomToMarkerButton = makeZoomToMapMarkerButton(poi)
     var content = document.createTextNode("Lat: " + latShort + ", Lon: " + lngShort);
-    div.appendChild(zoomToMarkerButton)
-    div.appendChild(content);
-    div.classList.add("graph-elem")
-    getData(poi.lat, poi.lng, div);
-    return div;
+    header.appendChild(zoomToMarkerButton)
+    header.appendChild(content);
+    wrapper.classList.add("graph-elem")
+    header.classList.add("graph-elem-header")
+    getData(poi.lat, poi.lng, wrapper);
+    return wrapper;
 }
 
 function makeZoomToMapMarkerButton(poi) {
