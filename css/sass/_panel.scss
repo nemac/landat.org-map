@@ -102,6 +102,25 @@
     }
 }
 
+.layer-group-btn {
+    &:before {
+        content: "\203a";
+        font-size: 20px;
+        line-height: 1px;
+        padding-right: 10px;
+        text-shadow: none;
+    }
+}
+
+.layer-group-wrapper.active {
+    .layer-group-btn:before {
+        content: "\2304";
+        font-size: 30px;
+        margin-left: -5px;
+        padding-right: 5px;
+    }
+}
+
 .graph-type-btn {
     background: #fff;
     width: 25%;
@@ -137,3 +156,4 @@
         font-size: 1.3em;        
     }
 }
+
