@@ -135,7 +135,7 @@ path {
     }
 
     text {
-        font: 10px sans-serif;
+        font: 13px sans-serif;
     }
 
     line, circle {
@@ -198,6 +198,7 @@ path {
     }
 
     label {
+        font-size: 13px;
         padding-left: 5px;
         cursor: pointer;
     }
@@ -205,4 +206,23 @@ path {
     input {
         cursor: pointer;
     }
+
+    label, input {
+        vertical-align: middle;
+    }
+}
+
+.graph-lat-lon {
+    display: inline-block;
+    font-size: 15px;
+}
+
+.graph-pip-example {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border: 1px solid black;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-left: 4px;
 }

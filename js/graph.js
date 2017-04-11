@@ -194,10 +194,16 @@ export function createGraphDiv (poi) {
     wrapper.appendChild(header)
     var zoomToMarkerButton = makeZoomToMapMarkerButton(poi)
     var content = document.createTextNode("Lat: " + latShort + ", Lon: " + lngShort);
+    var contentDiv = document.createElement("div");
+    contentDiv.className = "graph-lat-lon";
+    contentDiv.appendChild(content);
+
     header.appendChild(zoomToMarkerButton)
-    header.appendChild(content);
+    header.appendChild(contentDiv);
+
     wrapper.classList.add("graph-elem")
     header.classList.add("graph-elem-header")
+
     getData(poi.lat, poi.lng, wrapper);
     return wrapper;
 }
@@ -231,7 +237,7 @@ function roundFloat(number, decimalPlaces) {
 
 function makeUpDownLineGraph (data, div, averages) {
     // Set the dimensions of the canvas / graph
-    var margin = {top: 30, right: 20, bottom: 30, left: 25},
+    var margin = {top: 30, right: 20, bottom: 30, left: 29},
     width = 580 - margin.left - margin.right,
     height = 270 - margin.top - margin.bottom;
 
@@ -306,7 +312,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
     var charts = {};
 
     // Set the dimensions of the canvas / graph
-    var margin = {top: 30, right: 20, bottom: 30, left: 25},
+    var margin = {top: 30, right: 20, bottom: 30, left: 29},
         width = 500 - margin.left - margin.right,
         height = 270 - margin.top - margin.bottom;
 
@@ -492,10 +498,10 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         .attr("x2", radius);
 
     thresholdElem.append("text")
-        .attr("x", radius + 6)
-        .attr("y", function (d) { return ((((d.data[1][0] - 1)%365)/365) * (2*Math.PI)); })
+        .attr("x", function (d) { var day = d.data[1][0]; return day < 360 && day > 180 ? radius + 30 : radius - 30})
+        .attr("y", function (d) { return ((((d.data[1][0])%365)/365) * (2*Math.PI)) + 6; })
         .attr("dy", ".35em")
-        .style("text-anchor", function(d) { var day = d.data[1][0]; return day < 360 && day > 180 ? "end" : null; })
+        .style("text-anchor", function(d) { var day = d.data[1][0]; return day < 360 && day > 180 ? "middle" : null; })
         .attr("transform", function(d) { var day = d.data[1][0]; return day < 360 && day > 180 ? "rotate(180 " + (radius + 6) + ",0)" : null; })
         .text(function(d) { return d.label; });
 
@@ -586,6 +592,10 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         checkboxWrapper.append("label")
             .text(key)
             .attr("for", "polar-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
+
+        checkboxWrapper.append("div")
+            .style("background", pullDistinctColor(key !== "medians" ? key : 0))
+            .classed("graph-pip-example", true);
     });
 
     var checkboxWrapper = inputwrapper.append("div");
@@ -614,6 +624,10 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
     checkboxWrapper.append("label")
         .text("Baseline")
         .attr("for", "polar-average-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
+
+    checkboxWrapper.append("div")
+        .style("background", pullDistinctColor(0))
+        .classed("graph-pip-example", true);
 
     var thresholdCheckbox= inputwrapper.append("div")
         .classed("threshold-checkbox", true);
@@ -826,6 +840,10 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
     checkboxWrapper.append("label")
         .text(key)
         .attr("for", type + "-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
+
+    checkboxWrapper.append("div")
+        .style("background", pullDistinctColor(key !== "medians" ? key : 0))
+        .classed("graph-pip-example", true);
 }
 
 function pullDistinctColor (year) {

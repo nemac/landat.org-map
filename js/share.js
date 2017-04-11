@@ -68,7 +68,7 @@ function handleBodyClick () {
     var i, l;
 
     for (i = 0, l = parents.length; i < l; i++) {
-        if (parents[i].className && parents[i].className.indexOf("share-link") !== -1) {
+        if (parents[i].className && typeof(parents[i].className) === "string" && parents[i].className.indexOf("share-link") !== -1) {
             clickedInPopup = true;
             break;
         }
