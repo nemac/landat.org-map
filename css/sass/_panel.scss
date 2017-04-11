@@ -121,7 +121,6 @@
         background: #fff;
         color: $btn-color-hover;
         border-bottom: 3px solid $btn-color-hover;
-        background-image: repeating-linear-gradient(180deg, transparent, transparent 27px, $btn-color-hover 36px);
     }
 
     &.active {
