@@ -113,6 +113,8 @@ $share-triangle-height: 10px;
     }
 
     .remove-graph {
+        position: absolute;
+        float: none;
         top: 8px;
         right: 10px;
         font-size: 12px;
