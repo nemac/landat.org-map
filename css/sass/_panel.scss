@@ -1,16 +1,4 @@
-
-@import 'mixins';
-
-$panel-header-wrapper-height: 50px;
-
-$border-color: #666;
-
-$btn-color: #8dbed6;
-$btn-color-hover: #4eb3e4;
-$btn-color-active: #06c8f7;
-$btn-font-size: 16px;
-$btn-font-color: #fff;
-$btn-text-shadow-color: #0878af;
+@import 'vars';
 
 #right-panel-drag-overlay {
     z-index: 5;
@@ -20,15 +8,17 @@ $btn-text-shadow-color: #0878af;
     position: absolute;
 }
 
-.panel-top-btn {
-    width: 50%;
+.panel-header-wrapper {
+    border-bottom: 1px solid $border-color;
 }
 
-.panel-header-wrapper {
+#right-panel-header {
     height: $panel-header-wrapper-height;
-    border-bottom: 1px solid $border-color;
-    vertical-align: top;
     position: relative;
+}
+
+#graph-type-header {
+    height: $panel-header-wrapper-height/1.5;
 }
 
 .panel-section-wrapper {
@@ -64,12 +54,23 @@ $btn-text-shadow-color: #0878af;
 
 .panel-btn {
     display: inline-block;
-    border-right: 1px solid $border-color;
-    text-align: center;
-    padding-top: 15px;
     height: 100%;
+    width: 33.333%;
+    padding-top: 12px;
+    vertical-align: top;
+    text-align: center;
+    border-right: 1px solid $border-color;
 
     &:last-child {
         border-right: 0;
     }
+}
+
+.panel-top-btn {
+
+ 
+}
+
+.graph-type-btn {
+    border-radius: 5px 5px 0px 0px;
 }
