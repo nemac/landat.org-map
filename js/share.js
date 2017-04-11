@@ -197,7 +197,8 @@ function getParamsArray (params) {
 function mangleParamString (url) {
     return url.replace(/\:/g, "%3A")
         .replace(/\//g, "%2F")
-        .replace(/\,/g, "%2C");
+        .replace(/\,/g, "%2C")
+        .replace(/\&/g, "%26");
 }
 
 function unmangleParamString (params) {
