@@ -781,8 +781,8 @@ function drawLinearPoints(data, line, svg, averages) {
         .attr("r", 3)
         .attr("stroke", "#000")
         .attr("fill",function(d,i){
-            var val = Array.isArray(d) ? d[1] : d;
-            return computeColor(val, averages[i%46], 3);
+            var val = Array.isArray(d) ? d[0].substring(0, 4) : 0;
+            return pullDistinctColor(val)
         })
         .on("mouseover", handlePointMouseover)
         .on("mouseout", handlePointMouseout);
@@ -828,16 +828,28 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
         .attr("for", type + "-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
 }
 
-function computeColor (value, median, scale) {
-    var diff = value - median;
-    var percent_diff = (Math.abs(diff)/median) * 100 * scale;
-    var lightness = (100 - percent_diff) + "%";
+function pullDistinctColor (year) {
+    var colorRamp = [
+        "#593315",
+        "#7F180D",
+        "#B32851",
+        "#F6768E",
+        "#C10020",
+        "#F13A13",
+        "#FF7A5C",
+        "#F4C800",
+        "#CEA262",
+        "#93AA00",
+        "#007D34",
+        "#232C16",
+        "#A6BDD7",
+        "#00538A",
+        "#803E75",
+        "#53377A",
+        "#817066"
+    ];
 
-    if (diff > 0) {
-        return "hsl(8, 79%, " + lightness + ")";
-    } else {
-        return "hsl(219, 79%, " + lightness + ")";
-    }
+    return (year === 0) ? "#fff" : colorRamp[parseInt(year, 10) % colorRamp.length];
 }
 
 ///////////////////////// DATE HELPERS /////////////////////////////////
