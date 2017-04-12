@@ -170,9 +170,9 @@ function reprocessData (origdata) {
 
 function handleGraphTypeBtnClick () {
     console.log(this)
-    var type = this.dataset.type;
+    var type = this.getAttribute('data-type');
     var activeElem = document.getElementsByClassName("graph-type-btn active")[0];
-    var activeType = activeElem.dataset.type;
+    var activeType = this.getAttribute('data-type');
 
     if (type === activeType) {
         return;
@@ -211,7 +211,8 @@ export function createGraphDiv (poi) {
 
 function makeZoomToMapMarkerButton(poi) {
     var button = document.createElement("button")
-    button.classList.add('btn', 'pan-to-marker-btn')
+    button.classList.add('btn')
+    button.classList.add('pan-to-marker-btn')
     button.textContent = "Show On Map"
     button.onclick = function (poi, e) {
         var map = GetMap()

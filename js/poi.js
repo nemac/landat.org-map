@@ -72,10 +72,10 @@ function handleMarkerMouseEvent (e, poi) {
   e.originalEvent.stopPropagation()
   HandleTabChange('graphs-active')
   scrollToPointOfInterestGraph(poi)
-  triggerGraphBackgroundAnimation(poi)
+  triggerGraphAnimation(poi)
 }
 
-function triggerGraphBackgroundAnimation (poi) {
+function triggerGraphAnimation (poi) {
   poi.graphDiv.getElementsByClassName('pan-to-marker-btn')[0].classList.add('animate')
 }
 
