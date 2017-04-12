@@ -38,7 +38,7 @@ export function AddMultiplePointsOfInterest (pois) {
 
 export function RemovePointOfInterestFromTracker(poiToRemove) {
   _points_of_interest = _points_of_interest.filter(poi => {
-    return !Object.is(poi, poiToRemove)
+    return !(poi === poiToRemove)
   })
 }
 

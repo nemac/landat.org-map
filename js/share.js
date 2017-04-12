@@ -63,7 +63,12 @@ export function BindCopyLinkEvents () {
  */
 function handleBodyClick () {
     var event = d3.event;
-    var parents = event.path;
+    var parents = []
+    if (event.path) {
+        parents = event.path
+    } else {
+        parents = getDomPath(event.srcElement)
+    }
     var clickedInPopup = false;
     var i, l;
 
@@ -77,6 +82,15 @@ function handleBodyClick () {
     if (!clickedInPopup) {
         handleCopyLinkClose();
     }
+}
+
+function getDomPath(node) {
+    var path = []
+    while (node) {
+        path.push(node)
+        node = node.parentNode
+    }
+    return path
 }
 
 function handleShareLinkButtonClick () {

@@ -4,12 +4,23 @@
  * of using the config file, since we do not know how long it
  * will take to grab the file.
  */
-export default function ParseConfig (configFile, callback) {
+export function ParseConfig (configFile, callback) {
     GetConfig(configFile, callback);
 }
 
+export function getAjaxObject() {
+    var xmlhttp
+    // For Internet Explorer
+    if (window.ActiveXObject) {
+        xmlhttp = new window.ActiveXObject("Microsoft.XMLHTTP")
+    } else {
+        xmlhttp = new XMLHttpRequest();
+    }
+    return xmlhttp
+}
+
 function GetConfig (configFile, callback) {
-    var xmlhttp = new XMLHttpRequest();
+    var xmlhttp = getAjaxObject()
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4) {
             try {

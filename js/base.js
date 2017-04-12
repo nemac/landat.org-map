@@ -1,4 +1,4 @@
-import ParseConfig from './parser';
+import {ParseConfig} from './parser';
 import CreateSearch from './search';
 import {SetupPanel} from './panel';
 import {CreateBaseLayers} from './baselayer';
