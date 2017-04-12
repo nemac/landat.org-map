@@ -123,10 +123,12 @@
 
 .graph-type-btn {
     background: #fff;
-    width: 33.333%;
+    width: auto;
     padding-top: 0;
+    padding-left: 15px;
+    padding-right: 15px;
     border-bottom: 3px solid $border-color;
-    margin: 0 0px -3px;
+    margin: 0 10px -3px;
     box-sizing: content-box;
     border-right: none;
     color: #111;
