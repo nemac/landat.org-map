@@ -5,7 +5,7 @@ import {CreateBaseLayers} from './baselayer';
 import {SetupGraphs, BindGraphEvents} from './graph'
 import {BindTabEvents, HandleTabChange} from './tabs'
 import {CreateMap} from './map'
-import {BindUpdateShareUrl, AddShareSettingsToConfig} from './share'
+import {BindUpdateShareUrl, AddShareSettingsToConfig, BindCopyLinkEvents} from './share'
 import {CreateDefaultLayers} from './layer'
 import CreateLogo from './logo';
 import {SetupPointsOfInterest} from './poi';
@@ -18,6 +18,7 @@ var Base = function (config) {
     ParseConfig(config, callback);
     SetupGraphs();
     BindTabEvents();
+    BindCopyLinkEvents();
 }
 
 // Does rely on map object or config file

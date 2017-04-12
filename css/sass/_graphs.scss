@@ -1,14 +1,4 @@
 
-@import 'panel';
-
-$graph-close-button-color: #f31616;
-
-/* Graph UI */
-
-.graph-type-btn {
-    width: 33.333%;
-}
-
 #graphs-wrapper {
     max-height: 100%;
 }
@@ -57,31 +47,63 @@ $graph-close-button-color: #f31616;
     display: none;
 }
 
-.graph-timeseries .timeseries-graph {
-    display: block;
+#timeseries-graph-info, #overlapping-graph-info, #polar-graph-info {
+    display: none
+}
+
+.graph-timeseries {
+
+    #timeseries-graph-info {
+        display: block;
+    }
+
+    .timeseries-graph {
+        display: block;
+
     
-    svg {
-        width: 100%;
+        svg {
+            width: 100%;
+        }
     }
 }
 
-.graph-overlapping .overlapping-graph {
-    display: block;
+.graph-overlapping {
 
-    svg {
-        width: 85%;
+    #overlapping-graph-info {
+        display: block;
+    }
+
+    .overlapping-graph {
+    
+        display: block;
+
+        svg {
+            width: 85%;
+        }
     }
 }
 
-.graph-polar .polar-graph {
-    display: block;
+.graph-polar {
 
-    svg {
-        width: 85%;
-        min-height: 490px;
+    #polar-graph-info {
+        display: block;
+    }
+
+    .polar-graph {
+        display: block;
+
+        svg {
+            width: 85%;
+            min-height: 490px;
+        }
     }
 }
 
+.graph-type-info {
+    font-size: 18px;
+    padding: 20px;
+    border-bottom: 1px solid $border-color;
+}
 
 /* Graph Tooltips */
 
@@ -143,7 +165,7 @@ path {
     }
 
     text {
-        font: 10px sans-serif;
+        font: 13px sans-serif;
     }
 
     line, circle {
@@ -165,8 +187,8 @@ path {
 }
 
 .center-line {
-    stroke: #dd82d2;
-    stroke-width: 3px;
+    stroke: #ea0c48;
+    stroke-width: 4px;
 }
 
 .growing-season-line {
@@ -178,20 +200,21 @@ path {
 
 .graph-elem {
     position: relative;
+
+    /* The Graph */
+    div {
+        clear: both;
+    }
 }
 
 .remove-graph {
-    position: absolute;
-    right: 15px;
-    top: 20px;
-    background: white;
+    float: right;
     background: transparent;
     color: $graph-close-button-color;
     font-size: 19px;
     padding: 2px 6px;
     border: 1px solid $graph-close-button-color;
     border-radius: 4px;
-    z-index: 100;
     cursor: pointer;
 }
 
@@ -205,6 +228,7 @@ path {
     }
 
     label {
+        font-size: 13px;
         padding-left: 5px;
         cursor: pointer;
     }
@@ -212,4 +236,23 @@ path {
     input {
         cursor: pointer;
     }
+
+    label, input {
+        vertical-align: middle;
+    }
+}
+
+.graph-lat-lon {
+    display: inline-block;
+    font-size: 15px;
+}
+
+.graph-pip-example {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border: 1px solid black;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-left: 4px;
 }

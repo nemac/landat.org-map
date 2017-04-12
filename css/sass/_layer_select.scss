@@ -1,23 +1,4 @@
-@import 'layer_list';
-@import 'mixins';
-
-$layer-checkbox-length: 20px;
-$layer-checkbox-margin-right: 5px;
-
-$layer-info-content-font-size: 13px;
-
-$layer-div-content-margin-left: $layer-checkbox-length + $layer-checkbox-margin-right;
-
-$legend-wrapper-margin-vert: 10px;
-
-$layer-select-text-color: #22333B;
-$layer-select-color-primary: #D9F0F9;
-$layer-select-color-secondary: #C7DCE5;
-
-$layer-select-padding-top: 10px;
-$layer-select-padding-right: 30px;
-$layer-select-padding-bottom: 15px;
-$layer-select-padding-left: 15px;
+@import 'vars';
 
 .layer-select {
     border-bottom: 1px solid $border-color;

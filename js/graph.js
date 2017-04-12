@@ -78,7 +78,7 @@ export function createMarker (map, lat, lng) {
 
 export function createGraphRemover (map, div, marker, poi) {
     var elem = createGraphRemoverElem();
-    div.appendChild(elem);
+    div.getElementsByClassName("graph-elem-header")[0].appendChild(elem);
     d3.select(elem).on("click", function () {
         RemovePointOfInterestFromTracker(poi)
         RemovePointOfInterestUI(map, div, marker)
@@ -119,6 +119,7 @@ function splitData(data) {
 }
 
 function reprocessData (origdata) {
+    var expectedYearLength = 46;
     var data = {};
     var point;
     var key;
@@ -135,12 +136,26 @@ function reprocessData (origdata) {
         data[key].push(point);
     }
 
+    var keysToBeDeleted = [];
+    for (i = 0; i < data.keys.length; i++) {
+        key = data.keys[i];
+        if (data[key].length !== expectedYearLength) {
+            keysToBeDeleted.push(key);
+        }
+    }
+
+    for (i = 0; i < keysToBeDeleted.length; i++) {
+        key = keysToBeDeleted[i];
+        delete data[key];
+        data.keys.splice(data.keys.indexOf(key), 1);
+    }
+
     var dataForMedians;
     var median;
     data["medians"] = [];
-    for (i = 0; i < 46; i++) {
+    for (i = 0; i < expectedYearLength; i++) {
         dataForMedians = [];
-        for (j = i; j < origdata.length; j += 46) {
+        for (j = i; j < origdata.length; j += expectedYearLength) {
             dataForMedians.push(origdata[j][1]);
         }
 
@@ -174,14 +189,23 @@ export function createGraphDiv (poi) {
     var decimalPlaces = 3
     var latShort = roundFloat(poi.lat, decimalPlaces)
     var lngShort = roundFloat(poi.lng, decimalPlaces)
-    var div = document.createElement("div");
+    var wrapper = document.createElement("div");
+    var header = document.createElement("div");
+    wrapper.appendChild(header)
     var zoomToMarkerButton = makeZoomToMapMarkerButton(poi)
     var content = document.createTextNode("Lat: " + latShort + ", Lon: " + lngShort);
-    div.appendChild(zoomToMarkerButton)
-    div.appendChild(content);
-    div.classList.add("graph-elem")
-    getData(poi.lat, poi.lng, div);
-    return div;
+    var contentDiv = document.createElement("div");
+    contentDiv.className = "graph-lat-lon";
+    contentDiv.appendChild(content);
+
+    header.appendChild(zoomToMarkerButton)
+    header.appendChild(contentDiv);
+
+    wrapper.classList.add("graph-elem")
+    header.classList.add("graph-elem-header")
+
+    getData(poi.lat, poi.lng, wrapper);
+    return wrapper;
 }
 
 function makeZoomToMapMarkerButton(poi) {
@@ -213,7 +237,7 @@ function roundFloat(number, decimalPlaces) {
 
 function makeUpDownLineGraph (data, div, averages) {
     // Set the dimensions of the canvas / graph
-    var margin = {top: 30, right: 20, bottom: 30, left: 25},
+    var margin = {top: 30, right: 20, bottom: 30, left: 29},
     width = 580 - margin.left - margin.right,
     height = 270 - margin.top - margin.bottom;
 
@@ -288,7 +312,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
     var charts = {};
 
     // Set the dimensions of the canvas / graph
-    var margin = {top: 30, right: 20, bottom: 30, left: 25},
+    var margin = {top: 30, right: 20, bottom: 30, left: 29},
         width = 500 - margin.left - margin.right,
         height = 270 - margin.top - margin.bottom;
 
@@ -474,10 +498,10 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         .attr("x2", radius);
 
     thresholdElem.append("text")
-        .attr("x", radius + 6)
-        .attr("y", function (d) { return ((((d.data[1][0] - 1)%365)/365) * (2*Math.PI)); })
+        .attr("x", function (d) { var day = d.data[1][0]; return day < 360 && day > 180 ? radius + 30 : radius - 30})
+        .attr("y", function (d) { return ((((d.data[1][0])%365)/365) * (2*Math.PI)) + 6; })
         .attr("dy", ".35em")
-        .style("text-anchor", function(d) { var day = d.data[1][0]; return day < 360 && day > 180 ? "end" : null; })
+        .style("text-anchor", function(d) { var day = d.data[1][0]; return day < 360 && day > 180 ? "middle" : null; })
         .attr("transform", function(d) { var day = d.data[1][0]; return day < 360 && day > 180 ? "rotate(180 " + (radius + 6) + ",0)" : null; })
         .text(function(d) { return d.label; });
 
@@ -505,9 +529,9 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
             var coors = line([d]).slice(1).slice(0, -1);
             return "translate(" + coors + ")"
         })
-        .attr("r", 2.5)
+        .attr("r", 4)
         .attr("stroke", "#000")
-        .attr("fill", "#dd82d2")
+        .attr("fill", "#ea0c48")
         .on("mouseover", function(d) {
             tip.show("Center: "  + String(d[1]).substring(0, 7));
             this.setAttribute("r", 5);
@@ -516,7 +540,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         })
         .on("mouseout", function (d) {
             tip.hide();
-            this.setAttribute("r", 2.5);
+            this.setAttribute("r", 4);
             this.setAttribute("stroke-width", "1px");
             d3.select(this).classed("active", true);
         });
@@ -568,6 +592,10 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         checkboxWrapper.append("label")
             .text(key)
             .attr("for", "polar-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
+
+        checkboxWrapper.append("div")
+            .style("background", pullDistinctColor(key !== "medians" ? key : 0))
+            .classed("graph-pip-example", true);
     });
 
     var checkboxWrapper = inputwrapper.append("div");
@@ -596,6 +624,10 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
     checkboxWrapper.append("label")
         .text("Baseline")
         .attr("for", "polar-average-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
+
+    checkboxWrapper.append("div")
+        .style("background", pullDistinctColor(0))
+        .classed("graph-pip-example", true);
 
     var thresholdCheckbox= inputwrapper.append("div")
         .classed("threshold-checkbox", true);
@@ -697,11 +729,9 @@ function findPolarThresholds (data, startDay) {
 
     var fifteenThreshold = totalSum * .15;
     var eightyThreshold = totalSum * .80;
-    var eightyfiveThreshold = totalSum * .85;
     var fifteenIndexFound = false, 
-        eightyIndexFound = false,
-        eightyfiveIndexFound = false;
-    var fifteenIndex, eightyIndex, eightyfiveIndex;
+        eightyIndexFound = false;
+    var fifteenIndex, eightyIndex;
 
     totalSum = 0;
     for (i = 0; i < length; i++) {
@@ -717,18 +747,12 @@ function findPolarThresholds (data, startDay) {
             eightyIndexFound = true;
             continue;
         }
-        if (!eightyfiveIndexFound && totalSum > eightyfiveThreshold) {
-            eightyfiveIndex = j;
-            eightyfiveIndexFound = true;
-            break;
-        }
     }
 
     var circleCenter = [0, 0];
 
     var fifteenEnd = [(fifteenIndex * 8) + 3, 100];
     var eightyEnd = [(eightyIndex * 8) + 3, 100];
-    var eightyfiveEnd = [(eightyfiveIndex * 8) + 3, 100];
 
     return [
         {
@@ -738,10 +762,6 @@ function findPolarThresholds (data, startDay) {
         {
             "label" : "80%",
             "data" : [circleCenter, eightyEnd]
-        },
-        {
-            "label" : "85%",
-            "data" : [circleCenter, eightyfiveEnd]
         }
     ];
 }
@@ -775,8 +795,8 @@ function drawLinearPoints(data, line, svg, averages) {
         .attr("r", 3)
         .attr("stroke", "#000")
         .attr("fill",function(d,i){
-            var val = Array.isArray(d) ? d[1] : d;
-            return computeColor(val, averages[i%46], 3);
+            var val = Array.isArray(d) ? d[0].substring(0, 4) : 0;
+            return pullDistinctColor(val)
         })
         .on("mouseover", handlePointMouseover)
         .on("mouseout", handlePointMouseout);
@@ -820,18 +840,34 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
     checkboxWrapper.append("label")
         .text(key)
         .attr("for", type + "-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
+
+    checkboxWrapper.append("div")
+        .style("background", pullDistinctColor(key !== "medians" ? key : 0))
+        .classed("graph-pip-example", true);
 }
 
-function computeColor (value, median, scale) {
-    var diff = value - median;
-    var percent_diff = (Math.abs(diff)/median) * 100 * scale;
-    var lightness = (100 - percent_diff) + "%";
+function pullDistinctColor (year) {
+    var colorRamp = [
+        "#593315",
+        "#7F180D",
+        "#B32851",
+        "#F6768E",
+        "#C10020",
+        "#F13A13",
+        "#FF7A5C",
+        "#F4C800",
+        "#CEA262",
+        "#93AA00",
+        "#007D34",
+        "#232C16",
+        "#A6BDD7",
+        "#00538A",
+        "#803E75",
+        "#53377A",
+        "#817066"
+    ];
 
-    if (diff > 0) {
-        return "hsl(8, 79%, " + lightness + ")";
-    } else {
-        return "hsl(219, 79%, " + lightness + ")";
-    }
+    return (year === 0) ? "#fff" : colorRamp[parseInt(year, 10) % colorRamp.length];
 }
 
 ///////////////////////// DATE HELPERS /////////////////////////////////

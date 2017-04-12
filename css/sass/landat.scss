@@ -1,3 +1,4 @@
+@import 'vars';
 @import 'graphs';
 @import 'layer_list';
 @import 'layer_select';
@@ -5,9 +6,8 @@
 @import 'search';
 @import 'baselayers';
 @import 'logo';
+@import 'share';
 
-$panel-min-width-layers: 450px;
-$panel-min-width-graphs: 600px;
 
 html, body, #wrapper {
     width: 100%;
@@ -31,6 +31,11 @@ html, body, #wrapper {
     }
 
     &.layers-active {
+        min-width: $panel-min-width-layers;
+        width: $panel-min-width-layers;
+    }
+
+    &.about-active {
         min-width: $panel-min-width-layers;
         width: $panel-min-width-layers;
     }
