@@ -169,10 +169,9 @@ function reprocessData (origdata) {
 ////////////////////// GRAPH INTERFACE ///////////////////////////
 
 function handleGraphTypeBtnClick () {
-    console.log(this)
     var type = this.getAttribute('data-type');
     var activeElem = document.getElementsByClassName("graph-type-btn active")[0];
-    var activeType = this.getAttribute('data-type');
+    var activeType = activeElem.getAttribute('data-type');
 
     if (type === activeType) {
         return;
@@ -182,8 +181,8 @@ function handleGraphTypeBtnClick () {
         .classed("graph-" + activeType, false)
         .classed("graph-" + type, true);
 
-    d3.select(activeElem).classed("active", false);
-    d3.select(this).classed("active", true);
+    activeElem.classList.remove('active')
+    this.classList.add('active')
 }
 
 export function createGraphDiv (poi) {
