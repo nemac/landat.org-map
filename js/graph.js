@@ -848,23 +848,24 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
 
 function pullDistinctColor (year) {
     var colorRamp = [
-        "#593315",
-        "#7F180D",
-        "#B32851",
-        "#F6768E",
-        "#C10020",
-        "#F13A13",
-        "#FF7A5C",
-        "#F4C800",
-        "#CEA262",
-        "#93AA00",
-        "#007D34",
-        "#232C16",
-        "#A6BDD7",
-        "#00538A",
-        "#803E75",
-        "#53377A",
-        "#817066"
+        "#ffe476",
+        "#036593",
+        "#116c91",
+        "#1e7390",
+        "#2c7b8e",
+        "#39828c",
+        "#4c8c8a",
+        "#5e9589",
+        "#719f87",
+        "#83a886",
+        "#95b183",
+        "#a6ba80",
+        "#b8c37c",
+        "#cacc79",
+        "#d6d279",
+        "#e2d779",
+        "#efdd78",
+        "#fbe378"
     ];
 
     return (year === 0) ? "#fff" : colorRamp[parseInt(year, 10) % colorRamp.length];
