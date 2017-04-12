@@ -91,9 +91,9 @@ function makeWmsTileLayer (layer) {
         layers: layer.id,
         transparent: layer.transparent || true,
         version: layer.version || '1.3.0',
-        crs: layer.crs || L.CRS.EPSG4326,
+        crs: layer.crs || L.CRS.EPSG900913,
         format: layer.format || 'image/png',
         opacity: layer.opacity || 1.0,
-        tileSize: layer.tileSize || 256
+        tileSize: layer.tileSize || document.getElementById("map").clientWidth
     });
 }
