@@ -10,11 +10,11 @@ export function ParseConfig (configFile, callback) {
 
 export function getAjaxObject() {
     var xmlhttp
-    // For Internet Explorer
-    if (window.ActiveXObject) {
+    try {
+        xmlhttp = new XMLHttpRequest()
+    }
+    catch (err) {
         xmlhttp = new window.ActiveXObject("Microsoft.XMLHTTP")
-    } else {
-        xmlhttp = new XMLHttpRequest();
     }
     return xmlhttp
 }
