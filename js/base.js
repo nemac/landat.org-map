@@ -13,8 +13,14 @@ import {updateShareUrl} from './share';
 
 var css = require('../css/sass/landat.scss')
 
+function getBrowserVersion () {
+    var ua = window.navigator.userAgent
+    console.log(ua)
+}
+
 // Does not rely on map object or config file
 var Base = function (config) {
+    getBrowserVersion()
     ParseConfig(config, callback);
     SetupGraphs();
     BindTabEvents();

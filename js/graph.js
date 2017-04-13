@@ -7,8 +7,13 @@ import {
 import {updatePanelDragOverlayHeight} from './panel'
 import {updateShareUrl} from './share'
 import {GetMap} from './map'
+import {GetAjaxObject} from './parser'
 
-var tip;
+var tip = {};
+
+function getGraphTip() {
+    return tip
+}
 
 export function SetupGraphs () {
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
@@ -97,17 +102,46 @@ function createGraphRemoverElem () {
 
 ////////////////////// GRAPH DATA PROCESSING ///////////////////////////////
 
+function GraphDataQueue () {
+    var _queue = []
+
+    return {
+
+        push: function (request, url) {
+            _queue.push(request)
+            if (queue.length > 1 && queue[length-1].readyState < 4) {
+                _queue[length-1].addEventListener('load', function (e) {
+                    sendRequest(request, url)
+                })
+            } else {
+                sendRequest(request, url)
+            }
+
+        }
+
+    }
+}
+
+var queue = GraphDataQueue()
+
+function sendRequest(request, url) {
+    request.open('GET', url)
+    request.send()
+}
+
+function handleGraphDataResponse (div, lat, lng, response) {
+    response = response.replace(/\[|\]|\'/g, "").split(", ");
+    drawGraph(response, div, lat, lng);
+    updatePanelDragOverlayHeight()    
+}
+
 function getData(lat, lng, div) {
     var url = "https://fcav-ndvi.nemac.org/landdat_product.cgi?args=" + lng + "," + lat;
-    var oReq = new XMLHttpRequest();
-    oReq.addEventListener("load", function () {
-        var response = this.responseText;
-        response = response.replace(/\[|\]|\'/g, "").split(", ");
-        drawGraph(response, div, lat, lng);
-        updatePanelDragOverlayHeight()
-    });
-    oReq.open("GET", url);
-    oReq.send()
+    var oReq = GetAjaxObject(handleGraphDataResponse.bind(null, div, lat, lng))
+
+    queue.push(oReq, url, div)
+    //oReq.open("GET", url);
+    //oReq.send()
 }
 
 function splitData(data) {
@@ -271,9 +305,7 @@ function makeUpDownLineGraph (data, div, averages) {
         .classed("timeseries-graph", true);
 
     // Adds the svg canvas
-    var svg = wrapper
-        .append("svg")
-        //.attr("width", width + margin.left + margin.right)
+    var svg = wrapper.append("svg")
         .attr("height", height + margin.top + margin.bottom)
         .attr('viewBox', function () {
             var w = width + margin.left + margin.right

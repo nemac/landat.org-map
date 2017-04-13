@@ -8,36 +8,41 @@ export function ParseConfig (configFile, callback) {
     GetConfig(configFile, callback);
 }
 
-export function getAjaxObject() {
+export function GetAjaxObject(responseHandler) {
     var xmlhttp
-    try {
+    if (window.ActiveXObject) {
+        xmlhttp = new window.ActiveXObject("MSXML2.XMLHTTP.3.0")
+    } else {
         xmlhttp = new XMLHttpRequest()
     }
-    catch (err) {
-        xmlhttp = new window.ActiveXObject("Microsoft.XMLHTTP")
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4) {
+            responseHandler(xmlhttp.responseText)
+        }
     }
     return xmlhttp
 }
 
 function GetConfig (configFile, callback) {
-    var xmlhttp = getAjaxObject()
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4) {
-            try {
-                var data = JSON.parse(xmlhttp.responseText);
-            } catch(err) {
-                console.log("ERROR: Malformed JSON in config file.");
-                console.log(err);
-            }
-            formatMap(data);
-            formatLayers(data);
-            callback(data);
-        }
-    };
- 
+    var xmlhttp = GetAjaxObject(function (response) {
+        var data = responseHandler(response)
+        callback(data)
+    })
     xmlhttp.open("GET", configFile, true);
     xmlhttp.send();
     console.log("hi")
+}
+
+function responseHandler (response) {
+    try {
+        var data = JSON.parse(response);
+    } catch(err) {
+        console.log("ERROR: Malformed JSON in config file.");
+        console.log(err);
+    }
+    formatMap(data);
+    formatLayers(data);
+    return data
 }
 
 function formatMap (data) {
