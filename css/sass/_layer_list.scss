@@ -1,16 +1,5 @@
 @import 'vars';
 
-#layer-list-wrapper {
-    &.active #layer-list {
-        display: inline-block;
-        width: 100%;
-    }
-
-    #layer-list {
-        display: none;
-    }
-}
-
 .layer-group-btn {
     padding-top: 12px;
     padding-bottom: 12px;

@@ -190,9 +190,14 @@ function handleGraphTypeBtnClick () {
         return;
     }
 
+    d3.selectAll('.graph-type-info')
+        .classed('active', function () {
+            return type === this.id.split('-')[0]
+        })
+
     d3.select("#graph-list")
         .classed("graph-" + activeType, false)
-        .classed("graph-" + type, true);
+        .classed("graph-" + type, true)
 
     activeElem.classList.remove('active')
     this.classList.add('active')

@@ -22,7 +22,10 @@ function setPanelScrollHandler() {
 
 function makePanelDraggable() {
     if (browserIsInternetExplorer()) return
+        
     var overlay = d3.select('#right-panel-drag-overlay')
+
+    overlay.style('cursor', 'ew-resize')
 
     overlay.call(d3.drag()
         .on('drag', function () {

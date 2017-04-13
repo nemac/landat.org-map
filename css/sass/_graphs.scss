@@ -1,14 +1,4 @@
 
-#graphs-wrapper {
-    max-height: 100%;
-}
-
-.graph-list {
-    max-height: 100%;
-    margin-top: -50px;
-    padding-top: 50px;
-}
-
 .graph-elem {
     border-bottom: 1px solid $border-color;
     padding: 20px 15px;
@@ -47,20 +37,11 @@
     display: none;
 }
 
-#timeseries-graph-info, #overlapping-graph-info, #polar-graph-info {
-    display: none
-}
-
 .graph-timeseries {
-
-    #timeseries-graph-info {
-        display: block;
-    }
 
     .timeseries-graph {
         display: block;
 
-    
         svg {
             width: 100%;
         }
@@ -69,12 +50,7 @@
 
 .graph-overlapping {
 
-    #overlapping-graph-info {
-        display: block;
-    }
-
     .overlapping-graph {
-    
         display: block;
 
         svg {
@@ -84,10 +60,6 @@
 }
 
 .graph-polar {
-
-    #polar-graph-info {
-        display: block;
-    }
 
     .polar-graph {
         display: block;
@@ -99,11 +71,6 @@
     }
 }
 
-.graph-type-info {
-    font-size: 18px;
-    padding: 20px;
-    border-bottom: 1px solid $border-color;
-}
 
 /* Graph Tooltips */
 
