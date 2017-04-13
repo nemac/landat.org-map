@@ -183,24 +183,36 @@ function reprocessData (origdata) {
 
 function handleGraphTypeBtnClick () {
     var type = this.getAttribute('data-type');
-    var activeElem = document.getElementsByClassName("graph-type-btn active")[0];
-    var activeType = activeElem.getAttribute('data-type');
+    var activeType = document.getElementsByClassName("graph-type-btn active")[0].getAttribute('data-type');
 
     if (type === activeType) {
         return;
     }
 
+    HandleGraphTabChange(type);
+}
+
+export function HandleGraphTabChange (graphType) {
+    disableActiveGraphTab();
+    enableGraphTab(graphType);
+    updateShareUrl();
+}
+
+function disableActiveGraphTab () {
+    var activeElem = document.getElementsByClassName("graph-type-btn active")[0];
+    var activeClass = "graph-" + activeElem.getAttribute("data-type");
+
+    activeElem.classList.remove("active");
+    document.getElementById("graph-list").classList.remove(activeClass);
+}
+
+function enableGraphTab (graphType) {
+    d3.select(".graph-type-btn[data-type='" + graphType + "']").classed("active", true);
+    document.getElementById("graph-list").classList.add("graph-" + graphType);
     d3.selectAll('.graph-type-info')
-        .classed('active', function () {
-            return type === this.id.split('-')[0]
-        })
-
-    d3.select("#graph-list")
-        .classed("graph-" + activeType, false)
-        .classed("graph-" + type, true)
-
-    activeElem.classList.remove('active')
-    this.classList.add('active')
+    .classed('active', function () {
+        return graphType === this.id.split('-')[0]
+    })
 }
 
 export function createGraphDiv (poi) {

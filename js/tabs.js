@@ -5,14 +5,8 @@ export function BindTabEvents () {
     d3.selectAll(".panel-top-btn").on("click", handleTabHeaderBtnClick);
 }
 
-// TODO generalize or specity that it's the top-level tabs
 export function GetActiveTab () {
-    var panel = d3.select('#right-panel')
-    return panel.classed('graphs-active') ?
-        'graphs-active' :
-    panel.classed('layers-active') ?
-        'layers-active' :
-    'about-active'
+    return document.getElementsByClassName("panel-top-btn active")[0].getAttribute("data-active");
 }
 
 function handleTabHeaderBtnClick () {

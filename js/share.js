@@ -16,7 +16,8 @@ export function updateShareUrl (e) {
         makeLayerString(map),
         makeBaseLayerString(map),
         makePointsOfInterestString(),
-        makeActiveTabString()
+        makeActiveTabString(),
+        makeActiveGraphTabString()
     ];
 
     setShareUrl(makeShareUrl(params));
@@ -33,6 +34,7 @@ export function AddShareSettingsToConfig (config) {
     if (share.baselayers) addBaseLayerSettingsToConfig(share.baselayers, config);
     if (share.pois) addPointsOfInterestToConfig(share.pois, config)
     if (share.tab) config.tab = share.tab;
+    if (share.graph) config.graph = share.graph;
 }
 
 function makeShareUrl (params) {
@@ -189,6 +191,10 @@ function makePointsOfInterestString () {
 
 function makeActiveTabString () {
     return "tab=" + d3.select(".panel-top-btn.active").attr("data-active");
+}
+
+function makeActiveGraphTabString () {
+    return "graph=" + d3.select(".graph-type-btn.active").attr("data-type");
 }
 
 function parseShareUrl () {

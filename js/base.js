@@ -2,7 +2,7 @@ import {ParseConfig} from './parser';
 import CreateSearch from './search';
 import {SetupPanel} from './panel';
 import {CreateBaseLayers} from './baselayer';
-import {SetupGraphs, BindGraphEvents} from './graph'
+import {SetupGraphs, BindGraphEvents, HandleGraphTabChange} from './graph'
 import {BindTabEvents, HandleTabChange} from './tabs'
 import {CreateMap} from './map'
 import {BindUpdateShareUrl, AddShareSettingsToConfig, BindCopyLinkEvents} from './share'
@@ -31,6 +31,7 @@ var callback = function (data) {
     CreateSearch(map);
     CreateLogo(data.logo);
     if (data.tab) HandleTabChange(data.tab);
+    if (data.graph) HandleGraphTabChange(data.graph);
     BindGraphEvents(map);
     BindUpdateShareUrl(map);
     SetupPointsOfInterest(map, data.pois)

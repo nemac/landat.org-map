@@ -82,7 +82,8 @@ function triggerGraphAnimation (poi) {
 function scrollToPointOfInterestGraph (poi) {
   var rightPanel = document.getElementById('right-panel')
   var header = document.getElementById('right-panel-header')
-  rightPanel.scrollTop = poi.graphDiv.offsetTop + header.scrollHeight
+  var graphTypeHeader = document.getElementById('graph-type-header')
+  rightPanel.scrollTop = poi.graphDiv.offsetTop
 }
 
 export function RemovePointOfInterestUI (map, div, marker) {
