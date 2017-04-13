@@ -10,12 +10,18 @@ export function SetupPanel (layers, layout) {
     setPanelScrollHandler()
 }
 
+function browserIsInternetExplorer() {
+    var ua = window.navigator.userAgent
+    return ua.indexOf('MSIE') > -1 || ua.indexOf('rv:11.0') > -1
+}
+
 function setPanelScrollHandler() {
     var panel = document.getElementById('right-panel')
     panel.onscroll = updatePanelDragOverlayHeight
 }
 
 function makePanelDraggable() {
+    if (browserIsInternetExplorer()) return
     var overlay = d3.select('#right-panel-drag-overlay')
 
     overlay.call(d3.drag()

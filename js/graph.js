@@ -102,26 +102,6 @@ function createGraphRemoverElem () {
 
 ////////////////////// GRAPH DATA PROCESSING ///////////////////////////////
 
-function GraphDataQueue () {
-    var _queue = []
-
-    return {
-
-        push: function (request, url) {
-            _queue.push(request)
-            if (queue.length > 1 && queue[length-1].readyState < 4) {
-                _queue[length-1].addEventListener('load', function (e) {
-                    sendRequest(request, url)
-                })
-            } else {
-                sendRequest(request, url)
-            }
-        }
-    }
-}
-
-var queue = GraphDataQueue()
-
 function sendRequest(request, url) {
     request.open('GET', url)
     request.send()
@@ -135,11 +115,12 @@ function handleGraphDataResponse (div, lat, lng, response) {
 
 function getData(lat, lng, div) {
     var url = "https://fcav-ndvi.nemac.org/landdat_product.cgi?args=" + lng + "," + lat;
-    var oReq = GetAjaxObject(handleGraphDataResponse.bind(null, div, lat, lng))
+    var oReq = GetAjaxObject(function (response) {
+        handleGraphDataResponse(div, lat, lng, response)
+    })
 
-    queue.push(oReq, url, div)
-    //oReq.open("GET", url);
-    //oReq.send()
+    oReq.open("GET", url);
+    oReq.send()
 }
 
 function splitData(data) {
