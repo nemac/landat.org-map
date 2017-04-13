@@ -1,4 +1,3 @@
-
 .graph-elem {
     border-bottom: 1px solid $border-color;
     padding: 20px 15px;
@@ -222,4 +221,8 @@ path {
     border-radius: 50%;
     vertical-align: middle;
     margin-left: 4px;
+}
+
+.d3-tip {
+    z-index: 100;
 }
