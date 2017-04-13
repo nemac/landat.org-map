@@ -6,7 +6,7 @@ $share-twitter-height: 28px;
 }
 
 .share-panel {
-    width: 100%;
+    width: inherit;
     height: $share-height;
     position: fixed;
     bottom: 0;
