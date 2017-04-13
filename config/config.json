@@ -132,25 +132,29 @@
         "id": "States",
         "name": "States",
         "info": "",
-        "url": "http://gis.nemac.org/landat-vector"
+        "url": "http://gis.nemac.org/landat-vector",
+        "type": "overlay"
       },
       {
         "id": "CountiesBlack",
         "name": "Counties",
         "info": "",
-        "url": "http://gis.nemac.org/landat-vector"
+        "url": "http://gis.nemac.org/landat-vector",
+        "type": "overlay"
       },
       {
         "id": "AppLCCRegionBlk",
         "name": "AppLCC region",
         "info": "",
-        "url": "http://gis.nemac.org/landat-vector"
+        "url": "http://gis.nemac.org/landat-vector",
+        "type": "overlay"
       },
       {
         "id": "GSMNP",
         "name": "Great Smoky Mountains National Park",
         "info": "",
-        "url": "http://gis.nemac.org/landat-vector"
+        "url": "http://gis.nemac.org/landat-vector",
+        "type": "overlay"
       }
     ],
     "ancillary": [

@@ -116,9 +116,7 @@ function GraphDataQueue () {
             } else {
                 sendRequest(request, url)
             }
-
         }
-
     }
 }
 
