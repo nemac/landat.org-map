@@ -29,8 +29,11 @@ $share-twitter-height: 28px;
 }
 
 .share-button {
-    cursor: pointer;
     font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+
+    a {
+        cursor: pointer;
+    }
 }
 
 .share-link {
@@ -40,7 +43,8 @@ $share-twitter-height: 28px;
     font-weight: bold;
 
     img {
-        width: 30px;
+        width: auto;
+        height: 16px;
         margin-right: 5px;
     }
 
@@ -49,16 +53,16 @@ $share-twitter-height: 28px;
     }
 
     a {
-        background: #fff;
+        background: #06c8f7;
+        color: #fff;
         padding: 0 10px;
         display: inline-block;
         width: 100%;
         height: 100%;
-        border: 1px solid #8dbed6;
         border-radius: 5px;
 
         &:hover {
-            background: #d9f0f9;
+            background: #05a8d1;
         }
     }
 }
