@@ -5,15 +5,15 @@
     position: absolute;
     right: 0;
     top: 0;
-    height: calc(100% - #{$panel-header-wrapper-height});
-    margin-top: $panel-header-wrapper-height;
+    height: 100%;
+    padding-top: $panel-header-wrapper-height;
+    border-left: 1px solid $border-color;
     vertical-align: top;
     overflow-x: hidden;
-    border-left: 1px solid $border-color;
+    z-index: 10;
 
     &.graphs-active {
-        height: calc(100% - #{$panel-header-and-graph-list-header-height});
-        margin-top: $panel-header-and-graph-list-header-height;
+        padding-top: $panel-header-and-graph-list-header-height;
         min-width: $panel-min-width-graphs;
         width: $panel-min-width-graphs;
     }
@@ -42,21 +42,27 @@
 
 #right-panel-header {
     border-bottom: 1px solid $border-color;
-    border-left: 1px solid $border-color;
     width: inherit;
     height: $panel-header-wrapper-height;
     position: fixed;
     top: 0;
+    z-index: 10;
 }
 
-#graph-type-header {
+#graphs-header-wrapper {
     position: fixed;
-    width: 100%;
+    width: inherit;
     height: $graph-type-header-height;
     top: $panel-header-wrapper-height;
     padding-top: $graph-type-header-padding-top;
     border-bottom: 3px solid $border-color;
-    border-left: 1px solid $border-color;
+    background: #fff;
+    z-index: 5;
+}
+
+#graph-type-header {
+    position: absolute;
+    bottom: 0;
 }
 
 .graph-type-info {
@@ -69,7 +75,6 @@
         border-bottom: 1px solid $border-color;
     }
 }
-
 
 .panel-section-wrapper {
     display: none;
@@ -146,12 +151,17 @@
             position: absolute;
             bottom: -12px;
             left: 47%;
+            margin-left: -1px;
             width: 0;
             height: 0;
             border-left: 12px solid transparent;
             border-right: 12px solid transparent;
             border-top: 12px solid $border-color;
             z-index: 10;
+        }
+
+        &:first-child:before {
+            margin-left: 0;
         }
 
         &:after {

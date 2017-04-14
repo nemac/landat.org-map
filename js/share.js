@@ -49,14 +49,14 @@ function setShareUrl (url) {
 
 function setCopyLinkUrl () {
     var url = window.location.href;
-    document.getElementById("share-link-url").setAttribute("value", url);
+    document.getElementById("shareurl-link-url").setAttribute("value", url);
 }
 
 export function BindCopyLinkEvents () {
     d3.select(document).on("click", handleBodyClick);
-    d3.select(".share-link a").on("click", handleShareLinkButtonClick);
-    d3.select(".share-link-url").on("click", handleShareLinkUrlClick);
-    d3.select(".share-link-popup-remover").on("click", handleShareLinkCloseButtonClick);
+    d3.select(".shareurl-link a").on("click", handleShareLinkButtonClick);
+    d3.select(".shareurl-link-url").on("click", handleShareLinkUrlClick);
+    d3.select(".shareurl-link-popup-remover").on("click", handleShareLinkCloseButtonClick);
 }
 
 /**
@@ -75,7 +75,7 @@ function handleBodyClick () {
     var i, l;
 
     for (i = 0, l = parents.length; i < l; i++) {
-        if (parents[i].className && typeof(parents[i].className) === "string" && parents[i].className.indexOf("share-link") !== -1) {
+        if (parents[i].className && typeof(parents[i].className) === "string" && parents[i].className.indexOf("shareurl-link") !== -1) {
             clickedInPopup = true;
             break;
         }
@@ -96,7 +96,7 @@ function getDomPath(node) {
 }
 
 function handleShareLinkButtonClick () {
-    d3.select(document.getElementsByClassName("share-link-popup")[0]).classed("active") ?
+    d3.select(document.getElementsByClassName("shareurl-link-popup")[0]).classed("active") ?
         handleCopyLinkClose() :
         handleCopyLinkOpen();
 }
@@ -110,23 +110,23 @@ function handleShareLinkUrlClick () {
 }
 
 function handleCopyLinkOpen () {
-    d3.select(document.getElementsByClassName("share-link-popup")[0]).classed("active", true);
+    d3.select(document.getElementsByClassName("shareurl-link-popup")[0]).classed("active", true);
     selectCopyLinkUrl();
 }
 
 function handleCopyLinkClose () {
-    d3.select(document.getElementsByClassName("share-link-popup")[0]).classed("active", false);
+    d3.select(document.getElementsByClassName("shareurl-link-popup")[0]).classed("active", false);
 }
 
 function selectCopyLinkUrl () {
-    var shareInput = document.getElementById("share-link-url");
+    var shareInput = document.getElementById("shareurl-link-url");
     shareInput.focus();
     shareInput.setSelectionRange(0, shareInput.value.length);
 }
 
 function setSocialUrls () {
     var url = mangleParamString(window.location.href);
-    var socialLinks = document.getElementsByClassName("share-social");
+    var socialLinks = document.getElementsByClassName("shareurl-social");
     var socialLink;
     var newUrl;
     var i, l;
@@ -216,6 +216,7 @@ function getParamsArray (params) {
 
 function mangleParamString (url) {
     return url.replace(/\:/g, "%3A")
+        .replace(/\;/g, "%3B")
         .replace(/\//g, "%2F")
         .replace(/\,/g, "%2C")
         .replace(/\&/g, "%26");
