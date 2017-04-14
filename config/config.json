@@ -95,12 +95,14 @@
       {
         "id": "Factor123",
         "name": "Summary phenology: seasonality and timing",
-        "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with (1) seasonality, and with (2) the day-of-year variables such as the middle of the growing season." 
+        "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with (1) seasonality, and with (2) the day-of-year variables such as the middle of the growing season.",
+        "legend": "legends/placeholder.png" 
       },
       {
         "id": "Factor23",
         "name": "Summary phenology: timing",
-        "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with only the day-of-year variables such as the beginning, middle, and end of the growing season."
+        "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with only the day-of-year variables such as the beginning, middle, and end of the growing season.",
+        "legend": "legends/placeholder.png"
       }
     ],
     "boundaries" : [
@@ -108,240 +110,298 @@
         "id": "States",
         "name": "States",
         "info": "",
-        "url": "http://gis.nemac.org/landat-vector"
+        "url": "http://gis.nemac.org/landat-vector",
+        "legend": "legends/abi.png"
       },
       {
         "id": "CountiesBlack",
         "name": "Counties",
         "info": "",
-        "url": "http://gis.nemac.org/landat-vector"
+        "url": "http://gis.nemac.org/landat-vector",
+        "legend": "legends/abj.png"
       },
       {
         "id": "AppLCCRegionBlk",
         "name": "AppLCC region",
         "info": "",
-        "url": "http://gis.nemac.org/landat-vector"
+        "url": "http://gis.nemac.org/landat-vector",
+        "legend": "legends/abm.png"
       },
       {
         "id": "GSMNP",
         "name": "Great Smoky Mountains National Park",
         "info": "",
-        "url": "http://gis.nemac.org/landat-vector"
+        "url": "http://gis.nemac.org/landat-vector",
+        "legend": "legends/abb.png"
       }
     ],
     "ancillary": [
       {
+        "id": "1",
+        "name": "National Land Cover Database, 2011",
+        "info": "",
+        "url": "https://raster.nationalmap.gov/arcgis/services/LandCover/USGS_EROS_LandCover_NLCD/MapServer/WMSServer",
+        "legend": "legends/aba.png"
+      },
+      {
+        "id": "Riitters_LandPattern",
+        "name": "Landscape Mosaic Pattern",
+        "info": "",
+        "legend": "legends/abl.png"
+      },
+      {
         "id": "Riitters_ForestDensity",
         "name": "Forest density",
-        "info": ""
+        "info": "",
+        "legend": "legends/abk.png"
       },
       {
         "id": "TotalBasalArea",
         "name": "Total tree basal area",
-        "info": "Estimated total tree basal area. USFS Forest Health Technology Enterprise Team, 2012."
+        "info": "Estimated total tree basal area. USFS Forest Health Technology Enterprise Team, 2012.",
+        "legend": "legends/abg.png"
       },
       {
         "id": "PercentBasalRisk",
         "name": "Tree basal area at risk from insect and disease pathogens",
-        "info": "Percent of basal area estimated to be at risk. USFS Forest Health Technology Enterprise Team, 2012."
+        "info": "Percent of basal area estimated to be at risk. USFS Forest Health Technology Enterprise Team, 2012.",
+        "legend": "legends/abh.png"
       },
       {
         "id": "HousingDensity",
         "name": "Housing Density (2010)",
-        "info": "Housing units per squ. km, by partial census block group. US Census Bureau and SILVIS Lab."
+        "info": "Housing units per squ. km, by partial census block group. US Census Bureau and SILVIS Lab.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "PalmerMonthly",
         "name": "Palmer Drought Severity Index, 2000-2015 mean",
-        "info": "Self-calibrated drought index (scPDSI); mean monthly value, 2000-2015. Values below -0.5 indicate drier than normal."
+        "info": "Self-calibrated drought index (scPDSI); mean monthly value, 2000-2015. Values below -0.5 indicate drier than normal.",
+        "legend": "legends/abc.png"
       },
       {
         "id": "PalmerAnnual",
         "name": "Palmer Drought Severity Index, 2000-2015 variability",
-        "info": "Self-calibrated drought index (scPDSI); inter-annual variability, 2000-2015. Higher values indicate more year-to-year variation."
+        "info": "Self-calibrated drought index (scPDSI); inter-annual variability, 2000-2015. Higher values indicate more year-to-year variation.",
+        "legend": "legends/abd.png"
       }, 
       {
         "id": "mtbs-raster-00-16",
         "name": "Historical fires from 2000 to 2016",
         "info": "Shows locations and intensities of fires that occured from 2000 to 2016",
-        "url": "http://fswms.nemac.org/rlayers"
+        "url": "http://fswms.nemac.org/rlayers",
+        "legend": "legends/abe.png"
       },
       {
         "id": "mtbs-raster-84-99",
         "name": "Historical fires from 1984 to 1999",
         "info": "Shows locations and intensities of fires that occured from 1984 to 1999",
-        "url": "http://fswms.nemac.org/rlayers" 
+        "url": "http://fswms.nemac.org/rlayers",
+        "legend": "legends/placeholder.png" 
       }
     ],
     "it-metrics": [
       {
         "id": "DynamicActivity",
         "name": "Rate of inter-annual change",
-        "info": "The proportion of inter-annual change events in which a change in phenoclass occurs (as opposed to phenoclass stability)."
+        "info": "The proportion of inter-annual change events in which a change in phenoclass occurs (as opposed to phenoclass stability).",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "IncreaseChange",
         "name": "Rate of Change: Increases",
-        "info": "The proportion of inter-annual change events that are associated with increased productivity (increasing NDVI)"
+        "info": "The proportion of inter-annual change events that are associated with increased productivity (increasing NDVI)",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "DecreaseChange",
         "name": "Rate of Change: Decreases",
-        "info": "The proportion of inter-annual change events that are associated with decreased productivity."
+        "info": "The proportion of inter-annual change events that are associated with decreased productivity.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "MeanShannon",
         "name": "Shannon Diversity",
-        "info": "Landscape information metric summarizing the total diversity, or complexity, of observed landscape dynamics."
+        "info": "Landscape information metric summarizing the total diversity, or complexity, of observed landscape dynamics.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "MutualInformation",
         "name": "Mutual Information",
-        "info": "Landscape information metric representing the component of overall complexity which is higly predictable, or organized."
+        "info": "Landscape information metric representing the component of overall complexity which is higly predictable, or organized.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "ConditionalEntropy",
         "name": "Conditional Entropy",
-        "info": "Landscape information metric representing the component of overall complexity which is higly unpredictable, disorganized, or redundant."
+        "info": "Landscape information metric representing the component of overall complexity which is higly unpredictable, disorganized, or redundant.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Development",
         "name": "Development",
-        "info": "Mutual Information standardized by Shannon Diversity: the proportion of the complexity which is accounted for by the predictable component."
+        "info": "Mutual Information standardized by Shannon Diversity: the proportion of the complexity which is accounted for by the predictable component.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Capacity",
         "name": "Capacity",
-        "info": "Landscape information metric summarizing the complexity of landscape dynamics, and overall productivity (Shannon Diversity multiplied by mean NDVI)."
+        "info": "Landscape information metric summarizing the complexity of landscape dynamics, and overall productivity (Shannon Diversity multiplied by mean NDVI).",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Ascendency",
         "name": "Ascendency",
-        "info": "Landscape information metric summarizing the predictability of landscape dynamics, and overall productivity  (Mutual Information multiplied by mean NDVI)."
+        "info": "Landscape information metric summarizing the predictability of landscape dynamics, and overall productivity  (Mutual Information multiplied by mean NDVI).",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Overhead",
         "name": "Overhead",
-        "info": "Landscape information metric summarizing the unpredictability of landscape dynamics, and overall productivity (Conditional Entropy multiplied by mean NDVI)."
+        "info": "Landscape information metric summarizing the unpredictability of landscape dynamics, and overall productivity (Conditional Entropy multiplied by mean NDVI).",
+        "legend": "legends/placeholder.png"
       }
     ],
     "phenology-variables": [
       {
         "id": "MeanNDVI",
         "name": "Mean growing season greenness",
-        "info": "Mean NDVI within the growing season, i.e., between the beginning and end of growing season dates."
+        "info": "Mean NDVI within the growing season, i.e., between the beginning and end of growing season dates.",
+        "legend": "legends/aac.png"
       },
       {
         "id": "Seasonality",
         "name": "Degree of seasonality, or deciduousness",
-        "info": "Crowding of NDVI greenness into a particular portion of the annual cycle, measured by the length of the mean greenness vector. More evergreen vegetation shows lower seasonality."
+        "info": "Crowding of NDVI greenness into a particular portion of the annual cycle, measured by the length of the mean greenness vector. More evergreen vegetation shows lower seasonality.",
+        "legend": "legends/aab.png"
       },
       {
         "id": "BeginningGrowingSeason",
         "name": "Beginning of growing season",
-        "info": "Start of the growing season measured as the point in time when 15 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years."
+        "info": "Start of the growing season measured as the point in time when 15 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years.",
+        "legend": "legends/abn.png"
       },
       {
         "id": "Midpoint",
         "name": "Middle of growing season",
-        "info": "Middle of the growing season. This is determined by the direction, or angle on the annual cycle, of the mean greenness vector."
+        "info": "Middle of the growing season. This is determined by the direction, or angle on the annual cycle, of the mean greenness vector.",
+        "legend": "legends/abn.png"
       },
       {
         "id": "EndGrowingSeason",
         "name": "End of growing season",
-        "info": "End of the growing season measured as the point in time when 85 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years. "
+        "info": "End of the growing season measured as the point in time when 85 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years. ",
+        "legend": "legends/abn.png"
       },
       {
         "id": "SeasonLength",
         "name": "Growing season length",
-        "info": "Number of days between the beginning and end of growing season dates."
+        "info": "Number of days between the beginning and end of growing season dates.",
+        "legend": "legends/aad.png"
       },
       {
         "id": "NDVIStdDv",
         "name": "Within-year greenness variability",
-        "info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the year."
+        "info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the year.",
+        "legend": "legends/aaa.png"
       }
     ],
     "phenoclasses": [
       {
         "id": "MultiYrPhenoclasses_00_15",
         "name": "Multi-Annual Phenoclasses",
-        "info": "Classification of cells into 500 phenological classes, placing each cell into only one class, using data from all years."
+        "info": "Classification of cells into 500 phenological classes, placing each cell into only one class, using data from all years.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2001",
         "name": "500 Phenoclasses 2001",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2002",
         "name": "500 Phenoclasses 2002",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2003",
         "name": "500 Phenoclasses 2003",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2004",
         "name": "500 Phenoclasses 2004",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2005",
         "name": "500 Phenoclasses 2005",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2006",
         "name": "500 Phenoclasses 2006",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2007",
         "name": "500 Phenoclasses 2007",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2008",
         "name": "500 Phenoclasses 2008",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2009",
         "name": "500 Phenoclasses 2009",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2010",
         "name": "500 Phenoclasses 2010",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2011",
         "name": "500 Phenoclasses 2011",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2012",
         "name": "500 Phenoclasses 2012",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2013",
         "name": "500 Phenoclasses 2013",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2014",
         "name": "500 Phenoclasses 2014",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       },
       {
         "id": "Phenoclasses_2015",
         "name": "500 Phenoclasses 2015",
-        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year."
+        "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+        "legend": "legends/placeholder.png"
       }
     ],
     "phenoclass-derived": [
