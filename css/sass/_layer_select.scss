@@ -72,7 +72,6 @@
 
     &.active {
         display: block;
-        height: 100px;
         margin-top: 15px;
     }
 }
@@ -101,7 +100,7 @@ $slider-handle-width: $layer-checkbox-length;
 $slider-handle-height: 10px;
 
 $opacity-slider-track-overlay-width: $slider-handle-width;
-$opacity-slider-track-overlay-height: 100%;
+$opacity-slider-track-overlay-height: 100px;
 $opacity-slider-track-overlay-padding-horiz: $slider-handle-width/2;
 
 $opacity-slider-track-width: 2px;
@@ -117,7 +116,7 @@ $opacity-slider-track-offset-top: $slider-handle-height/2;
         display: inline-block;
         position: relative;
         width: $opacity-slider-track-overlay-width;
-        height: 100%;
+        height: $opacity-slider-track-overlay-height;
         top: -$opacity-slider-track-offset-top;
     }
 
