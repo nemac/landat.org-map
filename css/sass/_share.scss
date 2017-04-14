@@ -5,7 +5,7 @@ $share-twitter-height: 28px;
     padding-bottom: $share-height;
 }
 
-.share-panel {
+.shareurl-panel {
     width: inherit;
     height: $share-height;
     position: fixed;
@@ -22,13 +22,13 @@ $share-twitter-height: 28px;
         line-height: $share-twitter-height - 4px;
     }
 
-    .share-label {
+    .shareurl-label {
         font-size: 12px;
         margin-right: 10px;
     }
 }
 
-.share-button {
+.shareurl-button {
     font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
 
     a {
@@ -36,7 +36,7 @@ $share-twitter-height: 28px;
     }
 }
 
-.share-link {
+.shareurl-link {
     position: relative;
     display: inline-block;
     font-size: 14px;
@@ -68,7 +68,7 @@ $share-twitter-height: 28px;
 }
 
 $share-triangle-height: 10px;
-.share-link-popup {
+.shareurl-link-popup {
     position: absolute;
     top: -70px;
     left: -70%;
@@ -126,7 +126,7 @@ $share-triangle-height: 10px;
     }
 }
 
-.share-facebook, .share-twitter {
+.shareurl-facebook, .shareurl-twitter {
     display: inline-block;
 }
 
