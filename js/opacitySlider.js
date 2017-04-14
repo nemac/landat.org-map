@@ -50,6 +50,7 @@ function makeSliderTrack(wrapper, layer, layerToolsWrapper, layerOpacity) {
 }
 
 function setDragEventListener(wrapper, layer, layerOpacity) {
+
     var overlay = wrapper.select('.opacity-slider-track-overlay')
     overlay.call(d3.drag()
         .on('start drag', function () {

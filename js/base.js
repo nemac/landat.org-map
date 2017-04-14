@@ -1,11 +1,11 @@
-import ParseConfig from './parser';
+import {ParseConfig} from './parser';
 import CreateSearch from './search';
 import {SetupPanel} from './panel';
 import {CreateBaseLayers} from './baselayer';
-import {SetupGraphs, BindGraphEvents} from './graph'
+import {SetupGraphs, BindGraphEvents, HandleGraphTabChange} from './graph'
 import {BindTabEvents, HandleTabChange} from './tabs'
 import {CreateMap} from './map'
-import {BindUpdateShareUrl, AddShareSettingsToConfig} from './share'
+import {BindUpdateShareUrl, AddShareSettingsToConfig, BindCopyLinkEvents} from './share'
 import {CreateDefaultLayers} from './layer'
 import CreateLogo from './logo';
 import {SetupPointsOfInterest} from './poi';
@@ -18,6 +18,7 @@ var Base = function (config) {
     ParseConfig(config, callback);
     SetupGraphs();
     BindTabEvents();
+    BindCopyLinkEvents();
 }
 
 // Does rely on map object or config file
@@ -30,6 +31,7 @@ var callback = function (data) {
     CreateSearch(map);
     CreateLogo(data.logo);
     if (data.tab) HandleTabChange(data.tab);
+    if (data.graph) HandleGraphTabChange(data.graph);
     BindGraphEvents(map);
     BindUpdateShareUrl(map);
     SetupPointsOfInterest(map, data.pois)

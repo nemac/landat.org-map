@@ -6,6 +6,7 @@ import {updateShareUrl} from "./share";
  * the order of layers in the map
  */
 var _current_layers = [];
+var _current_layers_objects = [];
 
 /**
  * Note: layer is not the leaflet concept of a layer, but rather the internal
@@ -57,11 +58,23 @@ export function enableLayer (layer) {
     layer.mapLayer = layer.mapLayer || makeWmsTileLayer(layer);
     map.addLayer(layer.mapLayer);
     addLayerToInternalTracker(layer);
+    moveOverlayLayersToTop();
     updateShareUrl();
+}
+
+function moveOverlayLayersToTop () {
+    var layer;
+    var i, l;
+
+    for (i = 0, l = _current_layers_objects.length; i < l; i++) {
+        layer = _current_layers_objects[i];
+        if (layer.type === "overlay") layer.mapLayer.bringToFront();
+    }
 }
 
 function addLayerToInternalTracker (layer) {
     _current_layers.push(layer.id);
+    _current_layers_objects.push(layer);
 }
 
 export function disableLayer (layer) {
@@ -79,6 +92,7 @@ function removeLayerFromInternalTracker (layer) {
     var loc = _current_layers.indexOf(layer.id);
     if (loc === -1) return;
     _current_layers.splice(loc, 1);
+    _current_layers_objects.splice(loc, 1);
 }
 
 export function updateLayerOpacity (layer, newOpacity) {
@@ -91,8 +105,9 @@ function makeWmsTileLayer (layer) {
         layers: layer.id,
         transparent: layer.transparent || true,
         version: layer.version || '1.3.0',
-        crs: layer.crs || L.CRS.EPSG4326,
+        crs: layer.crs || L.CRS.EPSG900913,
         format: layer.format || 'image/png',
-        opacity: layer.opacity || "1"
+        opacity: layer.opacity || 1.0,
+        tileSize: layer.tileSize || document.getElementById("map").clientWidth
     });
 }

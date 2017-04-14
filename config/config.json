@@ -12,7 +12,8 @@
     "center": ["38.5", "-81"],
     "zoom": "6",
     "options": {
-      "attributionControl": false
+      "attributionControl": false,
+      "doubleClickZoom": false
     }
   },
   "baselayers" : [
@@ -59,7 +60,7 @@
       {
         "id": "summary-phenology",
         "name": "Summary Phenology Variables",
-        "active": false
+        "active": true
       },
       {
         "id": "phenology-variables",
@@ -77,6 +78,11 @@
         "active": false
       },
       {
+        "id": "carbon-models",
+        "name": "Carbon Models",
+        "active": false
+      },
+      {
         "id": "it-metrics",
         "name": "Landscape Information Metrics",
         "active": false
@@ -89,8 +95,26 @@
     ]
   },
   "active-layers": [
-      ],
+    "Factor123"
+  ],
   "layers" : {
+    "carbon-models": [
+      {
+        "id": "FIACarbonStorage",
+        "name": "Estimated carbon storage, 2000-2009",
+        "info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. USFS Forest Inventory and Analysis (FIA) program."
+      },
+      {
+        "id": "LanDATCStorage",
+        "name": "LanDAT carbon storage model",
+        "info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. LanDAT model using 2000-2015 MODIS data, trained on FIA estimates."
+      },
+      {
+        "id": "ShiftCarbonStorage",
+        "name": "Landscape Shift in Carbon Storage",
+        "info": "Long-term (decadal) expected gains and losses in carbon density, estimated from observed annual changes in LanDAT phenological variables."
+      }
+    ],
     "summary-phenology": [
       {
         "id": "Factor123",
@@ -111,28 +135,32 @@
         "name": "States",
         "info": "",
         "url": "http://gis.nemac.org/landat-vector",
-        "legend": "legends/abi.png"
+        "legend": "legends/abi.png",
+        "type": "overlay"
       },
       {
         "id": "CountiesBlack",
         "name": "Counties",
         "info": "",
         "url": "http://gis.nemac.org/landat-vector",
-        "legend": "legends/abj.png"
+        "legend": "legends/abj.png",
+        "type": "overlay"
       },
       {
         "id": "AppLCCRegionBlk",
         "name": "AppLCC region",
         "info": "",
         "url": "http://gis.nemac.org/landat-vector",
-        "legend": "legends/abm.png"
+        "legend": "legends/abm.png",
+        "type": "overlay"
       },
       {
         "id": "GSMNP",
         "name": "Great Smoky Mountains National Park",
         "info": "",
         "url": "http://gis.nemac.org/landat-vector",
-        "legend": "legends/abb.png"
+        "legend": "legends/abb.png",
+        "type": "overlay"
       }
     ],
     "ancillary": [

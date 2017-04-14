@@ -6,6 +6,7 @@ import {
 } from './graph'
 import {updateShareUrl} from './share'
 import {GetMap} from './map'
+import {GetActiveTab, HandleTabChange} from './tabs'
 
 var _points_of_interest = []
 
@@ -37,27 +38,56 @@ export function AddMultiplePointsOfInterest (pois) {
 
 export function RemovePointOfInterestFromTracker(poiToRemove) {
   _points_of_interest = _points_of_interest.filter(poi => {
-    return !Object.is(poi, poiToRemove)
+    return !(poi === poiToRemove)
   })
 }
 
 export function SetupPointOfInterestUI (map, poi) {
-    var div = createGraphDiv(poi.lat, poi.lng);
+    var div = createGraphDiv(poi);
     var marker = createMarker(map, poi.lat, poi.lng);
+    poi.graphDiv = div
+    poi.marker = marker
+    marker.addTo(map)
+    createGraphRemover(map, div, marker, poi);
 
     d3.select(div).on("mouseenter", function (e) {
         marker.setIcon(getIcon('hover'));
-      }
-    )
+    })
     d3.select(div).on("mouseleave", function () {
         marker.setIcon(getIcon('graph'));
-      }
-    )
-    createGraphRemover(map, div, marker, poi);
+    })
+    marker.on('click dblclick', function (e) {
+      handleMarkerMouseEvent(e, poi)
+    })
+    marker.on('mouseover', function (e) {
+      marker.setIcon(getIcon('hover'))
+    })
+    marker.on('mouseout', function (e) {
+      marker.setIcon(getIcon('graph'))
+      poi.graphDiv.getElementsByClassName('pan-to-marker-btn')[0].classList.remove('animate')
+    })
+}
+
+function handleMarkerMouseEvent (e, poi) {
+  e.originalEvent.stopPropagation()
+  HandleTabChange('graphs-active')
+  scrollToPointOfInterestGraph(poi)
+  triggerGraphAnimation(poi)
+}
+
+function triggerGraphAnimation (poi) {
+  poi.graphDiv.getElementsByClassName('pan-to-marker-btn')[0].classList.add('animate')
+}
+
+function scrollToPointOfInterestGraph (poi) {
+  var rightPanel = document.getElementById('right-panel')
+  var header = document.getElementById('right-panel-header')
+  var graphTypeHeader = document.getElementById('graph-type-header')
+  rightPanel.scrollTop = poi.graphDiv.offsetTop
 }
 
 export function RemovePointOfInterestUI (map, div, marker) {
-    var list = document.getElementById("graph-list");
+    var list = document.getElementById('graph-list');
     list.removeChild(div);
     map.removeLayer(marker);
     updateShareUrl()

@@ -1,17 +1,4 @@
-/* Layer List */
-
-@import 'panel';
-
-#layer-list-wrapper {
-    &.active #layer-list {
-        display: inline-block;
-        width: 100%;
-    }
-
-    #layer-list {
-        display: none;
-    }
-}
+@import 'vars';
 
 .layer-group-btn {
     padding-top: 12px;

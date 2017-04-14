@@ -1,32 +1,31 @@
-
-$graph-close-button-color: #f31616;
-
-
-/* Graph UI */
-
-.graph-type-btn {
-    width: 33.333%;
-}
-
-#graphs-wrapper {
-    max-height: 100%;
-}
-
-.graph-list {
-    max-height: 100%;
-    margin-top: -50px;
-    padding-top: 50px;
-}
-
 .graph-elem {
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid $border-color;
     padding: 20px 15px;
+
+    .pan-to-marker-btn {
+        padding: 5px;
+        font-size: 1em;
+        border: 1px solid $border-color;
+        border-radius: 5px;
+        margin-right: 12px;
+
+        &.animate {
+            animation-name: graph-elem-animate;
+            animation-duration: .5s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: 1;
+        }
+    }
 
     svg {
         position: relative;
         min-height: 270px;
         height: 100%;
     }
+}
+
+@keyframes graph-elem-animate {
+    50.0% { background-color: orange; }
 }
 
 .graphs-active #map {
@@ -37,28 +36,37 @@ $graph-close-button-color: #f31616;
     display: none;
 }
 
-.graph-timeseries .timeseries-graph {
-    display: block;
-    
-    svg {
-        width: 100%;
+.graph-timeseries {
+
+    .timeseries-graph {
+        display: block;
+
+        svg {
+            width: 100%;
+        }
     }
 }
 
-.graph-overlapping .overlapping-graph {
-    display: block;
+.graph-overlapping {
 
-    svg {
-        width: 85%;
+    .overlapping-graph {
+        display: block;
+
+        svg {
+            width: 85%;
+        }
     }
 }
 
-.graph-polar .polar-graph {
-    display: block;
+.graph-polar {
 
-    svg {
-        width: 85%;
-        min-height: 490px;
+    .polar-graph {
+        display: block;
+
+        svg {
+            width: 85%;
+            min-height: 490px;
+        }
     }
 }
 
@@ -123,7 +131,7 @@ path {
     }
 
     text {
-        font: 10px sans-serif;
+        font: 13px sans-serif;
     }
 
     line, circle {
@@ -145,8 +153,8 @@ path {
 }
 
 .center-line {
-    stroke: #dd82d2;
-    stroke-width: 3px;
+    stroke: #ea0c48;
+    stroke-width: 4px;
 }
 
 .growing-season-line {
@@ -158,20 +166,21 @@ path {
 
 .graph-elem {
     position: relative;
+
+    /* The Graph */
+    div {
+        clear: both;
+    }
 }
 
 .remove-graph {
-    position: absolute;
-    right: 15px;
-    top: 20px;
-    background: white;
+    float: right;
     background: transparent;
     color: $graph-close-button-color;
     font-size: 19px;
     padding: 2px 6px;
     border: 1px solid $graph-close-button-color;
     border-radius: 4px;
-    z-index: 100;
     cursor: pointer;
 }
 
@@ -185,6 +194,7 @@ path {
     }
 
     label {
+        font-size: 13px;
         padding-left: 5px;
         cursor: pointer;
     }
@@ -192,4 +202,27 @@ path {
     input {
         cursor: pointer;
     }
+
+    label, input {
+        vertical-align: middle;
+    }
+}
+
+.graph-lat-lon {
+    display: inline-block;
+    font-size: 15px;
+}
+
+.graph-pip-example {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border: 1px solid black;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-left: 4px;
+}
+
+.d3-tip {
+    z-index: 100;
 }

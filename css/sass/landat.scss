@@ -1,3 +1,4 @@
+@import 'vars';
 @import 'graphs';
 @import 'layer_list';
 @import 'layer_select';
@@ -5,35 +6,13 @@
 @import 'search';
 @import 'baselayers';
 @import 'logo';
+@import 'share';
 
-$panel-min-width-layers: 450px;
-$panel-min-width-graphs: 600px;
 
 html, body, #wrapper {
     width: 100%;
     height: 100%;
     position: relative;
-}
-
-#right-panel {
-    background-color: white;
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    vertical-align: top;
-    overflow-x: hidden;
-    border-left: 1px solid $border-color;
-
-    &.graphs-active {
-        min-width: $panel-min-width-graphs;
-        width: $panel-min-width-graphs;
-    }
-
-    &.layers-active {
-        min-width: $panel-min-width-layers;
-        width: $panel-min-width-layers;
-    }
 }
 
 #map-wrapper {

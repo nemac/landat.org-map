@@ -5,6 +5,10 @@ export function BindTabEvents () {
     d3.selectAll(".panel-top-btn").on("click", handleTabHeaderBtnClick);
 }
 
+export function GetActiveTab () {
+    return document.getElementsByClassName("panel-top-btn active")[0].getAttribute("data-active");
+}
+
 function handleTabHeaderBtnClick () {
     // If the section is already active, do nothing
     if (this.classList.contains("active")) return;

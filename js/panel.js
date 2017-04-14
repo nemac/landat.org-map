@@ -10,13 +10,22 @@ export function SetupPanel (layers, layout) {
     setPanelScrollHandler()
 }
 
+function browserIsInternetExplorer() {
+    var ua = window.navigator.userAgent
+    return ua.indexOf('MSIE') > -1 || ua.indexOf('rv:11.0') > -1
+}
+
 function setPanelScrollHandler() {
     var panel = document.getElementById('right-panel')
     panel.onscroll = updatePanelDragOverlayHeight
 }
 
 function makePanelDraggable() {
+    if (browserIsInternetExplorer()) return
+        
     var overlay = d3.select('#right-panel-drag-overlay')
+
+    overlay.style('cursor', 'ew-resize')
 
     overlay.call(d3.drag()
         .on('drag', function () {
@@ -38,8 +47,9 @@ export function updatePanelDragOverlayHeight () {
     var newHeight
 
     if (panel.classed('graphs-active')) {
+        var graphListExtraSpace = 700
         var graphList = document.getElementById('graph-list')
-        newHeight = header.scrollHeight + graphList.scrollHeight
+        newHeight = header.scrollHeight + graphList.scrollHeight + graphListExtraSpace
     }
     else { // panel.classed('layers-active')
         var layerList = document.getElementById('layer-list')

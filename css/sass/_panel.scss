@@ -1,34 +1,79 @@
+@import 'vars';
 
-@import 'mixins';
+#right-panel {
+    background-color: white;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    padding-top: $panel-header-wrapper-height;
+    border-left: 1px solid $border-color;
+    vertical-align: top;
+    overflow-x: hidden;
+    z-index: 10;
 
-$panel-header-wrapper-height: 50px;
+    &.graphs-active {
+        padding-top: $panel-header-and-graph-list-header-height;
+        min-width: $panel-min-width-graphs;
+        width: $panel-min-width-graphs;
+    }
 
-$border-color: #666;
+    &.layers-active {
+        min-width: $panel-min-width-layers;
+        width: $panel-min-width-layers;
+    }
 
-$btn-color: #8dbed6;
-$btn-color-hover: #4eb3e4;
-$btn-color-active: #06c8f7;
-$btn-font-size: 16px;
-$btn-font-color: #fff;
-$btn-text-shadow-color: #0878af;
+    &.about-active {
+        min-width: $panel-min-width-layers;
+        width: $panel-min-width-layers;
+    }
+}
 
 #right-panel-drag-overlay {
     z-index: 5;
-    cursor: ew-resize;
     height: inherit;
     padding: 5px;
     position: absolute;
 }
 
-.panel-top-btn {
-    width: 50%;
+.panel-header-wrapper {
+
 }
 
-.panel-header-wrapper {
-    height: $panel-header-wrapper-height;
+#right-panel-header {
     border-bottom: 1px solid $border-color;
-    vertical-align: top;
-    position: relative;
+    width: inherit;
+    height: $panel-header-wrapper-height;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+
+#graphs-header-wrapper {
+    position: fixed;
+    width: inherit;
+    height: $graph-type-header-height;
+    top: $panel-header-wrapper-height;
+    padding-top: $graph-type-header-padding-top;
+    border-bottom: 3px solid $border-color;
+    background: #fff;
+    z-index: 5;
+}
+
+#graph-type-header {
+    position: absolute;
+    bottom: 0;
+}
+
+.graph-type-info {
+    display: none;
+
+    &.active {
+        display: block;
+        font-size: 18px;
+        padding: 20px;
+        border-bottom: 1px solid $border-color;
+    }
 }
 
 .panel-section-wrapper {
@@ -40,6 +85,27 @@ $btn-text-shadow-color: #0878af;
         width: 100%;
     }
 }
+
+#layer-list-wrapper {
+
+    &.active #layer-list {
+        display: inline-block;
+        width: 100%;
+    }
+
+    #layer-list {
+        display: none;
+    }
+}
+
+#graphs-wrapper {
+    max-height: 100%;
+}
+
+.graph-list {
+    max-height: inherit;
+}
+
 
 /* Panel Buttons */
 
@@ -64,12 +130,108 @@ $btn-text-shadow-color: #0878af;
 
 .panel-btn {
     display: inline-block;
-    border-right: 1px solid $border-color;
-    text-align: center;
-    padding-top: 15px;
     height: 100%;
+    width: 33.333%;
+    padding-top: 12px;
+    vertical-align: top;
+    text-align: center;
+    border-right: 1px solid $border-color;
 
     &:last-child {
         border-right: 0;
     }
 }
+
+.panel-top-btn {
+    position: relative;
+
+    &.active {
+        &:before {
+            content: " ";
+            position: absolute;
+            bottom: -12px;
+            left: 47%;
+            margin-left: -1px;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 12px solid $border-color;
+            z-index: 10;
+        }
+
+        &:first-child:before {
+            margin-left: 0;
+        }
+
+        &:after {
+            content: " ";
+            position: absolute;
+            bottom: -10px;
+            left: 48%;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid $btn-color-active;
+            z-index: 100;
+        }
+    }
+}
+
+.layer-group-btn {
+    &:before {
+        content: "\203a";
+        font-size: 20px;
+        line-height: 1px;
+        padding-right: 10px;
+        text-shadow: none;
+    }
+}
+
+.layer-group-wrapper.active {
+    .layer-group-btn:before {
+        content: "\2304";
+        font-size: 30px;
+        margin-left: -5px;
+        padding-right: 5px;
+    }
+}
+
+.graph-type-btn {
+    background: #fff;
+    width: auto;
+    padding-top: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 0 10px -3px;
+    box-sizing: content-box;
+    border-right: none;
+    color: #111;
+    text-shadow: none;
+    font-weight: normal;
+    font-size: 16px;
+    height: 34px;
+    line-height: 34px + 2px;
+
+    &:hover {
+        background: #fff;
+        color: $btn-color-hover;
+        border-bottom: 3px solid $btn-color-hover;
+    }
+
+    &.active {
+        background: #fff;
+        color: $btn-color-active;
+        border-bottom: 3px solid $btn-color-active;
+    }
+}
+
+#about-text {
+    p {
+        padding: 15px 15px 0px 15px;
+        line-height: 1.5;
+        font-size: 18px;        
+    }
+}
+

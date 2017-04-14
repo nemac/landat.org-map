@@ -4,29 +4,45 @@
  * of using the config file, since we do not know how long it
  * will take to grab the file.
  */
-export default function ParseConfig (configFile, callback) {
+export function ParseConfig (configFile, callback) {
     GetConfig(configFile, callback);
 }
 
-function GetConfig (configFile, callback) {
-    var xmlhttp = new XMLHttpRequest();
+export function GetAjaxObject(responseHandler) {
+    var xmlhttp
+    if (window.ActiveXObject) {
+        xmlhttp = new window.ActiveXObject("MSXML2.XMLHTTP.3.0")
+    } else {
+        xmlhttp = new XMLHttpRequest()
+    }
     xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4) {
-            try {
-                var data = JSON.parse(xmlhttp.responseText);
-            } catch(err) {
-                console.log("ERROR: Malformed JSON in config file.");
-                console.log(err);
-            }
-            formatMap(data);
-            formatLayers(data);
-            callback(data);
+        if (xmlhttp.readyState === 4) {
+            responseHandler(xmlhttp.responseText)
         }
-    };
- 
+    }
+    return xmlhttp
+}
+
+function GetConfig (configFile, callback) {
+    var xmlhttp = GetAjaxObject(function (response) {
+        var data = responseHandler(response)
+        callback(data)
+    })
     xmlhttp.open("GET", configFile, true);
     xmlhttp.send();
     console.log("hi")
+}
+
+function responseHandler (response) {
+    try {
+        var data = JSON.parse(response);
+    } catch(err) {
+        console.log("ERROR: Malformed JSON in config file.");
+        console.log(err);
+    }
+    formatMap(data);
+    formatLayers(data);
+    return data
 }
 
 function formatMap (data) {

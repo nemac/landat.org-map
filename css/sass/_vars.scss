@@ -1,0 +1,50 @@
+
+@mixin user-select($option) {
+  -webkit-user-select: $option;
+  -khtml-user-select: $option;
+  -moz-user-select: $option;
+  -ms-user-select: $option;
+  user-select: $option;
+}
+
+/* Panel */
+
+$panel-min-width-layers: 465px;
+$panel-min-width-graphs: 600px;
+
+$panel-header-wrapper-height: 55px;
+$graph-type-header-height: 50px;
+$graph-type-header-padding-top: 10px;
+$panel-header-and-graph-list-header-height: $panel-header-wrapper-height + $graph-type-header-height;
+
+$border-color: #666;
+
+/* Panel Buttons */
+
+$btn-color: #8dbed6;
+$btn-color-hover: #4eb3e4;
+$btn-color-active: #06c8f7;
+$btn-font-size: 16px;
+$btn-font-color: #fff;
+$btn-text-shadow-color: #0878af;
+
+/* Layer Select Row */
+
+$layer-select-padding-top: 10px;
+$layer-select-padding-right: 30px;
+$layer-select-padding-bottom: 15px;
+$layer-select-padding-left: 15px;
+
+$layer-checkbox-length: 20px;
+$layer-checkbox-margin-right: 5px;
+$layer-info-content-font-size: 13px;
+$layer-div-content-margin-left: $layer-checkbox-length + $layer-checkbox-margin-right;
+$legend-wrapper-margin-vert: 10px;
+
+$layer-select-text-color: #22333B;
+$layer-select-color-primary: #D9F0F9;
+$layer-select-color-secondary: #C7DCE5;
+
+/* Graphs */
+
+$graph-close-button-color: #f31616;

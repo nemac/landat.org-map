@@ -16,10 +16,13 @@ export function updateShareUrl (e) {
         makeLayerString(map),
         makeBaseLayerString(map),
         makePointsOfInterestString(),
-        makeActiveTabString()
+        makeActiveTabString(),
+        makeActiveGraphTabString()
     ];
 
     setShareUrl(makeShareUrl(params));
+    setCopyLinkUrl();
+    setSocialUrls();
 }
 
 export function AddShareSettingsToConfig (config) {
@@ -31,6 +34,7 @@ export function AddShareSettingsToConfig (config) {
     if (share.baselayers) addBaseLayerSettingsToConfig(share.baselayers, config);
     if (share.pois) addPointsOfInterestToConfig(share.pois, config)
     if (share.tab) config.tab = share.tab;
+    if (share.graph) config.graph = share.graph;
 }
 
 function makeShareUrl (params) {
@@ -43,9 +47,100 @@ function setShareUrl (url) {
     }
 }
 
+function setCopyLinkUrl () {
+    var url = window.location.href;
+    document.getElementById("share-link-url").setAttribute("value", url);
+}
+
+export function BindCopyLinkEvents () {
+    d3.select(document).on("click", handleBodyClick);
+    d3.select(".share-link a").on("click", handleShareLinkButtonClick);
+    d3.select(".share-link-url").on("click", handleShareLinkUrlClick);
+    d3.select(".share-link-popup-remover").on("click", handleShareLinkCloseButtonClick);
+}
+
+/**
+ * Should close the copy link popup if it is active and if you click on any element
+ * that is not the popup or its children.
+ */
+function handleBodyClick () {
+    var event = d3.event;
+    var parents = []
+    if (event.path) {
+        parents = event.path
+    } else {
+        parents = getDomPath(event.srcElement)
+    }
+    var clickedInPopup = false;
+    var i, l;
+
+    for (i = 0, l = parents.length; i < l; i++) {
+        if (parents[i].className && typeof(parents[i].className) === "string" && parents[i].className.indexOf("share-link") !== -1) {
+            clickedInPopup = true;
+            break;
+        }
+    }
+
+    if (!clickedInPopup) {
+        handleCopyLinkClose();
+    }
+}
+
+function getDomPath(node) {
+    var path = []
+    while (node) {
+        path.push(node)
+        node = node.parentNode
+    }
+    return path
+}
+
+function handleShareLinkButtonClick () {
+    d3.select(document.getElementsByClassName("share-link-popup")[0]).classed("active") ?
+        handleCopyLinkClose() :
+        handleCopyLinkOpen();
+}
+
+function handleShareLinkCloseButtonClick () {
+    handleCopyLinkClose();
+}
+
+function handleShareLinkUrlClick () {
+    selectCopyLinkUrl();
+}
+
+function handleCopyLinkOpen () {
+    d3.select(document.getElementsByClassName("share-link-popup")[0]).classed("active", true);
+    selectCopyLinkUrl();
+}
+
+function handleCopyLinkClose () {
+    d3.select(document.getElementsByClassName("share-link-popup")[0]).classed("active", false);
+}
+
+function selectCopyLinkUrl () {
+    var shareInput = document.getElementById("share-link-url");
+    shareInput.focus();
+    shareInput.setSelectionRange(0, shareInput.value.length);
+}
+
+function setSocialUrls () {
+    var url = mangleParamString(window.location.href);
+    var socialLinks = document.getElementsByClassName("share-social");
+    var socialLink;
+    var newUrl;
+    var i, l;
+
+    for (i = 0, l = socialLinks.length; i < l; i++) {
+        socialLink = socialLinks[i];
+        newUrl = socialLink.getAttribute("data-baseurl") + url;
+        socialLink.setAttribute("href", newUrl);
+    }
+}
+
 function makeCenterString (map) {
     var center = map.getCenter();
-    return "center=" + center.lat.toString() + "," + center.lng.toString()
+    return "center=" + center.lat.toString() + "," + center.lng.toString();
 }
 
 function makeZoomString (map) {
@@ -98,6 +193,10 @@ function makeActiveTabString () {
     return "tab=" + d3.select(".panel-top-btn.active").attr("data-active");
 }
 
+function makeActiveGraphTabString () {
+    return "graph=" + d3.select(".graph-type-btn.active").attr("data-type");
+}
+
 function parseShareUrl () {
     var params = window.location.search;
     if (params === "") return;
@@ -113,6 +212,13 @@ function getParamsArray (params) {
     params = params.substring(1);
     params = unmangleParamString(params);
     return params.split("&");
+}
+
+function mangleParamString (url) {
+    return url.replace(/\:/g, "%3A")
+        .replace(/\//g, "%2F")
+        .replace(/\,/g, "%2C")
+        .replace(/\&/g, "%26");
 }
 
 function unmangleParamString (params) {
