@@ -111,6 +111,7 @@ $opacity-slider-track-offset-top: $slider-handle-height/2;
     display: inline-block;
     height: $opacity-slider-wrapper-height;
     margin-right: 30px;
+    vertical-align: top;
 
     .opacity-slider-track-overlay {
         display: inline-block;

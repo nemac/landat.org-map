@@ -9,50 +9,45 @@ var opacityScale = d3.scaleLinear()
     .range([0, OPACITY_RANGE_MAX])
     .clamp(true)
 
-export function setSliderInitialPos (layer, layerToolsWrapper) {
+export function setSliderInitialPos (layer, sliderHandle) {
 
     var layerOpacity = layer.opacity || 1
     var handleOffset = opacityScale(layerOpacity)
 
-    layerToolsWrapper.select('.opacity-slider-handle').style('top', function () {
-        return `${handleOffset}`+'px'
-    })
+    sliderHandle.style.top = ''+handleOffset+'px'
 }
 
-export function makeOpacitySlider (layer, layerToolsWrapper) {
-
+export function makeOpacitySlider (layer) {
     var layerOpacity = layer.opacity !== undefined ? layer.opacity : 1
+
+    var wrapper = document.createElement('div')
+    wrapper.classList.add('opacity-slider-wrapper')
+    var sliderTrack = makeSliderTrack(layer, layerOpacity)
+
+    wrapper.appendChild(sliderTrack)
+    return wrapper
+}
+
+function makeSliderTrack(layer, layerOpacity) {
+
+    var overlay = document.createElement('div')
+    var track = document.createElement('div')
+    var sliderHandle = document.createElement('div')
+    overlay.classList.add('opacity-slider-track-overlay')
+    track.classList.add('opacity-slider-track')
+    sliderHandle.classList.add('opacity-slider-handle')
+
+    overlay.appendChild(track)
+    overlay.append(sliderHandle)
+
+    if (layer.active) setSliderInitialPos(layer, sliderHandle)
+    setDragEventListener(overlay, layer, layerOpacity)
     
-    var wrapper = layerToolsWrapper.append('div')
-        .attr('class', 'opacity-slider-wrapper')
-
-    var opacityPercentIndicator = wrapper.append('div')
-        .attr('class', 'opacity-slider-indicator')
-
-    makeSliderTrack(wrapper, layer, layerToolsWrapper, layerOpacity)
-
+    return overlay
 }
 
-function makeSliderTrack(wrapper, layer, layerToolsWrapper, layerOpacity) {
-
-    var overlay = wrapper.append('div')
-        .attr('class', 'opacity-slider-track-overlay')
-
-    var track = overlay.append('div')
-        .attr('class', 'opacity-slider-track')
-
-    overlay.append('div')
-        .attr('class', 'opacity-slider-handle')
-
-    if (layer.active) setSliderInitialPos(layer, layerToolsWrapper)
-    setDragEventListener(wrapper, layer, layerOpacity)
-
-}
-
-function setDragEventListener(wrapper, layer, layerOpacity) {
-
-    var overlay = wrapper.select('.opacity-slider-track-overlay')
-    overlay.call(d3.drag()
+function setDragEventListener(overlay, layer, layerOpacity) {
+    d3.select(overlay).call(d3.drag()
         .on('start drag', function () {
             var newOpacity = calcOpacityFromMousePos(overlay)
             updateLayerOpacity(layer, newOpacity)
@@ -60,16 +55,17 @@ function setDragEventListener(wrapper, layer, layerOpacity) {
         })
         .on('end', function () {
             updateShareUrl()
-        }))
+        })
+    )
 }
 
 function adjustSliderHandle(overlay, newOpacity) {
-    var handle = overlay.select('.opacity-slider-handle')
-    handle.style('top', `${opacityScale(newOpacity)}`+'px')
+    var handle = overlay.getElementsByClassName('opacity-slider-handle')[0]
+    handle.style.top = ''+opacityScale(newOpacity)+'px'
 }
 
 function calcOpacityFromMousePos(overlay) {
-    var yPos = d3.mouse(overlay.node())[1]
+    var yPos = d3.mouse(overlay)[1]
     var newOpacity = opacityScale.invert(yPos)
     return newOpacity
 }

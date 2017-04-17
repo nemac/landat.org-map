@@ -2,7 +2,8 @@ import {
     AddPointOfInterestToTracker,
     RemovePointOfInterestFromTracker,
     SetupPointOfInterestUI,
-    RemovePointOfInterestUI
+    RemovePointOfInterestUI,
+    GetAllPointsOfInterest
 } from './poi'
 import {updatePanelDragOverlayHeight} from './panel'
 import {updateShareUrl} from './share'
@@ -189,13 +190,35 @@ function handleGraphTypeBtnClick () {
         return;
     }
 
-    HandleGraphTabChange(type);
+    HandleGraphTabChange(type, activeType);
 }
 
 export function HandleGraphTabChange (graphType) {
+    if (!isGraphListEmpty()) {
+        var oldActiveGraphElemHeight = document.getElementsByClassName('graph-elem')[0].scrollHeight
+        var oldActiveGraphInfoHeight = document.getElementsByClassName('graph-type-info active')[0].scrollHeight
+        var rightPanelScrollTop = document.getElementById('right-panel').scrollTop        
+    }
     disableActiveGraphTab();
     enableGraphTab(graphType);
+    if (!isGraphListEmpty()) adjustScrollPosition(oldActiveGraphInfoHeight, oldActiveGraphElemHeight, rightPanelScrollTop)
     updateShareUrl();
+}
+
+function isGraphListEmpty() {
+    return document.getElementsByClassName('graph-elem')[0] === undefined
+}
+
+function adjustScrollPosition(oldGraphInfoHeight, oldGraphElemHeight, oldRightPanelScrollTop) {
+    var newGraphInfoHeight = document.getElementsByClassName('graph-type-info active')[0].scrollHeight
+    var newGraphElemHeight = document.getElementsByClassName('graph-elem')[0].scrollHeight
+
+    var newGraphElemHeightScale = (newGraphElemHeight / oldGraphElemHeight)
+    var newRightPanelScrollTop = newGraphInfoHeight + (
+        (oldRightPanelScrollTop - oldGraphInfoHeight) * newGraphElemHeightScale
+    )
+
+    document.getElementById('right-panel').scrollTop = newRightPanelScrollTop
 }
 
 function disableActiveGraphTab () {

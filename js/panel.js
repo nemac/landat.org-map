@@ -115,7 +115,7 @@ function makeLayerElems (layerGroups, layers) {
             makeCheckbox(layer, layerDiv);
             makeLabel(layer, layerDiv);
             makeDescription(layer, layerDiv);
-            makeLayerTools(layer, layerDiv);
+            layerDiv.node().appendChild(makeLayerTools(layer));
         });
 }
 
@@ -164,22 +164,26 @@ function makeDescription (layer, layerDiv) {
 }
 
 function makeLayerTools(layer, layerDiv) {
-    var layerToolsDiv = layerDiv.append('div')
-        .attr('class', 'layer-tools-wrapper')
-        .classed('active', function () {
-            return layer.active
-        })
+    var layerToolsDiv = document.createElement('div')
+    layerToolsDiv.classList.add('layer-tools-wrapper')
+    if (layer.active) layerToolsDiv.classList.add('active')
 
-    makeOpacitySlider(layer, layerToolsDiv);
-    makeLegend(layer, layerToolsDiv);
+    var opacitySlider = makeOpacitySlider(layer);
+    var legend = makeLegend(layer);
+
+    layerToolsDiv.appendChild(opacitySlider)
+    layerToolsDiv.appendChild(legend)
+
+    return layerToolsDiv
 }
 
 function makeLegend (layer, layerToolsWrapper) {
-    layerToolsWrapper
-        .append('div')
-            .attr('class', 'legend-wrapper')
-        .append('img')
-            .attr('src', layer.legend || 'mean_ndvi_legend.jpg');
+    var legendWrapper = document.createElement('div')
+    var legendImg = document.createElement('img')
+    legendWrapper.classList.add('legend-wrapper')
+    legendImg.setAttribute('src', layer.legend)
+    legendWrapper.appendChild(legendImg)
+    return legendWrapper
 }
 
 
