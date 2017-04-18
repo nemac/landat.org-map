@@ -116,8 +116,7 @@
     font-weight: bold;
     color: $btn-font-color;
     letter-spacing: .75px;
-    text-shadow: -1px 1px $btn-text-shadow-color;
-    @include user-select(none)
+    @include user-select(none);
 
     &:hover {
         background-color: $btn-color-hover;
@@ -132,7 +131,6 @@
     display: inline-block;
     height: 100%;
     width: 33.333%;
-    padding-top: 12px;
     vertical-align: top;
     text-align: center;
     border-right: 1px solid $border-color;
@@ -179,22 +177,36 @@
     }
 }
 
+.btn-middle-align-ghost {
+    height: 100%;
+    padding-bottom: 3px;
+
+    div, &:before {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    &:before {
+        width: .05%;
+        height: 100%;
+        content: " ";
+    }
+
+    div {
+        width: 99.5%;
+    }
+}
+
 .layer-group-btn {
     &:before {
-        content: "\203a";
-        font-size: 20px;
-        line-height: 1px;
-        padding-right: 10px;
-        text-shadow: none;
+        content: " ";
+        background-image: "../imgs/arrows.png";
     }
 }
 
 .layer-group-wrapper.active {
     .layer-group-btn:before {
-        content: "\2304";
-        font-size: 30px;
-        margin-left: -5px;
-        padding-right: 5px;
+        content: " ";
     }
 }
 
