@@ -22,7 +22,7 @@ function setPanelScrollHandler() {
 
 function makePanelDraggable() {
     if (browserIsInternetExplorer()) return
-        
+
     var overlay = d3.select('#right-panel-drag-overlay')
 
     overlay.style('cursor', 'ew-resize')
@@ -95,6 +95,15 @@ function makeLayerGroups (layout) {
                 d3.select(this).append('div')
                     .attr('class', 'layer-group-btn btn')
                     .on('click', function (layerGroup) {
+
+                        //send google analytics toggle the layer list accordians
+                        ga('send', 'event', {
+                          eventCategory: 'layer list',
+                          eventAction: 'toggle ' + !layerGroup.active,
+                          eventLabel: layerGroup.name,
+                          nonInteraction: false
+                        });
+
                         layerGroup.active = !layerGroup.active;
                         d3.select(this.parentNode).classed('active', () => layerGroup.active);
                         updatePanelDragOverlayHeight()
@@ -150,9 +159,20 @@ function makeDescription (layer, layerDiv) {
             .attr('class', 'layer-info-btn')
             .text('(?)')
             .on('click', function () {
+
                 d3.select(this.parentNode)
                     .select('.layer-info-wrapper')
                     .classed('active', function () {
+                      
+                        //send google analytics click on layer info
+                        ga('send', 'event', {
+                          eventCategory: 'layer info',
+                          eventAction: 'clicked',
+                          eventLabel: layer.name + " " + !d3.select(this).classed('active'),
+                          nonInteraction: false
+                        });
+
+
                         return !d3.select(this).classed('active');
                     })
             });
@@ -185,6 +205,3 @@ function makeLegend (layer, layerToolsWrapper) {
     legendWrapper.appendChild(legendImg)
     return legendWrapper
 }
-
-
-
