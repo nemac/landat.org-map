@@ -119,13 +119,13 @@
         "id": "Factor123",
         "name": "Summary phenology: seasonality and timing",
         "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with (1) seasonality, and with (2) the day-of-year variables such as the middle of the growing season.",
-        "legend": "legends/placeholder.png" 
+        "legend": "legends/abv.png" 
       },
       {
         "id": "Factor23",
         "name": "Summary phenology: timing",
         "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with only the day-of-year variables such as the beginning, middle, and end of the growing season.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abv.png"
       }
     ],
     "boundaries" : [
