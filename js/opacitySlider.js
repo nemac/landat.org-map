@@ -59,7 +59,7 @@ function makeSliderTrack(layer, layerOpacity) {
 
     if (layer.active) setSliderInitialPos(layer, sliderHandle)
     setDragEventListener(overlay, layer, layerOpacity)
-    
+
     return overlay
 }
 
@@ -67,10 +67,22 @@ function setDragEventListener(overlay, layer, layerOpacity) {
     d3.select(overlay).call(d3.drag()
         .on('start drag', function () {
             var newOpacity = calcOpacityFromMousePos(overlay)
+
             updateLayerOpacity(layer, newOpacity)
             adjustSliderHandle(overlay, newOpacity)
         })
         .on('end', function () {
+
+          var newOpacity = calcOpacityFromMousePos(overlay)
+
+          //send google analytics opacity slider change
+          ga('send', 'event', {
+            eventCategory: 'opacity slider',
+            eventAction: 'change',
+            eventLabel: '{"' + layer.name + '": "' + newOpacity + '"}',
+            nonInteraction: false
+          });
+
             updateShareUrl()
         })
     )

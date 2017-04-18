@@ -46,8 +46,26 @@ export function CreateDefaultLayers (layers, defaultLayers) {
 export function toggleLayer (layer) {
     if (!layer.active) {
         enableLayer(layer);
+
+        //send google analytics toggle the layer on
+        ga('send', 'event', {
+          eventCategory: 'layer',
+          eventAction: 'toggle on',
+          eventLabel: layer.name,
+          nonInteraction: false
+        });
+
     } else {
         disableLayer(layer);
+
+        //send google analytics toggle the layer off
+        ga('send', 'event', {
+          eventCategory: 'layer',
+          eventAction: 'toggle off',
+          eventLabel: layer.name,
+          nonInteraction: false
+        });
+
     }
 }
 

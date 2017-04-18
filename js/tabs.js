@@ -12,6 +12,15 @@ export function GetActiveTab () {
 function handleTabHeaderBtnClick () {
     // If the section is already active, do nothing
     if (this.classList.contains("active")) return;
+    
+    //send google analytics click on graph type
+    ga('send', 'event', {
+      eventCategory: 'tab',
+      eventAction: 'click',
+      eventLabel: this.getAttribute("data-active"),
+      nonInteraction: false
+    });
+
     HandleTabChange(this.getAttribute("data-active"));
 }
 

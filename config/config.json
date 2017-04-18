@@ -33,7 +33,7 @@
       "subdomains": ["server", "services"],
       "label": "ESRI Topo",
       "image": "imgs/esri-topo.jpg",
-      "active": false
+      "active": true
     },
     {
       "id": "carto-light",

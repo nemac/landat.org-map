@@ -55,13 +55,12 @@
     right: $layer-select-padding-left + 12;
 
     .layer-info-icon {
-        width: 25px;
-        height: 25px;
+        width: 26px;
+        height: 26px;
     }
 
     .layer-info-icon:hover {
-        width: 27px;
-        height: 27px;
+        cursor: pointer;
     }
 }
 
@@ -138,6 +137,7 @@ $opacity-icon-size: $opacity-slider-track-overlay-width;
         width: $opacity-slider-track-overlay-width;
         height: $opacity-slider-track-overlay-height;
         top: -$opacity-slider-track-offset-top;
+        cursor: pointer;
     }
 
     .opacity-slider-track {
@@ -168,6 +168,7 @@ $opacity-icon-size: $opacity-slider-track-overlay-width;
         .opacity-icon {
             width: $opacity-icon-size;
             height: $opacity-icon-size;
+            cursor: pointer;
 
             &.closed {
                 margin-top: -$opacity-slider-track-offset-top;

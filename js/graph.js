@@ -76,6 +76,15 @@ function handleMapClick (e) {
     var poi = AddPointOfInterestToTracker(lat, lng)
     SetupPointOfInterestUI(map, poi, hoverIcon, graphIcon)
     updateShareUrl()
+
+    //send google analytics event click on map
+    ga('send', 'event', {
+      eventCategory: 'map',
+      eventAction: 'click',
+      eventLabel: 'add point',
+      nonInteraction: false
+    });
+
 }
 
 export function createMarker (map, lat, lng) {
@@ -111,7 +120,7 @@ function sendRequest(request, url) {
 function handleGraphDataResponse (div, lat, lng, response) {
     response = response.replace(/\[|\]|\'/g, "").split(", ");
     drawGraph(response, div, lat, lng);
-    updatePanelDragOverlayHeight()    
+    updatePanelDragOverlayHeight()
 }
 
 function getData(lat, lng, div) {
@@ -190,6 +199,14 @@ function handleGraphTypeBtnClick () {
         return;
     }
 
+    //send google analytics click on graph type
+    ga('send', 'event', {
+      eventCategory: 'graph type',
+      eventAction: 'click',
+      eventLabel: type,
+      nonInteraction: false
+    });
+
     HandleGraphTabChange(type, activeType);
 }
 
@@ -197,7 +214,7 @@ export function HandleGraphTabChange (graphType) {
     if (!isGraphListEmpty()) {
         var oldActiveGraphElemHeight = document.getElementsByClassName('graph-elem')[0].scrollHeight
         var oldActiveGraphInfoHeight = document.getElementsByClassName('graph-type-info active')[0].scrollHeight
-        var rightPanelScrollTop = document.getElementById('right-panel').scrollTop        
+        var rightPanelScrollTop = document.getElementById('right-panel').scrollTop
     }
     disableActiveGraphTab();
     enableGraphTab(graphType);
@@ -383,7 +400,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
         .ticks(11)
         .tickValues([15, 45, 75, 105, 135, 165, 195, 225, 255, 285, 315, 345])
         .tickFormat(formatMonthTick);
-  
+
     var yAxis = d3.axisLeft(y)
         .ticks(6);
 
@@ -406,7 +423,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
             //.attr("width", width + margin.left + margin.right)
             //.attr("height", height + margin.top + margin.bottom)
         .append("g")
-            .attr("transform", 
+            .attr("transform",
                   "translate(" + margin.left + "," + margin.top + ")");
 
     svg.call(tip);
@@ -781,7 +798,7 @@ function findPolarThresholds (data, startDay) {
 
     var fifteenThreshold = totalSum * .15;
     var eightyThreshold = totalSum * .80;
-    var fifteenIndexFound = false, 
+    var fifteenIndexFound = false,
         eightyIndexFound = false;
     var fifteenIndex, eightyIndex;
 
