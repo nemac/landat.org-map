@@ -8,6 +8,7 @@
 .layer-group-wrapper.active .layer-select {
     display: block;
     width: 100%;
+    position: relative;
     color: $layer-select-text-color;
     padding-top: $layer-select-padding-top;
     padding-right: $layer-select-padding-right;
@@ -47,9 +48,21 @@
 
 /* Layer Description */
 
-.layer-info-btn {
+.layer-info-btn-wrapper {
+    
     display: inline-block;
-    float: right;
+    position: absolute;
+    right: $layer-select-padding-left + 12;
+
+    .layer-info-icon {
+        width: 25px;
+        height: 25px;
+    }
+
+    .layer-info-icon:hover {
+        width: 27px;
+        height: 27px;
+    }
 }
 
 .layer-info-wrapper {
@@ -72,7 +85,10 @@
 
     &.active {
         display: block;
-        margin-top: 15px;
+        position: relative;
+        margin-top: 35px;
+        width: 100%;
+        min-height: 120px;
     }
 }
 
@@ -107,11 +123,14 @@ $opacity-slider-track-width: 2px;
 $opacity-slider-track-height: calc(100% - #{$slider-handle-height});
 $opacity-slider-track-offset-top: $slider-handle-height/2;
 
+$opacity-icon-size: $opacity-slider-track-overlay-width;
+
 .opacity-slider-wrapper {
     display: inline-block;
     height: $opacity-slider-wrapper-height;
-    margin-right: 30px;
     vertical-align: top;
+    position: absolute;
+    right: 0px;
 
     .opacity-slider-track-overlay {
         display: inline-block;
@@ -142,8 +161,18 @@ $opacity-slider-track-offset-top: $slider-handle-height/2;
         right: 0px;
     }
 
-    .opacity-slider-indicator {
-        display: inline-block;
+    .opacity-icon-wrapper {
+        display: block;
+        position: relative;
+
+        .opacity-icon {
+            width: $opacity-icon-size;
+            height: $opacity-icon-size;
+
+            &.closed {
+                margin-top: -$opacity-slider-track-offset-top;
+            }
+        }
     }
 }
 

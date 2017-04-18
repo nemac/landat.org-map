@@ -33,7 +33,7 @@
       "subdomains": ["server", "services"],
       "label": "ESRI Topo",
       "image": "imgs/esri-topo.jpg",
-      "active": true
+      "active": false
     },
     {
       "id": "carto-light",
@@ -95,7 +95,6 @@
     ]
   },
   "active-layers": [
-    "Factor123"
   ],
   "layers" : {
     "carbon-models": [

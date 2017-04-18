@@ -147,15 +147,17 @@ function makeLabel(layer, layerDiv) {
 function makeDescription (layer, layerDiv) {
     if (layer.info && layer.info !== '') {
         layerDiv.append('div')
-            .attr('class', 'layer-info-btn')
-            .text('(?)')
+            .attr('class', 'layer-info-btn-wrapper')
             .on('click', function () {
                 d3.select(this.parentNode)
                     .select('.layer-info-wrapper')
                     .classed('active', function () {
                         return !d3.select(this).classed('active');
                     })
-            });
+            })
+            .append('img')
+                .attr('class', 'layer-info-icon')
+                .attr('src', 'imgs/more-info-icon-64x64.png')
 
         layerDiv.append('div')
             .attr('class', 'layer-info-wrapper')
@@ -171,8 +173,8 @@ function makeLayerTools(layer, layerDiv) {
     var opacitySlider = makeOpacitySlider(layer);
     var legend = makeLegend(layer);
 
-    layerToolsDiv.appendChild(opacitySlider)
     layerToolsDiv.appendChild(legend)
+    layerToolsDiv.appendChild(opacitySlider)
 
     return layerToolsDiv
 }

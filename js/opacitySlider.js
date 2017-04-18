@@ -19,12 +19,28 @@ export function setSliderInitialPos (layer, sliderHandle) {
 
 export function makeOpacitySlider (layer) {
     var layerOpacity = layer.opacity !== undefined ? layer.opacity : 1
-
     var wrapper = document.createElement('div')
-    wrapper.classList.add('opacity-slider-wrapper')
-    var sliderTrack = makeSliderTrack(layer, layerOpacity)
+    var sliderTrackOverlay = makeSliderTrack(layer, layerOpacity)
+    var iconWrapperClosed = makeOpacityIconWrapper('closed', layer, sliderTrackOverlay)
 
-    wrapper.appendChild(sliderTrack)
+    wrapper.classList.add('opacity-slider-wrapper')
+    wrapper.appendChild(sliderTrackOverlay)
+    wrapper.appendChild(iconWrapperClosed)
+    return wrapper
+}
+
+function makeOpacityIconWrapper(state, layer, sliderTrackOverlay) {
+    var wrapper = document.createElement('div')
+    var icon = document.createElement('img')
+    wrapper.classList.add('opacity-icon-wrapper')
+    icon.classList.add('opacity-icon')
+    icon.classList.add(state)
+    icon.setAttribute('src', 'imgs/opacity-icon-'+state+'-64x64.png')
+    wrapper.appendChild(icon)
+    wrapper.onclick = function (e) {
+        updateLayerOpacity(layer, 0)
+        adjustSliderHandle(sliderTrackOverlay, 0)
+    }
     return wrapper
 }
 
@@ -33,6 +49,7 @@ function makeSliderTrack(layer, layerOpacity) {
     var overlay = document.createElement('div')
     var track = document.createElement('div')
     var sliderHandle = document.createElement('div')
+
     overlay.classList.add('opacity-slider-track-overlay')
     track.classList.add('opacity-slider-track')
     sliderHandle.classList.add('opacity-slider-handle')
