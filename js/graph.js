@@ -84,7 +84,7 @@ function handleMapClick (e) {
       eventLabel: 'add point',
       nonInteraction: false
     });
-    
+
 }
 
 export function createMarker (map, lat, lng) {
@@ -198,6 +198,14 @@ function handleGraphTypeBtnClick () {
     if (type === activeType) {
         return;
     }
+
+    //send google analytics click on graph type
+    ga('send', 'event', {
+      eventCategory: 'graph type',
+      eventAction: 'click',
+      eventLabel: type,
+      nonInteraction: false
+    });
 
     HandleGraphTabChange(type, activeType);
 }
