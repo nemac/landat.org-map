@@ -624,7 +624,7 @@ path {
 
 .layer-group-btn:before {
   content: " ";
-  width: 10px;
+  width: 12px;
   height: 20px;
   display: inline-block;
   background-size: 22px 11px;
@@ -638,7 +638,7 @@ path {
 
 .layer-group-wrapper.active .layer-group-btn:before {
   content: " ";
-  background-position: -6px 2px;
+  background-position: -7px 2px;
   width: 15px;
 }
 
