@@ -46,5 +46,17 @@ function createLogoLink (link) {
     var logoLink = document.createElement("a");
     logoLink.setAttribute("href", link);
     logoLink.setAttribute("target", "_blank");
+
+    logoLink.addEventListener('click', function () {
+
+      //send google analytics for clicking logo
+      ga('send', 'event', {
+        eventCategory: 'map',
+        eventAction: 'click',
+        eventLabel: 'landat logo',
+        nonInteraction: false
+      });
+    });
+
     return logoLink;
 }

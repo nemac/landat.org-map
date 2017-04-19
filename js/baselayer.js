@@ -6,7 +6,7 @@ export const BASE_LAYER_TYPE = "baselayer";
 var _baselayers;
 
 export function CreateBaseLayers (map, layerConfig) {
-    layerConfig = layerConfig || 
+    layerConfig = layerConfig ||
         [{
             "id" : "carto-light-default",
             "url" : "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
@@ -57,7 +57,7 @@ function createBaseLayerUI (config) {
         d3.select(baseWrapper)
             .classed("base-selector", true)
             .classed("active", layer.active);
-       
+
         baseUI.appendChild(baseWrapper);
     }
 
@@ -70,6 +70,15 @@ function handleBaseClick (e) {
     toggleActiveBaseUI(this);
     removeCurrentBaseLayer();
     addNewBaseLayerToMap(layerid);
+
+    //send google analytics for changeing base layer
+    ga('send', 'event', {
+      eventCategory: 'map',
+      eventAction: 'change base layer',
+      eventLabel: layerid,
+      nonInteraction: false
+    });
+
     updateShareUrl();
 }
 
@@ -117,4 +126,3 @@ function makeBaseLayerOptions (config) {
 
     return options;
 }
-
