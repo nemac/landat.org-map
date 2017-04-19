@@ -95,6 +95,15 @@ export function createGraphRemover (map, div, marker, poi) {
     var elem = createGraphRemoverElem();
     div.getElementsByClassName("graph-elem-header")[0].appendChild(elem);
     d3.select(elem).on("click", function () {
+
+        //send google analytics remove graph
+        ga('send', 'event', {
+          eventCategory: 'graph',
+          eventAction: 'click',
+          eventLabel: 'remove',
+          nonInteraction: false
+        });
+
         RemovePointOfInterestFromTracker(poi)
         RemovePointOfInterestUI(map, div, marker)
         updatePanelDragOverlayHeight()
@@ -286,6 +295,15 @@ function makeZoomToMapMarkerButton(poi) {
     button.onclick = function (poi, e) {
         var map = GetMap()
         map.panTo([poi.lat, poi.lng])
+
+        //send google analytics click on show on map
+        ga('send', 'event', {
+          eventCategory: 'graph',
+          eventAction: 'click',
+          eventLabel: '{"show on map":{"lat":' + poi.lat + ',"long":'+  poi.lng+ '}}',
+          nonInteraction: false
+        });
+
     }.bind(button, poi)
     return button
 }
@@ -536,17 +554,17 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
      * This block of code draws the labels for each month and the lines
      * that go out to them.
      */
-    var ga = svg.append("g")
+    var ga_a = svg.append("g")
         .attr("class", "a axis")
         .selectAll("g")
         .data(d3.range(0, 360, 30))
         .enter().append("g")
             .attr("transform", function(d) { return "rotate(" + (d - 90) + ")"; });
 
-    ga.append("line")
+    ga_a.append("line")
         .attr("x2", radius);
 
-    ga.append("text")
+    ga_a.append("text")
         .attr("x", radius + 6)
         .attr("dy", ".35em")
         .style("text-anchor", function(d) { return d < 360 && d > 180 ? "end" : null; })
@@ -648,10 +666,28 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
                 if (!this.checked) {
                     charts[newYear].path.remove();
                     charts[newYear].points.remove();
+
+                    //send google analytics graph year click off
+                    ga('send', 'event', {
+                      eventCategory: 'graph',
+                      eventAction: 'click',
+                      eventLabel:  newYear + ' polar timeseries off',
+                      nonInteraction: false
+                    });
+
+
                 } else {
                     if (!charts.hasOwnProperty(newYear)) {
                         charts[newYear] = {};
                     }
+
+                    //send google analytics graph year click off
+                    ga('send', 'event', {
+                      eventCategory: 'graph',
+                      eventAction: 'click',
+                      eventLabel:  newYear + ' polar timeseries on',
+                      nonInteraction: false
+                    });
 
                     charts[newYear].path = drawPolarPath(data[newYear], line, svg);
                     charts[newYear].points = drawLinearPoints(data[newYear], line, svg, averages);
@@ -679,14 +715,31 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
             if (!this.checked) {
                 charts[newYear].path.remove();
                 charts[newYear].points.remove();
+
+                //send google analytics graph year click off
+                ga('send', 'event', {
+                  eventCategory: 'graph',
+                  eventAction: 'click',
+                  eventLabel:  newYear + ' polar timeseries off',
+                  nonInteraction: false
+                });
+
             } else {
                 if (!charts.hasOwnProperty(newYear)) {
                     charts[newYear] = {};
                 }
 
-                charts[newYear].path = drawPolarPath(data[newYear], line, svg)
+                //send google analytics graph year click off
+                ga('send', 'event', {
+                  eventCategory: 'graph',
+                  eventAction: 'click',
+                  eventLabel:  newYear + ' polar timeseries on',
+                  nonInteraction: false
+                });
 
+                charts[newYear].path = drawPolarPath(data[newYear], line, svg)
                 charts[newYear].points = drawLinearPoints(data[newYear], line, svg, averages);
+
             }
         });
 
@@ -707,6 +760,15 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         .property("checked", true)
         .on("change", function (e) {
             thresholdElem.style("opacity", (this.checked) ? 1 : 0);
+            var offon = this.checked ? 'off' : 'on';
+
+            //send google analytics graph threshold click off
+            ga('send', 'event', {
+              eventCategory: 'graph',
+              eventAction: 'click',
+              eventLabel:  'threshold polar timeseries ' + offon,
+              nonInteraction: false
+            });
         });
 
     thresholdCheckbox.append("label")
@@ -882,6 +944,17 @@ function handlePointMouseout(d) {
     tip.hide();
     this.setAttribute("r", 3);
     this.setAttribute("stroke-width", "1px");
+
+    var activeType = document.getElementsByClassName("graph-type-btn active")[0].getAttribute('data-type');
+
+    //send google analytics tool tip on graph do this on the mouseout so mouseover dose not do a lot of events....
+    // we miss a few but that is better than over counting.
+    ga('send', 'event', {
+      eventCategory: 'graph',
+      eventAction: 'hover',
+      eventLabel: activeType + ' tool tip',
+      nonInteraction: false
+    });
 }
 
 function createCheckbox(wrapper, key, type, year, charts, data, line, svg, averages, lat, lng) {
@@ -897,12 +970,29 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
             if (!this.checked) {
                 charts[newYear].path.remove();
                 charts[newYear].points.remove();
+
+                //send google analytics graph year click off
+                ga('send', 'event', {
+                  eventCategory: 'graph',
+                  eventAction: 'click',
+                  eventLabel:  newYear + ' overlapping timeseries off',
+                  nonInteraction: false
+                });
+
             } else {
                 if (!charts.hasOwnProperty(newYear)) {
                     charts[newYear] = {};
                 }
                 charts[newYear].path = drawLinearPath(data[newYear], line, svg);
                 charts[newYear].points = drawLinearPoints(data[newYear], line, svg, averages);
+
+                //send google analytics graph year click on
+                ga('send', 'event', {
+                  eventCategory: 'graph',
+                  eventAction: 'click',
+                  eventLabel:  newYear + ' overlapping timeseries on',
+                  nonInteraction: false
+                });
             }
         });
 

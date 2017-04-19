@@ -110,11 +110,29 @@ function handleShareLinkUrlClick () {
 }
 
 function handleCopyLinkOpen () {
+
+    //send google analytics event click on share url
+    ga('send', 'event', {
+      eventCategory: 'shareurl',
+      eventAction: 'open',
+      eventLabel: document.getElementById("shareurl-link-url").getAttribute("value"),
+      nonInteraction: false
+    });
+
     d3.select(document.getElementsByClassName("shareurl-link-popup")[0]).classed("active", true);
     selectCopyLinkUrl();
 }
 
 function handleCopyLinkClose () {
+
+    //send google analytics event click on share url close
+    ga('send', 'event', {
+      eventCategory: 'shareurl',
+      eventAction: 'close',
+      eventLabel: document.getElementById("shareurl-link-url").getAttribute("value"),
+      nonInteraction: false
+    });
+
     d3.select(document.getElementsByClassName("shareurl-link-popup")[0]).classed("active", false);
 }
 
@@ -133,8 +151,22 @@ function setSocialUrls () {
 
     for (i = 0, l = socialLinks.length; i < l; i++) {
         socialLink = socialLinks[i];
+
         newUrl = socialLink.getAttribute("data-baseurl") + url;
         socialLink.setAttribute("href", newUrl);
+
+        //send google analytics event for social urls
+        socialLink.addEventListener('click', function() {
+
+          ga('send', 'event', {
+            eventCategory: 'shareurl',
+            eventAction: this.getAttribute("aria-label"),
+            eventLabel: this.href,
+            nonInteraction: false
+          });
+
+        });
+
     }
 }
 
@@ -326,4 +358,3 @@ function addBaseLayerSettingsToConfig (shareBaseLayerSettings, config) {
 function addPointsOfInterestToConfig(pois, config) {
     config["pois"] = pois
 }
-
