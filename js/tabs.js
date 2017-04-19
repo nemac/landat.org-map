@@ -39,6 +39,7 @@ function enableTab (newClass) {
     d3.select(".panel-section-wrapper[data-active='" + newClass + "']").classed("active", true);
 
     toggleMapPadding();
+    resetPanelWidth();
     updatePanelDragOverlayHeight();
 }
 
@@ -55,4 +56,20 @@ function disableActiveTab () {
 function toggleMapPadding () {
     var paddingRight = document.getElementById("right-panel").offsetWidth;
     document.getElementById("map-wrapper").style.paddingRight = paddingRight + "px";
+}
+
+/**
+ * Since the panel has child elements with position fixed and width inherit
+ * we need to clear the inline width property if and only if the inline
+ * width is less than the min width
+ */
+function resetPanelWidth () {
+    var panel = document.getElementById("right-panel");
+    var width = panel.style.width;
+    if (!width) return;
+
+    var panelMinWidth = d3.select(panel).style('min-width').slice(0, -2);
+    if (parseInt(width.slice(0, -2), 10) > parseInt(panelMinWidth, 10)) return;
+
+    panel.style.width = "";
 }
