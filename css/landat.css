@@ -671,10 +671,35 @@ path {
   border-bottom: 3px solid #7fa8e1;
 }
 
-#about-text p {
-  padding: 15px 15px 0px 15px;
-  line-height: 1.5;
+#about-text {
+  padding: 15px;
   font-size: 18px;
+  color: #333;
+}
+
+#about-text h3 {
+  font-size: 24px;
+  background-image: repeating-linear-gradient(180deg, transparent, transparent 24px, #333333 25px);
+  padding-bottom: 15px;
+}
+
+#about-text p {
+  padding-bottom: 15px;
+  line-height: 1.5em;
+}
+
+#about-text ul {
+  padding: 0 0 15px 20px;
+}
+
+#about-text a {
+  cursor: pointer;
+  color: #f69232;
+}
+
+#about-text .about-icon {
+  width: auto;
+  height: 18px;
 }
 
 .leaflet-control-geosearch {
