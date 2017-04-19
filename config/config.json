@@ -1,5 +1,5 @@
 {
-  "mapserverUrl": "http://gis.nemac.org/landat",
+  "mapserverUrl": "https://gis.nemac.org/landat",
   "defaultLayerOpacity": 0.75,
   "logo": {
     "image": "imgs/landat_logo_blue.png",
@@ -143,7 +143,7 @@
         "id": "States",
         "name": "States",
         "info": "U.S. state borders from the U.S. Census Bureau's TigerLine products",
-        "url": "http://gis.nemac.org/landat-vector",
+        "url": "https://gis.nemac.org/landat-vector",
         "legend": "legends/abi.png",
         "type": "overlay"
       },
@@ -151,7 +151,7 @@
         "id": "CountiesBlack",
         "name": "Counties",
         "info": "U.S. county borders from the U.S. Census Bureau's TigerLine products",
-        "url": "http://gis.nemac.org/landat-vector",
+        "url": "https://gis.nemac.org/landat-vector",
         "legend": "legends/abj.png",
         "type": "overlay"
       },
@@ -159,7 +159,7 @@
         "id": "AppLCCRegionBlk",
         "name": "AppLCC region",
         "info": "Regional boundary of the Appalachian Land Conservation Cooperative (AppLCC)",
-        "url": "http://gis.nemac.org/landat-vector",
+        "url": "https://gis.nemac.org/landat-vector",
         "legend": "legends/abm.png",
         "type": "overlay"
       },
@@ -167,7 +167,7 @@
         "id": "GSMNP",
         "name": "Great Smoky Mountains National Park",
         "info": "",
-        "url": "http://gis.nemac.org/landat-vector",
+        "url": "https://gis.nemac.org/landat-vector",
         "legend": "legends/abb.png",
         "type": "overlay"
       }
@@ -231,14 +231,14 @@
         "id": "mtbs-raster-00-16",
         "name": "Historical Fires from 2000 to 2016",
         "info": "Shows locations and intensities of fires that occured from 2000 to 2016",
-        "url": "http://fswms.nemac.org/rlayers",
+        "url": "https://fswms.nemac.org/rlayers",
         "legend": "legends/abe.png"
       },
       {
         "id": "mtbs-raster-84-99",
         "name": "Historical Fires from 1984 to 1999",
         "info": "Shows locations and intensities of fires that occured from 1984 to 1999",
-        "url": "http://fswms.nemac.org/rlayers",
+        "url": "https://fswms.nemac.org/rlayers",
         "legend": "legends/abf.png" 
       }
     ],
