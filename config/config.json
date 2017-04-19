@@ -4,7 +4,7 @@
   "logo": {
     "image": "imgs/landat_logo_blue.png",
     "label": "Logo for the LanDat project",
-    "link": "https://landat-dev.nemac.org",
+    "link": "https://landat.org",
     "location": "leaflet-bottom leaflet-right"
   },
   "pois": [],
