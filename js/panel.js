@@ -1,6 +1,6 @@
 import {toggleLayer} from "./layer";
 import {makeOpacitySlider} from "./opacitySlider"
-import {setSliderInitialPos} from "./opacitySlider"
+import {setOpacitySliderPosition} from "./opacitySlider"
 import {updateShareUrl} from "./share";
 
 export function SetupPanel (layers, layout) {
@@ -139,7 +139,10 @@ function makeCheckbox (layer, layerDiv) {
             toggleLayer(layer);
             layerDiv.select('.layer-tools-wrapper')
                 .classed('active', layer.active);
-            if (layer.active) setSliderInitialPos(layer, layerDiv)
+            if (layer.active) {
+                var sliderHandle = layerDiv.select('.opacity-slider-handle').node()
+                setOpacitySliderPosition(layer, sliderHandle, layer.opacitiy)
+            }
         });
 }
 
@@ -158,7 +161,6 @@ function makeDescription (layer, layerDiv) {
         layerDiv.append('div')
             .attr('class', 'layer-info-btn-wrapper')
             .on('click', function () {
-
                 d3.select(this.parentNode)
                     .select('.layer-info-wrapper')
                     .classed('active', function () {

@@ -9,12 +9,9 @@ var opacityScale = d3.scaleLinear()
     .range([0, OPACITY_RANGE_MAX])
     .clamp(true)
 
-export function setSliderInitialPos (layer, sliderHandle) {
-
-    var layerOpacity = layer.opacity || 1
-    var handleOffset = opacityScale(layerOpacity)
-
-    sliderHandle.style.top = ''+handleOffset+'px'
+export function setOpacitySliderPosition (layer, sliderHandle, opacity) {
+    opacity = opacity || layer.opacity
+    sliderHandle.style.top = ''+opacityScale(opacity)+'px'
 }
 
 export function makeOpacitySlider (layer) {
@@ -38,8 +35,9 @@ function makeOpacityIconWrapper(state, layer, sliderTrackOverlay) {
     icon.setAttribute('src', 'imgs/opacity-icon-'+state+'-64x64.png')
     wrapper.appendChild(icon)
     wrapper.onclick = function (e) {
+        var sliderHandle = sliderTrackOverlay.getElementsByClassName('opacity-slider-handle')[0]
         updateLayerOpacity(layer, 0)
-        adjustSliderHandle(sliderTrackOverlay, 0)
+        setOpacitySliderPosition(layer, sliderHandle, 0)
     }
     return wrapper
 }
@@ -57,7 +55,7 @@ function makeSliderTrack(layer, layerOpacity) {
     overlay.appendChild(track)
     overlay.append(sliderHandle)
 
-    if (layer.active) setSliderInitialPos(layer, sliderHandle)
+    if (layer.active) setOpacitySliderPosition(layer, sliderHandle)
     setDragEventListener(overlay, layer, layerOpacity)
 
     return overlay
@@ -66,10 +64,10 @@ function makeSliderTrack(layer, layerOpacity) {
 function setDragEventListener(overlay, layer, layerOpacity) {
     d3.select(overlay).call(d3.drag()
         .on('start drag', function () {
+            var sliderHandle = overlay.getElementsByClassName('opacity-slider-handle')[0]
             var newOpacity = calcOpacityFromMousePos(overlay)
-
             updateLayerOpacity(layer, newOpacity)
-            adjustSliderHandle(overlay, newOpacity)
+            setOpacitySliderPosition(layer, sliderHandle, newOpacity)
         })
         .on('end', function () {
 
@@ -86,11 +84,6 @@ function setDragEventListener(overlay, layer, layerOpacity) {
             updateShareUrl()
         })
     )
-}
-
-function adjustSliderHandle(overlay, newOpacity) {
-    var handle = overlay.getElementsByClassName('opacity-slider-handle')[0]
-    handle.style.top = ''+opacityScale(newOpacity)+'px'
 }
 
 function calcOpacityFromMousePos(overlay) {

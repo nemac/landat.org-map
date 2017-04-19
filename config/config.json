@@ -1,5 +1,6 @@
 {
   "mapserverUrl": "http://gis.nemac.org/landat",
+  "defaultLayerOpacity": 0.75,
   "logo": {
     "image": "imgs/landat_logo_blue.png",
     "label": "Logo for the LanDat project",
@@ -58,13 +59,13 @@
         "active": false
       },
       {
-        "id": "summary-phenology",
-        "name": "Summary Phenology Variables",
-        "active": true
-      },
-      {
         "id": "phenology-variables",
         "name": "Phenology Variables",
+        "active": false
+      },
+      {
+        "id": "summary-phenology",
+        "name": "Summary Phenology Variables",
         "active": false
       },
       {
@@ -95,6 +96,7 @@
     ]
   },
   "active-layers": [
+    "States"
   ],
   "layers" : {
     "carbon-models": [

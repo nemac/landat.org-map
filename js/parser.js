@@ -61,8 +61,13 @@ function formatLayers (data) {
         layergroup = layers[prop];
         for (i = 0; i < layergroup.length; i++) {
             setMapserverUrl(layergroup[i], defaultMapserverUrl);
+            setDefaultLayerOpacity(layergroup[i], data.defaultLayerOpacity)
         }
     }
+}
+
+function setDefaultLayerOpacity (layer, opacity) {
+    layer.opacity = layer.opacity || opacity
 }
 
 function setMapserverUrl (layer, url) {
