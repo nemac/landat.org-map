@@ -200,13 +200,24 @@
 .layer-group-btn {
     &:before {
         content: " ";
-        background-image: "../imgs/arrows.png";
+        width: 10px;
+        height: 20px;
+        display: inline-block;
+        background-size: 22px 11px;
+        position: absolute;
+        left: 10px;
+        top: 14px;
+        background-repeat: no-repeat;
+        background-position: 4px 1px;
+        background-image: url(../../imgs/arrows.png);
     }
 }
 
 .layer-group-wrapper.active {
     .layer-group-btn:before {
         content: " ";
+        background-position: -6px 2px;
+        width: 15px;
     }
 }
 

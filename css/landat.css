@@ -245,7 +245,8 @@ path {
 .layer-group-btn {
   padding-top: 12px;
   padding-bottom: 12px;
-  padding-left: 10px;
+  padding-left: 35px;
+  position: relative;
 }
 
 .layer-group {
@@ -623,11 +624,22 @@ path {
 
 .layer-group-btn:before {
   content: " ";
-  background-image: "../imgs/arrows.png";
+  width: 10px;
+  height: 20px;
+  display: inline-block;
+  background-size: 22px 11px;
+  position: absolute;
+  left: 10px;
+  top: 14px;
+  background-repeat: no-repeat;
+  background-position: 4px 1px;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAWCAYAAACsR+4DAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QQTEhgy846C8QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAACLElEQVRIx8WXMWgUQRSGRxMQE4QgGLAIgsZSJU2sBbFRIWgnWMmVtoIW4SqxUtAioAgWVleInVxA2MaAsBLSCUE4I5zryulybu5mZ9//n83GYp3Z3dtm//q9f773z2OWVSS3JjmJyJoqEckNkvnWCQAxxpwv6gXwZmIRAK21PqOUUkpEbuYLSH4bDAbHisyDIJgD8NUBt1sAddsGRXIC4M6/wk6nc5jkF0vh07LU0jRdBQDH9M/y9VrrUwD2bVAi8s42xV1LMdI0XS2DA7BuSy077HKu9qNjiN9xHJ/4zzwMw3mSvyzmO77vzxaBeZ43A2DbcaU/h8Ph8Wxl7ruuUESuFi3zQ8c098pSS5JkGYB29L81xqwAEBsUyY1C89FodJJkYmne11qfrnClLVtqGVzkWPa9IAjmVIUn4JUj7q6qIBHpuuAssJV2WCmllDHmXIHRrbL+OI4Xbek40lpX04jkpsPsx8Eil6R2rSi1DGrb87yZqcBE5EqB6csqHgCeF+ybTpJkWU0rY8yFArD3VTzCMJwHsJeHy9JqqToi+doBNZpm0jRNL5JE7r3q1oIaj8dLJNO675llyPZBagCiOI4X66b1xJHWp7IvgE2+788C2MnSul4LKoqiBZJ/LFCpMWZF1VSSJGdJPq7brwA8cKT1SDWlXq93hOR3C9Ruv98/2hgYgJYFiiJyqTGodrt9iORnC9gL1aREZM0C1Y+iaKFRMJIfLD8jN1TD+gtTahXP3LkhEwAAAABJRU5ErkJggg==);
 }
 
 .layer-group-wrapper.active .layer-group-btn:before {
   content: " ";
+  background-position: -6px 2px;
+  width: 15px;
 }
 
 .graph-type-btn {

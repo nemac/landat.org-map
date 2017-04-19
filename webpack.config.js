@@ -30,8 +30,13 @@ module.exports = {
         loader: "babel-loader"
       },
       {
+        test: /\.png$/,
+        loader: 'url-loader'
+        //loaders: ["style-loader", "css-loader?sourceMap", "sass-loader?sourceMap"]
+      },
+      {
         test: /\.scss$/,
-        loader: extractSass.extract(['css-loader', 'sass-loader'])
+        loader: extractSass.extract(['css-loader', 'resolve-url-loader', 'sass-loader'])
         //loaders: ["style-loader", "css-loader?sourceMap", "sass-loader?sourceMap"]
       }
     ]
