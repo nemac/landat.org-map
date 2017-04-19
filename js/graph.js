@@ -947,7 +947,8 @@ function handlePointMouseout(d) {
 
     var activeType = document.getElementsByClassName("graph-type-btn active")[0].getAttribute('data-type');
 
-    //send google analytics tool tip on graph
+    //send google analytics tool tip on graph do this on the mouseout so mouseover dose not do a lot of events....
+    // we miss a few but that is better than over counting.
     ga('send', 'event', {
       eventCategory: 'graph',
       eventAction: 'hover',
