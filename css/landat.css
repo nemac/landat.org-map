@@ -692,6 +692,10 @@ path {
   padding: 0 0 15px 20px;
 }
 
+#about-text li {
+  margin-bottom: 5px;
+}
+
 #about-text a {
   cursor: pointer;
   color: #f69232;
