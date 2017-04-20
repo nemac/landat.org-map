@@ -157,7 +157,6 @@ function makeLabel(layer, layerDiv) {
 }
 
 function makeDescription (layer, layerDiv) {
-    console.log(layer)
     if (layer.info && layer.info !== '') {
         layerDiv.append('div')
             .attr('class', 'layer-info-btn-wrapper')

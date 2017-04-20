@@ -673,7 +673,7 @@ path {
 
 #about-text {
   padding: 15px;
-  font-size: 18px;
+  font-size: 16px;
   color: #333;
 }
 
@@ -697,9 +697,9 @@ path {
   color: #f69232;
 }
 
-#about-text .about-icon {
+.about-icon {
   width: auto;
-  height: 18px;
+  height: 16px;
 }
 
 .leaflet-control-geosearch {
