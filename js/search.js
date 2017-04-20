@@ -1,4 +1,4 @@
-import { GeoSearchControl, OpenStreetMapProvider, EsriProvider } from 'leaflet-geosearch';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
 export default function CreateSearch (map) {
     const provider = new OpenStreetMapProvider();
@@ -12,36 +12,44 @@ export default function CreateSearch (map) {
 
     map.addControl(searchControl);
 
-    console.log(searchControl.searchElement)
+    var searchElements = searchControl.searchElement.elements
 
-    L.DomEvent.on(searchControl.searchElement.elements.container, "click", function (ev) {
+    L.DomEvent.on(searchElements.container, "click", function (ev) {
         L.DomEvent.stopPropagation(ev);
 
-        //send google analytics for seacrch by address
+        var searchEntries = searchElements.form
+            .getElementsByClassName('results')[0].children
+
+        for (var i=0; i<searchEntries.length; i++) {
+            if (ev.target === searchEntries[i]) {
+                searchElements.container.classList.remove('active')
+            }
+        }
+
+        //send google analytics for search by address
         ga('send', 'event', {
-          eventCategory: 'map',
-          eventAction: 'search',
-          eventLabel: 'click',
-          nonInteraction: false
+            eventCategory: 'map',
+            eventAction: 'search',
+            eventLabel: 'click',
+            nonInteraction: false
         });
 
     });
 
-    L.DomEvent.on(searchControl.searchElement.elements.container, "keydown", function (ev) {
+    L.DomEvent.on(searchElements.container, "keydown", function (ev) {
         L.DomEvent.stopPropagation(ev);
 
         if (ev.which == 13 || ev.keyCode == 13) {
+            searchElements.container.classList.remove('active')
 
-          console.log('enter key pressed')
-          //send google analytics for seacrch by address
-          ga('send', 'event', {
-            eventCategory: 'map',
-            eventAction: 'search address',
-            eventLabel: ev.target.value,
-            nonInteraction: false
-          });
-
+            //send google analytics for seacrch by address
+            ga('send', 'event', {
+                eventCategory: 'map',
+                eventAction: 'search address',
+                eventLabel: ev.target.value,
+                nonInteraction: false
+            });
         }
-
     });
+
 }
