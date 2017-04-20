@@ -17,7 +17,7 @@ export function GetAjaxObject(responseHandler) {
     }
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4) {
-            responseHandler(xmlhttp.responseText)
+            responseHandler(xmlhttp.response)
         }
     }
     return xmlhttp
@@ -29,20 +29,16 @@ function GetConfig (configFile, callback) {
         callback(data)
     })
     xmlhttp.open("GET", configFile, true);
+    xmlhttp.overrideMimeType('application/json')
+    xmlhttp.responseType = 'json'
     xmlhttp.send();
     console.log("hi")
 }
 
 function responseHandler (response) {
-    try {
-        var data = JSON.parse(response);
-    } catch(err) {
-        console.log("ERROR: Malformed JSON in config file.");
-        console.log(err);
-    }
-    formatMap(data);
-    formatLayers(data);
-    return data
+    formatMap(response);
+    formatLayers(response);
+    return response
 }
 
 function formatMap (data) {

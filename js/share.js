@@ -65,30 +65,34 @@ export function BindCopyLinkEvents () {
  */
 function handleBodyClick () {
     var event = d3.event;
-    var parents = []
+    var nodePath = []
     if (event.path) {
-        parents = event.path
+        nodePath = event.path
     } else {
-        parents = getDomPath(event.srcElement)
+        nodePath = getDomPath(event.target)
     }
-    var clickedInPopup = false;
+    var toClosePopup = true;
     var i, l;
 
-    for (i = 0, l = parents.length; i < l; i++) {
-        if (parents[i].className && typeof(parents[i].className) === "string" && parents[i].className.indexOf("shareurl-link") !== -1) {
-            clickedInPopup = true;
+    for (i = 0, l = nodePath.length; i < l; i++) {
+        if (nodePath[i].classList.contains('shareurl-link-popup') ||
+            nodePath[i].classList.contains('shareurl-link')) {
+            console.log("toClosePopup is false")
+            toClosePopup = false;
             break;
         }
     }
 
-    if (!clickedInPopup) {
-        handleCopyLinkClose();
+    if (toClosePopup) {
+        var sharePopup = document.getElementsByClassName('shareurl-link-popup').item(0)
+        handleCopyLinkClose(sharePopup);
     }
 }
 
 function getDomPath(node) {
+    console.log(node)
     var path = []
-    while (node) {
+    while (node && node.parentNode) {
         path.push(node)
         node = node.parentNode
     }
@@ -96,20 +100,26 @@ function getDomPath(node) {
 }
 
 function handleShareLinkButtonClick () {
-    d3.select(document.getElementsByClassName("shareurl-link-popup")[0]).classed("active") ?
-        handleCopyLinkClose() :
-        handleCopyLinkOpen();
+    var sharePopup = document.getElementsByClassName("shareurl-link-popup").item(0)
+    if (d3.select(sharePopup).classed("active")) {
+        handleCopyLinkClose(sharePopup)
+    } else {
+        handleCopyLinkOpen(sharePopup);
+    }
 }
 
 function handleShareLinkCloseButtonClick () {
-    handleCopyLinkClose();
+    var sharePopup = document.getElementsByClassName("shareurl-link-popup").item(0)
+    handleCopyLinkClose(sharePopup);
 }
 
 function handleShareLinkUrlClick () {
     selectCopyLinkUrl();
 }
 
-function handleCopyLinkOpen () {
+function handleCopyLinkOpen (sharePopup) {
+    sharePopup.classList.toggle("active")
+    selectCopyLinkUrl();
 
     //send google analytics event click on share url
     ga('send', 'event', {
@@ -119,11 +129,9 @@ function handleCopyLinkOpen () {
       nonInteraction: false
     });
 
-    d3.select(document.getElementsByClassName("shareurl-link-popup")[0]).classed("active", true);
-    selectCopyLinkUrl();
 }
 
-function handleCopyLinkClose () {
+function handleCopyLinkClose (sharePopup) {
 
     //send google analytics event click on share url close
     ga('send', 'event', {
@@ -133,7 +141,7 @@ function handleCopyLinkClose () {
       nonInteraction: false
     });
 
-    d3.select(document.getElementsByClassName("shareurl-link-popup")[0]).classed("active", false);
+    sharePopup.classList.remove("active")
 }
 
 function selectCopyLinkUrl () {
