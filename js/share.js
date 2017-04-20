@@ -66,18 +66,14 @@ export function BindCopyLinkEvents () {
 function handleBodyClick () {
     var event = d3.event;
     var nodePath = []
-    if (event.path) {
-        nodePath = event.path
-    } else {
-        nodePath = getDomPath(event.target)
-    }
+    nodePath = getDomPath(event.target)
+
     var toClosePopup = true;
     var i, l;
 
     for (i = 0, l = nodePath.length; i < l; i++) {
         if (nodePath[i].classList.contains('shareurl-link-popup') ||
-            nodePath[i].classList.contains('shareurl-link')) {
-            console.log("toClosePopup is false")
+                nodePath[i].classList.contains('shareurl-link')) {
             toClosePopup = false;
             break;
         }
@@ -90,7 +86,6 @@ function handleBodyClick () {
 }
 
 function getDomPath(node) {
-    console.log(node)
     var path = []
     while (node && node.parentNode) {
         path.push(node)

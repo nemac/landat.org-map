@@ -1,15 +1,18 @@
-import { GeoSearchControl, EsriProvider } from 'leaflet-geosearch';
+import { GeoSearchControl, OpenStreetMapProvider, EsriProvider } from 'leaflet-geosearch';
 
 export default function CreateSearch (map) {
-    const provider = new EsriProvider();
+    const provider = new OpenStreetMapProvider();
 
     const searchControl = new GeoSearchControl({
         provider: provider,
         showMarker: false,
-        autoComplete: false,
+        autoComplete: true,
+        showPopup: false,
     });
 
     map.addControl(searchControl);
+
+    console.log(searchControl.searchElement)
 
     L.DomEvent.on(searchControl.searchElement.elements.container, "click", function (ev) {
         L.DomEvent.stopPropagation(ev);
@@ -28,6 +31,8 @@ export default function CreateSearch (map) {
         L.DomEvent.stopPropagation(ev);
 
         if (ev.which == 13 || ev.keyCode == 13) {
+
+          console.log('enter key pressed')
           //send google analytics for seacrch by address
           ga('send', 'event', {
             eventCategory: 'map',
