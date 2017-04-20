@@ -33,6 +33,8 @@ function makeOpacityIconWrapper(state, layer, sliderTrackOverlay) {
     icon.classList.add('opacity-icon')
     icon.classList.add(state)
     icon.setAttribute('src', 'imgs/opacity-icon-'+state+'-64x64.png')
+    icon.setAttribute('alt', 'Use this slider to adjust transparency for the ' + layer.name + ' layer')
+    icon.setAttribute('title', 'Use this slider to adjust transparency for the ' + layer.name + ' layer')
     wrapper.appendChild(icon)
     wrapper.onclick = function (e) {
         var sliderHandle = sliderTrackOverlay.getElementsByClassName('opacity-slider-handle')[0]

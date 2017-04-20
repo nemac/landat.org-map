@@ -252,7 +252,7 @@
 
 #about-text {
     padding: 15px;
-    font-size: 18px;
+    font-size: 16px;
     color: #333;
 
     h3 {
@@ -268,16 +268,19 @@
 
     ul {
         padding: 0 0 15px 20px;
-        
+    }
+
+    li {
+        margin-bottom: 5px;
     }
 
     a {
         cursor: pointer;
         color: #f69232;
     }
+}
 
-    .about-icon {
-        width: auto;
-        height: 18px;
-    }
+.about-icon {
+    width: auto;
+    height: 16px;
 }

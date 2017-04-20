@@ -75,12 +75,7 @@
       },
       {
         "id": "phenoclasses",
-        "name": "Phenoclasses",
-        "active": false
-      },
-      {
-        "id": "carbon-models",
-        "name": "Carbon Models",
+        "name": "Phenological classes",
         "active": false
       },
       {
@@ -91,6 +86,11 @@
       {
         "id": "longtermlandshift",
         "name": "Long-term Landscape Shift",
+        "active": false
+      },
+      {
+        "id": "carbon-models",
+        "name": "Carbon Models",
         "active": false
       },
       {
