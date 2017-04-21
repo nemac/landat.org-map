@@ -611,25 +611,20 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         .data([center[1]])
         .enter()
         .append("circle")
-        .attr("class", "point")
+        .attr("class", "center")
         .attr("transform", function(d) {
             var coors = line([d]).slice(1).slice(0, -1);
             return "translate(" + coors + ")"
         })
-        .attr("r", 4)
         .attr("stroke", "#000")
         .attr("fill", "#ea0c48")
         .on("mouseover", function(d) {
             tip.show("Center: "  + String(d[1]).substring(0, 7));
-            this.setAttribute("r", 5);
-            this.setAttribute("stroke-width", "2px");
-            d3.select(this).classed("active", true);
+            this.classList.add('active')
         })
         .on("mouseout", function (d) {
             tip.hide();
-            this.setAttribute("r", 4);
-            this.setAttribute("stroke-width", "1px");
-            d3.select(this).classed("active", true);
+            this.classList.remove('active')
         });
 
     var charts = {};
