@@ -29,7 +29,6 @@ function GetConfig (configFile, callback) {
         callback(data)
     })
     xmlhttp.open("GET", configFile, true);
-    xmlhttp.overrideMimeType('application/json')
     xmlhttp.responseType = 'json'
     xmlhttp.send();
     console.log("hi")
