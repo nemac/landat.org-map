@@ -35,6 +35,7 @@ function GetConfig (configFile, callback) {
 }
 
 function responseHandler (response) {
+    response = JSON.parse(response)
     formatMap(response);
     formatLayers(response);
     return response
