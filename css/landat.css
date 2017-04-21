@@ -106,32 +106,11 @@ div.tooltip:after {
 
 /* SVG */
 
-circle {
-  position: relative;
-  z-index: 0;
-}
-
-circle.active {
-  z-index: 100;
-}
-
-path {
-  stroke: steelblue;
-  stroke-width: 2;
-  fill: none;
-}
-
-.frame {
-  fill: none;
-  stroke: #000;
-}
-
 .axis path,
 .axis line {
   fill: none;
   stroke: grey;
   stroke-width: 1;
-  shape-rendering: crispEdges;
 }
 
 .axis text {
@@ -143,17 +122,49 @@ path {
   fill: none;
   stroke: #777;
   stroke-dasharray: 1,4;
+  stroke-width: 1px;
 }
 
 .axis :last-of-type circle {
   stroke: #333;
   stroke-dasharray: none;
+  stroke-width: 1px;
+}
+
+circle {
+  position: relative;
+  z-index: 0;
+}
+
+circle.active {
+  z-index: 100;
+}
+
+circle.point {
+  r: 2px;
+  stroke-width: .7px;
+}
+
+circle.point.active {
+  r: 4.5px;
+  stroke-width: 1px;
+}
+
+path {
+  stroke: steelblue;
+  stroke-width: 1px;
+  fill: none;
+}
+
+.frame {
+  fill: none;
+  stroke: #000;
 }
 
 .line {
   fill: none;
   stroke: #000;
-  stroke-width: 1.5px;
+  stroke-width: 1px;
 }
 
 .center-line {

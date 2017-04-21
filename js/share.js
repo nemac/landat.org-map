@@ -2,6 +2,7 @@ import {GetMap} from './map';
 import {BASE_LAYER_TYPE} from './baselayer';
 import {GetCurrentLayers} from './layer';
 import {GetAllPointsOfInterest} from './poi';
+import {GetActiveLayerGroups} from './panel';
 
 export function BindUpdateShareUrl (map) {
     map.on("moveend", updateShareUrl);
@@ -14,6 +15,7 @@ export function updateShareUrl (e) {
         makeCenterString(map),
         makeZoomString(map),
         makeLayerString(map),
+        makeLayerGroupsString(),
         makeBaseLayerString(map),
         makePointsOfInterestString(),
         makeActiveTabString(),
@@ -35,6 +37,7 @@ export function AddShareSettingsToConfig (config) {
     if (share.pois) addPointsOfInterestToConfig(share.pois, config)
     if (share.tab) config.tab = share.tab;
     if (share.graph) config.graph = share.graph;
+    if (share.layerGroups) config.layerGroups = addLayerGroupSettingsToConfig(share.layerGroups, config)
 }
 
 function makeShareUrl (params) {
@@ -214,6 +217,11 @@ function makeBaseLayerString (map) {
     return "baselayers=" + layers.join(",");
 }
 
+function makeLayerGroupsString () {
+    var activeLayerGroups = GetActiveLayerGroups()
+    return "layerGroups="+activeLayerGroups.map(d => d.id).join(',')
+}
+
 function makePointsOfInterestString () {
     var pois = GetAllPointsOfInterest()
     if (!pois.length) return
@@ -279,6 +287,7 @@ function formatParams (params) {
     if (params.layers) params.layers = formatLayerParam(params.layers);
     if (params.baselayers) params.baselayers = formatBaseLayerParam(params.baselayers);
     if (params.pois) params.pois = formatPointsOfInterestParam(params.pois)
+    if (params.layerGroups) params.layerGroups = formatLayerGroupsParam(params.layerGroups)
 }
 
 function formatCenterParam (center) {
@@ -319,6 +328,18 @@ function formatPointsOfInterestParam (pois) {
         })
 }
 
+function formatLayerGroupsParam (layerGroupSettings) {
+    return layerGroupSettings.split(',')
+}
+
+function addLayerGroupSettingsToConfig(activeLayerGroupIds, config) {
+    config.layout['layer-groups-order'].forEach(layerGroup => {
+        // set layer group to active if its id appears in the share url settings
+        layerGroup.active = activeLayerGroupIds.filter(id => {
+            return id === layerGroup.id
+        }).length > 0
+    })
+}
 
 function addLayerSettingsToConfig (shareLayerSettings, config) {
     var enabledLayers = shareLayerSettings.enabledLayers;
@@ -361,3 +382,4 @@ function addBaseLayerSettingsToConfig (shareBaseLayerSettings, config) {
 function addPointsOfInterestToConfig(pois, config) {
     config["pois"] = pois
 }
+

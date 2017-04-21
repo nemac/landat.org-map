@@ -272,7 +272,7 @@ export function createGraphDiv (poi) {
     var header = document.createElement("div");
     wrapper.appendChild(header)
     var zoomToMarkerButton = makeZoomToMapMarkerButton(poi)
-    var content = document.createTextNode("Lat: " + latShort + ", Lon: " + lngShort);
+    var content = document.createTextNode("Lat: " + latShort + ", Long: " + lngShort);
     var contentDiv = document.createElement("div");
     contentDiv.className = "graph-lat-lon";
     contentDiv.appendChild(content);
@@ -923,7 +923,7 @@ function drawLinearPoints(data, line, svg, averages) {
             var coors = line([point]).slice(1).slice(0, -1);
             return "translate(" + coors + ")"
         })
-        .attr("r", 3)
+        //.attr("r", 3)
         .attr("stroke", "#000")
         .attr("fill",function(d,i){
             var val = Array.isArray(d) ? d[0].substring(0, 4) : 0;
@@ -936,14 +936,16 @@ function drawLinearPoints(data, line, svg, averages) {
 function handlePointMouseover(d) {
     var tipString = Array.isArray(d) ? formatDate(d[0]) + ": "  + d[1] : "Average: "  + d;
     tip.show(tipString);
-    this.setAttribute("r", 5);
-    this.setAttribute("stroke-width", "2px");
+    this.classList.add('active')
+    //this.setAttribute("r", 5);
+    //this.setAttribute("stroke-width", "2px");
 }
 
 function handlePointMouseout(d) {
     tip.hide();
-    this.setAttribute("r", 3);
-    this.setAttribute("stroke-width", "1px");
+    this.classList.remove('active')
+    //this.setAttribute("r", 3);
+    //this.setAttribute("stroke-width", "1px");
 
     var activeType = document.getElementsByClassName("graph-type-btn active")[0].getAttribute('data-type');
 

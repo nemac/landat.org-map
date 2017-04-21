@@ -3,7 +3,16 @@ import {makeOpacitySlider} from "./opacitySlider"
 import {setOpacitySliderPosition} from "./opacitySlider"
 import {updateShareUrl} from "./share";
 
+var layerGroupLayout = []
+
+export function GetActiveLayerGroups () {
+    return layerGroupLayout.filter(layerGroup => {
+        return layerGroup.active
+    })
+}
+
 export function SetupPanel (layers, layout) {
+    layerGroupLayout = layout['layer-groups-order']
     var layerGroups = makeLayerGroups(layout['layer-groups-order']);
     makeLayerElems(layerGroups, layers);
     makePanelDraggable()
@@ -107,6 +116,7 @@ function makeLayerGroups (layout) {
                         layerGroup.active = !layerGroup.active;
                         d3.select(this.parentNode).classed('active', () => layerGroup.active);
                         updatePanelDragOverlayHeight()
+                        updateShareUrl()
                     })
                     .text(layerGroup.name)
             })
