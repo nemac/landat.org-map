@@ -10,7 +10,7 @@ export function ParseConfig (configFile, callback) {
 
 export function GetAjaxObject(responseHandler) {
     var xmlhttp
-    if (window.ActiveXObject) {
+    if (!window.XMLHttpRequest && window.ActiveXObject) {
         xmlhttp = new window.ActiveXObject("MSXML2.XMLHTTP.3.0")
     } else {
         xmlhttp = new XMLHttpRequest()

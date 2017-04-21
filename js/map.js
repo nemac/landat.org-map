@@ -1,6 +1,7 @@
 var map;
 
 export function CreateMap (mapConfig) {
+    console.log(mapConfig)
     var id = mapConfig.id || "map";
     var options = mapConfig.options || {"scrollWheelZoom" : false};
     var initialCenter = mapConfig.center || ["38.5", "-81"];
