@@ -182,20 +182,30 @@ function reprocessData (origdata) {
         data.keys.splice(data.keys.indexOf(key), 1);
     }
 
-    var dataForMedians;
-    var median;
-    data["medians"] = [];
+    var dataForMeans;
+    var mean;
+    data["means"] = [];
     for (i = 0; i < expectedYearLength; i++) {
-        dataForMedians = [];
+        dataForMeans = [];
         for (j = i; j < origdata.length; j += expectedYearLength) {
-            dataForMedians.push(origdata[j][1]);
+            dataForMeans.push(parseInt(origdata[j][1], 10));
         }
 
-        median = dataForMedians.sort()[Math.floor(dataForMedians.length/2)];
-        data["medians"].push(median);
+        mean = computeAverage(dataForMeans);
+        data["means"].push(mean);
     }
 
     return data;
+}
+
+function computeAverage (arr) {
+    var sum = 0, i, l;
+
+    for (i = 0, l = arr.length; i < l; i++) {
+        sum += arr[i];
+    }
+
+    return (sum / l).toString();
 }
 
 ////////////////////// GRAPH INTERFACE ///////////////////////////
@@ -311,7 +321,7 @@ function makeZoomToMapMarkerButton(poi) {
 function drawGraph(data, div, lat, lng) {
     data = splitData(data);
     var reprocessedData = reprocessData(data);
-    makeUpDownLineGraph(data, div, reprocessedData["medians"]);
+    makeUpDownLineGraph(data, div, reprocessedData["means"]);
     makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, lat, lng);
     drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, lat, lng);
     var list = document.getElementById("graph-list");
@@ -403,7 +413,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
         width = 500 - margin.left - margin.right,
         height = 270 - margin.top - margin.bottom;
 
-    var averages = data.medians;
+    var averages = data.means;
 
     var x = d3.scaleLinear().range([0, width])
         .domain([0, 365]);
@@ -457,8 +467,8 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
         .attr("class", "y axis")
         .call(yAxis);
 
-    charts["medians"] = {
-        "path" : drawLinearPath(data["medians"], valueline, svg)
+    charts["means"] = {
+        "path" : drawLinearPath(data["means"], valueline, svg)
     };
 
     charts[year] = {
@@ -468,7 +478,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
     /**
      * This block of code draws the point at each data point
      */
-    charts["medians"]["points"] = drawLinearPoints(data["medians"], valueline, svg, averages);
+    charts["means"]["points"] = drawLinearPoints(data["means"], valueline, svg, averages);
     charts[year]["points"] = drawLinearPoints(data[year], valueline, svg, averages);
 
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
@@ -477,7 +487,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
         createCheckbox(inputwrapper, key, "timeseries", year, charts, data, valueline, svg, averages, lat, lng);
     });
 
-    createCheckbox(inputwrapper, "medians", "timeseries", "medians", charts, data, valueline, svg, averages, lat, lng);
+    createCheckbox(inputwrapper, "means", "timeseries", "means", charts, data, valueline, svg, averages, lat, lng);
 }
 
 ///////////////////////// POLAR GRAPH //////////////////////////////////////
@@ -488,7 +498,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         height = 490,
         radius = Math.min(width, height) / 2 - 30;
 
-    var averages = data["medians"];
+    var averages = data["means"];
     var center = findPolarCenter(data);
     var thresholds = findPolarThresholds(averages, center[1][0]);
 
@@ -633,7 +643,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
     /**
      * This block of code draws the line that the data follows
      */
-    charts["medians"] = {
+    charts["means"] = {
         "path" : drawPolarPath(averages, line, svg)
     };
 
@@ -644,7 +654,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
     /**
      * This block of code draws the point at each data point
      */
-    charts.medians.points = drawLinearPoints(averages, line, svg, averages);
+    charts.means.points = drawLinearPoints(averages, line, svg, averages);
     charts[year].points = drawLinearPoints(data[year], line, svg, averages);
 
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
@@ -695,7 +705,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
             .attr("for", "polar-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
 
         checkboxWrapper.append("div")
-            .style("background", pullDistinctColor(key !== "medians" ? key : 0))
+            .style("background", pullDistinctColor(key !== "means" ? key : 0))
             .classed("graph-pip-example", true);
     });
 
@@ -704,7 +714,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
     checkboxWrapper.append("input")
         .attr("type", "checkbox")
         .attr("id", "polar-average-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
-        .attr("value", "medians")
+        .attr("value", "means")
         .property("checked", true)
         .on("change", function (e) {
             var newYear = this.value;
@@ -800,7 +810,7 @@ function findPolarCenter (data) {
     var checkDiff;
     var areaIndex = 0;
     var leftArea, rightArea;
-    var avgs = data.medians;
+    var avgs = data.means;
     var k, counter;
 
     for (i = 0; i < length/2; i++) {
@@ -992,11 +1002,11 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
         });
 
     checkboxWrapper.append("label")
-        .text(key)
+        .text(key !== "means" ? key : "Baseline")
         .attr("for", type + "-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
 
     checkboxWrapper.append("div")
-        .style("background", pullDistinctColor(key !== "medians" ? key : 0))
+        .style("background", pullDistinctColor(key !== "means" ? key : 0))
         .classed("graph-pip-example", true);
 }
 
