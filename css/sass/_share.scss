@@ -1,4 +1,5 @@
 $share-height: 55px;
+$share-height-mobile: 38px;
 $share-twitter-height: 28px;
 
 #right-panel {
@@ -14,6 +15,17 @@ $share-twitter-height: 28px;
     font-size: 16px;
     padding: 0 15px;
     background-color: #dcdcdc;
+
+    & {
+        @include mobile-display("phone-portrait") {
+            height: $share-height-mobile;
+            line-height: $share-height-mobile;
+        }
+        @include mobile-display("phone-landscape") {
+            height: $share-height-mobile;
+            line-height: $share-height-mobile;
+        }
+    }
 
     > span {
         vertical-align: middle;
@@ -46,6 +58,15 @@ $share-twitter-height: 28px;
         width: auto;
         height: 16px;
         margin-right: 5px;
+
+        & {
+            @include mobile-display("phone-portrait") {
+                margin-right: 0;
+            }
+            @include mobile-display("phone-landscape") {
+                margin-right: 0;
+            }
+        }
     }
 
     img, span {
@@ -157,6 +178,15 @@ $share-triangle-height: 10px;
         height: 16px;
         margin-right: 0.4em;
         vertical-align: top;
+
+        & {
+            @include mobile-display("phone-portrait") {
+                margin-right: 0;
+            }
+            @include mobile-display("phone-landscape") {
+                margin-right: 0;
+            }
+        }
     }
 
     path {

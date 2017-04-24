@@ -10,6 +10,7 @@ import {CreateDefaultLayers} from './layer'
 import CreateLogo from './logo';
 import {SetupPointsOfInterest} from './poi';
 import {updateShareUrl} from './share';
+import BindMobileMenuEvents from './mobile';
 
 var css = require('../css/sass/landat.scss')
 
@@ -19,6 +20,7 @@ var Base = function (config) {
     SetupGraphs();
     BindTabEvents();
     BindCopyLinkEvents();
+    BindMobileMenuEvents();
 }
 
 // Does rely on map object or config file

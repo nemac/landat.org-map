@@ -1,4 +1,6 @@
+@import 'mixins';
 @import 'vars';
+@import 'mobile';
 @import 'graphs';
 @import 'layer_list';
 @import 'layer_select';
@@ -18,6 +20,17 @@ html, body, #wrapper {
 #map-wrapper {
     height: 100%;
     padding-right: $panel-min-width-layers;
+
+    & {
+        @include mobile-display("phone-portrait") {
+            height: 50%;
+            padding-right: 0 !important;
+        }
+        @include mobile-display("phone-landscape") {
+            width: 50%;
+            padding-right: 0 !important;
+        }
+    }
 }
 
 #map {

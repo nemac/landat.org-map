@@ -27,6 +27,69 @@
         min-width: $panel-min-width-layers;
         width: $panel-min-width-layers;
     }
+
+    & {
+        @include mobile-display("phone-portrait") {
+            width: 100% !important;
+            min-width: 100% !important;
+            height: 50% !important;
+            padding-top: $panel-header-wrapper-height-mobile !important;
+            padding-bottom: 37px !important;
+            border-left: 0;
+            bottom: 0;
+            top: inherit;
+        }
+        @include mobile-display("phone-landscape") {
+            width: 50% !important;
+            min-width: 50% !important;
+            padding-top: 72px !important;
+            padding-bottom: 37px !important;
+        }
+    }
+}
+
+.mobile-menu-hidden {
+    #map-wrapper {
+        height: 100%;
+        padding-bottom: 37px;
+
+        & {
+            @include mobile-display("phone-landscape") {
+                width: 100%;
+            }
+        }
+    }
+
+    #right-panel {
+        & {
+            @include mobile-display("phone-portrait") {
+                height: 37px !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+            }
+            @include mobile-display("phone-landscape") {
+                width: 100% !important;
+                min-width: 100% !important;
+                height: 37px !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                border-left: 0;
+                bottom: 0;
+                top: inherit;
+            }
+        }
+    }
+
+    #right-panel-header, .panel-section-wrapper.active {
+        & {
+            @include mobile-display("phone-portrait") {
+                display: none;
+            }
+            @include mobile-display("phone-landscape") {
+                display: none;
+            }
+        }
+    }
 }
 
 #right-panel-drag-overlay {
@@ -34,6 +97,15 @@
     height: inherit;
     padding: 5px;
     position: absolute;
+
+    & {
+        @include mobile-display("phone-portrait") {
+            display: none;
+        }
+        @include mobile-display("phone-landscape") {
+            display: none;
+        }
+    }
 }
 
 .panel-header-wrapper {
@@ -47,6 +119,18 @@
     position: fixed;
     top: 0;
     z-index: 10;
+
+    & {
+        @include mobile-display("phone-portrait") {
+            top: 50%;
+            border-top: 1px solid $border-color;
+            height: $panel-header-wrapper-height-mobile;
+        }
+        @include mobile-display("phone-landscape") {
+            top: 37px;
+            height: $panel-header-wrapper-height-mobile;
+        }
+    }
 }
 
 #graphs-header-wrapper {
@@ -58,6 +142,17 @@
     border-bottom: 3px solid $border-color;
     background: #fff;
     z-index: 5;
+
+    & {
+        @include mobile-display("phone-portrait") {
+            position: relative;
+            top: 0;
+        }
+        @include mobile-display("phone-landscape") {
+            position: relative;
+            top: 0;
+        }
+    }
 }
 
 #graph-type-header {
@@ -162,6 +257,12 @@
             margin-left: 0;
         }
 
+        &:last-child:before {
+            @include mobile-display("phone-portrait") {
+                margin-left: 0;
+            }
+        }
+
         &:after {
             content: " ";
             position: absolute;
@@ -236,6 +337,15 @@
     font-size: 16px;
     height: 34px;
     line-height: 34px + 2px;
+
+    & {
+        @include mobile-display("phone-landscape") {
+            font-size: 12px;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin: 0 5px -3px;
+        }
+    }
 
     &:hover {
         background: #fff;

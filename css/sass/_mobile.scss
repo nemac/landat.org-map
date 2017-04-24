@@ -1,0 +1,39 @@
+.hidden-mobile-portrait {
+    @include mobile-display("phone-portrait") {
+        display: none;
+    }
+}
+
+.hidden-mobile-landscape {
+    @include mobile-display("phone-landscape") {
+        display: none;
+    }
+}
+
+.leaflet-top.leaflet-left {
+    @include mobile-display("phone-portrait") {
+        padding-top: 37px;
+    }
+    @include mobile-display("phone-landscape") {
+        padding-top: 37px;
+    }
+}
+
+.mobile-menu-button-wrapper {
+    position: absolute;
+    top: 4px;
+    right: 7px;
+}
+
+.mobile-menu-button {
+    height: 30px;
+    width: 30px;
+    background: #6682a9;
+    border-radius: 5px;
+    cursor: pointer;
+
+    img {
+        width: 30px;
+        padding: 3px;
+    }
+}

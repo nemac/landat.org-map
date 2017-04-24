@@ -7,6 +7,19 @@
     margin-right: 30px;
     box-shadow: 0px 0px 5px black;
 
+    & {
+        @include mobile-display("phone-portrait") {
+            width: 44px;
+            height: 44px;
+            margin-right: 10px;
+        }
+        @include mobile-display("phone-landscape") {
+            width: 44px;
+            height: 44px;
+            margin-right: 10px;
+        }
+    }
+
     &:hover {
         cursor: pointer;
     }
@@ -30,8 +43,16 @@
         line-height: 1em;
         background: linear-gradient(0deg,rgba(52,61,70,0.035),rgba(52,61,70,.45));
         color: #fff;
-    }
 
+        & {
+            @include mobile-display("phone-portrait") {
+                display: none;
+            }
+            @include mobile-display("phone-landscape") {
+                display: none;
+            }
+        }
+    }
 }
 
 .leaflet-bottom.leaflet-left {
