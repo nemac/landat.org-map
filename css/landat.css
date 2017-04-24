@@ -898,6 +898,15 @@ path {
   line-height: 36px;
 }
 
+@media only screen and (max-width: 480px) {
+  .graph-type-btn {
+    font-size: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0 7px -3px;
+  }
+}
+
 @media only screen and (min-width: 481px) and (max-width: 650px) {
   .graph-type-btn {
     font-size: 12px;
