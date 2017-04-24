@@ -55,7 +55,7 @@ function makeSliderTrack(layer, layerOpacity) {
     sliderHandle.classList.add('opacity-slider-handle')
 
     overlay.appendChild(track)
-    overlay.append(sliderHandle)
+    overlay.appendChild(sliderHandle)
 
     if (layer.active) setOpacitySliderPosition(layer, sliderHandle)
     setDragEventListener(overlay, layer, layerOpacity)

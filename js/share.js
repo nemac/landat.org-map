@@ -75,10 +75,14 @@ function handleBodyClick () {
     var i, l;
 
     for (i = 0, l = nodePath.length; i < l; i++) {
-        if (nodePath[i].classList.contains('shareurl-link-popup') ||
-                nodePath[i].classList.contains('shareurl-link')) {
-            toClosePopup = false;
-            break;
+        try {
+            if (nodePath[i].classList.contains('shareurl-link-popup') ||
+                    nodePath[i].classList.contains('shareurl-link')) {
+                toClosePopup = false;
+                break;
+            }            
+        } catch(e) {
+            // clicking svg throws an error in IE
         }
     }
 

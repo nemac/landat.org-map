@@ -33,8 +33,8 @@ export function HandleTabChange (newClass) {
 function enableTab (newClass) {
     d3.select(".panel-top-btn[data-active='" + newClass + "']").classed("active", true);
 
-    d3.selectAll("#map-wrapper, #right-panel")
-        .classed(newClass, true);
+    document.getElementById("map-wrapper").classList.add(newClass)
+    document.getElementById("right-panel").classList.add(newClass)
 
     d3.select(".panel-section-wrapper[data-active='" + newClass + "']").classed("active", true);
 

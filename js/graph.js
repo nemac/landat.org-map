@@ -612,6 +612,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         .enter()
         .append("circle")
         .attr("class", "center")
+        .attr("r", 4)
         .attr("transform", function(d) {
             var coors = line([d]).slice(1).slice(0, -1);
             return "translate(" + coors + ")"
@@ -620,11 +621,11 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         .attr("fill", "#ea0c48")
         .on("mouseover", function(d) {
             tip.show("Center: "  + String(d[1]).substring(0, 7));
-            this.classList.add('active')
+            this.setAttribute("r", 5)
         })
         .on("mouseout", function (d) {
             tip.hide();
-            this.classList.remove('active')
+            this.setAttribute("r", 4)
         });
 
     var charts = {};
@@ -912,6 +913,7 @@ function drawLinearPoints(data, line, svg, averages) {
         .data(data)
         .enter()
         .append("circle")
+        .attr("r", 2)
         .attr("class", "point")
         .attr("transform", function(d, i) {
             var point = Array.isArray(d) ? d : [(i*8) + 3, d];
@@ -931,16 +933,12 @@ function drawLinearPoints(data, line, svg, averages) {
 function handlePointMouseover(d) {
     var tipString = Array.isArray(d) ? formatDate(d[0]) + ": "  + d[1] : "Average: "  + d;
     tip.show(tipString);
-    this.classList.add('active')
-    //this.setAttribute("r", 5);
-    //this.setAttribute("stroke-width", "2px");
+    this.setAttribute("r", "4");
 }
 
 function handlePointMouseout(d) {
     tip.hide();
-    this.classList.remove('active')
-    //this.setAttribute("r", 3);
-    //this.setAttribute("stroke-width", "1px");
+    this.setAttribute("r", "2");
 
     var activeType = document.getElementsByClassName("graph-type-btn active")[0].getAttribute('data-type');
 

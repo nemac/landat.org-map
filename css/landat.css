@@ -141,22 +141,18 @@ circle.active {
 }
 
 circle.point {
-  r: 2px;
   stroke-width: .7px;
 }
 
 circle.point.active {
-  r: 4.5px;
   stroke-width: 1px;
 }
 
 circle.center {
-  r: 4px;
   stroke-width: 1px;
 }
 
 circle.center.active {
-  r: 5px;
   stroke-width: 1.5px;
 }
 
