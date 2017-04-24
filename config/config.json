@@ -135,7 +135,7 @@
         "id": "Factor23",
         "name": "Summary phenology: timing",
         "info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with only the day-of-year variables such as the beginning, middle, and end of the growing season.",
-        "legend": "legends/abv.png"
+        "legend": "legends/abw.png"
       }
     ],
     "boundaries" : [
@@ -353,97 +353,97 @@
         "id": "MultiYrPhenoclasses_00_15",
         "name": "Multi-Annual Phenoclasses",
         "info": "Classification of cells into 500 phenological classes, placing each cell into only one class, using data from all years.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2001",
         "name": "500 Phenoclasses, 2001",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2002",
         "name": "500 Phenoclasses, 2002",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2003",
         "name": "500 Phenoclasses, 2003",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2004",
         "name": "500 Phenoclasses, 2004",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2005",
         "name": "500 Phenoclasses, 2005",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2006",
         "name": "500 Phenoclasses, 2006",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2007",
         "name": "500 Phenoclasses, 2007",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2008",
         "name": "500 Phenoclasses, 2008",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2009",
         "name": "500 Phenoclasses, 2009",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2010",
         "name": "500 Phenoclasses, 2010",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2011",
         "name": "500 Phenoclasses, 2011",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2012",
         "name": "500 Phenoclasses, 2012",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2013",
         "name": "500 Phenoclasses, 2013",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2014",
         "name": "500 Phenoclasses, 2014",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       },
       {
         "id": "Phenoclasses_2015",
         "name": "500 Phenoclasses, 2015",
         "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-        "legend": "legends/placeholder.png"
+        "legend": "legends/abx.png"
       }
     ],
     "phenoclass-derived": [
