@@ -484,10 +484,10 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
 
     data.keys.forEach(function (key) {
-        createCheckbox(inputwrapper, key, "timeseries", year, charts, data, valueline, svg, averages, lat, lng);
+        createCheckbox(inputwrapper, key, "overlapping", year, charts, data, valueline, svg, averages, lat, lng);
     });
 
-    createCheckbox(inputwrapper, "means", "timeseries", "means", charts, data, valueline, svg, averages, lat, lng);
+    createCheckbox(inputwrapper, "means", "overlapping", "means", charts, data, valueline, svg, averages, lat, lng);
 }
 
 ///////////////////////// POLAR GRAPH //////////////////////////////////////
@@ -660,102 +660,10 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
 
     data.keys.forEach(function (key) {
-        var checkboxWrapper = inputwrapper.append("div");
-
-        checkboxWrapper.append("input")
-            .attr("type", "checkbox")
-            .attr("id", "polar-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
-            .attr("value", key)
-            .property("checked", (key === year) ? true : false)
-            .on("change", function (e) {
-                var newYear = this.value;
-                if (!this.checked) {
-                    charts[newYear].path.remove();
-                    charts[newYear].points.remove();
-
-                    //send google analytics graph year click off
-                    ga('send', 'event', {
-                      eventCategory: 'graph',
-                      eventAction: 'click',
-                      eventLabel:  newYear + ' polar timeseries off',
-                      nonInteraction: false
-                    });
-
-
-                } else {
-                    if (!charts.hasOwnProperty(newYear)) {
-                        charts[newYear] = {};
-                    }
-
-                    //send google analytics graph year click off
-                    ga('send', 'event', {
-                      eventCategory: 'graph',
-                      eventAction: 'click',
-                      eventLabel:  newYear + ' polar timeseries on',
-                      nonInteraction: false
-                    });
-
-                    charts[newYear].path = drawPolarPath(data[newYear], line, svg);
-                    charts[newYear].points = drawLinearPoints(data[newYear], line, svg, averages);
-                }
-            });
-
-        checkboxWrapper.append("label")
-            .text(key)
-            .attr("for", "polar-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
-
-        checkboxWrapper.append("div")
-            .style("background", pullDistinctColor(key !== "means" ? key : 0))
-            .classed("graph-pip-example", true);
+        createCheckbox(inputwrapper, key, "polar", year, charts, data, line, svg, averages, lat, lng);
     });
 
-    var checkboxWrapper = inputwrapper.append("div");
-
-    checkboxWrapper.append("input")
-        .attr("type", "checkbox")
-        .attr("id", "polar-average-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
-        .attr("value", "means")
-        .property("checked", true)
-        .on("change", function (e) {
-            var newYear = this.value;
-            if (!this.checked) {
-                charts[newYear].path.remove();
-                charts[newYear].points.remove();
-
-                //send google analytics graph year click off
-                ga('send', 'event', {
-                  eventCategory: 'graph',
-                  eventAction: 'click',
-                  eventLabel:  newYear + ' polar timeseries off',
-                  nonInteraction: false
-                });
-
-            } else {
-                if (!charts.hasOwnProperty(newYear)) {
-                    charts[newYear] = {};
-                }
-
-                //send google analytics graph year click off
-                ga('send', 'event', {
-                  eventCategory: 'graph',
-                  eventAction: 'click',
-                  eventLabel:  newYear + ' polar timeseries on',
-                  nonInteraction: false
-                });
-
-                charts[newYear].path = drawPolarPath(data[newYear], line, svg)
-                charts[newYear].points = drawLinearPoints(data[newYear], line, svg, averages);
-
-            }
-        });
-
-    checkboxWrapper.append("label")
-        .text("Baseline")
-        .attr("for", "polar-average-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
-
-    checkboxWrapper.append("div")
-        .style("background", pullDistinctColor(0))
-        .classed("graph-pip-example", true);
+    createCheckbox(inputwrapper, "means", "polar", "means", charts, data, line, svg, averages, lat, lng);
 
     var thresholdCheckbox= inputwrapper.append("div")
         .classed("threshold-checkbox", true);
@@ -980,7 +888,7 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
                 ga('send', 'event', {
                   eventCategory: 'graph',
                   eventAction: 'click',
-                  eventLabel:  newYear + ' overlapping timeseries off',
+                  eventLabel:  newYear + ' ' + type + ' timeseries off',
                   nonInteraction: false
                 });
 
@@ -995,7 +903,7 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
                 ga('send', 'event', {
                   eventCategory: 'graph',
                   eventAction: 'click',
-                  eventLabel:  newYear + ' overlapping timeseries on',
+                  eventLabel:  newYear + ' ' + type + ' timeseries on',
                   nonInteraction: false
                 });
             }
@@ -1063,32 +971,7 @@ function formatDate (date) {
 }
 
 function formatMonth (month) {
-    switch (month) {
-        case 0:
-            return "Jan."
-        case 1:
-            return "Feb."
-        case 2:
-            return "Mar."
-        case 3:
-            return "Apr."
-        case 4:
-            return "May"
-        case 5:
-            return "Jun."
-        case 6:
-            return "Jul."
-        case 7:
-            return "Aug."
-        case 8:
-            return "Sep."
-        case 9:
-            return "Oct."
-        case 10:
-            return "Nov."
-        case 11:
-            return "Dec."
-    }
+    return FORMATTED_MONTH_LABELS[month];
 }
 
 function ordinal_suffix_of(day) {
@@ -1119,4 +1002,19 @@ var MONTH_LABELS = {
     9: "Oct",
     10: "Nov",
     11: "Dec"
+};
+
+var FORMATTED_MONTH_LABELS = {
+    0: "Jan.",
+    1: "Feb.",
+    2: "Mar.",
+    3: "Apr.",
+    4: "May",
+    5: "Jun.",
+    6: "Jul.",
+    7: "Aug.",
+    8: "Sep.",
+    9: "Oct.",
+    10: "Nov.",
+    11: "Dec."
 };
