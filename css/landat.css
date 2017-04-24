@@ -14,7 +14,7 @@
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .hidden-mobile-landscape {
     display: none;
   }
@@ -26,7 +26,7 @@
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .leaflet-top.leaflet-left {
     padding-top: 37px;
   }
@@ -62,7 +62,7 @@
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .graph-elem {
     padding-bottom: 40px;
   }
@@ -127,7 +127,7 @@
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .graph-overlapping .overlapping-graph svg {
     width: 100%;
   }
@@ -148,7 +148,7 @@
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .graph-polar .polar-graph svg {
     width: 100%;
   }
@@ -296,7 +296,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .input-wrapper {
     width: 100%;
   }
@@ -314,7 +314,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .input-wrapper > div {
     display: inline-block;
     margin-right: 15px;
@@ -596,7 +596,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   #right-panel {
     width: 50% !important;
     min-width: 50% !important;
@@ -610,7 +610,7 @@ path {
   padding-bottom: 37px;
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .mobile-menu-hidden #map-wrapper {
     width: 100%;
   }
@@ -624,7 +624,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .mobile-menu-hidden #right-panel {
     width: 100% !important;
     min-width: 100% !important;
@@ -644,7 +644,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .mobile-menu-hidden #right-panel-header,
   .mobile-menu-hidden .panel-section-wrapper.active {
     display: none;
@@ -664,7 +664,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   #right-panel-drag-overlay {
     display: none;
   }
@@ -687,7 +687,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   #right-panel-header {
     top: 37px;
     height: 40px;
@@ -712,7 +712,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   #graphs-header-wrapper {
     position: relative;
     top: 0;
@@ -907,7 +907,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .graph-type-btn {
     font-size: 12px;
     padding-left: 5px;
@@ -1175,7 +1175,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   #map .base-selector {
     width: 44px;
     height: 44px;
@@ -1214,7 +1214,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   #map .base-selector div {
     display: none;
   }
@@ -1248,7 +1248,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .project-logo {
     display: none;
   }
@@ -1273,7 +1273,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .mobile-header {
     display: block;
     background: #fff;
@@ -1307,7 +1307,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .shareurl-panel {
     height: 38px;
     line-height: 38px;
@@ -1353,7 +1353,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .shareurl-link img {
     margin-right: 0;
   }
@@ -1475,7 +1475,7 @@ path {
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   .resp-sharing-button__icon svg {
     margin-right: 0;
   }
@@ -1533,7 +1533,7 @@ body,
   }
 }
 
-@media only screen and (min-width: 481px) and (max-width: 650px) {
+@media only screen and (min-width: 481px) and (max-width: 668px) {
   #map-wrapper {
     width: 50%;
     padding-right: 0 !important;

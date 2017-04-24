@@ -3,10 +3,10 @@
         @media only screen and (max-width: 480px) { @content; }
     }
     @if $type == phone-landscape {
-        @media only screen and (min-width: 481px) and (max-width: 650px) { @content; }
+        @media only screen and (min-width: 481px) and (max-width: 668px) { @content; }
     }
     @if $type == tablet-portrait {
-        @media only screen and (min-width: 651px) and (max-width: 768px) { @content; }
+        @media only screen and (min-width: 668px) and (max-width: 768px) { @content; }
     }
     @if $type == tablet-landscape {
         @media only screen and (min-width: 769px) and (max-width: 959px) { @content; }
