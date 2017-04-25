@@ -97,6 +97,39 @@
     }
 }
 
+.graph-loading {
+    .timeseries-graph, .overlapping-graph, .polar-graph {
+        display: none;
+    }
+
+    .graph-loading-div {
+        display: block;
+        background-image: url("../../imgs/loader.gif");
+    }
+}
+
+.graph-loading-div {
+    display: none;
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 47.9%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 40px;
+    text-align: center;
+
+    &:after {
+        position: absolute;
+        content: "Loading Graph";
+        bottom: 30%;
+        left: 0;
+        right: 0;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: #666;
+    }
+}
 
 /* Graph Tooltips */
 

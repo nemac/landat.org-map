@@ -32,7 +32,10 @@ module.exports = {
       {
         test: /\.png$/,
         loader: 'url-loader'
-        //loaders: ["style-loader", "css-loader?sourceMap", "sass-loader?sourceMap"]
+      },
+      {
+        test: /\.gif$/,
+        loader: 'url-loader'
       },
       {
         test: /\.scss$/,

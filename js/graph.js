@@ -195,9 +195,16 @@ export function createGraphDiv (poi) {
     header.appendChild(zoomToMarkerButton)
     header.appendChild(contentDiv);
 
-    wrapper.classList.add("graph-elem")
-    header.classList.add("graph-elem-header")
+    var loadingDiv = document.createElement("div");
+    loadingDiv.classList.add("graph-loading-div");
+    wrapper.appendChild(loadingDiv);
 
+    wrapper.classList.add("graph-elem");
+    wrapper.classList.add("graph-loading");
+    header.classList.add("graph-elem-header");
+
+    var list = document.getElementById("graph-list");
+    list.appendChild(wrapper);
     getData(poi.lat, poi.lng, wrapper);
     return wrapper;
 }
@@ -229,8 +236,7 @@ function drawGraph(data, div, lat, lng) {
     makeUpDownLineGraph(data, div, reprocessedData["means"]);
     makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, lat, lng);
     drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, lat, lng);
-    var list = document.getElementById("graph-list");
-    list.appendChild(div);
+    div.classList.remove("graph-loading");
 }
 
 function roundFloat(number, decimalPlaces) {
