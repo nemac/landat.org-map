@@ -13,7 +13,7 @@ function dispatchMobileMenuBtnClickAnalytics (status) {
     ga('send', 'event', {
         eventCategory: 'mobile menu',
         eventAction: 'click',
-        eventLabel: 'Mobile Menu ' + !status,
+        eventLabel: 'Mobile Menu ' + status,
         nonInteraction: false
     });
 }
