@@ -655,14 +655,11 @@ function findPolarCenter (data) {
 }
 
 /**
- * startDay is actually the seasonality index, if it occurs after july it should be flipped
+ * startDay is actually the seasonality index, it should be flipped
  */
 function findPolarThresholds (data, startDay) {
     var startIndex = Math.floor((startDay - 3) / 8);
-    if (startIndex > 22) {
-        startIndex = startIndex - 23;
-    }
-
+    startIndex += (startIndex > 22) ? (-23) : 23;
     var i, j, length, arr;
     var totalSum = 0;
     var sum;
