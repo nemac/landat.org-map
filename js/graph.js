@@ -87,17 +87,17 @@ function reprocessData (origdata) {
         data.keys.splice(data.keys.indexOf(key), 1);
     }
 
-    var dataForMeans;
+    var dataForBaseline;
     var mean;
-    data["means"] = [];
+    data["baseline"] = [];
     for (i = 0; i < expectedYearLength; i++) {
-        dataForMeans = [];
+        dataForBaseline = [];
         for (j = i; j < origdata.length; j += expectedYearLength) {
-            dataForMeans.push(parseInt(origdata[j][1], 10));
+            dataForBaseline.push(parseInt(origdata[j][1], 10));
         }
 
-        mean = computeAverage(dataForMeans);
-        data["means"].push(mean);
+        mean = computeAverage(dataForBaseline);
+        data["baseline"].push(mean);
     }
 
     return data;
@@ -231,11 +231,17 @@ function makeZoomToMapMarkerButton(poi) {
 }
 
 function drawGraph(data, div, lat, lng) {
+    var poi = {
+        "lat": lat,
+        "lng": lng,
+        "plots": ["baseline", "2015", "thresholds"]
+    };
+
     data = splitData(data);
     var reprocessedData = reprocessData(data);
     makeUpDownLineGraph(data, div);
-    makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, lat, lng);
-    drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, lat, lng);
+    makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, poi);
+    drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, poi);
     div.classList.remove("graph-loading");
 }
 
@@ -314,9 +320,7 @@ function makeUpDownLineGraph (data, div) {
 
 ///////////////// OVERLAPPING TIMESERIES LINE GRAPH ////////////////
 
-function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
-    var year = "2015";
-
+function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
     var charts = {};
 
     // Set the dimensions of the canvas / graph
@@ -324,7 +328,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
         width = 500 - margin.left - margin.right,
         height = 270 - margin.top - margin.bottom;
 
-    var averages = data.means;
+    var averages = data.baseline;
 
     var x = d3.scaleLinear().range([0, width])
         .domain([0, 365]);
@@ -378,38 +382,41 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
         .attr("class", "y axis")
         .call(yAxis);
 
-    charts["means"] = {
-        "path" : drawLinearPath(data["means"], valueline, svg)
-    };
-
-    charts[year] = {
-        "path" : drawLinearPath(data[year], valueline, svg)
-    };
+    var plot, i, l;
+    for (i = 0, l = poi.plots.length; i < l; i++) {
+        plot = poi.plots[i];
+        if (plot === "thresholds") continue;
+        charts[plot] = {
+            "path" : drawLinearPath(data[plot], valueline, svg)
+        }
+    }
 
     /**
      * This block of code draws the point at each data point
      */
-    charts["means"]["points"] = drawLinearPoints(data["means"], valueline, svg);
-    charts[year]["points"] = drawLinearPoints(data[year], valueline, svg);
+    for (i = 0, l = poi.plots.length; i < l; i++) {
+        plot = poi.plots[i];
+        if (plot === "thresholds") continue;
+        charts[plot].points = drawLinearPoints(data[plot], valueline, svg);
+    }
 
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
 
     data.keys.forEach(function (key) {
-        createCheckbox(inputwrapper, key, "overlapping", year, charts, data, valueline, svg, averages, lat, lng);
+        createCheckbox(inputwrapper, key, "overlapping", poi, charts, data, valueline, svg, averages);
     });
 
-    createCheckbox(inputwrapper, "means", "overlapping", "means", charts, data, valueline, svg, averages, lat, lng);
+    createCheckbox(inputwrapper, "baseline", "overlapping", poi, charts, data, valueline, svg, averages);
 }
 
 ///////////////////////// POLAR GRAPH //////////////////////////////////////
 
-function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
-    var year = "2015";
+function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
     var width = 490,
         height = 490,
         radius = Math.min(width, height) / 2 - 30;
 
-    var averages = data["means"];
+    var averages = data["baseline"];
     var center = findPolarCenter(data);
     var thresholds = findPolarThresholds(averages, center[1][0]);
 
@@ -513,6 +520,8 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
         .attr("transform", function(d) { var day = d.data[1][0]; return day < 360 && day > 180 ? "rotate(180 " + (radius + 6) + ",0)" : null; })
         .text(function(d) { return d.label; });
 
+    thresholdElem.style("opacity", (poi.plots.indexOf("thresholds") !== -1) ? 1 : 0);
+
     /**
      * Draws the line to the center of the data
      */
@@ -554,34 +563,38 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
     /**
      * This block of code draws the line that the data follows
      */
-    charts["means"] = {
-        "path" : drawPolarPath(averages, line, svg)
-    };
-
-    charts[year] = {
-        "path" : drawPolarPath(data[year], line, svg)
-    };
+    var plot, i, l;
+    for (i = 0, l = poi.plots.length; i < l; i++) {
+        plot = poi.plots[i];
+        if (plot === "thresholds") continue;
+        charts[plot] = {
+            "path" : drawPolarPath(data[plot], line, svg)
+        }
+    }
 
     /**
      * This block of code draws the point at each data point
      */
-    charts.means.points = drawLinearPoints(averages, line, svg);
-    charts[year].points = drawLinearPoints(data[year], line, svg);
+    for (i = 0, l = poi.plots.length; i < l; i++) {
+        plot = poi.plots[i];
+        if (plot === "thresholds") continue;
+        charts[plot].points = drawLinearPoints(data[plot], line, svg);
+    }
 
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
 
     data.keys.forEach(function (key) {
-        createCheckbox(inputwrapper, key, "polar", year, charts, data, line, svg, averages, lat, lng);
+        createCheckbox(inputwrapper, key, "polar", poi, charts, data, line, svg, averages);
     });
 
-    createCheckbox(inputwrapper, "means", "polar", "means", charts, data, line, svg, averages, lat, lng);
+    createCheckbox(inputwrapper, "baseline", "polar", poi, charts, data, line, svg, averages);
 
     var thresholdCheckbox= inputwrapper.append("div")
         .classed("threshold-checkbox", true);
 
     thresholdCheckbox.append("input")
         .attr("type", "checkbox")
-        .attr("id", "threshold-checkbox-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
+        .attr("id", "threshold-checkbox-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""))
         .property("checked", true)
         .on("change", function (e) {
             thresholdElem.style("opacity", (this.checked) ? 1 : 0);
@@ -593,7 +606,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
 
     thresholdCheckbox.append("label")
         .text("Thresholds")
-        .attr("for", "threshold-checkbox-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
+        .attr("for", "threshold-checkbox-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""));
 }
 
 /* POLAR GRAPH HELPERS */
@@ -624,7 +637,7 @@ function findPolarCenter (data) {
     var checkDiff;
     var areaIndex = 0;
     var leftArea, rightArea;
-    var avgs = data.means;
+    var avgs = data.baseline;
     var k, counter;
 
     for (i = 0; i < length/2; i++) {
@@ -774,15 +787,17 @@ function handlePointMouseout(d) {
     });
 }
 
-function createCheckbox(wrapper, key, type, year, charts, data, line, svg, averages, lat, lng) {
+function createCheckbox(wrapper, key, type, poi, charts, data, line, svg, averages) {
     var checkboxWrapper = wrapper.append("div");
+    var lat = poi.lat;
+    var lng = poi.lng;
 
     checkboxWrapper.append("input")
         .attr("type", "checkbox")
         .attr("id", type + "-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
         .attr("data-link", key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
         .attr("value", key)
-        .property("checked", (key === year) ? true : false)
+        .property("checked", (poi.plots.indexOf(key) !== -1) ? true : false)
         .on("change", function (e) {
             var newYear = this.value;
             if (!this.checked) {
@@ -798,11 +813,11 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
         });
 
     checkboxWrapper.append("label")
-        .text(key !== "means" ? key : "Baseline")
+        .text(key !== "baseline" ? key : "Baseline")
         .attr("for", type + "-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
 
     checkboxWrapper.append("div")
-        .style("background", pullDistinctColor(key !== "means" ? key : 0))
+        .style("background", pullDistinctColor(key !== "baseline" ? key : 0))
         .classed("graph-pip-example", true);
 }
 
