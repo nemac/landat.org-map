@@ -780,26 +780,21 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
     checkboxWrapper.append("input")
         .attr("type", "checkbox")
         .attr("id", type + "-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
+        .attr("data-link", key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""))
         .attr("value", key)
         .property("checked", (key === year) ? true : false)
         .on("change", function (e) {
             var newYear = this.value;
             if (!this.checked) {
-                charts[newYear].path.remove();
-                charts[newYear].points.remove();
-
+                handleCheckboxDisable(charts, newYear);
                 //send google analytics graph year click off
                 dispatchGraphCheckboxClick(newYear + ' ' + type + ' timeseries off');
             } else {
-                if (!charts.hasOwnProperty(newYear)) {
-                    charts[newYear] = {};
-                }
-                charts[newYear].path = drawLinearPath(data[newYear], line, svg);
-                charts[newYear].points = drawLinearPoints(data[newYear], line, svg, averages);
-
+                handleCheckboxEnable(charts, newYear, data, line, svg, averages)
                 //send google analytics graph year click on
                 dispatchGraphCheckboxClick(newYear + ' ' + type + ' timeseries on');
             }
+            handleCheckboxSync(key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""), this.checked);
         });
 
     checkboxWrapper.append("label")
@@ -809,6 +804,29 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
     checkboxWrapper.append("div")
         .style("background", pullDistinctColor(key !== "means" ? key : 0))
         .classed("graph-pip-example", true);
+}
+
+function handleCheckboxDisable (charts, newYear) {
+    charts[newYear].path.remove();
+    charts[newYear].points.remove();
+}
+
+function handleCheckboxEnable (charts, newYear, data, line, svg, averages) {
+    if (!charts.hasOwnProperty(newYear)) {
+        charts[newYear] = {};
+    }
+    charts[newYear].path = drawLinearPath(data[newYear], line, svg);
+    charts[newYear].points = drawLinearPoints(data[newYear], line, svg, averages);
+}
+
+function handleCheckboxSync (key, checkedStatus, wrapper) {
+    d3.selectAll("input[data-link='" + key + "']").each(function (p, j) {
+        var elem = d3.select(this);
+        if (elem.property("checked") !== checkedStatus) {
+            elem.property("checked", checkedStatus);
+            elem.dispatch("change");
+        }
+    });
 }
 
 function dispatchGraphCheckboxClick (label) {
