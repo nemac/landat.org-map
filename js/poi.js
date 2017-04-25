@@ -1,17 +1,64 @@
-import {
-  createGraphDiv,
-  createMarker,
-  createGraphRemover,
-  getIcon
-} from './graph'
-import {updateShareUrl} from './share'
-import {GetMap} from './map'
-import {GetActiveTab, HandleTabChange} from './tabs'
+import {createGraphDiv} from './graph';
+import {createMarker, getIcon} from './marker';
+import {updateShareUrl} from './share';
+import {GetMap} from './map';
+import {GetActiveTab, HandleTabChange} from './tabs';
+import {updatePanelDragOverlayHeight} from './panel';
 
 var _points_of_interest = []
 
+export function BindGraphEvents (map) {
+    map.on("click", handleMapClick);
+}
+
+function handleMapClick (e) {
+    var map = this;
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+
+    var poi = AddPointOfInterestToTracker(lat, lng);
+    SetupPointOfInterestUI(map, poi);
+    updateShareUrl();
+
+    //send google analytics event click on map
+    ga('send', 'event', {
+      eventCategory: 'map',
+      eventAction: 'click',
+      eventLabel: 'add point',
+      nonInteraction: false
+    });
+}
+
+export function createGraphRemover (map, div, marker, poi) {
+    var elem = createGraphRemoverElem();
+    div.getElementsByClassName("graph-elem-header")[0].appendChild(elem);
+    d3.select(elem).on("click", function () {
+
+        //send google analytics remove graph
+        ga('send', 'event', {
+          eventCategory: 'graph',
+          eventAction: 'click',
+          eventLabel: 'remove',
+          nonInteraction: false
+        });
+
+        RemovePointOfInterestFromTracker(poi)
+        RemovePointOfInterestUI(map, div, marker)
+        updatePanelDragOverlayHeight()
+        updateShareUrl()
+    });
+}
+
+function createGraphRemoverElem () {
+    var elem = document.createElement("button");
+    elem.className = "remove-graph";
+    elem.innerText = String.fromCharCode("10005");
+    elem.setAttribute("title", "Remove graph");
+    return elem;
+}
+
 export function GetAllPointsOfInterest () {
-    return _points_of_interest
+    return _points_of_interest;
 }
 
 export function AddPointOfInterestToTracker (lat, lng) {
@@ -19,8 +66,8 @@ export function AddPointOfInterestToTracker (lat, lng) {
         lat: lat,
         lng: lng
     }
-    _points_of_interest.push(poi)
-    return poi
+    _points_of_interest.push(poi);
+    return poi;
 }
 
 export function SetupPointsOfInterest (map, newPois) {
@@ -33,18 +80,18 @@ export function SetupPointsOfInterest (map, newPois) {
 }
 
 export function AddMultiplePointsOfInterest (pois) {
-    Array.prototype.push.apply(_points_of_interest, pois)
+    Array.prototype.push.apply(_points_of_interest, pois);
 }
 
 export function RemovePointOfInterestFromTracker(poiToRemove) {
     _points_of_interest = _points_of_interest.filter(poi => {
         return !(poi === poiToRemove)
-  })
+    });
 }
 
 export function SetupPointOfInterestUI (map, poi) {
     var div = createGraphDiv(poi);
-    var marker = createMarker(map, poi.lat, poi.lng);
+    var marker = createMarker(poi.lat, poi.lng);
     poi.graphDiv = div
     poi.marker = marker
     marker.addTo(map)
@@ -80,10 +127,8 @@ function triggerGraphAnimation (poi) {
 }
 
 function scrollToPointOfInterestGraph (poi) {
-    var rightPanel = document.getElementById('right-panel')
-    var header = document.getElementById('right-panel-header')
-    var graphTypeHeader = document.getElementById('graph-type-header')
-    rightPanel.scrollTop = poi.graphDiv.offsetTop
+    var rightPanel = document.getElementById('right-panel');
+    rightPanel.scrollTop = poi.graphDiv.offsetTop;
 }
 
 export function RemovePointOfInterestUI (map, div, marker) {
@@ -92,4 +137,3 @@ export function RemovePointOfInterestUI (map, div, marker) {
     map.removeLayer(marker);
     updateShareUrl()
 }
-

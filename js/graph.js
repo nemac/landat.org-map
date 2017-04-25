@@ -1,20 +1,9 @@
-import {
-    AddPointOfInterestToTracker,
-    RemovePointOfInterestFromTracker,
-    SetupPointOfInterestUI,
-    RemovePointOfInterestUI,
-    GetAllPointsOfInterest
-} from './poi'
 import {updatePanelDragOverlayHeight} from './panel'
 import {updateShareUrl} from './share'
 import {GetMap} from './map'
 import {GetAjaxObject} from './parser'
 
 var tip = {};
-
-function getGraphTip() {
-    return tip
-}
 
 export function SetupGraphs () {
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
@@ -25,7 +14,7 @@ export function SetupGraphs () {
 function extendDateModule () {
     Date.prototype.isLeapYear = function() {
         var year = this.getFullYear();
-        if((year & 3) != 0) return false;
+        if ((year & 3) != 0) return false;
         return ((year % 100) != 0 || (year % 400) == 0);
     };
 
@@ -35,96 +24,12 @@ function extendDateModule () {
         var mn = this.getMonth();
         var dn = this.getDate();
         var dayOfYear = dayCount[mn] + dn;
-        if(mn > 1 && this.isLeapYear()) dayOfYear++;
+        if (mn > 1 && this.isLeapYear()) dayOfYear++;
         return dayOfYear;
     };
 }
 
-export function BindGraphEvents (map) {
-    map.on("click", handleMapClick);
-}
-
-var baseIcon = L.Icon.extend({});
-
-var graphIcon = new baseIcon({
-    iconUrl: 'imgs/blue_icon.png',
-    shadowUrl: 'imgs/marker_shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-});
-
-var hoverIcon = new baseIcon({
-    iconUrl: 'imgs/orange_icon.png',
-    shadowUrl: 'imgs/marker_shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-});
-
-export function getIcon(type) {
-    return type === 'hover' ? hoverIcon : graphIcon
-}
-
-function handleMapClick (e) {
-    var map = this;
-    var lat = e.latlng.lat;
-    var lng = e.latlng.lng;
-
-    var poi = AddPointOfInterestToTracker(lat, lng)
-    SetupPointOfInterestUI(map, poi, hoverIcon, graphIcon)
-    updateShareUrl()
-
-    //send google analytics event click on map
-    ga('send', 'event', {
-      eventCategory: 'map',
-      eventAction: 'click',
-      eventLabel: 'add point',
-      nonInteraction: false
-    });
-
-}
-
-export function createMarker (map, lat, lng) {
-    return L.marker([lat, lng], {icon: graphIcon});
-}
-
-export function createGraphRemover (map, div, marker, poi) {
-    var elem = createGraphRemoverElem();
-    div.getElementsByClassName("graph-elem-header")[0].appendChild(elem);
-    d3.select(elem).on("click", function () {
-
-        //send google analytics remove graph
-        ga('send', 'event', {
-          eventCategory: 'graph',
-          eventAction: 'click',
-          eventLabel: 'remove',
-          nonInteraction: false
-        });
-
-        RemovePointOfInterestFromTracker(poi)
-        RemovePointOfInterestUI(map, div, marker)
-        updatePanelDragOverlayHeight()
-        updateShareUrl()
-    });
-}
-
-function createGraphRemoverElem () {
-    var elem = document.createElement("button");
-    elem.className = "remove-graph";
-    elem.innerText = String.fromCharCode("10005");
-    elem.setAttribute("title", "Remove graph");
-    return elem;
-}
-
 ////////////////////// GRAPH DATA PROCESSING ///////////////////////////////
-
-function sendRequest(request, url) {
-    request.open('GET', url)
-    request.send()
-}
 
 function handleGraphDataResponse (div, lat, lng, response) {
     response = response.replace(/\[|\]|\'/g, "").split(", ");
@@ -677,12 +582,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
             var offon = this.checked ? 'off' : 'on';
 
             //send google analytics graph threshold click off
-            ga('send', 'event', {
-              eventCategory: 'graph',
-              eventAction: 'click',
-              eventLabel:  'threshold polar timeseries ' + offon,
-              nonInteraction: false
-            });
+            dispatchGraphCheckboxClick('threshold polar timeseries ' + offon);
         });
 
     thresholdCheckbox.append("label")
@@ -885,13 +785,7 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
                 charts[newYear].points.remove();
 
                 //send google analytics graph year click off
-                ga('send', 'event', {
-                  eventCategory: 'graph',
-                  eventAction: 'click',
-                  eventLabel:  newYear + ' ' + type + ' timeseries off',
-                  nonInteraction: false
-                });
-
+                dispatchGraphCheckboxClick(newYear + ' ' + type + ' timeseries off');
             } else {
                 if (!charts.hasOwnProperty(newYear)) {
                     charts[newYear] = {};
@@ -900,12 +794,7 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
                 charts[newYear].points = drawLinearPoints(data[newYear], line, svg, averages);
 
                 //send google analytics graph year click on
-                ga('send', 'event', {
-                  eventCategory: 'graph',
-                  eventAction: 'click',
-                  eventLabel:  newYear + ' ' + type + ' timeseries on',
-                  nonInteraction: false
-                });
+                dispatchGraphCheckboxClick(newYear + ' ' + type + ' timeseries on');
             }
         });
 
@@ -916,6 +805,15 @@ function createCheckbox(wrapper, key, type, year, charts, data, line, svg, avera
     checkboxWrapper.append("div")
         .style("background", pullDistinctColor(key !== "means" ? key : 0))
         .classed("graph-pip-example", true);
+}
+
+function dispatchGraphCheckboxClick (label) {
+    ga('send', 'event', {
+        eventCategory: 'graph',
+        eventAction: 'click',
+        eventLabel:  label,
+        nonInteraction: false
+    });
 }
 
 function pullDistinctColor (year) {

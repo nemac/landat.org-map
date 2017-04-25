@@ -6,10 +6,10 @@ function handleMobileMenuBtnClick () {
     var wrapper = d3.select("#wrapper");
     var status = wrapper.classed("mobile-menu-hidden");
     wrapper.classed("mobile-menu-hidden", !status);
-    dispactMobileMenuBtnClickAnalytics(!status ? "opening" : "closing");
+    dispatchMobileMenuBtnClickAnalytics(!status ? "opening" : "closing");
 }
 
-function dispactMobileMenuBtnClickAnalytics (status) {
+function dispatchMobileMenuBtnClickAnalytics (status) {
     ga('send', 'event', {
         eventCategory: 'mobile menu',
         eventAction: 'click',

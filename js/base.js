@@ -2,7 +2,8 @@ import {ParseConfig} from './parser';
 import CreateSearch from './search';
 import {SetupPanel} from './panel';
 import {CreateBaseLayers} from './baselayer';
-import {SetupGraphs, BindGraphEvents, HandleGraphTabChange} from './graph'
+import {SetupGraphs, HandleGraphTabChange} from './graph'
+import {BindGraphEvents} from './poi';
 import {BindTabEvents, HandleTabChange} from './tabs'
 import {CreateMap} from './map'
 import {BindUpdateShareUrl, AddShareSettingsToConfig, BindCopyLinkEvents} from './share'
