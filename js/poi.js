@@ -16,7 +16,8 @@ function handleMapClick (e) {
     var lat = e.latlng.lat;
     var lng = e.latlng.lng;
 
-    var poi = AddPointOfInterestToTracker(lat, lng);
+    var poi = createPOI(lat, lng, null);
+    AddPointOfInterestToTracker(poi);
     SetupPointOfInterestUI(map, poi);
     updateShareUrl();
 
@@ -29,7 +30,7 @@ function handleMapClick (e) {
     });
 }
 
-export function createGraphRemover (map, div, marker, poi) {
+function createGraphRemover (map, div, marker, poi) {
     var elem = createGraphRemoverElem();
     div.getElementsByClassName("graph-elem-header")[0].appendChild(elem);
     d3.select(elem).on("click", function () {
@@ -61,13 +62,16 @@ export function GetAllPointsOfInterest () {
     return _points_of_interest;
 }
 
-export function AddPointOfInterestToTracker (lat, lng) {
-    var poi = {
+export function createPOI (lat, lng, plots) {
+    return {
         lat: lat,
-        lng: lng
+        lng: lng,
+        plots: plots || ["baseline", "2015", "thresholds"]
     }
+}
+
+function AddPointOfInterestToTracker (poi) {
     _points_of_interest.push(poi);
-    return poi;
 }
 
 export function SetupPointsOfInterest (map, newPois) {
@@ -79,17 +83,17 @@ export function SetupPointsOfInterest (map, newPois) {
     })
 }
 
-export function AddMultiplePointsOfInterest (pois) {
+function AddMultiplePointsOfInterest (pois) {
     Array.prototype.push.apply(_points_of_interest, pois);
 }
 
-export function RemovePointOfInterestFromTracker(poiToRemove) {
+function RemovePointOfInterestFromTracker(poiToRemove) {
     _points_of_interest = _points_of_interest.filter(poi => {
         return !(poi === poiToRemove)
     });
 }
 
-export function SetupPointOfInterestUI (map, poi) {
+function SetupPointOfInterestUI (map, poi) {
     var div = createGraphDiv(poi);
     var marker = createMarker(poi.lat, poi.lng);
     poi.graphDiv = div
@@ -131,7 +135,7 @@ function scrollToPointOfInterestGraph (poi) {
     rightPanel.scrollTop = poi.graphDiv.offsetTop;
 }
 
-export function RemovePointOfInterestUI (map, div, marker) {
+function RemovePointOfInterestUI (map, div, marker) {
     var list = document.getElementById('graph-list');
     list.removeChild(div);
     map.removeLayer(marker);

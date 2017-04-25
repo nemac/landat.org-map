@@ -1,7 +1,7 @@
 import {GetMap} from './map';
 import {BASE_LAYER_TYPE} from './baselayer';
 import {GetCurrentLayers} from './layer';
-import {GetAllPointsOfInterest} from './poi';
+import {GetAllPointsOfInterest, createPOI} from './poi';
 import {GetActiveLayerGroups} from './panel';
 
 export function BindUpdateShareUrl (map) {
@@ -228,12 +228,16 @@ function makeLayerGroupsString () {
 
 function makePointsOfInterestString () {
     var pois = GetAllPointsOfInterest()
-    if (!pois.length) return
-    var poiString = "pois="
+    if (!pois.length) return;
+    var poiString = "pois=";
     pois.forEach(poi => {
-        poiString += poi.lat + ',' + poi.lng + ';'
+        poiString += poi.lat + ',' + poi.lng;
+        if (poi.plots && poi.plots.length) {
+            poiString += ',' + poi.plots.join(',');
+        }
+        poiString += ';';
     })
-    return poiString
+    return poiString;
 }
 
 function makeActiveTabString () {
@@ -324,12 +328,13 @@ function formatPointsOfInterestParam (pois) {
     return pois.split(';')
         .filter((str) => str !== '')
         .map((poi) => {
-            poi = poi.split(',')
-            return {
-                lat: poi[0],
-                lng: poi[1]
+            poi = poi.split(',');
+            if (poi.length > 2) {
+                return createPOI(poi[0], poi[1], poi.splice(2));
+            } else {
+                return createPOI(poi[0], poi[1], null);
             }
-        })
+        });
 }
 
 function formatLayerGroupsParam (layerGroupSettings) {

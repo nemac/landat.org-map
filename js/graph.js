@@ -31,16 +31,16 @@ function extendDateModule () {
 
 ////////////////////// GRAPH DATA PROCESSING ///////////////////////////////
 
-function handleGraphDataResponse (div, lat, lng, response) {
+function handleGraphDataResponse (div, poi, response) {
     response = response.replace(/\[|\]|\'/g, "").split(", ");
-    drawGraph(response, div, lat, lng);
+    drawGraph(response, div, poi);
     updatePanelDragOverlayHeight()
 }
 
-function getData(lat, lng, div) {
-    var url = "https://fcav-ndvi.nemac.org/landdat_product.cgi?args=" + lng + "," + lat;
+function getData(poi, div) {
+    var url = "https://fcav-ndvi.nemac.org/landdat_product.cgi?args=" + poi.lng + "," + poi.lat;
     var oReq = GetAjaxObject(function (response) {
-        handleGraphDataResponse(div, lat, lng, response)
+        handleGraphDataResponse(div, poi, response)
     })
 
     oReq.open("GET", url);
@@ -205,7 +205,7 @@ export function createGraphDiv (poi) {
 
     var list = document.getElementById("graph-list");
     list.appendChild(wrapper);
-    getData(poi.lat, poi.lng, wrapper);
+    getData(poi, wrapper);
     return wrapper;
 }
 
@@ -230,13 +230,7 @@ function makeZoomToMapMarkerButton(poi) {
     return button
 }
 
-function drawGraph(data, div, lat, lng) {
-    var poi = {
-        "lat": lat,
-        "lng": lng,
-        "plots": ["baseline", "2015", "thresholds"]
-    };
-
+function drawGraph(data, div, poi) {
     data = splitData(data);
     var reprocessedData = reprocessData(data);
     makeUpDownLineGraph(data, div);
@@ -595,11 +589,18 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
     thresholdCheckbox.append("input")
         .attr("type", "checkbox")
         .attr("id", "threshold-checkbox-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""))
-        .property("checked", true)
+        .property("checked", poi.plots.indexOf("thresholds") !== -1)
         .on("change", function (e) {
             thresholdElem.style("opacity", (this.checked) ? 1 : 0);
             var offon = this.checked ? 'off' : 'on';
 
+            if (this.checked) {
+                addKeyToPOI(poi, "thresholds");
+            } else {
+                removeKeyFromPOI(poi, "thresholds");
+            }
+
+            updateShareUrl();
             //send google analytics graph threshold click off
             dispatchGraphCheckboxClick('threshold polar timeseries ' + offon);
         });
@@ -802,14 +803,17 @@ function createCheckbox(wrapper, key, type, poi, charts, data, line, svg, averag
             var newYear = this.value;
             if (!this.checked) {
                 handleCheckboxDisable(charts, newYear);
+                removeKeyFromPOI(poi, key);
                 //send google analytics graph year click off
                 dispatchGraphCheckboxClick(newYear + ' ' + type + ' timeseries off');
             } else {
-                handleCheckboxEnable(charts, newYear, data, line, svg, averages)
+                handleCheckboxEnable(charts, newYear, data, line, svg, averages);
+                addKeyToPOI(poi, key);
                 //send google analytics graph year click on
                 dispatchGraphCheckboxClick(newYear + ' ' + type + ' timeseries on');
             }
             handleCheckboxSync(key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""), this.checked);
+            updateShareUrl();
         });
 
     checkboxWrapper.append("label")
@@ -842,6 +846,17 @@ function handleCheckboxSync (key, checkedStatus, wrapper) {
             elem.dispatch("change");
         }
     });
+}
+
+function removeKeyFromPOI (poi, key) {
+    var index = poi.plots.indexOf(key);
+    if (index === -1) return;
+    poi.plots.splice(index, 1);
+}
+
+function addKeyToPOI (poi, key) {
+    if (poi.plots.indexOf(key) !== -1) return;
+    poi.plots.push(key);
 }
 
 function dispatchGraphCheckboxClick (label) {
