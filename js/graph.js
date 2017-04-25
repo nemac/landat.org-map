@@ -233,7 +233,7 @@ function makeZoomToMapMarkerButton(poi) {
 function drawGraph(data, div, lat, lng) {
     data = splitData(data);
     var reprocessedData = reprocessData(data);
-    makeUpDownLineGraph(data, div, reprocessedData["means"]);
+    makeUpDownLineGraph(data, div);
     makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, lat, lng);
     drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, lat, lng);
     div.classList.remove("graph-loading");
@@ -245,7 +245,7 @@ function roundFloat(number, decimalPlaces) {
 
 ///////////////////// TIMESERIES LINE GRAPH ////////////////////////////////
 
-function makeUpDownLineGraph (data, div, averages) {
+function makeUpDownLineGraph (data, div) {
     // Set the dimensions of the canvas / graph
     var margin = {top: 30, right: 20, bottom: 30, left: 29},
     width = 580 - margin.left - margin.right,
@@ -309,7 +309,7 @@ function makeUpDownLineGraph (data, div, averages) {
     /**
      * This block of code draws the point at each data point
      */
-    drawLinearPoints(data, valueline, svg, averages);
+    drawLinearPoints(data, valueline, svg);
 }
 
 ///////////////// OVERLAPPING TIMESERIES LINE GRAPH ////////////////
@@ -389,8 +389,8 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, lat, lng) {
     /**
      * This block of code draws the point at each data point
      */
-    charts["means"]["points"] = drawLinearPoints(data["means"], valueline, svg, averages);
-    charts[year]["points"] = drawLinearPoints(data[year], valueline, svg, averages);
+    charts["means"]["points"] = drawLinearPoints(data["means"], valueline, svg);
+    charts[year]["points"] = drawLinearPoints(data[year], valueline, svg);
 
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
 
@@ -565,8 +565,8 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, lat, lng) {
     /**
      * This block of code draws the point at each data point
      */
-    charts.means.points = drawLinearPoints(averages, line, svg, averages);
-    charts[year].points = drawLinearPoints(data[year], line, svg, averages);
+    charts.means.points = drawLinearPoints(averages, line, svg);
+    charts[year].points = drawLinearPoints(data[year], line, svg);
 
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
 
@@ -730,7 +730,7 @@ function drawPolarPath(data, line, svg) {
         .attr("d", line);
 }
 
-function drawLinearPoints(data, line, svg, averages) {
+function drawLinearPoints(data, line, svg) {
     return svg.selectAll("point")
         .data(data)
         .enter()
@@ -811,12 +811,12 @@ function handleCheckboxDisable (charts, newYear) {
     charts[newYear].points.remove();
 }
 
-function handleCheckboxEnable (charts, newYear, data, line, svg, averages) {
+function handleCheckboxEnable (charts, newYear, data, line, svg) {
     if (!charts.hasOwnProperty(newYear)) {
         charts[newYear] = {};
     }
     charts[newYear].path = drawLinearPath(data[newYear], line, svg);
-    charts[newYear].points = drawLinearPoints(data[newYear], line, svg, averages);
+    charts[newYear].points = drawLinearPoints(data[newYear], line, svg);
 }
 
 function handleCheckboxSync (key, checkedStatus, wrapper) {
