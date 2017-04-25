@@ -641,9 +641,10 @@ function findPolarCenter (data) {
     var firstRadius = parseInt(avgs[areaIndex], 10);
     var secondRadius = parseInt(-avgs[areaIndex + 23], 10);
 
-    var firstDiff = Math.abs(totalSum - firstRadius) - Math.abs(totalSum - secondRadius);
-    var secondDiff = Math.abs(-totalSum - firstRadius) - Math.abs(-totalSum - secondRadius);
-    if (secondDiff > firstDiff) {
+    var midpoint = (firstRadius + secondRadius) / 2;
+    var firstDiff = Math.abs(totalSum - midpoint);
+    var secondDiff = Math.abs(-totalSum - midpoint);
+    if (secondDiff < firstDiff) {
         areaIndex = areaIndex + 23;
     }
 
