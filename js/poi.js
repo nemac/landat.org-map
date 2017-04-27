@@ -25,7 +25,7 @@ function handleMapClick (e) {
     ga('send', 'event', {
       eventCategory: 'map',
       eventAction: 'click',
-      eventLabel: 'add point',
+      eventLabel: JSON.stringify({"action":"add map marker","lat":lat,"long":lng}),
       nonInteraction: false
     });
 }
