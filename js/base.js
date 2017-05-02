@@ -12,6 +12,7 @@ import CreateLogo from './logo';
 import {SetupPointsOfInterest} from './poi';
 import {updateShareUrl} from './share';
 import BindMobileMenuEvents from './mobile';
+import BindDesktopMenuEvents from './panelToggle';
 
 var css = require('../css/sass/landat.scss')
 
@@ -22,6 +23,7 @@ var Base = function (config) {
     BindTabEvents();
     BindCopyLinkEvents();
     BindMobileMenuEvents();
+    BindDesktopMenuEvents();
 }
 
 // Does rely on map object or config file

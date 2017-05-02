@@ -1,0 +1,55 @@
+.hide-panel-region {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+}
+
+.panel-active {
+    .panel-inactive-text {
+        display: none;
+    }
+
+    #hide-menu-button:hover {
+        background-image: url(../../imgs/desktop-menu-closer.gif);
+    }
+}
+
+.panel-inactive {
+    .panel-active-text {
+        display: none;
+    }
+
+    #hide-menu-button {
+        background-image: url(../../imgs/desktop-menu-closed.png);
+
+        &:hover {
+            background-image: url(../../imgs/desktop-menu-opener.gif);
+        }
+    }
+
+    & {
+        @include mobile-display("non-mobile") {
+            #map-wrapper {
+                width: 100% !important;
+                padding-right: 0 !important;
+            }
+
+            #right-panel {
+                display: none !important;
+            }
+        }
+    }
+}
+
+#hide-menu-button {
+    cursor: pointer;
+    padding: 6px 10px 8px 30px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #fff;
+    background: #363636;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-image: url(../../imgs/desktop-menu-open.png);
+}
