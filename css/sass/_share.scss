@@ -15,6 +15,7 @@ $share-twitter-height: 28px;
     font-size: 16px;
     padding: 0 15px;
     background-color: #dcdcdc;
+    transform: translateZ(0);
 
     & {
         @include mobile-display("phone-portrait") {

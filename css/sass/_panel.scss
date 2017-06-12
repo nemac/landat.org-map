@@ -122,6 +122,7 @@
     position: fixed;
     top: 0;
     z-index: 10;
+    transform: translateZ(0);
 
     & {
         @include mobile-display("phone-portrait") {
