@@ -742,6 +742,7 @@ path {
   border-bottom: 3px solid #282828;
   background: #fff;
   z-index: 5;
+  transform: translateZ(0);
 }
 
 @media only screen and (max-width: 480px) {

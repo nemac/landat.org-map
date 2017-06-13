@@ -146,6 +146,7 @@
     border-bottom: 3px solid $border-color;
     background: #fff;
     z-index: 5;
+    transform: translateZ(0);
 
     & {
         @include mobile-display("phone-portrait") {
