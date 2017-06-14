@@ -1,114 +1,114 @@
 @import 'vars';
 
 #right-panel {
-    background-color: white;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    padding-top: $panel-header-wrapper-height;
-    border-left: 1px solid $border-color;
-    vertical-align: top;
-    overflow-x: hidden;
-    z-index: 10;
+	background-color: white;
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 100%;
+	padding-top: $panel-header-wrapper-height;
+	border-left: 1px solid $border-color;
+	vertical-align: top;
+	overflow-x: hidden;
+	z-index: 10;
 
-    &.graphs-active {
-        padding-top: $panel-header-and-graph-list-header-height;
-        min-width: $panel-min-width-graphs;
-        width: $panel-min-width-graphs;
-    }
+	&.graphs-active {
+		padding-top: $panel-header-and-graph-list-header-height;
+		min-width: $panel-min-width-graphs;
+		width: $panel-min-width-graphs;
+	}
 
-    &.layers-active {
-        min-width: $panel-min-width-layers;
-        width: $panel-min-width-layers;
-    }
+	&.layers-active {
+		min-width: $panel-min-width-layers;
+		width: $panel-min-width-layers;
+	}
 
-    &.about-active {
-        min-width: $panel-min-width-layers;
-        width: $panel-min-width-layers;
-    }
+	&.about-active {
+		min-width: $panel-min-width-layers;
+		width: $panel-min-width-layers;
+	}
 
-    & {
-        @include mobile-display("phone-portrait") {
-            width: 100% !important;
-            min-width: 100% !important;
-            height: 50% !important;
-            padding-top: $panel-header-wrapper-height-mobile !important;
-            padding-bottom: 37px !important;
-            border-left: 0;
-            bottom: 0;
-            top: inherit;
-        }
-        @include mobile-display("phone-landscape") {
-            width: 50% !important;
-            min-width: 50% !important;
-            padding-top: 72px !important;
-            padding-bottom: 37px !important;
-        }
-    }
+	& {
+		@include mobile-display("phone-portrait") {
+			width: 100% !important;
+			min-width: 100% !important;
+			height: 50% !important;
+			padding-top: $panel-header-wrapper-height-mobile !important;
+			padding-bottom: 37px !important;
+			border-left: 0;
+			bottom: 0;
+			top: inherit;
+		}
+		@include mobile-display("phone-landscape") {
+			width: 50% !important;
+			min-width: 50% !important;
+			padding-top: 72px !important;
+			padding-bottom: 37px !important;
+		}
+	}
 }
 
 .mobile-menu-hidden {
-    #map-wrapper {
-        & {
-            @include mobile-display("phone-portrait") {
-                height: 100%;
-                padding-bottom: 37px;
-            }
-            @include mobile-display("phone-landscape") {
-                width: 100%;
-                height: 100%;
-                padding-bottom: 37px;
-            }
-        }
-    }
+	#map-wrapper {
+		& {
+			@include mobile-display("phone-portrait") {
+				height: 100%;
+				padding-bottom: 37px;
+			}
+			@include mobile-display("phone-landscape") {
+				width: 100%;
+				height: 100%;
+				padding-bottom: 37px;
+			}
+		}
+	}
 
-    #right-panel {
-        & {
-            @include mobile-display("phone-portrait") {
-                height: 37px !important;
-                padding-top: 0 !important;
-                padding-bottom: 0 !important;
-            }
-            @include mobile-display("phone-landscape") {
-                width: 100% !important;
-                min-width: 100% !important;
-                height: 37px !important;
-                padding-top: 0 !important;
-                padding-bottom: 0 !important;
-                border-left: 0;
-                bottom: 0;
-                top: inherit;
-            }
-        }
-    }
+	#right-panel {
+		& {
+			@include mobile-display("phone-portrait") {
+				height: 37px !important;
+				padding-top: 0 !important;
+				padding-bottom: 0 !important;
+			}
+			@include mobile-display("phone-landscape") {
+				width: 100% !important;
+				min-width: 100% !important;
+				height: 37px !important;
+				padding-top: 0 !important;
+				padding-bottom: 0 !important;
+				border-left: 0;
+				bottom: 0;
+				top: inherit;
+			}
+		}
+	}
 
-    #right-panel-header, .panel-section-wrapper.active {
-        & {
-            @include mobile-display("phone-portrait") {
-                display: none;
-            }
-            @include mobile-display("phone-landscape") {
-                display: none;
-            }
-        }
-    }
+	#right-panel-header, .panel-section-wrapper.active {
+		& {
+			@include mobile-display("phone-portrait") {
+				display: none;
+			}
+			@include mobile-display("phone-landscape") {
+				display: none;
+			}
+		}
+	}
 }
 
 #right-panel-drag-overlay {
-    z-index: 5;
-    height: inherit;
-    padding: 5px;
-    position: absolute;
+	z-index: 5;
+	height: inherit;
+	padding: 5px;
+	position: absolute;
 
-    & {
-        @include mobile-display("phone-portrait") {
-            display: none;
-        }
-        @include mobile-display("phone-landscape") {
-            display: none;
-        }
-    }
+	& {
+		@include mobile-display("phone-portrait") {
+			display: none;
+		}
+		@include mobile-display("phone-landscape") {
+			display: none;
+		}
+	}
 }
 
 .panel-header-wrapper {
@@ -116,292 +116,292 @@
 }
 
 #right-panel-header {
-    border-bottom: 1px solid $border-color;
-    width: inherit;
-    height: $panel-header-wrapper-height;
-    position: fixed;
-    top: 0;
-    z-index: 10;
-    transform: translateZ(0);
+	border-bottom: 1px solid $border-color;
+	width: inherit;
+	height: $panel-header-wrapper-height;
+	position: fixed;
+	top: 0;
+	z-index: 10;
+	transform: translateZ(0);
 
-    & {
-        @include mobile-display("phone-portrait") {
-            top: 50%;
-            border-top: 1px solid $border-color;
-            height: $panel-header-wrapper-height-mobile;
-        }
-        @include mobile-display("phone-landscape") {
-            top: 37px;
-            height: $panel-header-wrapper-height-mobile;
-        }
-    }
+	& {
+		@include mobile-display("phone-portrait") {
+			top: 50%;
+			border-top: 1px solid $border-color;
+			height: $panel-header-wrapper-height-mobile;
+		}
+		@include mobile-display("phone-landscape") {
+			top: 37px;
+			height: $panel-header-wrapper-height-mobile;
+		}
+	}
 }
 
 #graphs-header-wrapper {
-    position: fixed;
-    width: inherit;
-    height: $graph-type-header-height;
-    top: $panel-header-wrapper-height;
-    padding-top: $graph-type-header-padding-top;
-    border-bottom: 3px solid $border-color;
-    background: #fff;
-    z-index: 5;
-    transform: translateZ(0);
+	position: fixed;
+	width: inherit;
+	height: $graph-type-header-height;
+	top: $panel-header-wrapper-height;
+	padding-top: $graph-type-header-padding-top;
+	border-bottom: 3px solid $border-color;
+	background: #fff;
+	z-index: 5;
+	transform: translateZ(0);
 
-    & {
-        @include mobile-display("phone-portrait") {
-            position: relative;
-            top: 0;
-        }
-        @include mobile-display("phone-landscape") {
-            position: relative;
-            top: 0;
-        }
-    }
+	& {
+		@include mobile-display("phone-portrait") {
+			position: relative;
+			top: 0;
+		}
+		@include mobile-display("phone-landscape") {
+			position: relative;
+			top: 0;
+		}
+	}
 }
 
 #graph-type-header {
-    position: absolute;
-    bottom: 0;
+	position: absolute;
+	bottom: 0;
 }
 
 .graph-type-info {
-    display: none;
+	display: none;
 
-    &.active {
-        display: block;
-        font-size: 18px;
-        padding: 20px;
-        border-bottom: 1px solid $border-color;
-    }
+	&.active {
+		display: block;
+		font-size: 18px;
+		padding: 20px;
+		border-bottom: 1px solid $border-color;
+	}
 }
 
 .panel-section-wrapper {
-    display: none;
+	display: none;
 
-    &.active {
-        display: inline-block;
-        position: relative;
-        width: 100%;
-    }
+	&.active {
+		display: inline-block;
+		position: relative;
+		width: 100%;
+	}
 }
 
 #layer-list-wrapper {
 
-    &.active #layer-list {
-        display: inline-block;
-        width: 100%;
-    }
+	&.active #layer-list {
+		display: inline-block;
+		width: 100%;
+	}
 
-    #layer-list {
-        display: none;
-    }
+	#layer-list {
+		display: none;
+	}
 }
 
 #graphs-wrapper {
-    max-height: 100%;
+	max-height: 100%;
 }
 
 .graph-list {
-    max-height: inherit;
+	max-height: inherit;
 }
 
 
 /* Panel Buttons */
 
 .btn {
-    cursor: pointer;
-    background-color: $btn-color;
-    font-size: $btn-font-size;
-    font-weight: bold;
-    color: $btn-font-color;
-    letter-spacing: .75px;
-    @include user-select(none);
+	cursor: pointer;
+	background-color: $btn-color;
+	font-size: $btn-font-size;
+	font-weight: bold;
+	color: $btn-font-color;
+	letter-spacing: .75px;
+	@include user-select(none);
 
-    &:hover {
-        background-color: $btn-color-hover;
-    }
+	&:hover {
+		background-color: $btn-color-hover;
+	}
 
-    &.active {
-        background-color: $btn-color-active;
-    }
+	&.active {
+		background-color: $btn-color-active;
+	}
 }
 
 .panel-btn {
-    display: inline-block;
-    height: 100%;
-    width: 33.333%;
-    vertical-align: top;
-    text-align: center;
-    border-right: 1px solid $border-color;
+	display: inline-block;
+	height: 100%;
+	width: 33.333%;
+	vertical-align: top;
+	text-align: center;
+	border-right: 1px solid $border-color;
 
-    &:last-child {
-        border-right: 0;
-    }
+	&:last-child {
+		border-right: 0;
+	}
 }
 
 .panel-top-btn {
-    position: relative;
+	position: relative;
 
-    &.active {
-        &:before {
-            content: " ";
-            position: absolute;
-            bottom: -12px;
-            left: 47%;
-            margin-left: -1px;
-            width: 0;
-            height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-top: 12px solid $border-color;
-            z-index: 10;
-        }
+	&.active {
+		&:before {
+			content: " ";
+			position: absolute;
+			bottom: -12px;
+			left: 47%;
+			margin-left: -1px;
+			width: 0;
+			height: 0;
+			border-left: 12px solid transparent;
+			border-right: 12px solid transparent;
+			border-top: 12px solid $border-color;
+			z-index: 10;
+		}
 
-        &:first-child:before {
-            margin-left: 0;
-        }
+		&:first-child:before {
+			margin-left: 0;
+		}
 
-        &:last-child:before {
-            @include mobile-display("phone-portrait") {
-                margin-left: 0;
-            }
-        }
+		&:last-child:before {
+			@include mobile-display("phone-portrait") {
+				margin-left: 0;
+			}
+		}
 
-        &:after {
-            content: " ";
-            position: absolute;
-            bottom: -10px;
-            left: 48%;
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 10px solid $btn-color-active;
-            z-index: 100;
-        }
-    }
+		&:after {
+			content: " ";
+			position: absolute;
+			bottom: -10px;
+			left: 48%;
+			width: 0;
+			height: 0;
+			border-left: 10px solid transparent;
+			border-right: 10px solid transparent;
+			border-top: 10px solid $btn-color-active;
+			z-index: 100;
+		}
+	}
 }
 
 .btn-middle-align-ghost {
-    height: 100%;
-    padding-bottom: 3px;
+	height: 100%;
+	padding-bottom: 3px;
 
-    div, &:before {
-        display: inline-block;
-        vertical-align: middle;
-    }
+	div, &:before {
+		display: inline-block;
+		vertical-align: middle;
+	}
 
-    &:before {
-        width: .05%;
-        height: 100%;
-        content: " ";
-    }
+	&:before {
+		width: .05%;
+		height: 100%;
+		content: " ";
+	}
 
-    div {
-        width: 99.5%;
-    }
+	div {
+		width: 99.5%;
+	}
 }
 
 .layer-group-btn {
-    &:before {
-        content: " ";
-        width: 12px;
-        height: 20px;
-        display: inline-block;
-        background-size: 22px 11px;
-        position: absolute;
-        left: 10px;
-        top: 14px;
-        background-repeat: no-repeat;
-        background-position: 4px 1px;
-        background-image: url(../../imgs/arrows.png);
-    }
+	&:before {
+		content: " ";
+		width: 12px;
+		height: 20px;
+		display: inline-block;
+		background-size: 22px 11px;
+		position: absolute;
+		left: 10px;
+		top: 14px;
+		background-repeat: no-repeat;
+		background-position: 4px 1px;
+		background-image: url(../../imgs/arrows.png);
+	}
 }
 
 .layer-group-wrapper.active {
-    .layer-group-btn:before {
-        content: " ";
-        background-position: -7px 2px;
-        width: 15px;
-    }
+	.layer-group-btn:before {
+		content: " ";
+		background-position: -7px 2px;
+		width: 15px;
+	}
 }
 
 .graph-type-btn {
-    background: #fff;
-    width: auto;
-    padding-top: 0;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin: 0 10px -3px;
-    box-sizing: content-box;
-    border-right: none;
-    color: #111;
-    text-shadow: none;
-    font-weight: normal;
-    font-size: 16px;
-    height: 34px;
-    line-height: 34px + 2px;
+	background: #fff;
+	width: auto;
+	padding-top: 0;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin: 0 10px -3px;
+	box-sizing: content-box;
+	border-right: none;
+	color: #111;
+	text-shadow: none;
+	font-weight: normal;
+	font-size: 16px;
+	height: 34px;
+	line-height: 34px + 2px;
 
-    & {
-        @include mobile-display("phone-portrait") {
-            font-size: 14px;
-            padding-left: 10px;
-            padding-right: 10px;
-            margin: 0 7px -3px;
-        }
-        @include mobile-display("phone-landscape") {
-            font-size: 12px;
-            padding-left: 5px;
-            padding-right: 5px;
-            margin: 0 5px -3px;
-        }
-    }
+	& {
+		@include mobile-display("phone-portrait") {
+			font-size: 14px;
+			padding-left: 10px;
+			padding-right: 10px;
+			margin: 0 7px -3px;
+		}
+		@include mobile-display("phone-landscape") {
+			font-size: 12px;
+			padding-left: 5px;
+			padding-right: 5px;
+			margin: 0 5px -3px;
+		}
+	}
 
-    &:hover {
-        background: #fff;
-        color: $btn-color-hover;
-        border-bottom: 3px solid $btn-color-hover;
-    }
+	&:hover {
+		background: #fff;
+		color: $btn-color-hover;
+		border-bottom: 3px solid $btn-color-hover;
+	}
 
-    &.active {
-        background: #fff;
-        color: $btn-color-active;
-        border-bottom: 3px solid $btn-color-active;
-    }
+	&.active {
+		background: #fff;
+		color: $btn-color-active;
+		border-bottom: 3px solid $btn-color-active;
+	}
 }
 
 #about-text {
-    padding: 15px;
-    font-size: 16px;
-    color: #333;
+	padding: 15px;
+	font-size: 16px;
+	color: #333;
 
-    h3 {
-        font-size: 24px;
-        background-image: repeating-linear-gradient(180deg, transparent, transparent 24px, #333333 25px);
-        padding-bottom: 15px;
-    }
+	h3 {
+		font-size: 24px;
+		background-image: repeating-linear-gradient(180deg, transparent, transparent 24px, #333333 25px);
+		padding-bottom: 15px;
+	}
 
-    p {
-        padding-bottom: 15px;
-        line-height: 1.5em;
-    }
+	p {
+		padding-bottom: 15px;
+		line-height: 1.5em;
+	}
 
-    ul {
-        padding: 0 0 15px 20px;
-    }
+	ul {
+		padding: 0 0 15px 20px;
+	}
 
-    li {
-        margin-bottom: 5px;
-    }
+	li {
+		margin-bottom: 5px;
+	}
 
-    a {
-        cursor: pointer;
-        color: #f69232;
-    }
+	a {
+		cursor: pointer;
+		color: #f69232;
+	}
 }
 
 .about-icon {
-    width: auto;
-    height: 16px;
+	width: auto;
+	height: 16px;
 }

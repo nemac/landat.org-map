@@ -1,10 +1,10 @@
 
 @mixin user-select($option) {
-  -webkit-user-select: $option;
-  -khtml-user-select: $option;
-  -moz-user-select: $option;
-  -ms-user-select: $option;
-  user-select: $option;
+	-webkit-user-select: $option;
+	-khtml-user-select: $option;
+	-moz-user-select: $option;
+	-ms-user-select: $option;
+	user-select: $option;
 }
 
 /* Panel */

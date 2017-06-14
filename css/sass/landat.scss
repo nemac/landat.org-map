@@ -5,7 +5,7 @@
 @import 'layer_list';
 @import 'layer_select';
 @import 'panel';
-@import 'panel_toggle';
+@import 'map_menu';
 @import 'search';
 @import 'baselayers';
 @import 'logo';
@@ -13,45 +13,45 @@
 
 
 html, body, #wrapper {
-    width: 100%;
-    height: 100%;
-    position: relative;
+	width: 100%;
+	height: 100%;
+	position: relative;
 }
 
 #map-wrapper {
-    height: 100%;
-    padding-right: $panel-min-width-layers;
+	height: 100%;
+	padding-right: $panel-min-width-layers;
 
-    & {
-        @include mobile-display("phone-portrait") {
-            height: 50%;
-            padding-right: 0 !important;
-        }
-        @include mobile-display("phone-landscape") {
-            width: 50%;
-            padding-right: 0 !important;
-        }
-    }
+	& {
+		@include mobile-display("phone-portrait") {
+			height: 50%;
+			padding-right: 0 !important;
+		}
+		@include mobile-display("phone-landscape") {
+			width: 50%;
+			padding-right: 0 !important;
+		}
+	}
 }
 
 #map {
-    z-index: 0;
-    height: 100%;
+	z-index: 0;
+	height: 100%;
 }
 
 body {
-    font: 12px Arial;
+	font: 12px Arial;
 }
 
 * {
-    margin: 0;
-    border: 0;
-    padding: 0;
+	margin: 0;
+	border: 0;
+	padding: 0;
 }
 
 *, *:before, *:after {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
 }
 
 

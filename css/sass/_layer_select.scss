@@ -1,78 +1,78 @@
 @import 'vars';
 
 .layer-select {
-    border-bottom: 1px solid $border-color;
-    display: none;
+	border-bottom: 1px solid $border-color;
+	display: none;
 }
 
 .layer-group-wrapper.active .layer-select {
-    display: block;
-    width: 100%;
-    position: relative;
-    color: $layer-select-text-color;
-    padding-top: $layer-select-padding-top;
-    padding-right: $layer-select-padding-right;
-    padding-bottom: $layer-select-padding-bottom;
-    padding-left: $layer-select-padding-left;
+	display: block;
+	width: 100%;
+	position: relative;
+	color: $layer-select-text-color;
+	padding-top: $layer-select-padding-top;
+	padding-right: $layer-select-padding-right;
+	padding-bottom: $layer-select-padding-bottom;
+	padding-left: $layer-select-padding-left;
 
-    &:nth-child(even) {
-        background-color: $layer-select-color-primary;
-    }
+	&:nth-child(even) {
+		background-color: $layer-select-color-primary;
+	}
 
-    &:nth-child(odd) {
-        background-color: $layer-select-color-secondary;
-    }
+	&:nth-child(odd) {
+		background-color: $layer-select-color-secondary;
+	}
 }
 
 .layer-label-wrapper {
-    display: inline-block;
-    vertical-align: top;
-    max-width: 85%;
+	display: inline-block;
+	vertical-align: top;
+	max-width: 85%;
 }
 
 
 .layer-select input {
-    margin-right: $layer-checkbox-margin-right;
-    width: $layer-checkbox-length;
-    height: $layer-checkbox-length;
-    cursor: pointer;
+	margin-right: $layer-checkbox-margin-right;
+	width: $layer-checkbox-length;
+	height: $layer-checkbox-length;
+	cursor: pointer;
 }
 
 .layer-label, .layer-info-btn {
-    font: 15px sans-serif;
-    font-weight: bold;
-    vertical-align: top;
-    cursor: pointer;
-    @include user-select(none);
+	font: 15px sans-serif;
+	font-weight: bold;
+	vertical-align: top;
+	cursor: pointer;
+	@include user-select(none);
 }
 
 /* Layer Description */
 
 .layer-info-btn-wrapper {
-    
-    display: inline-block;
-    position: absolute;
-    right: $layer-select-padding-left + 12;
+	
+	display: inline-block;
+	position: absolute;
+	right: $layer-select-padding-left + 12;
 
-    .layer-info-icon {
-        width: 26px;
-        height: 26px;
-    }
+	.layer-info-icon {
+		width: 26px;
+		height: 26px;
+	}
 
-    .layer-info-icon:hover {
-        cursor: pointer;
-    }
+	.layer-info-icon:hover {
+		cursor: pointer;
+	}
 }
 
 .layer-info-wrapper {
-    display: none;
+	display: none;
 
-    &.active {
-        display: block;
-        margin: 5px 0px 0px 0px;
-        font: $layer-info-content-font-size sans-serif;
-        font-weight: bold;
-    }
+	&.active {
+		display: block;
+		margin: 5px 0px 0px 0px;
+		font: $layer-info-content-font-size sans-serif;
+		font-weight: bold;
+	}
 }
 
 
@@ -80,26 +80,26 @@
 /* Layer Tools (legend and opacity) */
 
 .layer-tools-wrapper {
-    display: none;
+	display: none;
 
-    &.active {
-        display: block;
-        position: relative;
-        margin-top: 35px;
-        width: 100%;
-        min-height: 120px;
-    }
+	&.active {
+		display: block;
+		position: relative;
+		margin-top: 35px;
+		width: 100%;
+		min-height: 120px;
+	}
 }
 
 /* Layer Legend */
 
 .legend-wrapper {
-    
-    display: inline-block;
+	
+	display: inline-block;
 
-    img {
-       height: 100%; 
-    }
+	img {
+	   height: 100%; 
+	}
 }
 
 
@@ -125,55 +125,55 @@ $opacity-slider-track-offset-top: $slider-handle-height/2;
 $opacity-icon-size: $opacity-slider-track-overlay-width;
 
 .opacity-slider-wrapper {
-    display: inline-block;
-    height: $opacity-slider-wrapper-height;
-    vertical-align: top;
-    position: absolute;
-    right: 0px;
+	display: inline-block;
+	height: $opacity-slider-wrapper-height;
+	vertical-align: top;
+	position: absolute;
+	right: 0px;
 
-    .opacity-slider-track-overlay {
-        display: inline-block;
-        position: relative;
-        width: $opacity-slider-track-overlay-width;
-        height: $opacity-slider-track-overlay-height;
-        top: -$opacity-slider-track-offset-top;
-        cursor: pointer;
-    }
+	.opacity-slider-track-overlay {
+		display: inline-block;
+		position: relative;
+		width: $opacity-slider-track-overlay-width;
+		height: $opacity-slider-track-overlay-height;
+		top: -$opacity-slider-track-offset-top;
+		cursor: pointer;
+	}
 
-    .opacity-slider-track {
-        display: inline-block;
-        width: $opacity-slider-track-width;
-        height: $opacity-slider-track-height;
-        background-color: black;
-        position: relative;
-        top: $opacity-slider-track-offset-top;
-        left: $slider-handle-width/2 - $opacity-slider-track-width/2;
-    }
+	.opacity-slider-track {
+		display: inline-block;
+		width: $opacity-slider-track-width;
+		height: $opacity-slider-track-height;
+		background-color: black;
+		position: relative;
+		top: $opacity-slider-track-offset-top;
+		left: $slider-handle-width/2 - $opacity-slider-track-width/2;
+	}
 
-    .opacity-slider-handle {
-        display: inline-block;
-        border: .5px solid $border-color;
-        border-radius: 2px;
-        background-color: $btn-color;
-        width: $slider-handle-width;
-        height: $slider-handle-height;
-        position: absolute;
-        right: 0px;
-    }
+	.opacity-slider-handle {
+		display: inline-block;
+		border: .5px solid $border-color;
+		border-radius: 2px;
+		background-color: $btn-color;
+		width: $slider-handle-width;
+		height: $slider-handle-height;
+		position: absolute;
+		right: 0px;
+	}
 
-    .opacity-icon-wrapper {
-        display: block;
-        position: relative;
+	.opacity-icon-wrapper {
+		display: block;
+		position: relative;
 
-        .opacity-icon {
-            width: $opacity-icon-size;
-            height: $opacity-icon-size;
-            cursor: pointer;
+		.opacity-icon {
+			width: $opacity-icon-size;
+			height: $opacity-icon-size;
+			cursor: pointer;
 
-            &.closed {
-                margin-top: -$opacity-slider-track-offset-top;
-            }
-        }
-    }
+			&.closed {
+				margin-top: -$opacity-slider-track-offset-top;
+			}
+		}
+	}
 }
 

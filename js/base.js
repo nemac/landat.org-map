@@ -18,29 +18,29 @@ var css = require('../css/sass/landat.scss')
 
 // Does not rely on map object or config file
 var Base = function (config) {
-    ParseConfig(config, callback);
-    SetupGraphs();
-    BindTabEvents();
-    BindCopyLinkEvents();
-    BindMobileMenuEvents();
-    BindDesktopMenuEvents();
+	ParseConfig(config, callback);
+	SetupGraphs();
+	BindTabEvents();
+	BindCopyLinkEvents();
+	BindMobileMenuEvents();
+	BindDesktopMenuEvents();
 }
 
 // Does rely on map object or config file
 var callback = function (data) {
-    AddShareSettingsToConfig(data)
-    var map = CreateMap(data.map);
-    CreateBaseLayers(map, data.baselayers);
-    CreateDefaultLayers(data.layers, data["active-layers"]);
-    SetupPanel(data.layers, data.layout);
-    CreateSearch(map);
-    CreateLogo(data.logo);
-    if (data.tab) HandleTabChange(data.tab);
-    if (data.graph) HandleGraphTabChange(data.graph);
-    BindGraphEvents(map);
-    BindUpdateShareUrl(map);
-    SetupPointsOfInterest(map, data.pois)
-    updateShareUrl()
+	AddShareSettingsToConfig(data)
+	var map = CreateMap(data.map);
+	CreateBaseLayers(map, data.baselayers);
+	CreateDefaultLayers(data.layers, data["active-layers"]);
+	SetupPanel(data.layers, data.layout);
+	CreateSearch(map);
+	CreateLogo(data.logo);
+	if (data.tab) HandleTabChange(data.tab);
+	if (data.graph) HandleGraphTabChange(data.graph);
+	BindGraphEvents(map);
+	BindUpdateShareUrl(map);
+	SetupPointsOfInterest(map, data.pois)
+	updateShareUrl()
 }
 
 window.Base = Base;

@@ -1,0 +1,71 @@
+.map-menu-wrapper {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	z-index: 1000;
+
+	button {
+		cursor: pointer;
+		border-radius: 5px;
+		font-size: 14px;
+		color: #fff;
+		background: #363636;
+		background-repeat: no-repeat;
+		display: inline-block;
+	}
+}
+
+.panel-active {
+	.panel-inactive-text {
+		display: none;
+	}
+
+	#hide-menu-button:hover {
+		background-image: url(../../imgs/desktop-menu-closer.gif);
+	}
+}
+
+.panel-inactive {
+	.panel-active-text {
+		display: none;
+	}
+
+	#hide-menu-button {
+		background-image: url(../../imgs/desktop-menu-closed.png);
+
+		&:hover {
+			background-image: url(../../imgs/desktop-menu-opener.gif);
+		}
+	}
+
+	& {
+		@include mobile-display("non-mobile") {
+			#map-wrapper {
+				width: 100% !important;
+				padding-right: 0 !important;
+			}
+
+			#right-panel {
+				display: none !important;
+			}
+		}
+	}
+}
+
+.map-menu-btn-wrapper {
+	padding-left: 5px;
+	display: inline-block;
+}
+
+#clear-map-button {
+	padding: 6px 10px 8px 30px;
+	background-position: 5%;
+	background-size: 25px;
+	background-image: url(../../imgs/trash-can-icon.png);
+}
+
+#toggle-panel-button {
+	padding: 6px 10px 8px 30px;
+	background-size: 30px;
+	background-image: url(../../imgs/desktop-menu-open.png);
+}
