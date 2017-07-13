@@ -527,12 +527,24 @@
 				"info": "Expected gains and losses in the value of the Ascendency information metric on a decadal time scale. Estimated through projection of observed phenological change.",
 				"legend": "legends/abu.png"
 			},
-						{
+			{
 				"id": "ChangeCondEntropy",
 				"name": "Long-term Shift in Conditional Entropy",
 				"info": "Expected gains and losses in the value of the Conditional Entropy information metric on a decadal time scale. Estimated through projection of observed phenological change.",
 				"legend": "legends/aby.png"
-			}
-		]  
+			},
+      {
+        "id": "ChangeNDVI",
+        "name": "Long-term Shift in Growing Season Greenness",
+        "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
+        "legend": "legends/aca.png"
+		  },
+      {       
+        "id": "ChangeMutualInfo",
+        "name": "Long-term Shift in Mutual Information",
+        "info": "Expected gains and losses in the value of the Mutual Information metric on a decadal time scale. Estimated through projection of observed phenological change.",
+        "legend": "legends/acb.png"
+      }
+    ]  
 	}
 }
