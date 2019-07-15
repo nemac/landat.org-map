@@ -1,619 +1,628 @@
 {
-	"mapserverUrl": "https://gis.nemac.org/landat-dev",
-	"defaultLayerOpacity": 0.75,
-	"logo": {
-		"image": "imgs/landat_logo_blue.png",
-		"label": "Logo for the LanDat project",
-		"link": "https://landat.org",
-		"location": "leaflet-bottom leaflet-right"
-	},
-	"pois": [],
-	"map": {
-		"id": "map",
-		"center": ["38.5", "-81"],
-		"zoom": "6",
-		"options": {
-			"attributionControl": false,
-			"doubleClickZoom": false
-		}
-	},
-	"baselayers" : [
-		{
-			"id": "esri-imagery",
-			"url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-			"attribution": "Powered by <a href='https://www.esri.com/'>ESRI</a> | ESRI, DigitalGlobe, GeoEye, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community",
-			"subdomains": ["server", "services"],
-			"label": "ESRI Imagery",
-			"image": "imgs/esri-imagery.jpg",
-			"active": false
-		},
-		{
-			"id": "esri-topo",
-			"url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
-			"attribution": "Powered by <a href='https://www.esri.com/'>ESRI</a> | ESRI, USGS, NOAA",
-			"subdomains": ["server", "services"],
-			"label": "ESRI Topo",
-			"image": "imgs/esri-topo.jpg",
-			"active": true
-		},
-		{
-			"id": "carto-light",
-			"url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
-			"attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
-			"label": "CARTO Streets",
-			"image": "imgs/carto-light.jpg",
-			"active": false
-		},
-		{
-			"id": "carto-dark",
-			"url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
-			"attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
-			"active": false
-		}
-	],
-	"layout" : {
-		"layer-groups-order": [
-			 {
-				"id": "boundaries",
-				"name": "Reference and Boundaries",
-				"active": false
-			},
-			{
-				"id": "phenology-variables",
-				"name": "Annual Phenology Variables",
-				"active": false
-			},
-			{
-				"id": "summary-phenology",
-				"name": "Summary Phenology Variables",
-				"active": false
-			},
-			{
-				"id": "phenoclasses",
-				"name": "Phenological Classes (phenoclasses)",
-				"active": false
-			},
-			{
-				"id": "phenoclass-derived",
-				"name": "Phenological Change Metrics",
-				"active": false
-			},
-			{
-				"id": "it-metrics",
-				"name": "Landscape Information-Theoretic Metrics",
-				"active": false
-			},
-			{
-				"id": "longtermlandshift",
-				"name": "Long-term Landscape Shift",
-				"active": false
-			},
-			{
-				"id": "carbon-models",
-				"name": "Carbon Models",
-				"active": false
-			},
-			{
-				"id": "ancillary",
-				"name": "Landscape and Climate Characteristics",
-				"active": false
-			}
-		]
-	},
-	"active-layers": [
-		"States"
-	],
-	"layers" : {
-		"carbon-models": [
-			{
-				"id": "FIACarbonStorage",
-				"name": "Estimated carbon storage, 2000-2009",
-				"info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. USFS Forest Inventory and Analysis (FIA) program.",
-				"legend": "legends/aaz.png"
-			},
-			{
-				"id": "LanDATCStorage",
-				"name": "LanDAT carbon storage model",
-				"info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. LanDAT model using 2000-2015 MODIS data, trained on FIA estimates.",
-				"legend": "legends/aay.png"
-			},
-			{
-				"id": "ShiftCarbonStorage",
-				"name": "Landscape Shift in Carbon Storage",
-				"info": "Long-term (decadal) expected gains and losses in carbon density, estimated from observed annual changes in LanDAT phenological variables.",
-				"legend": "legends/abq.png"
-			}
-		],
-		"boundaries" : [
-			{
-				"id": "States",
-				"name": "States",
-				"info": "U.S. state borders from the U.S. Census Bureau's TigerLine products",
-				"url": "https://gis.nemac.org/landat-vector",
-				"legend": "legends/abi.png",
-				"type": "overlay"
-			},
-			{
-				"id": "CountiesBlack",
-				"name": "Counties",
-				"info": "U.S. county borders from the U.S. Census Bureau's TigerLine products",
-				"url": "https://gis.nemac.org/landat-vector",
-				"legend": "legends/abj.png",
-				"type": "overlay"
-			}
-		],
-		"ancillary": [
-			{
-				"id": "NLCD_2011",
-				"name": "Land Cover, 2011",
-				"info": "National Land Cover Database (NLCD), 2011",
-				"legend": "legends/aba.png"
-			},
-			{
-				"id": "Riitters_LandPattern",
-				"name": "Landscape Mosaic Pattern",
-				"info": "An index measuring the mixture of agricultural, developed, and semi-natural land cover types within 15-hectare (37-acre) neighborhoods. US Forest Service, based on the 2011 National Land Cover Database.",
-				"legend": "legends/abl.png"
-			},
-			{
-				"id": "Riitters_ForestDensity",
-				"name": "Landscape Forest Density",
-				"info": "An index estimating the proportion of the landscape around a given forest area that is also forested, measured within 15-hectare (37-acre) neighborhoods. Low-density areas may be fragmented by non-forest land uses or natural non-forest cover. US Forest Service, based on the 2011 National Land Cover Database.",
-				"legend": "legends/abk.png"
-			},
-			{
-				"id": "TotalBasalArea",
-				"name": "Total Tree Basal Area",
-				"info": "Estimated total tree basal area. USFS Forest Health Technology Enterprise Team, 2012.",
-				"legend": "legends/abg.png"
-			},
-			{
-				"id": "PercentBasalRisk",
-				"name": "Tree Basal Area at Risk from Insect and Disease Pathogens",
-				"info": "Percent of basal area estimated to be at risk. USFS Forest Health Technology Enterprise Team, 2012.",
-				"legend": "legends/abh.png"
-			},
-			{
-				"id": "EvergreenDecline",
-				"name": "Decline in Evergreen Vegetation, 2000-2011",
-				"info": "Rate of decline in the evergreen (non-deciduous) component of vegetation greenness (NDVI) from 2000 to 2011. Higher values indicate stronger decline.",
-				"legend": "legends/abr.png"
-			},
-			{
-				"id": "HousingDensity",
-				"name": "Housing Density, 2010",
-				"info": "Housing units per squ. km, by partial census block group. US Census Bureau and SILVIS Lab.",
-				"legend": "legends/abo.png"
-			},
-			{
-				"id": "PalmerMonthly",
-				"name": "Palmer Drought Severity Index, 2000-2015 Mean",
-				"info": "Self-calibrated drought index (scPDSI); mean monthly value, 2000-2015. Values below -0.5 indicate drier than normal.",
-				"legend": "legends/abc.png"
-			},
-			{
-				"id": "PalmerAnnual",
-				"name": "Palmer Drought Severity Index, 2000-2015 Variability",
-				"info": "Self-calibrated drought index (scPDSI); inter-annual variability, 2000-2015. Higher values indicate more year-to-year variation.",
-				"legend": "legends/abd.png"
-			}, 
-			{
-				"id": "mtbs-raster-00-16",
-				"name": "Historical Fires from 2000 to 2016",
-				"info": "Shows locations and intensities of fires that occured from 2000 to 2016",
-				"url": "https://fswms.nemac.org/rlayers",
-				"legend": "legends/abe.png"
-			},
-			{
-				"id": "mtbs-raster-84-99",
-				"name": "Historical Fires from 1984 to 1999",
-				"info": "Shows locations and intensities of fires that occured from 1984 to 1999",
-				"url": "https://fswms.nemac.org/rlayers",
-				"legend": "legends/abf.png" 
-			}
-		],
-		"summary-phenology": [
-			{
-				"id": "Factor1Timing",
-				"name": "Factor 1 - Timing",
-				"info": "Lorem ipsum",
-				"legend": "legends/abv.png" 
-			},
-			{
-				"id": "Factor2Timing",
-				"name": "Factor 2 - Timing",
-				"info": "Lorem ipsum",
-				"legend": "legends/abw.png"
-			},
-			{
-				"id": "Factor3Productivity",
-				"name": "Factor 3 - Productivity",
-				"info": "Lorem ipsum",
-				"legend": "legends/abw.png"
-      },
-			{
-				"id": "Factor4Seasonality",
-				"name": "Factor 4 - Seasonality",
-				"info": "Lorem ipsum",
-				"legend": "legends/abw.png"
-      }
-		],
-		"it-metrics": [
-			{
-				"id": "DynamicActivity",
-				"name": "Rate of Inter-annual Change",
-				"info": "The proportion of inter-annual change events in which a change in phenoclass occurs (as opposed to phenoclass stability).",
-				"legend": "legends/aae.png"
-			},
-			{
-				"id": "MeanShannon",
-				"name": "Shannon Diversity",
-				"info": "Landscape information metric summarizing the total diversity, or complexity, of observed landscape dynamics.",
-				"legend": "legends/aah.png"
-			},
-			{
-				"id": "MutualInformation",
-				"name": "Mutual Information",
-				"info": "Landscape information metric representing the component of overall complexity which is higly predictable, or organized.",
-				"legend": "legends/aai.png"
-			},
-			{
-				"id": "ConditionalEntropy",
-				"name": "Conditional Entropy",
-				"info": "Landscape information metric representing the component of overall complexity which is higly unpredictable, disorganized, or redundant.",
-				"legend": "legends/aaj.png"
-			},
-			{
-				"id": "Development",
-				"name": "Development",
-				"info": "Mutual Information standardized by Shannon Diversity: the proportion of the complexity which is accounted for by the predictable component.",
-				"legend": "legends/aak.png"
-			},
-			{
-				"id": "Capacity",
-				"name": "Capacity",
-				"info": "Landscape information metric summarizing the complexity of landscape dynamics, and overall productivity (Shannon Diversity multiplied by mean NDVI).",
-				"legend": "legends/aal.png"
-			},
-			{
-				"id": "Ascendency",
-				"name": "Ascendency",
-				"info": "Landscape information metric summarizing the predictability of landscape dynamics, and overall productivity  (Mutual Information multiplied by mean NDVI).",
-				"legend": "legends/aam.png"
-			},
-			{
-				"id": "Overhead",
-				"name": "Overhead",
-				"info": "Landscape information metric summarizing the unpredictability of landscape dynamics, and overall productivity (Conditional Entropy multiplied by mean NDVI).",
-				"legend": "legends/aan.png"
-			}
-		],
-		"phenology-variables": [
-			{
-				"id": "MeanAnnualNDVI",
-				"name": "Mean Annual Greenness",
-				"info": "Mean NDVI for the entire year.",
-				"legend": "legends/aac.png"
-			},
-			{
-				"id": "MeanNDVI",
-				"name": "Mean Growing Season Greenness",
-				"info": "Mean NDVI within the growing season, i.e., between the beginning and end of growing season dates.",
-				"legend": "legends/aac.png"
-			},
-			{
-				"id": "Seasonality",
-				"name": "Degree of Seasonality, or Deciduousness",
-				"info": "Crowding of NDVI greenness into a particular portion of the annual cycle, measured by the length of the mean greenness vector. More evergreen vegetation shows lower seasonality.",
-				"legend": "legends/aab.png"
-			},
-			{
-				"id": "NDVIStdDv",
-				"name": "Within-year Greenness Variability",
-				"info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the year.",
-				"legend": "legends/aaa.png"
-			},
-			{
-				"id": "SeasonLength",
-				"name": "Growing Season Length",
-				"info": "Number of days between the beginning and end of growing season dates.",
-				"legend": "legends/aad.png"
-			},
-			{
-				"id": "BeginningGrowingSeason",
-				"name": "Beginning of Growing Season",
-				"info": "Start of the growing season measured as the point in time when 15 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years.",
-				"legend": "legends/abn.png"
-			},
-			{
-				"id": "EarlyGrowingSeasonCenter",
-				"name": "Early Growing Season Center",
-				"info": "Lorem ipsum",
-				"legend": "legends/abn.png"
-			},
-			{
-				"id": "EarlyGrowingSeasonMagnitude",
-				"name": "Early Growing Season Magnitude",
-				"info": "Lorem ipsum",
-				"legend": "legends/abn.png"
-			},
-			{
-				"id": "Midpoint",
-				"name": "Middle of Growing Season",
-				"info": "Middle of the growing season. This is determined by the direction, or angle on the annual cycle, of the mean greenness vector.",
-				"legend": "legends/abn.png"
-			},
-			{
-				"id": "LateGrowingSeasonCenter",
-				"name": "Early Growing Season Center",
-				"info": "Lorem ipsum",
-				"legend": "legends/abn.png"
-			},
-			{
-				"id": "LateGrowingSeasonMagnitude",
-				"name": "Early Growing Season Magnitude",
-				"info": "Lorem ipsum",
-				"legend": "legends/abn.png"
-			},
-			{
-				"id": "EndGrowingSeason",
-				"name": "End of Growing Season",
-				"info": "End of the growing season measured as the point in time when 85 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years. ",
-				"legend": "legends/abn.png"
-			}
-		],
-		"phenoclasses": [
-			{
-				"id": "Phenoclass500_2001",
-				"name": "500 Phenoclasses, 2001",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2002",
-				"name": "500 Phenoclasses, 2002",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2003",
-				"name": "500 Phenoclasses, 2003",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2004",
-				"name": "500 Phenoclasses, 2004",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2005",
-				"name": "500 Phenoclasses, 2005",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2006",
-				"name": "500 Phenoclasses, 2006",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2007",
-				"name": "500 Phenoclasses, 2007",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2008",
-				"name": "500 Phenoclasses, 2008",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2009",
-				"name": "500 Phenoclasses, 2009",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2010",
-				"name": "500 Phenoclasses, 2010",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2011",
-				"name": "500 Phenoclasses, 2011",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2012",
-				"name": "500 Phenoclasses, 2012",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2013",
-				"name": "500 Phenoclasses, 2013",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2014",
-				"name": "500 Phenoclasses, 2014",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2015",
-				"name": "500 Phenoclasses, 2015",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2016",
-				"name": "500 Phenoclasses, 2016",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2017",
-				"name": "500 Phenoclasses, 2017",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			}
-
-		],
-		"phenoclass-derived": [
-			{
-				"id": "TotalPath",
-				"name": "Total Year-to-Year Path Length",
-				"info": "Total summed amount or 'length' of all annual phenological changes from 2000 to 2015; a measure of the cumulative degree of change.",
-				"legend": "legends/aaq.png"
-			},
-			{
-				"id": "FinalDistance",
-				"name": "Final Between-years Distance",
-				"info": "Amount of phenological difference between the first and last years, 2000 and 2015; analogous to a straight-line distance rather than the path length. ",
-				"legend": "legends/aar.png"
-			},
-			{
-				"id": "MaximumStep",
-				"name": "Maximum Year-to-Year Step",
-				"info": "The single largest annual phenological change observed between any two consecutive years.",
-				"legend": "legends/aas.png"
-			},
-			{
-				"id": "MeanStep",
-				"name": "Mean Year-to-Year Step",
-				"info": "The mean annual phenological change observed between consecutive years.",
-				"legend": "legends/aat.png"
-			},
-			{
-				"id": "MinimumStep",
-				"name": "Minimum Year-to-Year Step",
-				"info": "The smallest annual phenological change observed between any two consecutive years.",
-				"legend": "legends/aau.png"
-			},
-			{
-				"id": "MaximumDistance",
-				"name": "Maximum Between-years Distance",
-				"info": "The amount of phenological difference between the two most different years, from 2000 to 2015.",
-				"legend": "legends/aav.png"
-			},
-			{
-				"id": "MeanDistance",
-				"name": "Mean Between-years Distance",
-				"info": "The mean phenological difference between any two years, regardless of order, from 2000 to 2015.",
-				"legend": "legends/aaw.png"
-			},
-			{
-				"id": "MinimumDistance",
-				"name": "Minimum Between-years Distance",
-				"info": "The amount of phenological difference between the two most similar years, from 2000 to 2015.",
-				"legend": "legends/aax.png"
-			}
-		],
-		"longtermlandshift": [
-			{
-				"id": "CompositionalShift",
-				"name": "Landscape Compositional Shift",
-				"info": "Expected shift in landscape composition, in terms of phenological classes, on a decadal time scale. Estimated through projection of observed phenological change.",
-				"legend": "legends/abs.png"
-			},
-			{
-				"id": "ChangeGrowingSeasonGreenness",
-				"name": "Growing Season Greenness Trajectory",
-				"info": "",
-				"legend": "legends/abt.png"
-			},
-			{
-				"id": "SeasonalityTrajectory",
-				"name": "Seasonality Trajectory",
-				"info": "Expected gains and losses in the value of the Seasonality (deciduousness) variable on a decadal time scale. Estimated through projection of observed phenological change.",
-				"legend": "legends/abt.png"
-			},
-			{
-				"id": "GrowingSeasonLengthTrajectory",
-				"name": "Growing Season Length Trajectory",
-				"info": "",
-				"legend": "legends/abt.png"
-			},
-			{
-				"id": "MidGrowingSeasonTrajectory",
-				"name": "Middle of Growing Season Trajectory",
-				"info": "",
-				"legend": "legends/abt.png"
-			},
-			{
-				"id": "ChangeFactor1",
-				"name": "Factor 1 Trajectory",
-				"info": "Lorem ipsum",
-				"legend": "legends/abt.png"
-			},
-			{
-				"id": "ChangeFactor2",
-				"name": "Factor 2 Trajectory",
-				"info": "Lorem ipsum",
-				"legend": "legends/abt.png"
-			},
-			{
-				"id": "ChangeFactor3",
-				"name": "Factor 3 Trajectory",
-				"info": "Lorem ipsum",
-				"legend": "legends/abt.png"
-			},
-			{
-				"id": "ChangeFactor4",
-				"name": "Factor 4 Trajectory",
-				"info": "Lorem ipsum",
-				"legend": "legends/abt.png"
-			},
-			{
-				"id": "ChangeShannon",
-				"name": "Shannon Entropy Trajectory",
-				"info": "Lorem ipsum",
-				"legend": "legends/abu.png"
-			},
-      {
-        "id": "ChangeMutualInfo",
-        "name": "Mutual Information Trajectory",
-        "info": "Expected gains and losses in the value of the Mutual Information metric on a decadal time scale. Estimated through projection of observed phenological change.",
-        "legend": "legends/acb.png"
-      },
-			{
-				"id": "ChangeCondEntropy",
-				"name": "Conditional Entropy Trajectory",
-				"info": "Lorem Ipsum",
-				"legend": "legends/aby.png"
-			},
-      {
-        "id": "ChangeDevelopment",
-        "name": "Development Trajectory",
-        "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
-        "legend": "legends/aca.png"
-		  },
-      {
-        "id": "ChangeCapacity",
-        "name": "Capacity Trajectory",
-        "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
-        "legend": "legends/aca.png"
-		  },
-      {
-        "id": "ChangeAscendency",
-        "name": "Ascendency Trajectory",
-        "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
-        "legend": "legends/aca.png"
-		  },
-      {
-        "id": "ChangeOverhead",
-        "name": "Overhead Trajectory",
-        "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
-        "legend": "legends/aca.png"
-		  }
-    ]  
-	}
+    "mapserverUrl": "https://gis.nemac.org/landat-dev",
+    "defaultLayerOpacity": 0.75,
+    "logo": {
+        "image": "imgs/landat_logo_blue.png",
+        "label": "Logo for the LanDat project",
+        "link": "https://landat.org",
+        "location": "leaflet-bottom leaflet-right"
+    },
+    "pois": [],
+    "map": {
+        "id": "map",
+        "center": ["38.5", "-81"],
+        "zoom": "6",
+        "options": {
+            "attributionControl": false,
+            "doubleClickZoom": false
+        }
+    },
+    "baselayers" : [
+        {
+            "id": "esri-imagery",
+            "url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            "attribution": "Powered by <a href='https://www.esri.com/'>ESRI</a> | ESRI, DigitalGlobe, GeoEye, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community",
+            "subdomains": ["server", "services"],
+            "label": "ESRI Imagery",
+            "image": "imgs/esri-imagery.jpg",
+            "active": false
+        },
+        {
+            "id": "esri-topo",
+            "url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+            "attribution": "Powered by <a href='https://www.esri.com/'>ESRI</a> | ESRI, USGS, NOAA",
+            "subdomains": ["server", "services"],
+            "label": "ESRI Topo",
+            "image": "imgs/esri-topo.jpg",
+            "active": true
+        },
+        {
+            "id": "carto-light",
+            "url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
+            "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
+            "label": "CARTO Streets",
+            "image": "imgs/carto-light.jpg",
+            "active": false
+        },
+        {
+            "id": "carto-dark",
+            "url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
+            "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
+            "active": false
+        }
+    ],
+    "layout" : {
+        "layer-groups-order": [
+            {
+                "id": "boundaries",
+                "name": "Reference and Boundaries",
+                "info": "Example",
+                "active": false
+            },
+            {
+                "id": "phenology-variables",
+                "name": "Annual Phenology Variables",
+                "info": "Example",
+                "active": false
+            },
+            {
+                "id": "summary-phenology",
+                "name": "Summary Phenology Variables",
+                "info": "Example",
+                "active": false
+            },
+            {
+                "id": "phenoclasses",
+                "name": "Phenological Classes (phenoclasses)",
+                "info": "Example",
+                "active": false
+            },
+            {
+                "id": "phenoclass-derived",
+                "name": "Phenological Change Metrics",
+                "info": "Example",
+                "active": false
+            },
+            {
+                "id": "it-metrics",
+                "name": "Landscape Information-Theoretic Metrics",
+                "info": "Example",
+                "active": false
+            },
+            {
+                "id": "longtermlandshift",
+                "name": "Long-term Landscape Shift",
+                "info": "Example",
+                "active": false
+            },
+            {
+                "id": "carbon-models",
+                "name": "Carbon Models",
+                "info": "Example",
+                "active": false
+            },
+            {
+                "id": "ancillary",
+                "name": "Landscape and Climate Characteristics",
+                "info": "Example",
+                "active": false
+            }
+        ]
+    },
+    "active-layers": [
+        "States"
+    ],
+    "layers" : {
+        "carbon-models": [
+            {
+                "id": "FIACarbonStorage",
+                "name": "Estimated carbon storage, 2000-2009",
+                "info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. USFS Forest Inventory and Analysis (FIA) program.",
+                "legend": "legends/aaz.png"
+            },
+            {
+                "id": "LanDATCStorage",
+                "name": "LanDAT carbon storage model",
+                "info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. LanDAT model using 2000-2015 MODIS data, trained on FIA estimates.",
+                "legend": "legends/aay.png"
+            },
+            {
+                "id": "ShiftCarbonStorage",
+                "name": "Landscape Shift in Carbon Storage",
+                "info": "Long-term (decadal) expected gains and losses in carbon density, estimated from observed annual changes in LanDAT phenological variables.",
+                "legend": "legends/abq.png"
+            }
+        ],
+        "boundaries" : [
+            {
+                "id": "States",
+                "name": "States",
+                "info": "U.S. state borders from the U.S. Census Bureau's TigerLine products",
+                "url": "https://gis.nemac.org/landat-vector",
+                "legend": "legends/abi.png",
+                "type": "overlay"
+            },
+            {
+                "id": "CountiesBlack",
+                "name": "Counties",
+                "info": "U.S. county borders from the U.S. Census Bureau's TigerLine products",
+                "url": "https://gis.nemac.org/landat-vector",
+                "legend": "legends/abj.png",
+                "type": "overlay"
+            }
+        ],
+        "ancillary": [
+            {
+                "id": "NLCD_2011",
+                "name": "Land Cover, 2011",
+                "info": "National Land Cover Database (NLCD), 2011",
+                "legend": "legends/aba.png"
+            },
+            {
+                "id": "Riitters_LandPattern",
+                "name": "Landscape Mosaic Pattern",
+                "info": "An index measuring the mixture of agricultural, developed, and semi-natural land cover types within 15-hectare (37-acre) neighborhoods. US Forest Service, based on the 2011 National Land Cover Database.",
+                "legend": "legends/abl.png"
+            },
+            {
+                "id": "Riitters_ForestDensity",
+                "name": "Landscape Forest Density",
+                "info": "An index estimating the proportion of the landscape around a given forest area that is also forested, measured within 15-hectare (37-acre) neighborhoods. Low-density areas may be fragmented by non-forest land uses or natural non-forest cover. US Forest Service, based on the 2011 National Land Cover Database.",
+                "legend": "legends/abk.png"
+            },
+            {
+                "id": "TotalBasalArea",
+                "name": "Total Tree Basal Area",
+                "info": "Estimated total tree basal area. USFS Forest Health Technology Enterprise Team, 2012.",
+                "legend": "legends/abg.png"
+            },
+            {
+                "id": "PercentBasalRisk",
+                "name": "Tree Basal Area at Risk from Insect and Disease Pathogens",
+                "info": "Percent of basal area estimated to be at risk. USFS Forest Health Technology Enterprise Team, 2012.",
+                "legend": "legends/abh.png"
+            },
+            {
+                "id": "EvergreenDecline",
+                "name": "Decline in Evergreen Vegetation, 2000-2011",
+                "info": "Rate of decline in the evergreen (non-deciduous) component of vegetation greenness (NDVI) from 2000 to 2011. Higher values indicate stronger decline.",
+                "legend": "legends/abr.png"
+            },
+            {
+                "id": "HousingDensity",
+                "name": "Housing Density, 2010",
+                "info": "Housing units per squ. km, by partial census block group. US Census Bureau and SILVIS Lab.",
+                "legend": "legends/abo.png"
+            },
+            {
+                "id": "PalmerMonthly",
+                "name": "Palmer Drought Severity Index, 2000-2015 Mean",
+                "info": "Self-calibrated drought index (scPDSI); mean monthly value, 2000-2015. Values below -0.5 indicate drier than normal.",
+                "legend": "legends/abc.png"
+            },
+            {
+                "id": "PalmerAnnual",
+                "name": "Palmer Drought Severity Index, 2000-2015 Variability",
+                "info": "Self-calibrated drought index (scPDSI); inter-annual variability, 2000-2015. Higher values indicate more year-to-year variation.",
+                "legend": "legends/abd.png"
+            }, 
+            {
+                "id": "mtbs-raster-00-16",
+                "name": "Historical Fires from 2000 to 2016",
+                "info": "Shows locations and intensities of fires that occured from 2000 to 2016",
+                "url": "https://fswms.nemac.org/rlayers",
+                "legend": "legends/abe.png"
+            },
+            {
+                "id": "mtbs-raster-84-99",
+                "name": "Historical Fires from 1984 to 1999",
+                "info": "Shows locations and intensities of fires that occured from 1984 to 1999",
+                "url": "https://fswms.nemac.org/rlayers",
+                "legend": "legends/abf.png" 
+            }
+        ],
+        "summary-phenology": [
+            {
+                "id": "Factor1Timing",
+                "name": "Factor 1 - Timing",
+                "info": "Lorem ipsum",
+                "legend": "legends/abv.png" 
+            },
+            {
+                "id": "Factor2Timing",
+                "name": "Factor 2 - Timing",
+                "info": "Lorem ipsum",
+                "legend": "legends/abw.png"
+            },
+            {
+                "id": "Factor3Productivity",
+                "name": "Factor 3 - Productivity",
+                "info": "Lorem ipsum",
+                "legend": "legends/abw.png"
+            },
+            {
+                "id": "Factor4Seasonality",
+                "name": "Factor 4 - Seasonality",
+                "info": "Lorem ipsum",
+                "legend": "legends/abw.png"
+            }
+        ],
+        "it-metrics": [
+            {
+                "id": "DynamicActivity",
+                "name": "Rate of Inter-annual Change",
+                "info": "The proportion of inter-annual change events in which a change in phenoclass occurs (as opposed to phenoclass stability).",
+                "legend": "legends/aae.png"
+            },
+            {
+                "id": "MeanShannon",
+                "name": "Shannon Diversity",
+                "info": "Landscape information metric summarizing the total diversity, or complexity, of observed landscape dynamics.",
+                "legend": "legends/aah.png"
+            },
+            {
+                "id": "MutualInformation",
+                "name": "Mutual Information",
+                "info": "Landscape information metric representing the component of overall complexity which is higly predictable, or organized.",
+                "legend": "legends/aai.png"
+            },
+            {
+                "id": "ConditionalEntropy",
+                "name": "Conditional Entropy",
+                "info": "Landscape information metric representing the component of overall complexity which is higly unpredictable, disorganized, or redundant.",
+                "legend": "legends/aaj.png"
+            },
+            {
+                "id": "Development",
+                "name": "Development",
+                "info": "Mutual Information standardized by Shannon Diversity: the proportion of the complexity which is accounted for by the predictable component.",
+                "legend": "legends/aak.png"
+            },
+            {
+                "id": "Capacity",
+                "name": "Capacity",
+                "info": "Landscape information metric summarizing the complexity of landscape dynamics, and overall productivity (Shannon Diversity multiplied by mean NDVI).",
+                "legend": "legends/aal.png"
+            },
+            {
+                "id": "Ascendency",
+                "name": "Ascendency",
+                "info": "Landscape information metric summarizing the predictability of landscape dynamics, and overall productivity  (Mutual Information multiplied by mean NDVI).",
+                "legend": "legends/aam.png"
+            },
+            {
+                "id": "Overhead",
+                "name": "Overhead",
+                "info": "Landscape information metric summarizing the unpredictability of landscape dynamics, and overall productivity (Conditional Entropy multiplied by mean NDVI).",
+                "legend": "legends/aan.png"
+            }
+        ],
+        "phenology-variables": [
+            {
+                "id": "MeanAnnualNDVI",
+                "name": "Mean Annual Greenness",
+                "info": "Mean NDVI for the entire year.",
+                "legend": "legends/aac.png"
+            },
+            {
+                "id": "MeanNDVI",
+                "name": "Mean Growing Season Greenness",
+                "info": "Mean NDVI within the growing season, i.e., between the beginning and end of growing season dates.",
+                "legend": "legends/aac.png"
+            },
+            {
+                "id": "Seasonality",
+                "name": "Degree of Seasonality, or Deciduousness",
+                "info": "Crowding of NDVI greenness into a particular portion of the annual cycle, measured by the length of the mean greenness vector. More evergreen vegetation shows lower seasonality.",
+                "legend": "legends/aab.png"
+            },
+            {
+                "id": "NDVIStdDv",
+                "name": "Within-year Greenness Variability",
+                "info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the year.",
+                "legend": "legends/aaa.png"
+            },
+            {
+                "id": "SeasonLength",
+                "name": "Growing Season Length",
+                "info": "Number of days between the beginning and end of growing season dates.",
+                "legend": "legends/aad.png"
+            },
+            {
+                "id": "BeginningGrowingSeason",
+                "name": "Beginning of Growing Season",
+                "info": "Start of the growing season measured as the point in time when 15 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years.",
+                "legend": "legends/abn.png"
+            },
+            {
+                "id": "EarlyGrowingSeasonCenter",
+                "name": "Early Growing Season Center",
+                "info": "Lorem ipsum",
+                "legend": "legends/abn.png"
+            },
+            {
+                "id": "EarlyGrowingSeasonMagnitude",
+                "name": "Early Growing Season Magnitude",
+                "info": "Lorem ipsum",
+                "legend": "legends/abn.png"
+            },
+            {
+                "id": "Midpoint",
+                "name": "Middle of Growing Season",
+                "info": "Middle of the growing season. This is determined by the direction, or angle on the annual cycle, of the mean greenness vector.",
+                "legend": "legends/abn.png"
+            },
+            {
+                "id": "LateGrowingSeasonCenter",
+                "name": "Early Growing Season Center",
+                "info": "Lorem ipsum",
+                "legend": "legends/abn.png"
+            },
+            {
+                "id": "LateGrowingSeasonMagnitude",
+                "name": "Early Growing Season Magnitude",
+                "info": "Lorem ipsum",
+                "legend": "legends/abn.png"
+            },
+            {
+                "id": "EndGrowingSeason",
+                "name": "End of Growing Season",
+                "info": "End of the growing season measured as the point in time when 85 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years. ",
+                "legend": "legends/abn.png"
+            }
+        ],
+        "phenoclasses": [
+            {
+                "id": "Phenoclass500_2001",
+                "name": "500 Phenoclasses, 2001",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2002",
+                "name": "500 Phenoclasses, 2002",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2003",
+                "name": "500 Phenoclasses, 2003",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2004",
+                "name": "500 Phenoclasses, 2004",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2005",
+                "name": "500 Phenoclasses, 2005",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2006",
+                "name": "500 Phenoclasses, 2006",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2007",
+                "name": "500 Phenoclasses, 2007",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2008",
+                "name": "500 Phenoclasses, 2008",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2009",
+                "name": "500 Phenoclasses, 2009",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2010",
+                "name": "500 Phenoclasses, 2010",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2011",
+                "name": "500 Phenoclasses, 2011",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2012",
+                "name": "500 Phenoclasses, 2012",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2013",
+                "name": "500 Phenoclasses, 2013",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2014",
+                "name": "500 Phenoclasses, 2014",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2015",
+                "name": "500 Phenoclasses, 2015",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2016",
+                "name": "500 Phenoclasses, 2016",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            },
+            {
+                "id": "Phenoclass500_2017",
+                "name": "500 Phenoclasses, 2017",
+                "info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+                "legend": "legends/abz.png"
+            }
+            
+        ],
+        "phenoclass-derived": [
+            {
+                "id": "TotalPath",
+                "name": "Total Year-to-Year Path Length",
+                "info": "Total summed amount or 'length' of all annual phenological changes from 2000 to 2015; a measure of the cumulative degree of change.",
+                "legend": "legends/aaq.png"
+            },
+            {
+                "id": "FinalDistance",
+                "name": "Final Between-years Distance",
+                "info": "Amount of phenological difference between the first and last years, 2000 and 2015; analogous to a straight-line distance rather than the path length. ",
+                "legend": "legends/aar.png"
+            },
+            {
+                "id": "MaximumStep",
+                "name": "Maximum Year-to-Year Step",
+                "info": "The single largest annual phenological change observed between any two consecutive years.",
+                "legend": "legends/aas.png"
+            },
+            {
+                "id": "MeanStep",
+                "name": "Mean Year-to-Year Step",
+                "info": "The mean annual phenological change observed between consecutive years.",
+                "legend": "legends/aat.png"
+            },
+            {
+                "id": "MinimumStep",
+                "name": "Minimum Year-to-Year Step",
+                "info": "The smallest annual phenological change observed between any two consecutive years.",
+                "legend": "legends/aau.png"
+            },
+            {
+                "id": "MaximumDistance",
+                "name": "Maximum Between-years Distance",
+                "info": "The amount of phenological difference between the two most different years, from 2000 to 2015.",
+                "legend": "legends/aav.png"
+            },
+            {
+                "id": "MeanDistance",
+                "name": "Mean Between-years Distance",
+                "info": "The mean phenological difference between any two years, regardless of order, from 2000 to 2015.",
+                "legend": "legends/aaw.png"
+            },
+            {
+                "id": "MinimumDistance",
+                "name": "Minimum Between-years Distance",
+                "info": "The amount of phenological difference between the two most similar years, from 2000 to 2015.",
+                "legend": "legends/aax.png"
+            }
+        ],
+        "longtermlandshift": [
+            {
+                "id": "CompositionalShift",
+                "name": "Landscape Compositional Shift",
+                "info": "Expected shift in landscape composition, in terms of phenological classes, on a decadal time scale. Estimated through projection of observed phenological change.",
+                "legend": "legends/abs.png"
+            },
+            {
+                "id": "ChangeGrowingSeasonGreenness",
+                "name": "Growing Season Greenness Trajectory",
+                "info": "",
+                "legend": "legends/abt.png"
+            },
+            {
+                "id": "SeasonalityTrajectory",
+                "name": "Seasonality Trajectory",
+                "info": "Expected gains and losses in the value of the Seasonality (deciduousness) variable on a decadal time scale. Estimated through projection of observed phenological change.",
+                "legend": "legends/abt.png"
+            },
+            {
+                "id": "GrowingSeasonLengthTrajectory",
+                "name": "Growing Season Length Trajectory",
+                "info": "",
+                "legend": "legends/abt.png"
+            },
+            {
+                "id": "MidGrowingSeasonTrajectory",
+                "name": "Middle of Growing Season Trajectory",
+                "info": "",
+                "legend": "legends/abt.png"
+            },
+            {
+                "id": "ChangeFactor1",
+                "name": "Factor 1 Trajectory",
+                "info": "Lorem ipsum",
+                "legend": "legends/abt.png"
+            },
+            {
+                "id": "ChangeFactor2",
+                "name": "Factor 2 Trajectory",
+                "info": "Lorem ipsum",
+                "legend": "legends/abt.png"
+            },
+            {
+                "id": "ChangeFactor3",
+                "name": "Factor 3 Trajectory",
+                "info": "Lorem ipsum",
+                "legend": "legends/abt.png"
+            },
+            {
+                "id": "ChangeFactor4",
+                "name": "Factor 4 Trajectory",
+                "info": "Lorem ipsum",
+                "legend": "legends/abt.png"
+            },
+            {
+                "id": "ChangeShannon",
+                "name": "Shannon Entropy Trajectory",
+                "info": "Lorem ipsum",
+                "legend": "legends/abu.png"
+            },
+            {
+                "id": "ChangeMutualInfo",
+                "name": "Mutual Information Trajectory",
+                "info": "Expected gains and losses in the value of the Mutual Information metric on a decadal time scale. Estimated through projection of observed phenological change.",
+                "legend": "legends/acb.png"
+            },
+            {
+                "id": "ChangeCondEntropy",
+                "name": "Conditional Entropy Trajectory",
+                "info": "Lorem Ipsum",
+                "legend": "legends/aby.png"
+            },
+            {
+                "id": "ChangeDevelopment",
+                "name": "Development Trajectory",
+                "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
+                "legend": "legends/aca.png"
+            },
+            {
+                "id": "ChangeCapacity",
+                "name": "Capacity Trajectory",
+                "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
+                "legend": "legends/aca.png"
+            },
+            {
+                "id": "ChangeAscendency",
+                "name": "Ascendency Trajectory",
+                "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
+                "legend": "legends/aca.png"
+            },
+            {
+                "id": "ChangeOverhead",
+                "name": "Overhead Trajectory",
+                "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
+                "legend": "legends/aca.png"
+            }
+        ]  
+    }
 }
