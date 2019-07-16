@@ -216,9 +216,18 @@ path {
   stroke: #ea0c48;
   stroke-width: 4px; }
 
+.center-line.line--thresholdsactive {
+  stroke: #578fe3; }
+
 .growing-season-line {
   stroke: #e28c0b;
   stroke-width: 1px; }
+
+.line--thresholdsactive {
+  stroke-dasharray: 3 2; }
+
+.center--thresholdsactive {
+  fill: #578fe3; }
 
 /* UI */
 .graph-elem {
