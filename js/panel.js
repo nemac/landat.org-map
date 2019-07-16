@@ -182,8 +182,6 @@ function makeLabel(layer, layerDiv) {
 }
 
 function makeDescription (layer, layerDiv) {
-//    console.log(layer);
-    console.log(layerDiv);
     var imgsrc = (layerDiv.classed("layer-group-btn") === true ? 
                   'imgs/more-info-icon-64x64--white.png' :
                   'imgs/more-info-icon-64x64.png');
