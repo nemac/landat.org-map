@@ -182,6 +182,13 @@ function makeLabel(layer, layerDiv) {
 }
 
 function makeDescription (layer, layerDiv) {
+//    console.log(layer);
+    console.log(layerDiv);
+    var imgsrc = (layerDiv.classed("layer-group-btn") === true ? 
+                  'imgs/more-info-icon-64x64--white.png' :
+                  'imgs/more-info-icon-64x64.png');
+                 
+
     if (layer.info && layer.info !== '') {
         layerDiv.append('div')
             .attr('class', 'layer-info-btn-wrapper')
@@ -205,7 +212,7 @@ function makeDescription (layer, layerDiv) {
             })
             .append('img')
                 .attr('class', 'layer-info-icon')
-                .attr('src', 'imgs/more-info-icon-64x64.png')
+                .attr('src', imgsrc)
                 .attr("alt", "Read more about the " + layer.name + " layer")
                 .attr("title", "Read more about the " + layer.name + " layer")
 
