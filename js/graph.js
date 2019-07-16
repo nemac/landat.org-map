@@ -539,6 +539,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
     thresholdActiveCheckbox.append("input")
         .attr("type", "checkbox")
         .attr("id", "threshold-checkbox--active-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""))
+        .attr("disabled", (checkNoActiveYears(poi.plots) === true) ? "disabled" : null)
         .property("checked", poi.plots.indexOf("thresholdsactive") !== -1)
         .on("change", function (e) {
             var checkbox = this;
@@ -707,10 +708,31 @@ function drawAllThresholdElems(svg, thresholds, radius, poi, key, center, line, 
 }
 
 function drawActiveDataThresholds(data, svg, radius, poi, line) {
+    if (checkNoActiveYears(poi.plots) === true) {
+        return [];
+    }
     var activeThresholdData = getActiveThreholdData(data, poi);
     var activeThresholdCenter = findPolarCenter(activeThresholdData);
     var activeThresholds = findPolarThresholds(activeThresholdData["baseline"], activeThresholdCenter[1][0]);
     return drawAllThresholdElems(svg, activeThresholds, radius, poi, "thresholdsactive", activeThresholdCenter, line, "Center (Active Data)");
+}
+
+function checkNoActiveYears(plots) {
+    var noYearFlag = true;
+    var i, l;
+    for (i = 0, l = plots.length; i < l; i++) {
+        if (parseInt(plots[i], 10).toString() === plots[i]) {
+            noYearFlag = false;
+            break;
+        }
+    }
+
+    return noYearFlag;
+}
+
+function handleActiveThresholdCheckbox(lat, lng, plots) {
+    var activeThresholdCheckbox = d3.select("#threshold-checkbox--active-" + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
+    activeThresholdCheckbox.attr("disabled", (checkNoActiveYears(plots) === true) ? "disabled" : null);
 }
 
 /* POLAR GRAPH HELPERS */
@@ -915,16 +937,20 @@ function createCheckbox(wrapper, key, type, poi, charts, data, line, svg, averag
                 //send google analytics graph year click on
                 dispatchGraphCheckboxClick(newYear + ' ' + type + ' timeseries on');
             }
-            activeDataThresholds.forEach(function (elem) {
-                elem.remove();
-            });
-            var i, l;
-            for (i = 0, l = activeDataThresholds.length; i < l; i++) {
-                activeDataThresholds.pop();
-            }
-            var newThresholdElems = drawActiveDataThresholds(data, svg, radius, poi, line);
-            for (i = 0, l = newThresholdElems.length; i < l; i++) {
-                activeDataThresholds.push(newThresholdElems[i]);
+
+            if (activeDataThresholds) {
+                activeDataThresholds.forEach(function (elem) {
+                    elem.remove();
+                });
+                var i, l;
+                for (i = 0, l = activeDataThresholds.length; i < l; i++) {
+                    activeDataThresholds.pop();
+                }
+                var newThresholdElems = drawActiveDataThresholds(data, svg, radius, poi, line);
+                for (i = 0, l = newThresholdElems.length; i < l; i++) {
+                    activeDataThresholds.push(newThresholdElems[i]);
+                }
+                handleActiveThresholdCheckbox(lat, lng, poi.plots);
             }
             
             handleCheckboxSync(key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""), this.checked);
