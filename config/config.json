@@ -1,5 +1,5 @@
 {
-	"mapserverUrl": "https://gis.nemac.org/landat",
+	"mapserverUrl": "https://gis.nemac.org/landat-dev",
 	"defaultLayerOpacity": 0.75,
 	"logo": {
 		"image": "imgs/landat_logo_blue.png",
@@ -60,7 +60,7 @@
 			},
 			{
 				"id": "phenology-variables",
-				"name": "Phenology Variables",
+				"name": "Annual Phenology Variables",
 				"active": false
 			},
 			{
@@ -69,18 +69,18 @@
 				"active": false
 			},
 			{
+				"id": "phenoclasses",
+				"name": "Phenological Classes (phenoclasses)",
+				"active": false
+			},
+			{
 				"id": "phenoclass-derived",
 				"name": "Phenological Change Metrics",
 				"active": false
 			},
 			{
-				"id": "phenoclasses",
-				"name": "Phenological classes",
-				"active": false
-			},
-			{
 				"id": "it-metrics",
-				"name": "Landscape Information Metrics",
+				"name": "Landscape Information-Theoretic Metrics",
 				"active": false
 			},
 			{
@@ -124,20 +124,6 @@
 				"legend": "legends/abq.png"
 			}
 		],
-		"summary-phenology": [
-			{
-				"id": "Factor123",
-				"name": "Summary phenology: seasonality and timing",
-				"info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with (1) seasonality, and with (2) the day-of-year variables such as the middle of the growing season.",
-				"legend": "legends/abv.png" 
-			},
-			{
-				"id": "Factor23",
-				"name": "Summary phenology: timing",
-				"info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with only the day-of-year variables such as the beginning, middle, and end of the growing season.",
-				"legend": "legends/abw.png"
-			}
-		],
 		"boundaries" : [
 			{
 				"id": "States",
@@ -153,22 +139,6 @@
 				"info": "U.S. county borders from the U.S. Census Bureau's TigerLine products",
 				"url": "https://gis.nemac.org/landat-vector",
 				"legend": "legends/abj.png",
-				"type": "overlay"
-			},
-			{
-				"id": "AppLCCRegionBlk",
-				"name": "AppLCC region",
-				"info": "Regional boundary of the Appalachian Land Conservation Cooperative (AppLCC)",
-				"url": "https://gis.nemac.org/landat-vector",
-				"legend": "legends/abm.png",
-				"type": "overlay"
-			},
-			{
-				"id": "GSMNP",
-				"name": "Great Smoky Mountains National Park",
-				"info": "",
-				"url": "https://gis.nemac.org/landat-vector",
-				"legend": "legends/abb.png",
 				"type": "overlay"
 			}
 		],
@@ -242,24 +212,38 @@
 				"legend": "legends/abf.png" 
 			}
 		],
+		"summary-phenology": [
+			{
+				"id": "Factor1Timing",
+				"name": "Factor 1 - Timing",
+				"info": "Lorem ipsum",
+				"legend": "legends/abv.png" 
+			},
+			{
+				"id": "Factor2Timing",
+				"name": "Factor 2 - Timing",
+				"info": "Lorem ipsum",
+				"legend": "legends/abw.png"
+			},
+			{
+				"id": "Factor3Productivity",
+				"name": "Factor 3 - Productivity",
+				"info": "Lorem ipsum",
+				"legend": "legends/abw.png"
+      },
+			{
+				"id": "Factor4Seasonality",
+				"name": "Factor 4 - Seasonality",
+				"info": "Lorem ipsum",
+				"legend": "legends/abw.png"
+      }
+		],
 		"it-metrics": [
 			{
 				"id": "DynamicActivity",
 				"name": "Rate of Inter-annual Change",
 				"info": "The proportion of inter-annual change events in which a change in phenoclass occurs (as opposed to phenoclass stability).",
 				"legend": "legends/aae.png"
-			},
-			{
-				"id": "IncreaseChange",
-				"name": "Rate of Change: Increases",
-				"info": "The proportion of inter-annual change events that are associated with increased productivity (increasing NDVI)",
-				"legend": "legends/aaf.png"
-			},
-			{
-				"id": "DecreaseChange",
-				"name": "Rate of Change: Decreases",
-				"info": "The proportion of inter-annual change events that are associated with decreased productivity.",
-				"legend": "legends/aag.png"
 			},
 			{
 				"id": "MeanShannon",
@@ -306,6 +290,12 @@
 		],
 		"phenology-variables": [
 			{
+				"id": "MeanAnnualNDVI",
+				"name": "Mean Annual Greenness",
+				"info": "Mean NDVI for the entire year.",
+				"legend": "legends/aac.png"
+			},
+			{
 				"id": "MeanNDVI",
 				"name": "Mean Growing Season Greenness",
 				"info": "Mean NDVI within the growing season, i.e., between the beginning and end of growing season dates.",
@@ -318,9 +308,33 @@
 				"legend": "legends/aab.png"
 			},
 			{
+				"id": "NDVIStdDv",
+				"name": "Within-year Greenness Variability",
+				"info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the year.",
+				"legend": "legends/aaa.png"
+			},
+			{
+				"id": "SeasonLength",
+				"name": "Growing Season Length",
+				"info": "Number of days between the beginning and end of growing season dates.",
+				"legend": "legends/aad.png"
+			},
+			{
 				"id": "BeginningGrowingSeason",
 				"name": "Beginning of Growing Season",
 				"info": "Start of the growing season measured as the point in time when 15 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years.",
+				"legend": "legends/abn.png"
+			},
+			{
+				"id": "EarlyGrowingSeasonCenter",
+				"name": "Early Growing Season Center",
+				"info": "Lorem ipsum",
+				"legend": "legends/abn.png"
+			},
+			{
+				"id": "EarlyGrowingSeasonMagnitude",
+				"name": "Early Growing Season Magnitude",
+				"info": "Lorem ipsum",
 				"legend": "legends/abn.png"
 			},
 			{
@@ -330,31 +344,25 @@
 				"legend": "legends/abn.png"
 			},
 			{
+				"id": "LateGrowingSeasonCenter",
+				"name": "Early Growing Season Center",
+				"info": "Lorem ipsum",
+				"legend": "legends/abn.png"
+			},
+			{
+				"id": "LateGrowingSeasonMagnitude",
+				"name": "Early Growing Season Magnitude",
+				"info": "Lorem ipsum",
+				"legend": "legends/abn.png"
+			},
+			{
 				"id": "EndGrowingSeason",
 				"name": "End of Growing Season",
 				"info": "End of the growing season measured as the point in time when 85 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years. ",
 				"legend": "legends/abn.png"
-			},
-			{
-				"id": "SeasonLength",
-				"name": "Growing Season Length",
-				"info": "Number of days between the beginning and end of growing season dates.",
-				"legend": "legends/aad.png"
-			},
-			{
-				"id": "NDVIStdDv",
-				"name": "Within-year Greenness Variability",
-				"info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the year.",
-				"legend": "legends/aaa.png"
 			}
 		],
 		"phenoclasses": [
-			{
-				"id": "Phenoclass500_MultiAnnual",
-				"name": "Multi-Annual Phenoclasses",
-				"info": "Classification of cells into 500 phenological classes, placing each cell into only one class, using data from all years.",
-				"legend": "legends/abz.png"
-			},
 			{
 				"id": "Phenoclass500_2001",
 				"name": "500 Phenoclasses, 2001",
@@ -444,7 +452,20 @@
 				"name": "500 Phenoclasses, 2015",
 				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
 				"legend": "legends/abz.png"
+			},
+			{
+				"id": "Phenoclass500_2016",
+				"name": "500 Phenoclasses, 2016",
+				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+				"legend": "legends/abz.png"
+			},
+			{
+				"id": "Phenoclass500_2017",
+				"name": "500 Phenoclasses, 2017",
+				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
+				"legend": "legends/abz.png"
 			}
+
 		],
 		"phenoclass-derived": [
 			{
@@ -494,18 +515,6 @@
 				"name": "Minimum Between-years Distance",
 				"info": "The amount of phenological difference between the two most similar years, from 2000 to 2015.",
 				"legend": "legends/aax.png"
-			},
-			{
-				"id": "HighNDVI",
-				"name": "High NDVI",
-				"info": "Highest mean annual NDVI reached, from 2000 to 2015.",
-				"legend": "legends/aap.png"
-			},
-			{
-				"id": "LowNDVI",
-				"name": "Low NDVI",
-				"info": "Lowest mean annual NDVI reached, from 2000 to 2015.",
-				"legend": "legends/aao.png"
 			}
 		],
 		"longtermlandshift": [
@@ -516,35 +525,95 @@
 				"legend": "legends/abs.png"
 			},
 			{
-				"id": "ChangeSeasonality",
-				"name": "Long-term Shift in Seasonality",
+				"id": "ChangeGrowingSeasonGreenness",
+				"name": "Growing Season Greenness Trajectory",
+				"info": "",
+				"legend": "legends/abt.png"
+			},
+			{
+				"id": "SeasonalityTrajectory",
+				"name": "Seasonality Trajectory",
 				"info": "Expected gains and losses in the value of the Seasonality (deciduousness) variable on a decadal time scale. Estimated through projection of observed phenological change.",
 				"legend": "legends/abt.png"
 			},
 			{
-				"id": "ChangeAscendency",
-				"name": "Long-term Shift in Ascendency",
-				"info": "Expected gains and losses in the value of the Ascendency information metric on a decadal time scale. Estimated through projection of observed phenological change.",
-				"legend": "legends/abu.png"
+				"id": "GrowingSeasonLengthTrajectory",
+				"name": "Growing Season Length Trajectory",
+				"info": "",
+				"legend": "legends/abt.png"
 			},
 			{
+				"id": "MidGrowingSeasonTrajectory",
+				"name": "Middle of Growing Season Trajectory",
+				"info": "",
+				"legend": "legends/abt.png"
+			},
+			{
+				"id": "ChangeFactor1",
+				"name": "Factor 1 Trajectory",
+				"info": "Lorem ipsum",
+				"legend": "legends/abt.png"
+			},
+			{
+				"id": "ChangeFactor2",
+				"name": "Factor 2 Trajectory",
+				"info": "Lorem ipsum",
+				"legend": "legends/abt.png"
+			},
+			{
+				"id": "ChangeFactor3",
+				"name": "Factor 3 Trajectory",
+				"info": "Lorem ipsum",
+				"legend": "legends/abt.png"
+			},
+			{
+				"id": "ChangeFactor4",
+				"name": "Factor 4 Trajectory",
+				"info": "Lorem ipsum",
+				"legend": "legends/abt.png"
+			},
+			{
+				"id": "ChangeShannon",
+				"name": "Shannon Entropy Trajectory",
+				"info": "Lorem ipsum",
+				"legend": "legends/abu.png"
+			},
+      {
+        "id": "ChangeMutualInfo",
+        "name": "Mutual Information Trajectory",
+        "info": "Expected gains and losses in the value of the Mutual Information metric on a decadal time scale. Estimated through projection of observed phenological change.",
+        "legend": "legends/acb.png"
+      },
+			{
 				"id": "ChangeCondEntropy",
-				"name": "Long-term Shift in Conditional Entropy",
-				"info": "Expected gains and losses in the value of the Conditional Entropy information metric on a decadal time scale. Estimated through projection of observed phenological change.",
+				"name": "Conditional Entropy Trajectory",
+				"info": "Lorem Ipsum",
 				"legend": "legends/aby.png"
 			},
       {
-        "id": "ChangeNDVI",
-        "name": "Long-term Shift in Growing Season Greenness",
+        "id": "ChangeDevelopment",
+        "name": "Development Trajectory",
         "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
         "legend": "legends/aca.png"
 		  },
-      {       
-        "id": "ChangeMutualInfo",
-        "name": "Long-term Shift in Mutual Information",
-        "info": "Expected gains and losses in the value of the Mutual Information metric on a decadal time scale. Estimated through projection of observed phenological change.",
-        "legend": "legends/acb.png"
-      }
+      {
+        "id": "ChangeCapacity",
+        "name": "Capacity Trajectory",
+        "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
+        "legend": "legends/aca.png"
+		  },
+      {
+        "id": "ChangeAscendency",
+        "name": "Ascendency Trajectory",
+        "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
+        "legend": "legends/aca.png"
+		  },
+      {
+        "id": "ChangeOverhead",
+        "name": "Overhead Trajectory",
+        "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
+        "legend": "legends/aca.png"
+		  }
     ]  
 	}
 }
