@@ -46,11 +46,7 @@ module.exports = {
 	},
 	plugins: [
 		extractSass,
-		new UglifyJSPlugin({
-			sourceMap: true,
-			// Needed so uglify does not drop "unreachable" sass file in entry file
-			dead_code: false
-		})
+		new webpack.optimize.UglifyJsPlugin()
 	]
 
 };
