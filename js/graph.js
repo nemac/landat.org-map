@@ -386,7 +386,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
     var plot, i, l;
     for (i = 0, l = poi.plots.length; i < l; i++) {
         plot = poi.plots[i];
-        if (plot === "thresholds") continue;
+        if (plot === "thresholds" || plot === "thresholdsactive") continue;
         charts[plot] = {
             "path" : drawLinearPath(data[plot], valueline, svg)
         }
@@ -397,7 +397,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
      */
     for (i = 0, l = poi.plots.length; i < l; i++) {
         plot = poi.plots[i];
-        if (plot === "thresholds") continue;
+        if (plot === "thresholds" || plot === "thresholdsactive") continue;
         charts[plot].points = drawLinearPoints(data[plot], valueline, svg);
     }
 
@@ -512,7 +512,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
     var plot, i, l;
     for (i = 0, l = poi.plots.length; i < l; i++) {
         plot = poi.plots[i];
-        if (plot === "thresholds") continue;
+        if (plot === "thresholds" || plot === "thresholdsactive") continue;
         charts[plot] = {
             "path" : drawPolarPath(data[plot], line, svg)
         }
@@ -523,7 +523,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
      */
     for (i = 0, l = poi.plots.length; i < l; i++) {
         plot = poi.plots[i];
-        if (plot === "thresholds") continue;
+        if (plot === "thresholds" || plot === "thresholdsactive") continue;
         charts[plot].points = drawLinearPoints(data[plot], line, svg);
     }
 
@@ -532,6 +532,36 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
     data.keys.forEach(function (key) {
         createCheckbox(inputwrapper, key, "polar", poi, charts, data, line, svg, averages, radius, activeDataThresholds);
     });
+
+    var thresholdActiveCheckbox = inputwrapper.append("div")
+        .classed("threshold-checkbox--active", true);
+
+    thresholdActiveCheckbox.append("input")
+        .attr("type", "checkbox")
+        .attr("id", "threshold-checkbox--active-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""))
+        .property("checked", poi.plots.indexOf("thresholdsactive") !== -1)
+        .on("change", function (e) {
+            var checkbox = this;
+            activeDataThresholds.forEach(function (elem) {
+                elem.style("display", (checkbox.checked) ? null : "none");
+            });
+            
+            var offon = this.checked ? 'off' : 'on';
+
+            if (this.checked) {
+                addKeyToPOI(poi, "thresholdsactive");
+            } else {
+                removeKeyFromPOI(poi, "thresholdsactive");
+            }
+
+            updateShareUrl();
+            //send google analytics graph threshold click off
+            dispatchGraphCheckboxClick('threshold polar timeseries ' + offon);
+        });
+
+    thresholdActiveCheckbox.append("label")
+        .text("Thresholds (Active Years)")
+        .attr("for", "threshold-checkbox--active-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""));
 
     createCheckbox(inputwrapper, "baseline", "polar", poi, charts, data, line, svg, averages, radius, activeDataThresholds);
 
@@ -545,7 +575,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
         .on("change", function (e) {
             var checkbox = this;
             allDataThresholds.forEach(function (elem) {
-                elem.style("opacity", (checkbox.checked) ? 1 : 0);
+                elem.style("display", (checkbox.checked) ? null : "none");
             });
 
             var offon = this.checked ? 'off' : 'on';
@@ -564,36 +594,6 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
     thresholdCheckbox.append("label")
         .text("Thresholds (All Years)")
         .attr("for", "threshold-checkbox-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""));
-
-    var thresholdActiveCheckbox = inputwrapper.append("div")
-        .classed("threshold-checkbox--active", true);
-
-    thresholdActiveCheckbox.append("input")
-        .attr("type", "checkbox")
-        .attr("id", "threshold-checkbox--active-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""))
-        .property("checked", poi.plots.indexOf("thresholds-active") !== -1)
-        .on("change", function (e) {
-            var checkbox = this;
-            activeDataThresholds.forEach(function (elem) {
-                elem.style("opacity", (checkbox.checked) ? 1 : 0);
-            });
-            
-            var offon = this.checked ? 'off' : 'on';
-
-            if (this.checked) {
-                addKeyToPOI(poi, "thresholds-active");
-            } else {
-                removeKeyFromPOI(poi, "thresholds-active");
-            }
-
-            updateShareUrl();
-            //send google analytics graph threshold click off
-            dispatchGraphCheckboxClick('threshold polar timeseries ' + offon);
-        });
-
-    thresholdActiveCheckbox.append("label")
-        .text("Thresholds (Active Years)")
-        .attr("for", "threshold-checkbox--active-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""));
 }
 
 function findActivePlots(plots) {
@@ -631,6 +631,8 @@ function getActiveThreholdData(data, poi) {
 }
 
 function drawThresholdElem(svg, data, radius, poi, key) {
+    var inset = (key === "thresholds") ? 30 : 70;
+
     var thresholdElem = svg.append("g")
         .selectAll("g")
         .data(data)
@@ -638,18 +640,18 @@ function drawThresholdElem(svg, data, radius, poi, key) {
             .attr("transform", function(d) { return "rotate(" + (d.data[1][0] - 90) + ")"; });
 
     thresholdElem.append("line")
-        .attr("class", "line")
+        .attr("class", "line line--" + key)
         .attr("x2", radius);
 
     thresholdElem.append("text")
-        .attr("x", function (d) { var day = d.data[1][0]; return day < 360 && day > 180 ? radius + 30 : radius - 30})
+        .attr("x", function (d) { var day = d.data[1][0]; return day < 360 && day > 180 ? radius + inset : radius - inset})
         .attr("y", function (d) { return ((((d.data[1][0])%365)/365) * (2*Math.PI)) + 6; })
         .attr("dy", ".35em")
         .style("text-anchor", function(d) { var day = d.data[1][0]; return day < 360 && day > 180 ? "middle" : null; })
         .attr("transform", function(d) { var day = d.data[1][0]; return day < 360 && day > 180 ? "rotate(180 " + (radius + 6) + ",0)" : null; })
         .text(function(d) { return d.label; });
 
-    thresholdElem.style("opacity", (poi.plots.indexOf(key) !== -1) ? 1 : 0);
+    thresholdElem.style("display", (poi.plots.indexOf(key) !== -1) ? null : "none");
 
     return thresholdElem;
 }
@@ -671,17 +673,19 @@ function drawAllThresholdElems(svg, thresholds, radius, poi, key, center, line, 
 
     var growingLine = drawPolarPath(growingSeasonData, line, svg)
         .classed("growing-season-line", "true")
-        .style("opacity", (poi.plots.indexOf(key) !== -1) ? 1 : 0);
+        .classed("line--" + key, "true")
+        .style("display", (poi.plots.indexOf(key) !== -1) ? null : "none");
 
     var centerLine = drawPolarPath(center, line, svg)
         .classed("center-line", "true")
-        .style("opacity", (poi.plots.indexOf(key) !== -1) ? 1 : 0);
+        .classed("line--" + key, "true")
+        .style("display", (poi.plots.indexOf(key) !== -1) ? null : "none");
 
     var centerPoint = svg.selectAll("point")
         .data([center[1]])
         .enter()
         .append("circle")
-        .attr("class", "center")
+        .attr("class", "center center--" + key)
         .attr("r", 4)
         .attr("transform", function(d) {
             var coors = line([d]).slice(1).slice(0, -1);
@@ -689,7 +693,7 @@ function drawAllThresholdElems(svg, thresholds, radius, poi, key, center, line, 
         })
         .attr("stroke", "#000")
         .attr("fill", "#ea0c48")
-        .style("opacity", (poi.plots.indexOf(key) !== -1) ? 1 : 0)
+        .style("display", (poi.plots.indexOf(key) !== -1) ? null : "none")
         .on("mouseover", function(d) {
             tip.show(label + ": "  + String(d[1]).substring(0, 7));
             this.setAttribute("r", 5)
@@ -706,7 +710,7 @@ function drawActiveDataThresholds(data, svg, radius, poi, line) {
     var activeThresholdData = getActiveThreholdData(data, poi);
     var activeThresholdCenter = findPolarCenter(activeThresholdData);
     var activeThresholds = findPolarThresholds(activeThresholdData["baseline"], activeThresholdCenter[1][0]);
-    return drawAllThresholdElems(svg, activeThresholds, radius, poi, "thresholds-active", activeThresholdCenter, line, "Center (Active Data)");
+    return drawAllThresholdElems(svg, activeThresholds, radius, poi, "thresholdsactive", activeThresholdCenter, line, "Center (Active Data)");
 }
 
 /* POLAR GRAPH HELPERS */
@@ -928,7 +932,7 @@ function createCheckbox(wrapper, key, type, poi, charts, data, line, svg, averag
         });
 
     checkboxWrapper.append("label")
-        .text(key !== "baseline" ? key : "Baseline")
+        .text(key !== "baseline" ? key : "Baseline (All Years)")
         .attr("for", type + "-" + key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""));
 
     checkboxWrapper.append("div")
