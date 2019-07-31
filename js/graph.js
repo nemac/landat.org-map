@@ -304,10 +304,14 @@ function makeUpDownLineGraph (data, div) {
     drawLinearPath(data, valueline, svg);
 
     // Add the X Axis
-    svg.append("g")
+    var bottomAxisElement = svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
+
+    bottomAxisElement.selectAll("text")
+        .attr("transform", "rotate(45)")
+        .style("text-anchor", "start");
 
     // Add the Y Axis
     svg.append("g")
@@ -619,7 +623,7 @@ function makePlotAverages(data, plots) {
         for (j = 0, l = plots.length; j < l; j++) {
             sum += parseInt(newData[plots[j]][i][1], 10);
         }
-        newData["baseline"].push(sum);
+        newData["baseline"].push(sum/46);
     }
 
     newData["keys"] = plots;
@@ -713,6 +717,7 @@ function drawActiveDataThresholds(data, svg, radius, poi, line) {
     }
     var activeThresholdData = getActiveThreholdData(data, poi);
     var activeThresholdCenter = findPolarCenter(activeThresholdData);
+    activeThresholdCenter[1][0] = activeThresholdCenter[1][0] - 8;
     var activeThresholds = findPolarThresholds(activeThresholdData["baseline"], activeThresholdCenter[1][0]);
     return drawAllThresholdElems(svg, activeThresholds, radius, poi, "thresholdsactive", activeThresholdCenter, line, "Center (Active Data)");
 }
@@ -1011,24 +1016,33 @@ function dispatchGraphCheckboxClick (label) {
 
 function pullDistinctColor (year) {
     var colorRamp = [
-        "#ffe476",
-        "#036593",
         "#116c91",
-        "#1e7390",
-        "#2c7b8e",
-        "#39828c",
-        "#4c8c8a",
-        "#5e9589",
-        "#719f87",
-        "#83a886",
-        "#95b183",
-        "#a6ba80",
-        "#b8c37c",
-        "#cacc79",
-        "#d6d279",
-        "#e2d779",
-        "#efdd78",
-        "#fbe378"
+        "#1a708f",
+        "#23758e",
+        "#2c798d",
+        "#357e8c",
+        "#3e838b",
+        "#47878a",
+        "#518c89",
+        "#5a9088",
+        "#639587",
+        "#6c9a86",
+        "#759e85",
+        "#7ea384",
+        "#88a883",
+        "#91ac82",
+        "#9ab181",
+        "#a3b580",
+        "#acba7f",
+        "#b5bf7e",
+        "#bec37d",
+        "#c8c87c",
+        "#d1cc7b",
+        "#dad17a",
+        "#e3d679",
+        "#ecda78",
+        "#f5df77",
+        "#ffe476"
     ];
 
     return (year === 0) ? "#fff" : colorRamp[parseInt(year, 10) % colorRamp.length];
