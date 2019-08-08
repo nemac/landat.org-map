@@ -342,7 +342,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
     var averages = data.baseline;
 
     var x = d3.scaleLinear().range([0, width])
-        .domain([0, 368]);
+        .domain([1, 368]);
     var y = d3.scaleLinear().range([height, 0])
         .domain([0, 100]);
 
@@ -361,14 +361,18 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
     // Define the line
     var valueline = d3.line()
         .x(function(d, i) {
-          // Hack for dealing with the last data point in a year stack,
-          // which falls on the following year. In this case we set the x
-          // value to te "368th" day of the year, or the third day 
-          // of the next year.
-          if (d[0].substring(4, 8) === '0103') {
-            return x(368);
+          if (Array.isArray(d)) {
+              // Hack for dealing with the last data point in a year stack,
+              // which falls on the following year. In this case we set the x
+              // value to te "368th" day of the year, or the third day 
+              // of the next year.
+              if (typeof d[0] === 'string' && d[0].substring(4, 8) === '0103') {
+                return x(368);
+              } else {
+                return x(parseJulianDay(d[0]));
+              }
           } else {
-            return x(parseJulianDay(d[0]));
+            return x((i*8 + 3));
           }
           //return (Array.isArray(d) ? x(parseJulianDay(d[0])) : x((i * 8) + 3 ));
           
