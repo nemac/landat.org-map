@@ -77,6 +77,11 @@ function reprocessData (origdata) {
             data[key] = [];
             data["keys"].push(key);
         }
+        // The last data point for a year's data rolls over to the next year
+        // at 1/3, so adjust the key (year) accordingly for these cases
+        if (point[0].substring(4) === "0103") {
+          key = String(parseInt(key)-1)
+        }
         data[key].push(point);
     }
 
@@ -94,6 +99,7 @@ function reprocessData (origdata) {
         data.keys.splice(data.keys.indexOf(key), 1);
     }
 
+    // Baseline is computed from raw data array
     var dataForBaseline;
     var mean;
     data["baseline"] = [];
@@ -336,7 +342,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
     var averages = data.baseline;
 
     var x = d3.scaleLinear().range([0, width])
-        .domain([0, 365]);
+        .domain([0, 368]);
     var y = d3.scaleLinear().range([height, 0])
         .domain([0, 100]);
 
@@ -354,7 +360,19 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
 
     // Define the line
     var valueline = d3.line()
-        .x(function(d, i) { return (Array.isArray(d) ? x(parseJulianDay(d[0])) : x((i * 8) + 3 )); })
+        .x(function(d, i) {
+          // Hack for dealing with the last data point in a year stack,
+          // which falls on the following year. In this case we set the x
+          // value to te "368th" day of the year, or the third day 
+          // of the next year.
+          if (d[0].substring(4, 8) === '0103') {
+            return x(368);
+          } else {
+            return x(parseJulianDay(d[0]));
+          }
+          //return (Array.isArray(d) ? x(parseJulianDay(d[0])) : x((i * 8) + 3 ));
+          
+        })
         .y(function(d) { return (Array.isArray(d) ? y(d[1]) : y(d)); });
 
     var wrapper = d3.select(div).append("div").classed("overlapping-graph", true);
@@ -602,9 +620,10 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
 }
 
 function findActivePlots(plots) {
-    return plots.filter(function (p) {
+    var activePlots = plots.filter(function (p) {
         return parseInt(p, 10).toString() === p;
     });
+    return activePlots;
 }
 
 function makePlotAverages(data, plots) {
@@ -632,7 +651,9 @@ function makePlotAverages(data, plots) {
 }
 
 function getActiveThreholdData(data, poi) {
-    return makePlotAverages(data, findActivePlots(poi.plots));
+    var activePlots = findActivePlots(poi.plots);
+    var plotAverages = makePlotAverages(data, activePlots);
+    return plotAverages;
 }
 
 function drawThresholdElem(svg, data, radius, poi, key) {
@@ -717,7 +738,13 @@ function drawActiveDataThresholds(data, svg, radius, poi, line) {
     }
     var activeThresholdData = getActiveThreholdData(data, poi);
     var activeThresholdCenter = findPolarCenter(activeThresholdData);
-    activeThresholdCenter[1][0] = activeThresholdCenter[1][0] - 8;
+    // This line was causing active thresholds to be different from all-years
+    // thresholds even when every year was activated. I'm not sure why it was
+    // put here in the first place. Leaving commented out for now.
+    // It probably has something to do with the fact that the data points start
+    // on the 8th of January. It's possible that both center points
+    // (active & all-years) need to be shifted!
+    //activeThresholdCenter[1][0] = activeThresholdCenter[1][0] - 8;
     var activeThresholds = findPolarThresholds(activeThresholdData["baseline"], activeThresholdCenter[1][0]);
     return drawAllThresholdElems(svg, activeThresholds, radius, poi, "thresholdsactive", activeThresholdCenter, line, "Center (Active Data)");
 }
@@ -1055,7 +1082,6 @@ function parseDate (date) {
     var year = date.substring(0, 4);
     var month = parseInt(date.substring(4, 6), 10) - 1;
     var day = date.substring(6, 8);
-
     return new Date(year, month, day);
 }
 
@@ -1066,7 +1092,7 @@ function parseJulianDay (date) {
     } else {
         return date;
     }
-}
+} 
 
 function formatDate (date) {
     if (date === "Average") { return date; }
