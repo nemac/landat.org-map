@@ -373,6 +373,12 @@
         ],
         "phenoclasses": [
             {
+                "id": "Phenoclass500_MultiAnnual",
+                "info": "Membership in one of 500 phenological classes, using data from all years",
+                "legend": "legends/abz.png",
+                "name": "500 Phenoclasses, multi-annual"
+            },
+            {
                 "id": "Phenoclass500_2001",
                 "name": "500 Phenoclasses, 2001",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
