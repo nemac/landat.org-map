@@ -226,13 +226,13 @@
                 "id": "Factor1Timing",
                 "name": "Factor 1 - Timing",
                 "info": "Factors 1 and 2 are very closely associated with the day-of-year variables, and therefore represent aspects of timing across the annual cycle. Two factors are required to fully represent timing around the annual cycle in the two-dimensional polar graphs (each timing variable must be represented by its sine and cosine).",
-                "legend": "legends/factor1.png" 
+                "legend": "legends/fscore1.png" 
             },
             {
                 "id": "Factor2Timing",
                 "name": "Factor 2 - Timing",
                 "info": "Factors 1 and 2 are very closely associated with the day-of-year variables, and therefore represent aspects of timing across the annual cycle. Two factors are required to fully represent timing around the annual cycle in the two-dimensional polar graphs (each timing variable must be represented by its sine and cosine).",
-                "legend": "legends/factor2.png"
+                "legend": "legends/fscore2.png"
             },
             {
                 "id": "Factor3Productivity",
@@ -332,13 +332,13 @@
                 "id": "BeginningGrowingSeason",
                 "name": "Beginning of Growing Season",
                 "info": "Julian day of year when 15 percent of the total accumulated greenness for the phenological year has already occurred. Fifteen percent is an arbitrary benchmark, applied in a standard way across all places and years.",
-                "legend": "legends/jd_legend.png"
+                "legend": "legends/es_doy.png"
             },
             {
                 "id": "EarlyGrowingSeasonCenter",
                 "name": "Early Growing Season Center",
                 "info": "Julian day of year marking the 'center of mass' of NDVI values in the first half of the growing season. Measured by the direction of the mean NDVI vector between the start and middle of growing season dates.",
-                "legend": "legends/jd_legend.png"
+                "legend": "legends/ems_doy.png"
             },
             {
                 "id": "EarlyGrowingSeasonMagnitude",
@@ -350,13 +350,13 @@
                 "id": "Midpoint",
                 "name": "Middle of Growing Season",
                 "info": "Julian day of year marking the middle of the growing season. Measured by the direction of the mean NDVI vector in polar graphs.",
-                "legend": "legends/jd_legend.png"
+                "legend": "legends/ms_doy.png"
             },
             {
                 "id": "LateGrowingSeasonCenter",
                 "name": "Late Growing Season Center",
                 "info": "Julian day of year marking the 'center of mass' of NDVI values in the second half of the growing season. Measured by the direction of the mean NDVI vector between the middle and end of growing season dates.",
-                "legend": "legends/jd_legend.png"
+                "legend": "legends/lms_doy.png"
             },
             {
                 "id": "LateGrowingSeasonMagnitude",
@@ -368,117 +368,117 @@
                 "id": "EndGrowingSeason",
                 "name": "End of Growing Season",
                 "info": "Julian day of year when 80 percent of the total accumulated greenness for the phenological year has already occurred. Eighty percent is an arbitrary benchmark, applied in a standard way across all places and years.",
-                "legend": "legends/jd_legend.png"
+                "legend": "legends/ls_doy.png"
             }
         ],
         "phenoclasses": [
             {
                 "id": "Phenoclass500_MultiAnnual",
                 "info": "Membership in one of 500 phenological classes, using data from all years",
-                "legend": "legends/abz.png",
+                "legend": "legends/phenoclass_legend.png",
                 "name": "500 Phenoclasses, multi-annual"
             },
             {
                 "id": "Phenoclass500_2001",
                 "name": "500 Phenoclasses, 2001",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2002",
                 "name": "500 Phenoclasses, 2002",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2003",
                 "name": "500 Phenoclasses, 2003",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2004",
                 "name": "500 Phenoclasses, 2004",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2005",
                 "name": "500 Phenoclasses, 2005",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2006",
                 "name": "500 Phenoclasses, 2006",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2007",
                 "name": "500 Phenoclasses, 2007",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2008",
                 "name": "500 Phenoclasses, 2008",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2009",
                 "name": "500 Phenoclasses, 2009",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2010",
                 "name": "500 Phenoclasses, 2010",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2011",
                 "name": "500 Phenoclasses, 2011",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2012",
                 "name": "500 Phenoclasses, 2012",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2013",
                 "name": "500 Phenoclasses, 2013",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2014",
                 "name": "500 Phenoclasses, 2014",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2015",
                 "name": "500 Phenoclasses, 2015",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2016",
                 "name": "500 Phenoclasses, 2016",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             },
             {
                 "id": "Phenoclass500_2017",
                 "name": "500 Phenoclasses, 2017",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
-                "legend": "legends/abz.png"
+                "legend": "legends/phenoclass_legend.png"
             }
             
         ],
