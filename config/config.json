@@ -226,19 +226,19 @@
                 "id": "Factor1Timing",
                 "name": "Factor 1 - Timing",
                 "info": "Factors 1 and 2 are very closely associated with the day-of-year variables, and therefore represent aspects of timing across the annual cycle. Two factors are required to fully represent timing around the annual cycle in the two-dimensional polar graphs (each timing variable must be represented by its sine and cosine).",
-                "legend": "legends/abv.png" 
+                "legend": "legends/factor1.png" 
             },
             {
                 "id": "Factor2Timing",
                 "name": "Factor 2 - Timing",
                 "info": "Factors 1 and 2 are very closely associated with the day-of-year variables, and therefore represent aspects of timing across the annual cycle. Two factors are required to fully represent timing around the annual cycle in the two-dimensional polar graphs (each timing variable must be represented by its sine and cosine).",
-                "legend": "legends/abw.png"
+                "legend": "legends/factor2.png"
             },
             {
                 "id": "Factor3Productivity",
                 "name": "Factor 3 - Productivity",
                 "info": "Factor 3 is very closely associated with NDVI greenness, and therefore also corresponds to the amount and productivity of vegetation.",
-                "legend": "legends/green_legend.png"
+                "legend": "legends/factor3.png"
             },
             {
                 "id": "Factor4Seasonality",
@@ -332,13 +332,13 @@
                 "id": "BeginningGrowingSeason",
                 "name": "Beginning of Growing Season",
                 "info": "Julian day of year when 15 percent of the total accumulated greenness for the phenological year has already occurred. Fifteen percent is an arbitrary benchmark, applied in a standard way across all places and years.",
-                "legend": "legends/jd_legend_v2.png"
+                "legend": "legends/jd_legend.png"
             },
             {
                 "id": "EarlyGrowingSeasonCenter",
                 "name": "Early Growing Season Center",
                 "info": "Julian day of year marking the 'center of mass' of NDVI values in the first half of the growing season. Measured by the direction of the mean NDVI vector between the start and middle of growing season dates.",
-                "legend": "legends/jd_legend_v2.png"
+                "legend": "legends/jd_legend.png"
             },
             {
                 "id": "EarlyGrowingSeasonMagnitude",
@@ -350,13 +350,13 @@
                 "id": "Midpoint",
                 "name": "Middle of Growing Season",
                 "info": "Julian day of year marking the middle of the growing season. Measured by the direction of the mean NDVI vector in polar graphs.",
-                "legend": "legends/jd_legend_v2.png"
+                "legend": "legends/jd_legend.png"
             },
             {
                 "id": "LateGrowingSeasonCenter",
                 "name": "Late Growing Season Center",
                 "info": "Julian day of year marking the 'center of mass' of NDVI values in the second half of the growing season. Measured by the direction of the mean NDVI vector between the middle and end of growing season dates.",
-                "legend": "legends/jd_legend_v2.png"
+                "legend": "legends/jd_legend.png"
             },
             {
                 "id": "LateGrowingSeasonMagnitude",
@@ -368,7 +368,7 @@
                 "id": "EndGrowingSeason",
                 "name": "End of Growing Season",
                 "info": "Julian day of year when 80 percent of the total accumulated greenness for the phenological year has already occurred. Eighty percent is an arbitrary benchmark, applied in a standard way across all places and years.",
-                "legend": "legends/jd_legend_v2.png"
+                "legend": "legends/jd_legend.png"
             }
         ],
         "phenoclasses": [
