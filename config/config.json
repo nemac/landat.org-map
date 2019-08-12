@@ -326,7 +326,7 @@
                 "id": "SeasonLength",
                 "name": "Growing Season Length",
                 "info": "Number of days between the beginning and end of growing season dates.",
-                "legend": "legends/gmag_legend.png"
+                "legend": "legends/gmag_legend_flip.png"
             },
             {
                 "id": "BeginningGrowingSeason",
