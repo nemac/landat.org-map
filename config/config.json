@@ -1,5 +1,5 @@
 {
-    "mapserverUrl": "https://gis.nemac.org/landat-dev",
+    "mapserverUrl": "https://gis.nemac.org/landat",
     "defaultLayerOpacity": 0.75,
     "logo": {
         "image": "imgs/landat_logo_blue.png",
