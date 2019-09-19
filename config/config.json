@@ -1,5 +1,5 @@
 {
-    "mapserverUrl": "https://gis.nemac.org/landat",
+    "mapserverUrl": "https://gis.nemac.org/landat-dev",
     "defaultLayerOpacity": 0.75,
     "logo": {
         "image": "imgs/landat_logo_blue.png",
@@ -314,19 +314,19 @@
                 "id": "Seasonality",
                 "name": "Degree of Seasonality, or Deciduousness",
                 "info": "Dominance of NDVI greenness in one portion of the year, visible in polar graphs as 'off-centered' annual cycles. Measured by the length of the mean NDVI vector in polar graphs. More evergreen vegetation shows lower seasonality.",
-                "legend": "legends/gmag_legend.png"
+                "legend": "legends/gmag_legend_flip.png"
             },
             {
                 "id": "NDVIStdDv",
                 "name": "Growing Season Greenness Variability",
                 "info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the growing season.",
-                "legend": "legends/gmag_legend.png"
+                "legend": "legends/gmag_legend_flip.png"
             },
             {
                 "id": "SeasonLength",
                 "name": "Growing Season Length",
                 "info": "Number of days between the beginning and end of growing season dates.",
-                "legend": "legends/gmag_legend_flip.png"
+                "legend": "legends/gmag_legend.png"
             },
             {
                 "id": "BeginningGrowingSeason",
