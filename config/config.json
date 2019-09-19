@@ -252,49 +252,49 @@
                 "id": "DynamicActivity",
                 "name": "Rate of Inter-annual Change",
                 "info": "The proportion of inter-annual change events in which a change in phenoclass occurs (as opposed to phenoclass stability). An indicator of how dynamic a landscape is over the short term.",
-                "legend": "legends/aae.png"
+                "legend": "legends/rate.png"
             },
             {
                 "id": "MeanShannon",
                 "name": "Shannon Entropy",
                 "info": "Measures the total complexity, or diversity, of observed landscape dynamics. Higher values indicate a greater variety of transitions among different phenoclasses.",
-                "legend": "legends/aah.png"
+                "legend": "legends/it1_a.png"
             },
             {
                 "id": "MutualInformation",
                 "name": "Mutual Information",
                 "info": "Measures the component of overall complexity (Shannon Entropy) which is predictable or organized. Higher values indicate that given the phenoclass states in one year, it is easy to predict the states in the next year.",
-                "legend": "legends/aai.png"
+                "legend": "legends/it1_b.png"
             },
             {
                 "id": "ConditionalEntropy",
                 "name": "Conditional Entropy",
                 "info": "Measures the component of overall complexity (Shannon Entropy) which is unpredictable, disorganized, or redundant. The complement of Mutual Information.",
-                "legend": "legends/aaj.png"
+                "legend": "legends/it1_c.png"
             },
             {
                 "id": "Development",
                 "name": "Development",
                 "info": "Mutual Information standardized by Shannon Diversity: the proportion of the overall complexity which is organized and predictable. In other words, the degree of organization, given the amount of complexity present.",
-                "legend": "legends/aak.png"
+                "legend": "legends/it1_d.png"
             },
             {
                 "id": "Capacity",
                 "name": "Capacity",
                 "info": "Shannon Entropy scaled to productivity, by multiplying by mean NDVI. Measures the complexity of landscape dynamics, and overall productivity.",
-                "legend": "legends/aal.png"
+                "legend": "legends/it2_a.png"
             },
             {
                 "id": "Ascendency",
                 "name": "Ascendency",
                 "info": "Mutual Information scaled to productivity, by multiplying by mean NDVI. Measures the predictability or organization of landscape dynamics, and overall productivity.",
-                "legend": "legends/aam.png"
+                "legend": "legends/it2_b.png"
             },
             {
                 "id": "Overhead",
                 "name": "Overhead",
                 "info": "Conditional Entropy scaled to productivity, by multiplying by mean NDVI. Measures the unpredictability or disorganization of landscape dynamics, and overall productivity.",
-                "legend": "legends/aan.png"
+                "legend": "legends/it3_a.png"
             }
         ],
         "phenology-variables": [
@@ -487,49 +487,49 @@
                 "id": "TotalPath",
                 "name": "Total Year-to-Year Path Length",
                 "info": "Total summed amount or 'length' of all annual changes. Estimates the cumulative variability, which may be large even if the final state is similar to the initial state.",
-                "legend": "legends/aaq.png"
+                "legend": "legends/change.png"
             },
             {
                 "id": "FinalDistance",
                 "name": "Final Between-years Distance",
                 "info": "Amount of difference between the first and last years. Analogous to a straight-line distance rather than the path length.",
-                "legend": "legends/aar.png"
+                "legend": "legends/change.png"
             },
             {
                 "id": "MaximumStep",
                 "name": "Maximum Year-to-Year Step",
                 "info": "The single largest change observed between any two consecutive years.",
-                "legend": "legends/aas.png"
+                "legend": "legends/change.png"
             },
             {
                 "id": "MeanStep",
                 "name": "Mean Year-to-Year Step",
                 "info": "The mean change observed between consecutive years.",
-                "legend": "legends/aat.png"
+                "legend": "legends/change.png"
             },
             {
                 "id": "MinimumStep",
                 "name": "Minimum Year-to-Year Step",
                 "info": "The smallest change observed between any two consecutive years.",
-                "legend": "legends/aau.png"
+                "legend": "legends/change.png"
             },
             {
                 "id": "MaximumDistance",
                 "name": "Maximum Between-years Distance",
                 "info": "The difference between the two most different years (the two years need not be consecutive).",
-                "legend": "legends/aav.png"
+                "legend": "legends/change.png"
             },
             {
                 "id": "MeanDistance",
                 "name": "Mean Between-years Distance",
                 "info": "The mean difference between any two years, considering all possible year combinations.",
-                "legend": "legends/aaw.png"
+                "legend": "legends/change.png"
             },
             {
                 "id": "MinimumDistance",
                 "name": "Minimum Between-years Distance",
                 "info": "The difference between the two most similar years (the two years need not be consecutive).",
-                "legend": "legends/aax.png"
+                "legend": "legends/change.png"
             }
         ],
         "longtermlandshift": [
@@ -543,91 +543,91 @@
                 "id": "ChangeGrowingSeasonGreenness",
                 "name": "Growing Season Greenness Trajectory",
                 "info": "Trajectory of change in Mean Growing Season Greenness at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift1_s_avg.png"
             },
             {
                 "id": "SeasonalityTrajectory",
                 "name": "Seasonality Trajectory",
                 "info": "Trajectory of change in Seasonality at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift1_s_mag.png"
             },
             {
                 "id": "GrowingSeasonLengthTrajectory",
                 "name": "Growing Season Length Trajectory",
                 "info": "Trajectory of change in Growing Season Length at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift1_s_intv.png"
             },
             {
                 "id": "MidGrowingSeasonTrajectory",
                 "name": "Middle of Growing Season Trajectory",
                 "info": "Trajectory of change in the Middle of Growing Season date at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift1_ms.png"
             },
             {
                 "id": "ChangeFactor1",
                 "name": "Factor 1 Trajectory",
                 "info": "Trajectory of change in Phenology Factor 1 (timing) at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift1_f1.png"
             },
             {
                 "id": "ChangeFactor2",
                 "name": "Factor 2 Trajectory",
                 "info": "Trajectory of change in Phenology Factor 2 (timing) at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift1_f2.png"
             },
             {
                 "id": "ChangeFactor3",
                 "name": "Factor 3 Trajectory",
                 "info": "Trajectory of change in Phenology Factor 3 (productivity) at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift1_f3.png"
             },
             {
                 "id": "ChangeFactor4",
                 "name": "Factor 4 Trajectory",
                 "info": "Trajectory of change in Phenology Factor 4 (seasonality) at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift1_f4.png"
             },
             {
                 "id": "ChangeShannon",
                 "name": "Shannon Entropy Trajectory",
                 "info": "Trajectory of change in Shannon Entropy at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2.png"
+                "legend": "legends/shift2_hx.png"
             },
             {
                 "id": "ChangeMutualInfo",
                 "name": "Mutual Information Trajectory",
                 "info": "Trajectory of change in Mutual Information at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2.png"
+                "legend": "legends/shift2_mi.png"
             },
             {
                 "id": "ChangeCondEntropy",
                 "name": "Conditional Entropy Trajectory",
                 "info": "Trajectory of change in Conditional Entropy at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2.png"
+                "legend": "legends/shift2_condent.png"
             },
             {
                 "id": "ChangeDevelopment",
                 "name": "Development Trajectory",
                 "info": "Trajectory of change in Development at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2.png"
+                "legend": "legends/shift2_develop.png"
             },
             {
                 "id": "ChangeCapacity",
                 "name": "Capacity Trajectory",
                 "info": "Trajectory of change in Capacity at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2.png"
+                "legend": "legends/shift2_capacity.png"
             },
             {
                 "id": "ChangeAscendency",
                 "name": "Ascendency Trajectory",
                 "info": "Trajectory of change in Ascendency at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2.png"
+                "legend": "legends/shift2_ascend.png"
             },
             {
                 "id": "ChangeOverhead",
                 "name": "Overhead Trajectory",
                 "info": "Trajectory of change in Overhead at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2.png"
+                "legend": "legends/shift2_ovhead.png"
             }
         ]  
     }
