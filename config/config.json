@@ -537,7 +537,7 @@
                 "id": "CompositionalShift",
                 "name": "Landscape Compositional Shift",
                 "info": "Gross measure of the degree of stability or instability of landscape dynamics. While short-term phenoclass dynamics may be strong (see Rate of Inter-annual Change, above), those changes may or may not result in long-term changes in overall phenoclass composition and phenological characteristics. Higher values indicate 'instability', that is, a strong trajectory of long-term change.",
-                "legend": "legends/abs.png"
+                "legend": "legends/kl_dist.png"
             },
             {
                 "id": "ChangeGrowingSeasonGreenness",
