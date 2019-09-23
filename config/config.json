@@ -238,13 +238,13 @@
                 "id": "Factor3Productivity",
                 "name": "Factor 3 - Productivity",
                 "info": "Factor 3 is very closely associated with NDVI greenness, and therefore also corresponds to the amount and productivity of vegetation.",
-                "legend": "legends/factor3.png"
+                "legend": "legends/green_fscore3.png"
             },
             {
                 "id": "Factor4Seasonality",
                 "name": "Factor 4 - Seasonality",
                 "info": "Factor 4 is very closely related to variables representing seasonality and growing season length (which are themselves closely related). Lower factor 4 values correspond to stronger seasonality or deciduousness, and shorter growing seasons.",
-                "legend": "legends/gmag_legend.png"
+                "legend": "legends/gmag_fscore4.png"
             }
         ],
         "it-metrics": [
@@ -362,7 +362,7 @@
                 "id": "LateGrowingSeasonMagnitude",
                 "name": "Late Growing Season Magnitude",
                 "info": "Dominance of greenness in the second half of the growing season. Measured by the length of the mean NDVI vector between the middle and end of growing season dates.",
-                "legend": "legends/gmag_legend.png"
+                "legend": "legends/lms_mag_green.png"
             },
             {
                 "id": "EndGrowingSeason",
