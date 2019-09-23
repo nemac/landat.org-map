@@ -332,13 +332,13 @@
                 "id": "BeginningGrowingSeason",
                 "name": "Beginning of Growing Season",
                 "info": "Julian day of year when 15 percent of the total accumulated greenness for the phenological year has already occurred. Fifteen percent is an arbitrary benchmark, applied in a standard way across all places and years.",
-                "legend": "legends/es_doy.png"
+                "legend": "legends/dayofyear_091919.png"
             },
             {
                 "id": "EarlyGrowingSeasonCenter",
                 "name": "Early Growing Season Center",
                 "info": "Julian day of year marking the 'center of mass' of NDVI values in the first half of the growing season. Measured by the direction of the mean NDVI vector between the start and middle of growing season dates.",
-                "legend": "legends/ems_doy.png"
+                "legend": "legends/dayofyear_091919.png"
             },
             {
                 "id": "EarlyGrowingSeasonMagnitude",
@@ -350,13 +350,13 @@
                 "id": "Midpoint",
                 "name": "Middle of Growing Season",
                 "info": "Julian day of year marking the middle of the growing season. Measured by the direction of the mean NDVI vector in polar graphs.",
-                "legend": "legends/ms_doy.png"
+                "legend": "legends/dayofyear_091919.png"
             },
             {
                 "id": "LateGrowingSeasonCenter",
                 "name": "Late Growing Season Center",
                 "info": "Julian day of year marking the 'center of mass' of NDVI values in the second half of the growing season. Measured by the direction of the mean NDVI vector between the middle and end of growing season dates.",
-                "legend": "legends/lms_doy.png"
+                "legend": "legends/dayofyear_091919.png"
             },
             {
                 "id": "LateGrowingSeasonMagnitude",
@@ -368,7 +368,7 @@
                 "id": "EndGrowingSeason",
                 "name": "End of Growing Season",
                 "info": "Julian day of year when 80 percent of the total accumulated greenness for the phenological year has already occurred. Eighty percent is an arbitrary benchmark, applied in a standard way across all places and years.",
-                "legend": "legends/ls_doy.png"
+                "legend": "legends/dayofyear_091919.png"
             }
         ],
         "phenoclasses": [
