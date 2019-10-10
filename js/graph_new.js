@@ -79,8 +79,8 @@ function reprocessData (origdata) {
         }
         // The last data point for a year's data rolls over to the next year
         // at 1/3, so adjust the key (year) accordingly for these cases
-        if (point[0].substring(4) === "0103") {
-          key = String(parseInt(key)-1)
+        if (point[0].substring(4) === "1228") {
+          key = String(parseInt(key)+1)
         }
         data[key].push(point);
     }
