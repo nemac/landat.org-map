@@ -45,7 +45,7 @@ function handleGraphDataResponse (div, poi, response) {
 }
 
 function getData(poi, div) {
-    var url = "https://fcav-ndvi-dev.nemac.org/landdat_product.cgi?args=" + poi.lng + "," + poi.lat;
+    var url = "https://fcav-ndvi.nemac.org/landdat_product.cgi?args=" + poi.lng + "," + poi.lat;
     var oReq = GetAjaxObject(function (response) {
         handleGraphDataResponse(div, poi, response)
     })
