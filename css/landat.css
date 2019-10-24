@@ -371,6 +371,9 @@ path {
     font-weight: bold; }
 
 /* Layer Tools (legend and opacity) */
+.legend-wrapper img {
+  width: 75%; }
+
 .layer-tools-wrapper {
   display: none; }
   .layer-tools-wrapper.active {

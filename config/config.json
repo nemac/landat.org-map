@@ -222,7 +222,7 @@
             }
         ],
         "summary-phenology": [
-             {
+            {
                 "id": "Factor1Timing",
                 "name": "Factor 1 - Timing",
                 "info": "Factors 1 and 2 are very closely associated with the day-of-year variables, and therefore represent aspects of timing across the annual cycle. Two factors are required to fully represent timing around the annual cycle in the two-dimensional polar graphs (each timing variable must be represented by its sine and cosine).",
@@ -246,7 +246,7 @@
                 "info": "Factor 4 is very closely related to variables representing seasonality and growing season length (which are themselves closely related). Lower factor 4 values correspond to stronger seasonality or deciduousness, and shorter growing seasons.",
                 "legend": "legends/gmag_fscore4.png"
             }
-       ],
+        ],
         "it-metrics": [
             {
                 "id": "DynamicActivity",
@@ -302,73 +302,73 @@
                 "id": "MeanAnnualNDVI",
                 "name": "Mean Annual Greenness",
                 "info": "Mean vegetation index (NDVI) value across the phenological year.",
-                "legend": "legends/aac.png"
+                "legend": "legends/green_legend.png"
             },
             {
                 "id": "MeanNDVI",
                 "name": "Mean Growing Season Greenness",
                 "info": "Mean vegetation index (NDVI) value within the growing season, i.e., between the beginning and end of growing season dates.",
-                "legend": "legends/aac.png"
+                "legend": "legends/green_legend.png"
             },
             {
                 "id": "Seasonality",
                 "name": "Degree of Seasonality, or Deciduousness",
                 "info": "Dominance of NDVI greenness in one portion of the year, visible in polar graphs as 'off-centered' annual cycles. Measured by the length of the mean NDVI vector in polar graphs. More evergreen vegetation shows lower seasonality.",
-                "legend": "legends/aab.png"
+                "legend": "legends/gmag_legend_flip_smag_stand.png"
             },
             {
                 "id": "NDVIStdDv",
-                "name": "Within-year Greenness Variability",
-                "info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the year.",
-                "legend": "legends/aaa.png"
+                "name": "Growing Season Greenness Variability",
+                "info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the growing season.",
+                "legend": "legends/gmag_legend_flip_s_sd.png"
             },
             {
                 "id": "SeasonLength",
                 "name": "Growing Season Length",
                 "info": "Number of days between the beginning and end of growing season dates.",
-                "legend": "legends/aad.png"
+                "legend": "legends/gmag_s_intv.png"
             },
             {
                 "id": "BeginningGrowingSeason",
                 "name": "Beginning of Growing Season",
                 "info": "Julian day of year when 15 percent of the total accumulated greenness for the phenological year has already occurred. Fifteen percent is an arbitrary benchmark, applied in a standard way across all places and years.",
-                "legend": "legends/abn.png"
+                "legend": "legends/dayofyear_101619.png"
             },
             {
                 "id": "EarlyGrowingSeasonCenter",
                 "name": "Early Growing Season Center",
                 "info": "Julian day of year marking the 'center of mass' of NDVI values in the first half of the growing season. Measured by the direction of the mean NDVI vector between the start and middle of growing season dates.",
-                "legend": "legends/abn.png"
+                "legend": "legends/dayofyear_101619.png"
             },
             {
                 "id": "EarlyGrowingSeasonMagnitude",
                 "name": "Early Growing Season Magnitude",
                 "info": "Dominance of greenness in the first half of the growing season. Measured by the length of the mean NDVI vector between the start and middle of growing season dates.",
-                "legend": "legends/abn.png"
+                "legend": "legends/ems_mag_101619.png"
             },
             {
                 "id": "Midpoint",
                 "name": "Middle of Growing Season",
                 "info": "Julian day of year marking the middle of the growing season. Measured by the direction of the mean NDVI vector in polar graphs.",
-                "legend": "legends/abn.png"
+                "legend": "legends/dayofyear_101619.png"
             },
             {
                 "id": "LateGrowingSeasonCenter",
                 "name": "Late Growing Season Center",
                 "info": "Julian day of year marking the 'center of mass' of NDVI values in the second half of the growing season. Measured by the direction of the mean NDVI vector between the middle and end of growing season dates.",
-                "legend": "legends/abn.png"
+                "legend": "legends/dayofyear_101619.png"
             },
             {
                 "id": "LateGrowingSeasonMagnitude",
                 "name": "Late Growing Season Magnitude",
                 "info": "Dominance of greenness in the second half of the growing season. Measured by the length of the mean NDVI vector between the middle and end of growing season dates.",
-                "legend": "legends/abn.png"
+                "legend": "legends/lms_mag_green.png"
             },
             {
                 "id": "EndGrowingSeason",
                 "name": "End of Growing Season",
                 "info": "Julian day of year when 80 percent of the total accumulated greenness for the phenological year has already occurred. Eighty percent is an arbitrary benchmark, applied in a standard way across all places and years.",
-                "legend": "legends/abn.png"
+                "legend": "legends/dayofyear_101619.png"
             }
         ],
         "phenoclasses": [
@@ -479,56 +479,57 @@
                 "name": "500 Phenoclasses, 2016",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
                 "legend": "legends/phenoclass_legend.png"
-            }            
+            }
+            
         ],
         "phenoclass-derived": [
             {
                 "id": "TotalPath",
                 "name": "Total Year-to-Year Path Length",
                 "info": "Total summed amount or 'length' of all annual changes. Estimates the cumulative variability, which may be large even if the final state is similar to the initial state.",
-                "legend": "legends/aaq.png"
+                "legend": "legends/change_totpath.png"
             },
             {
                 "id": "FinalDistance",
                 "name": "Final Between-years Distance",
                 "info": "Amount of difference between the first and last years. Analogous to a straight-line distance rather than the path length.",
-                "legend": "legends/aar.png"
+                "legend": "legends/change_findist.png"
             },
             {
                 "id": "MaximumStep",
                 "name": "Maximum Year-to-Year Step",
                 "info": "The single largest change observed between any two consecutive years.",
-                "legend": "legends/aas.png"
+                "legend": "legends/change_maxstep.png"
             },
             {
                 "id": "MeanStep",
                 "name": "Mean Year-to-Year Step",
                 "info": "The mean change observed between consecutive years.",
-                "legend": "legends/aat.png"
+                "legend": "legends/change_meanstep.png"
             },
             {
                 "id": "MinimumStep",
                 "name": "Minimum Year-to-Year Step",
                 "info": "The smallest change observed between any two consecutive years.",
-                "legend": "legends/aau.png"
+                "legend": "legends/change_minstep.png"
             },
             {
                 "id": "MaximumDistance",
                 "name": "Maximum Between-years Distance",
                 "info": "The difference between the two most different years (the two years need not be consecutive).",
-                "legend": "legends/aav.png"
+                "legend": "legends/change_maxdist.png"
             },
             {
                 "id": "MeanDistance",
                 "name": "Mean Between-years Distance",
                 "info": "The mean difference between any two years, considering all possible year combinations.",
-                "legend": "legends/aaw.png"
+                "legend": "legends/change_meandist.png"
             },
             {
                 "id": "MinimumDistance",
                 "name": "Minimum Between-years Distance",
                 "info": "The difference between the two most similar years (the two years need not be consecutive).",
-                "legend": "legends/aax.png"
+                "legend": "legends/change_mindist.png"
             }
         ],
         "longtermlandshift": [
@@ -572,61 +573,61 @@
                 "id": "ChangeFactor2",
                 "name": "Factor 2 Trajectory",
                 "info": "Trajectory of change in Phenology Factor 2 (timing) at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift1_f2.png"
             },
             {
                 "id": "ChangeFactor3",
                 "name": "Factor 3 Trajectory",
                 "info": "Trajectory of change in Phenology Factor 3 (productivity) at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift1_f3.png"
             },
             {
                 "id": "ChangeFactor4",
                 "name": "Factor 4 Trajectory",
                 "info": "Trajectory of change in Phenology Factor 4 (seasonality) at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift1_f4.png"
             },
             {
                 "id": "ChangeShannon",
                 "name": "Shannon Entropy Trajectory",
                 "info": "Trajectory of change in Shannon Entropy at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift2_hx.png"
             },
             {
                 "id": "ChangeMutualInfo",
                 "name": "Mutual Information Trajectory",
                 "info": "Trajectory of change in Mutual Information at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift2_mi.png"
             },
             {
                 "id": "ChangeCondEntropy",
                 "name": "Conditional Entropy Trajectory",
                 "info": "Trajectory of change in Conditional Entropy at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift2_condent.png"
             },
             {
                 "id": "ChangeDevelopment",
                 "name": "Development Trajectory",
                 "info": "Trajectory of change in Development at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift2_develop.png"
             },
             {
                 "id": "ChangeCapacity",
                 "name": "Capacity Trajectory",
                 "info": "Trajectory of change in Capacity at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift2_capacity.png"
             },
             {
                 "id": "ChangeAscendency",
                 "name": "Ascendency Trajectory",
                 "info": "Trajectory of change in Ascendency at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift2_ascend.png"
             },
             {
                 "id": "ChangeOverhead",
                 "name": "Overhead Trajectory",
                 "info": "Trajectory of change in Overhead at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1.png"
+                "legend": "legends/shift2_ovhead.png"
             }
         ]  
     }
