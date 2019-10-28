@@ -207,8 +207,8 @@
                 "legend": "legends/abd.png"
             }, 
             {
-                "id": "mtbs-raster-00-16",
-                "name": "Historical Fires from 2000 to 2016",
+                "id": "mtbs-raster-00-18",
+                "name": "Historical Fires from 2000 to 2018",
                 "info": "Shows locations and intensities of fires that occured from 2000 to 2016",
                 "url": "https://fswms.nemac.org/rlayers",
                 "legend": "legends/abe.png"
@@ -302,13 +302,13 @@
                 "id": "MeanAnnualNDVI",
                 "name": "Mean Annual Greenness",
                 "info": "Mean vegetation index (NDVI) value across the phenological year.",
-                "legend": "legends/green_legend.png"
+                "legend": "legends/a_avg.png"
             },
             {
                 "id": "MeanNDVI",
                 "name": "Mean Growing Season Greenness",
                 "info": "Mean vegetation index (NDVI) value within the growing season, i.e., between the beginning and end of growing season dates.",
-                "legend": "legends/green_legend.png"
+                "legend": "legends/s_avg.png"
             },
             {
                 "id": "Seasonality",
