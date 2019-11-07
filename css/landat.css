@@ -355,11 +355,21 @@ path {
 .layer-info-btn-wrapper {
   display: inline-block;
   position: absolute;
-  right: 27px; }
+  right: 57px; }
   .layer-info-btn-wrapper .layer-info-icon {
     width: 26px;
     height: 26px; }
   .layer-info-btn-wrapper .layer-info-icon:hover {
+    cursor: pointer; }
+
+.download-btn-wrapper {
+  display: inline-block;
+  position: absolute;
+  right: 27px; }
+  .download-btn-wrapper .download-icon {
+    width: 26px;
+    height: 26px; }
+  .download-btn-wrapper .download-icon:hover {
     cursor: pointer; }
 
 .layer-info-wrapper {

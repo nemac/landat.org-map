@@ -49,10 +49,10 @@
 /* Layer Description */
 
 .layer-info-btn-wrapper {
-	
+
 	display: inline-block;
 	position: absolute;
-	right: $layer-select-padding-left + 12;
+	right: $layer-select-padding-left + 42;
 
 	.layer-info-icon {
 		width: 26px;
@@ -63,6 +63,23 @@
 		cursor: pointer;
 	}
 }
+
+.download-btn-wrapper {
+
+	display: inline-block;
+	position: absolute;
+	right: $layer-select-padding-left + 12;
+
+	.download-icon {
+		width: 26px;
+		height: 26px;
+	}
+
+	.download-icon:hover {
+		cursor: pointer;
+	}
+}
+
 
 .layer-info-wrapper {
 	display: none;
@@ -98,11 +115,11 @@
 /* Layer Legend */
 
 .legend-wrapper {
-	
+
 	display: inline-block;
 
 	img {
-	   height: 100%; 
+	   height: 100%;
 	}
 }
 
@@ -180,4 +197,3 @@ $opacity-icon-size: $opacity-slider-track-overlay-width;
 		}
 	}
 }
-

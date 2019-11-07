@@ -142,6 +142,9 @@ function makeLayerElems (layerGroups, layers) {
             var groupName = this.parentNode.parentNode.id;
             var layerDiv = d3.select(this)
             layer.layerDiv = layerDiv
+            var hasdownload = (layer.hasOwnProperty('download'))
+            // console.log('layer', layer.name, hasdownload)
+
             makeCheckbox(layer, layerDiv);
             makeLabel(layer, layerDiv);
             makeDescription(layer, layerDiv);
@@ -168,7 +171,7 @@ export function toggleLayerToolsUI (layer) {
     if (layer.active) {
         var sliderHandle = layer.layerDiv.select('.opacity-slider-handle').node()
         setOpacitySliderPosition(layer, sliderHandle, layer.opacitiy)
-    }    
+    }
 }
 
 function makeLabel(layer, layerDiv) {
@@ -182,10 +185,16 @@ function makeLabel(layer, layerDiv) {
 }
 
 function makeDescription (layer, layerDiv) {
-    var imgsrc = (layerDiv.classed("layer-group-btn") === true ? 
+    var imgsrc = (layerDiv.classed("layer-group-btn") === true ?
                   'imgs/more-info-icon-64x64--white.png' :
                   'imgs/more-info-icon-64x64.png');
-                 
+
+    var imgsrcDownload = (layerDiv.classed("layer-group-btn") === true ?
+        'imgs/download-icon-v2-64x64-white.png' :
+        'imgs/download-icon-v2-64x64.png');
+
+                  // 'imgs/download-icon-64x64-white.png' :
+                  // 'imgs/download-icon-64x64.png');
 
     if (layer.info && layer.info !== '') {
         layerDiv.append('div')
@@ -195,7 +204,7 @@ function makeDescription (layer, layerDiv) {
                 d3.select(this.parentNode)
                     .select('.layer-info-wrapper')
                     .classed('active', function () {
-                      
+
                         //send google analytics click on layer info
                         ga('send', 'event', {
                           eventCategory: 'layer info',
@@ -208,15 +217,39 @@ function makeDescription (layer, layerDiv) {
                         return !d3.select(this).classed('active');
                     })
             })
+
             .append('img')
                 .attr('class', 'layer-info-icon')
                 .attr('src', imgsrc)
                 .attr("alt", "Read more about the " + layer.name + " layer")
                 .attr("title", "Read more about the " + layer.name + " layer")
 
+        // not all layers have download and some layer groups do not have a downoload
+        // so check and make sure that the object exists and is not null
+        var hasdownload = !(typeof layer.download == 'undefined');
+        var downloadNotNull =  !(layer.download === null);
+
+        // add download load button
+        if (downloadNotNull) {
+          if (hasdownload){
+            layerDiv.append('div')
+              .attr('class', 'download-btn-wrapper')
+              .append('a')
+                .attr('href', layer.download)
+                .attr("title", "download data for the layer " + layer.name)
+              .append('img')
+                .attr('class', 'download-icon')
+                .attr('src', imgsrcDownload)
+                .attr("alt", "dowdownload data for the layer " + layer.name)
+                .attr("title", "download data for the layer " + layer.name)
+          }
+
+        }
+
         layerDiv.append('div')
             .attr('class', 'layer-info-wrapper')
             .text(layer => layer.info);
+
     }
 }
 
