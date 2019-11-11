@@ -322,7 +322,7 @@ path {
   position: relative;
   color: #22333B;
   padding-top: 12px;
-  padding-right: 30px;
+  padding-right: 8px;
   padding-bottom: 13px;
   padding-left: 15px; }
   .layer-group-wrapper.active .layer-select:nth-child(even) {
@@ -354,8 +354,7 @@ path {
 /* Layer Description */
 .layer-info-btn-wrapper {
   display: inline-block;
-  position: absolute;
-  right: 57px; }
+  float: right; }
   .layer-info-btn-wrapper .layer-info-icon {
     width: 26px;
     height: 26px; }
@@ -363,9 +362,9 @@ path {
     cursor: pointer; }
 
 .download-btn-wrapper {
+  padding-left: 5px;
   display: inline-block;
-  position: absolute;
-  right: 27px; }
+  float: right; }
   .download-btn-wrapper .download-icon {
     width: 26px;
     height: 26px; }
@@ -673,18 +672,20 @@ path {
   .btn-middle-align-ghost div {
     width: 99.5%; }
 
-.layer-group-btn:before {
-  content: " ";
-  width: 12px;
-  height: 20px;
-  display: inline-block;
-  background-size: 22px 11px;
-  position: absolute;
-  left: 10px;
-  top: 14px;
-  background-repeat: no-repeat;
-  background-position: 4px 1px;
-  background-image: url(../imgs/arrows.png); }
+.layer-group-btn {
+  padding-right: 8px; }
+  .layer-group-btn:before {
+    content: " ";
+    width: 12px;
+    height: 20px;
+    display: inline-block;
+    background-size: 22px 11px;
+    position: absolute;
+    left: 10px;
+    top: 14px;
+    background-repeat: no-repeat;
+    background-position: 4px 1px;
+    background-image: url(../imgs/arrows.png); }
 
 .layer-group-wrapper.active .layer-group-btn:before {
   content: " ";

@@ -50,9 +50,8 @@
 
 .layer-info-btn-wrapper {
 
-	display: inline-block;
-	position: absolute;
-	right: $layer-select-padding-left + 42;
+  display: inline-block;
+  float: right;
 
 	.layer-info-icon {
 		width: 26px;
@@ -65,10 +64,10 @@
 }
 
 .download-btn-wrapper {
-
+  
+  padding-left: 5px;
 	display: inline-block;
-	position: absolute;
-	right: $layer-select-padding-left + 12;
+  float: right;
 
 	.download-icon {
 		width: 26px;

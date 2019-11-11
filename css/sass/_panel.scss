@@ -304,6 +304,7 @@
 }
 
 .layer-group-btn {
+  padding-right: $layer-select-padding-right;
 	&:before {
 		content: " ";
 		width: 12px;

@@ -185,16 +185,34 @@ function makeLabel(layer, layerDiv) {
 }
 
 function makeDescription (layer, layerDiv) {
-    var imgsrc = (layerDiv.classed("layer-group-btn") === true ?
+    var isLayerGroup = layerDiv.classed("layer-group-btn") === true
+    var imgsrc = isLayerGroup ?
                   'imgs/more-info-icon-64x64--white.png' :
-                  'imgs/more-info-icon-64x64.png');
+                  'imgs/more-info-icon-64x64.png';
 
-    var imgsrcDownload = (layerDiv.classed("layer-group-btn") === true ?
+    var imgsrcDownload = isLayerGroup ?
         'imgs/download-icon-v2-64x64-white.png' :
-        'imgs/download-icon-v2-64x64.png');
+        'imgs/download-icon-v2-64x64.png';
 
-                  // 'imgs/download-icon-64x64-white.png' :
-                  // 'imgs/download-icon-64x64.png');
+    // not all layers have download and some layer groups do not have a downoload
+    // so check and make sure that the object exists and is not null
+    //var hasdownload = !(typeof layer.download == 'undefined');
+    //var downloadNotNull =  !(layer.download === null);
+
+    // add download load button
+    if (layer.download) {
+      layerDiv.append('div')
+        .attr('class', 'download-btn-wrapper')
+        .append('a')
+          .attr('href', layer.download)
+          .attr("title", "download data for the layer " + layer.name)
+        .append('img')
+          .attr('class', 'download-icon')
+          .attr('src', imgsrcDownload)
+          .attr("alt", "dowdownload data for the layer " + layer.name)
+          .attr("title", "download data for the layer " + layer.name)
+    }
+
 
     if (layer.info && layer.info !== '') {
         layerDiv.append('div')
@@ -224,33 +242,14 @@ function makeDescription (layer, layerDiv) {
                 .attr("alt", "Read more about the " + layer.name + " layer")
                 .attr("title", "Read more about the " + layer.name + " layer")
 
-        // not all layers have download and some layer groups do not have a downoload
-        // so check and make sure that the object exists and is not null
-        var hasdownload = !(typeof layer.download == 'undefined');
-        var downloadNotNull =  !(layer.download === null);
-
-        // add download load button
-        if (downloadNotNull) {
-          if (hasdownload){
-            layerDiv.append('div')
-              .attr('class', 'download-btn-wrapper')
-              .append('a')
-                .attr('href', layer.download)
-                .attr("title", "download data for the layer " + layer.name)
-              .append('img')
-                .attr('class', 'download-icon')
-                .attr('src', imgsrcDownload)
-                .attr("alt", "dowdownload data for the layer " + layer.name)
-                .attr("title", "download data for the layer " + layer.name)
-          }
-
-        }
-
         layerDiv.append('div')
             .attr('class', 'layer-info-wrapper')
             .text(layer => layer.info);
 
     }
+
+
+
 }
 
 function makeLayerTools(layer, layerDiv) {
