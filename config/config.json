@@ -558,7 +558,7 @@
                 "name": "Minimum Year-to-Year Step",
                 "info": "The smallest change observed between any two consecutive years.",
                 "legend": "legends/change_minstep.png",
-                "download": "https://efetac-landat.s3.amazonaws.com/maximum_y2y_step_2000-2016.zip"
+                "download": "https://efetac-landat.s3.amazonaws.com/min_y2y_step_2000-2016.zip"
             },
             {
                 "id": "MaximumDistance",
@@ -616,7 +616,7 @@
                 "name": "Middle of Growing Season Trajectory",
                 "info": "Trajectory of change in the Middle of Growing Season date at the landscape scale, implied by the observed phenoclass dynamics.",
                 "legend": "legends/shift1_ms.png",
-                "download": "https://efetac-landat.s3.amazonaws.com/middle_grow_season_2000-2016.zip"
+                "download": "https://efetac-landat.s3.amazonaws.com/mid_grow_season_length_trajectory_2000-2016.zip"
             },
             {
                 "id": "ChangeFactor1",
