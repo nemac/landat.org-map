@@ -276,7 +276,7 @@ function makeUpDownLineGraph (data, div) {
 
     // Define the axes
     var xAxis = d3.axisBottom(x)
-        .ticks(16)
+        .ticks(17)
         .tickFormat(function (d) {
             return d.getFullYear();
         });
@@ -312,9 +312,15 @@ function makeUpDownLineGraph (data, div) {
 
     // Add the X Axis
     svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
+         .attr("class", "x axis")
+         .attr("transform", "translate(0," + height + ")")
+         .call(xAxis)
+       .selectAll("text")
+         .attr("y", 13)
+         .attr("x", -20)
+         .attr("dy", ".35em")
+         .attr("transform", "rotate(-40)")
+
 
     // Add the Y Axis
     svg.append("g")
