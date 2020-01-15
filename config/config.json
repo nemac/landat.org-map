@@ -135,6 +135,14 @@
         ],
         "boundaries" : [
             {
+                "id": "na_boundaries",
+                "name": "N.A. Boundaries",
+                "info": "North American political boundaries.",
+                "url": "https://gis.nemac.org/landat-vector",
+                "legend": "legends/abi.png",
+                "type": "overlay"
+            },
+            {
                 "id": "States",
                 "name": "States",
                 "info": "U.S. state borders from the U.S. Census Bureau's TigerLine products",
