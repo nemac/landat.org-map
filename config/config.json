@@ -1,5 +1,5 @@
 {
-    "mapserverUrl": "https://gis.nemac.org/landat-dev",
+    "mapserverUrl": "https://gis.nemac.org/landat",
     "defaultLayerOpacity": 0.75,
     "logo": {
         "image": "imgs/landat_logo_blue.png",
@@ -161,10 +161,10 @@
         ],
         "ancillary": [
             {
-                "id": "NLCD_2011",
-                "name": "Land Cover, 2011",
-                "info": "National Land Cover Database (NLCD), 2011",
-                "legend": "legends/aba.png"
+                "id": "NLCD2016",
+                "name": "Land Cover, 2016",
+                "info": "Modified National Land Cover Database (NLCD) extended to North America, 2016",
+                "legend": "legends/landcover_2016_hybrid.png"
             },
             {
                 "id": "Riitters_LandPattern",
