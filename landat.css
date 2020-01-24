@@ -114,7 +114,7 @@
 
 .graph-loading .graph-loading-div {
   display: block;
-  background-image: url(../imgs/loader.gif); }
+  background-image: url(imgs/loader.gif); }
 
 .graph-loading-div {
   display: none;
@@ -685,7 +685,7 @@ path {
     top: 14px;
     background-repeat: no-repeat;
     background-position: 4px 1px;
-    background-image: url(../imgs/arrows.png); }
+    background-image: url(imgs/arrows.png); }
 
 .layer-group-wrapper.active .layer-group-btn:before {
   content: " ";
@@ -769,15 +769,15 @@ path {
   display: none; }
 
 .panel-active #hide-menu-button:hover {
-  background-image: url(../imgs/desktop-menu-closer.gif); }
+  background-image: url(imgs/desktop-menu-closer.gif); }
 
 .panel-inactive .panel-active-text {
   display: none; }
 
 .panel-inactive #hide-menu-button {
-  background-image: url(../imgs/desktop-menu-closed.png); }
+  background-image: url(imgs/desktop-menu-closed.png); }
   .panel-inactive #hide-menu-button:hover {
-    background-image: url(../imgs/desktop-menu-opener.gif); }
+    background-image: url(imgs/desktop-menu-opener.gif); }
 
 @media only screen and (min-width: 769px) {
   .panel-inactive #map-wrapper {
@@ -794,12 +794,12 @@ path {
   padding: 6px 10px 8px 30px;
   background-position: 5%;
   background-size: 25px;
-  background-image: url(../imgs/trash-can-icon.png); }
+  background-image: url(imgs/trash-can-icon.png); }
 
 #toggle-panel-button {
   padding: 6px 10px 8px 30px;
   background-size: 30px;
-  background-image: url(../imgs/desktop-menu-open.png); }
+  background-image: url(imgs/desktop-menu-open.png); }
 
 .leaflet-control-geosearch {
   /* leaflet button styling */

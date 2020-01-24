@@ -632,6 +632,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
     var thresholdActiveCheckbox = inputwrapper.append("div")
         .classed("threshold-checkbox--active", true);
 
+/*
     thresholdActiveCheckbox.append("input")
         .attr("type", "checkbox")
         .attr("id", "threshold-checkbox--active-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""))
@@ -654,6 +655,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
     thresholdCheckbox.append("label")
         .text("Thresholds (All data)")
         .attr("for", "threshold-checkbox-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""));
+*/
 }
 
 /* POLAR GRAPH HELPERS */

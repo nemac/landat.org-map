@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var config = {
     context: __dirname, // `__dirname` is root of project
@@ -8,7 +9,7 @@ var config = {
         app: './js/base.js',
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname),
         filename: 'index_bundle.js'
     },
     module: {
@@ -28,8 +29,8 @@ var config = {
                         loader: "file-loader",
                         options: {
                             name: '[name].[ext]',
-                            outputPath: '../imgs/',
-                            useRelativePath: true,
+                            outputPath: './imgs',
+                            useRelativePath: false,
                         }
                     },
                     {
@@ -78,7 +79,7 @@ var config = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "../css/landat.css"
+            filename: "./landat.css"
         })
     ]
 };
