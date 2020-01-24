@@ -30,7 +30,7 @@ var config = {
                         options: {
                             name: '[name].[ext]',
                             outputPath: './imgs',
-                            useRelativePath: true,
+                            useRelativePath: false,
                         }
                     },
                     {
