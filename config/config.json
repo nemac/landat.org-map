@@ -137,7 +137,7 @@
             {
                 "id": "na_boundaries",
                 "name": "North American states and provinces (coarse)",
-                "info": "North American political boundaries from the Commission for Environmental Cooperation, a combined effort of the National Atlas program in Canada, the U.S. Geological Survey, and Mexico's Instituto Nacional de Estadística y Geografía",
+                "info": "North American political boundaries from the Commission for Environmental Cooperation, a combined effort of the National Atlas program in Canada, the U.S. Geological Survey, and Mexico's Instituto Nacional de Estadística y Geografía.",
                 "url": "https://gis.nemac.org/landat-vector",
                 "legend": "legends/abi.png",
                 "type": "overlay"
