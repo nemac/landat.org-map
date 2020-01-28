@@ -164,7 +164,7 @@
                 "id": "NLCD2016",
                 "name": "Land Cover, 2016",
                 "info": "Modified National Land Cover Database (NLCD) extended to North America, 2016",
-                "legend": "legends/landcover_2016_hybrid.png"
+                "legend": "legends/aba.png"
             },
             {
                 "id": "Riitters_LandPattern",
