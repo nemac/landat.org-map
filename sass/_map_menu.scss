@@ -21,7 +21,7 @@
 	}
 
 	#hide-menu-button:hover {
-		background-image: url(../../imgs/desktop-menu-closer.gif);
+		background-image: url(../imgs/desktop-menu-closer.gif);
 	}
 }
 
@@ -31,10 +31,10 @@
 	}
 
 	#hide-menu-button {
-		background-image: url(../../imgs/desktop-menu-closed.png);
+		background-image: url(../imgs/desktop-menu-closed.png);
 
 		&:hover {
-			background-image: url(../../imgs/desktop-menu-opener.gif);
+			background-image: url(../imgs/desktop-menu-opener.gif);
 		}
 	}
 
@@ -61,11 +61,11 @@
 	padding: 6px 10px 8px 30px;
 	background-position: 5%;
 	background-size: 25px;
-	background-image: url(../../imgs/trash-can-icon.png);
+	background-image: url(../imgs/trash-can-icon.png);
 }
 
 #toggle-panel-button {
 	padding: 6px 10px 8px 30px;
 	background-size: 30px;
-	background-image: url(../../imgs/desktop-menu-open.png);
+	background-image: url(../imgs/desktop-menu-open.png);
 }

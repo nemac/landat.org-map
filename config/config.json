@@ -1,550 +1,708 @@
 {
-	"mapserverUrl": "https://gis.nemac.org/landat",
-	"defaultLayerOpacity": 0.75,
-	"logo": {
-		"image": "imgs/landat_logo_blue.png",
-		"label": "Logo for the LanDat project",
-		"link": "https://landat.org",
-		"location": "leaflet-bottom leaflet-right"
-	},
-	"pois": [],
-	"map": {
-		"id": "map",
-		"center": ["38.5", "-81"],
-		"zoom": "6",
-		"options": {
-			"attributionControl": false,
-			"doubleClickZoom": false
-		}
-	},
-	"baselayers" : [
-		{
-			"id": "esri-imagery",
-			"url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-			"attribution": "Powered by <a href='https://www.esri.com/'>ESRI</a> | ESRI, DigitalGlobe, GeoEye, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community",
-			"subdomains": ["server", "services"],
-			"label": "ESRI Imagery",
-			"image": "imgs/esri-imagery.jpg",
-			"active": false
-		},
-		{
-			"id": "esri-topo",
-			"url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
-			"attribution": "Powered by <a href='https://www.esri.com/'>ESRI</a> | ESRI, USGS, NOAA",
-			"subdomains": ["server", "services"],
-			"label": "ESRI Topo",
-			"image": "imgs/esri-topo.jpg",
-			"active": true
-		},
-		{
-			"id": "carto-light",
-			"url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
-			"attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
-			"label": "CARTO Streets",
-			"image": "imgs/carto-light.jpg",
-			"active": false
-		},
-		{
-			"id": "carto-dark",
-			"url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
-			"attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
-			"active": false
-		}
-	],
-	"layout" : {
-		"layer-groups-order": [
-			 {
-				"id": "boundaries",
-				"name": "Reference and Boundaries",
-				"active": false
-			},
-			{
-				"id": "phenology-variables",
-				"name": "Phenology Variables",
-				"active": false
-			},
-			{
-				"id": "summary-phenology",
-				"name": "Summary Phenology Variables",
-				"active": false
-			},
-			{
-				"id": "phenoclass-derived",
-				"name": "Phenological Change Metrics",
-				"active": false
-			},
-			{
-				"id": "phenoclasses",
-				"name": "Phenological classes",
-				"active": false
-			},
-			{
-				"id": "it-metrics",
-				"name": "Landscape Information Metrics",
-				"active": false
-			},
-			{
-				"id": "longtermlandshift",
-				"name": "Long-term Landscape Shift",
-				"active": false
-			},
-			{
-				"id": "carbon-models",
-				"name": "Carbon Models",
-				"active": false
-			},
-			{
-				"id": "ancillary",
-				"name": "Landscape and Climate Characteristics",
-				"active": false
-			}
-		]
-	},
-	"active-layers": [
-		"States"
-	],
-	"layers" : {
-		"carbon-models": [
-			{
-				"id": "FIACarbonStorage",
-				"name": "Estimated carbon storage, 2000-2009",
-				"info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. USFS Forest Inventory and Analysis (FIA) program.",
-				"legend": "legends/aaz.png"
-			},
-			{
-				"id": "LanDATCStorage",
-				"name": "LanDAT carbon storage model",
-				"info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. LanDAT model using 2000-2015 MODIS data, trained on FIA estimates.",
-				"legend": "legends/aay.png"
-			},
-			{
-				"id": "ShiftCarbonStorage",
-				"name": "Landscape Shift in Carbon Storage",
-				"info": "Long-term (decadal) expected gains and losses in carbon density, estimated from observed annual changes in LanDAT phenological variables.",
-				"legend": "legends/abq.png"
-			}
-		],
-		"summary-phenology": [
-			{
-				"id": "Factor123",
-				"name": "Summary phenology: seasonality and timing",
-				"info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with (1) seasonality, and with (2) the day-of-year variables such as the middle of the growing season.",
-				"legend": "legends/abv.png" 
-			},
-			{
-				"id": "Factor23",
-				"name": "Summary phenology: timing",
-				"info": "Factor scores describing the strong majority of the variation in the phenology variables. Those shown here are closely associated with only the day-of-year variables such as the beginning, middle, and end of the growing season.",
-				"legend": "legends/abw.png"
-			}
-		],
-		"boundaries" : [
-			{
-				"id": "States",
-				"name": "States",
-				"info": "U.S. state borders from the U.S. Census Bureau's TigerLine products",
-				"url": "https://gis.nemac.org/landat-vector",
-				"legend": "legends/abi.png",
-				"type": "overlay"
-			},
-			{
-				"id": "CountiesBlack",
-				"name": "Counties",
-				"info": "U.S. county borders from the U.S. Census Bureau's TigerLine products",
-				"url": "https://gis.nemac.org/landat-vector",
-				"legend": "legends/abj.png",
-				"type": "overlay"
-			},
-			{
-				"id": "AppLCCRegionBlk",
-				"name": "AppLCC region",
-				"info": "Regional boundary of the Appalachian Land Conservation Cooperative (AppLCC)",
-				"url": "https://gis.nemac.org/landat-vector",
-				"legend": "legends/abm.png",
-				"type": "overlay"
-			},
-			{
-				"id": "GSMNP",
-				"name": "Great Smoky Mountains National Park",
-				"info": "",
-				"url": "https://gis.nemac.org/landat-vector",
-				"legend": "legends/abb.png",
-				"type": "overlay"
-			}
-		],
-		"ancillary": [
-			{
-				"id": "NLCD_2011",
-				"name": "Land Cover, 2011",
-				"info": "National Land Cover Database (NLCD), 2011",
-				"legend": "legends/aba.png"
-			},
-			{
-				"id": "Riitters_LandPattern",
-				"name": "Landscape Mosaic Pattern",
-				"info": "An index measuring the mixture of agricultural, developed, and semi-natural land cover types within 15-hectare (37-acre) neighborhoods. US Forest Service, based on the 2011 National Land Cover Database.",
-				"legend": "legends/abl.png"
-			},
-			{
-				"id": "Riitters_ForestDensity",
-				"name": "Landscape Forest Density",
-				"info": "An index estimating the proportion of the landscape around a given forest area that is also forested, measured within 15-hectare (37-acre) neighborhoods. Low-density areas may be fragmented by non-forest land uses or natural non-forest cover. US Forest Service, based on the 2011 National Land Cover Database.",
-				"legend": "legends/abk.png"
-			},
-			{
-				"id": "TotalBasalArea",
-				"name": "Total Tree Basal Area",
-				"info": "Estimated total tree basal area. USFS Forest Health Technology Enterprise Team, 2012.",
-				"legend": "legends/abg.png"
-			},
-			{
-				"id": "PercentBasalRisk",
-				"name": "Tree Basal Area at Risk from Insect and Disease Pathogens",
-				"info": "Percent of basal area estimated to be at risk. USFS Forest Health Technology Enterprise Team, 2012.",
-				"legend": "legends/abh.png"
-			},
-			{
-				"id": "EvergreenDecline",
-				"name": "Decline in Evergreen Vegetation, 2000-2011",
-				"info": "Rate of decline in the evergreen (non-deciduous) component of vegetation greenness (NDVI) from 2000 to 2011. Higher values indicate stronger decline.",
-				"legend": "legends/abr.png"
-			},
-			{
-				"id": "HousingDensity",
-				"name": "Housing Density, 2010",
-				"info": "Housing units per squ. km, by partial census block group. US Census Bureau and SILVIS Lab.",
-				"legend": "legends/abo.png"
-			},
-			{
-				"id": "PalmerMonthly",
-				"name": "Palmer Drought Severity Index, 2000-2015 Mean",
-				"info": "Self-calibrated drought index (scPDSI); mean monthly value, 2000-2015. Values below -0.5 indicate drier than normal.",
-				"legend": "legends/abc.png"
-			},
-			{
-				"id": "PalmerAnnual",
-				"name": "Palmer Drought Severity Index, 2000-2015 Variability",
-				"info": "Self-calibrated drought index (scPDSI); inter-annual variability, 2000-2015. Higher values indicate more year-to-year variation.",
-				"legend": "legends/abd.png"
-			}, 
-			{
-				"id": "mtbs-raster-00-16",
-				"name": "Historical Fires from 2000 to 2016",
-				"info": "Shows locations and intensities of fires that occured from 2000 to 2016",
-				"url": "https://fswms.nemac.org/rlayers",
-				"legend": "legends/abe.png"
-			},
-			{
-				"id": "mtbs-raster-84-99",
-				"name": "Historical Fires from 1984 to 1999",
-				"info": "Shows locations and intensities of fires that occured from 1984 to 1999",
-				"url": "https://fswms.nemac.org/rlayers",
-				"legend": "legends/abf.png" 
-			}
-		],
-		"it-metrics": [
-			{
-				"id": "DynamicActivity",
-				"name": "Rate of Inter-annual Change",
-				"info": "The proportion of inter-annual change events in which a change in phenoclass occurs (as opposed to phenoclass stability).",
-				"legend": "legends/aae.png"
-			},
-			{
-				"id": "IncreaseChange",
-				"name": "Rate of Change: Increases",
-				"info": "The proportion of inter-annual change events that are associated with increased productivity (increasing NDVI)",
-				"legend": "legends/aaf.png"
-			},
-			{
-				"id": "DecreaseChange",
-				"name": "Rate of Change: Decreases",
-				"info": "The proportion of inter-annual change events that are associated with decreased productivity.",
-				"legend": "legends/aag.png"
-			},
-			{
-				"id": "MeanShannon",
-				"name": "Shannon Diversity",
-				"info": "Landscape information metric summarizing the total diversity, or complexity, of observed landscape dynamics.",
-				"legend": "legends/aah.png"
-			},
-			{
-				"id": "MutualInformation",
-				"name": "Mutual Information",
-				"info": "Landscape information metric representing the component of overall complexity which is higly predictable, or organized.",
-				"legend": "legends/aai.png"
-			},
-			{
-				"id": "ConditionalEntropy",
-				"name": "Conditional Entropy",
-				"info": "Landscape information metric representing the component of overall complexity which is higly unpredictable, disorganized, or redundant.",
-				"legend": "legends/aaj.png"
-			},
-			{
-				"id": "Development",
-				"name": "Development",
-				"info": "Mutual Information standardized by Shannon Diversity: the proportion of the complexity which is accounted for by the predictable component.",
-				"legend": "legends/aak.png"
-			},
-			{
-				"id": "Capacity",
-				"name": "Capacity",
-				"info": "Landscape information metric summarizing the complexity of landscape dynamics, and overall productivity (Shannon Diversity multiplied by mean NDVI).",
-				"legend": "legends/aal.png"
-			},
-			{
-				"id": "Ascendency",
-				"name": "Ascendency",
-				"info": "Landscape information metric summarizing the predictability of landscape dynamics, and overall productivity  (Mutual Information multiplied by mean NDVI).",
-				"legend": "legends/aam.png"
-			},
-			{
-				"id": "Overhead",
-				"name": "Overhead",
-				"info": "Landscape information metric summarizing the unpredictability of landscape dynamics, and overall productivity (Conditional Entropy multiplied by mean NDVI).",
-				"legend": "legends/aan.png"
-			}
-		],
-		"phenology-variables": [
-			{
-				"id": "MeanNDVI",
-				"name": "Mean Growing Season Greenness",
-				"info": "Mean NDVI within the growing season, i.e., between the beginning and end of growing season dates.",
-				"legend": "legends/aac.png"
-			},
-			{
-				"id": "Seasonality",
-				"name": "Degree of Seasonality, or Deciduousness",
-				"info": "Crowding of NDVI greenness into a particular portion of the annual cycle, measured by the length of the mean greenness vector. More evergreen vegetation shows lower seasonality.",
-				"legend": "legends/aab.png"
-			},
-			{
-				"id": "BeginningGrowingSeason",
-				"name": "Beginning of Growing Season",
-				"info": "Start of the growing season measured as the point in time when 15 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years.",
-				"legend": "legends/abn.png"
-			},
-			{
-				"id": "Midpoint",
-				"name": "Middle of Growing Season",
-				"info": "Middle of the growing season. This is determined by the direction, or angle on the annual cycle, of the mean greenness vector.",
-				"legend": "legends/abn.png"
-			},
-			{
-				"id": "EndGrowingSeason",
-				"name": "End of Growing Season",
-				"info": "End of the growing season measured as the point in time when 85 percent of the total annual greenness has already occurred. This is an arbitrary benchmark, applied in a standard way across all cells and years. ",
-				"legend": "legends/abn.png"
-			},
-			{
-				"id": "SeasonLength",
-				"name": "Growing Season Length",
-				"info": "Number of days between the beginning and end of growing season dates.",
-				"legend": "legends/aad.png"
-			},
-			{
-				"id": "NDVIStdDv",
-				"name": "Within-year Greenness Variability",
-				"info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the year.",
-				"legend": "legends/aaa.png"
-			}
-		],
-		"phenoclasses": [
-			{
-				"id": "Phenoclass500_MultiAnnual",
-				"name": "Multi-Annual Phenoclasses",
-				"info": "Classification of cells into 500 phenological classes, placing each cell into only one class, using data from all years.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2001",
-				"name": "500 Phenoclasses, 2001",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2002",
-				"name": "500 Phenoclasses, 2002",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2003",
-				"name": "500 Phenoclasses, 2003",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2004",
-				"name": "500 Phenoclasses, 2004",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2005",
-				"name": "500 Phenoclasses, 2005",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2006",
-				"name": "500 Phenoclasses, 2006",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2007",
-				"name": "500 Phenoclasses, 2007",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2008",
-				"name": "500 Phenoclasses, 2008",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2009",
-				"name": "500 Phenoclasses, 2009",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2010",
-				"name": "500 Phenoclasses, 2010",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2011",
-				"name": "500 Phenoclasses, 2011",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2012",
-				"name": "500 Phenoclasses, 2012",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2013",
-				"name": "500 Phenoclasses, 2013",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2014",
-				"name": "500 Phenoclasses, 2014",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			},
-			{
-				"id": "Phenoclass500_2015",
-				"name": "500 Phenoclasses, 2015",
-				"info": "Classification of cells into one of 500 phenological classes, using phenology data from a single year. The year is a 'phenological year' rather than a calendar year, but it corresponds broadly to the indicated calendar year.",
-				"legend": "legends/abz.png"
-			}
-		],
-		"phenoclass-derived": [
-			{
-				"id": "TotalPath",
-				"name": "Total Year-to-Year Path Length",
-				"info": "Total summed amount or 'length' of all annual phenological changes from 2000 to 2015; a measure of the cumulative degree of change.",
-				"legend": "legends/aaq.png"
-			},
-			{
-				"id": "FinalDistance",
-				"name": "Final Between-years Distance",
-				"info": "Amount of phenological difference between the first and last years, 2000 and 2015; analogous to a straight-line distance rather than the path length. ",
-				"legend": "legends/aar.png"
-			},
-			{
-				"id": "MaximumStep",
-				"name": "Maximum Year-to-Year Step",
-				"info": "The single largest annual phenological change observed between any two consecutive years.",
-				"legend": "legends/aas.png"
-			},
-			{
-				"id": "MeanStep",
-				"name": "Mean Year-to-Year Step",
-				"info": "The mean annual phenological change observed between consecutive years.",
-				"legend": "legends/aat.png"
-			},
-			{
-				"id": "MinimumStep",
-				"name": "Minimum Year-to-Year Step",
-				"info": "The smallest annual phenological change observed between any two consecutive years.",
-				"legend": "legends/aau.png"
-			},
-			{
-				"id": "MaximumDistance",
-				"name": "Maximum Between-years Distance",
-				"info": "The amount of phenological difference between the two most different years, from 2000 to 2015.",
-				"legend": "legends/aav.png"
-			},
-			{
-				"id": "MeanDistance",
-				"name": "Mean Between-years Distance",
-				"info": "The mean phenological difference between any two years, regardless of order, from 2000 to 2015.",
-				"legend": "legends/aaw.png"
-			},
-			{
-				"id": "MinimumDistance",
-				"name": "Minimum Between-years Distance",
-				"info": "The amount of phenological difference between the two most similar years, from 2000 to 2015.",
-				"legend": "legends/aax.png"
-			},
-			{
-				"id": "HighNDVI",
-				"name": "High NDVI",
-				"info": "Highest mean annual NDVI reached, from 2000 to 2015.",
-				"legend": "legends/aap.png"
-			},
-			{
-				"id": "LowNDVI",
-				"name": "Low NDVI",
-				"info": "Lowest mean annual NDVI reached, from 2000 to 2015.",
-				"legend": "legends/aao.png"
-			}
-		],
-		"longtermlandshift": [
-			{
-				"id": "CompositionalShift",
-				"name": "Landscape Compositional Shift",
-				"info": "Expected shift in landscape composition, in terms of phenological classes, on a decadal time scale. Estimated through projection of observed phenological change.",
-				"legend": "legends/abs.png"
-			},
-			{
-				"id": "ChangeSeasonality",
-				"name": "Long-term Shift in Seasonality",
-				"info": "Expected gains and losses in the value of the Seasonality (deciduousness) variable on a decadal time scale. Estimated through projection of observed phenological change.",
-				"legend": "legends/abt.png"
-			},
-			{
-				"id": "ChangeAscendency",
-				"name": "Long-term Shift in Ascendency",
-				"info": "Expected gains and losses in the value of the Ascendency information metric on a decadal time scale. Estimated through projection of observed phenological change.",
-				"legend": "legends/abu.png"
-			},
-			{
-				"id": "ChangeCondEntropy",
-				"name": "Long-term Shift in Conditional Entropy",
-				"info": "Expected gains and losses in the value of the Conditional Entropy information metric on a decadal time scale. Estimated through projection of observed phenological change.",
-				"legend": "legends/aby.png"
-			},
-      {
-        "id": "ChangeNDVI",
-        "name": "Long-term Shift in Growing Season Greenness",
-        "info": "Expected gains and losses in the value of the mean growing season greenness (NDVI) on a decadal time scale. Estimated through projection of observed phenological change.",
-        "legend": "legends/aca.png"
-		  },
-      {       
-        "id": "ChangeMutualInfo",
-        "name": "Long-term Shift in Mutual Information",
-        "info": "Expected gains and losses in the value of the Mutual Information metric on a decadal time scale. Estimated through projection of observed phenological change.",
-        "legend": "legends/acb.png"
-      }
-    ]  
-	}
+    "mapserverUrl": "https://gis.nemac.org/landat",
+    "defaultLayerOpacity": 0.75,
+    "logo": {
+        "image": "imgs/landat_logo_blue.png",
+        "label": "Logo for the LanDat project",
+        "link": "https://landat.org",
+        "location": "leaflet-bottom leaflet-right"
+    },
+    "pois": [],
+    "map": {
+        "id": "map",
+        "center": ["38.5", "-81"],
+        "zoom": "6",
+        "options": {
+            "attributionControl": false,
+            "doubleClickZoom": false
+        }
+    },
+    "baselayers" : [
+        {
+            "id": "esri-imagery",
+            "url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            "attribution": "Powered by <a href='https://www.esri.com/'>ESRI</a> | ESRI, DigitalGlobe, GeoEye, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, swisstopo, and the GIS User Community",
+            "subdomains": ["server", "services"],
+            "label": "ESRI Imagery",
+            "image": "imgs/esri-imagery.jpg",
+            "active": false
+        },
+        {
+            "id": "esri-topo",
+            "url": "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+            "attribution": "Powered by <a href='https://www.esri.com/'>ESRI</a> | ESRI, USGS, NOAA",
+            "subdomains": ["server", "services"],
+            "label": "ESRI Topo",
+            "image": "imgs/esri-topo.jpg",
+            "active": true
+        },
+        {
+            "id": "carto-light",
+            "url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
+            "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
+            "label": "CARTO Streets",
+            "image": "imgs/carto-light.jpg",
+            "active": false
+        },
+        {
+            "id": "carto-dark",
+            "url": "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
+            "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://carto.com/attributions'>CARTO</a>",
+            "active": false
+        }
+    ],
+    "layout" : {
+        "layer-groups-order": [
+            {
+                "id": "boundaries",
+                "name": "Reference and Boundaries",
+                "info": "Ancillary reference data from external sources.",
+                "active": false
+            },
+            {
+                "id": "phenology-variables",
+                "name": "Annual Phenology Variables",
+                "info": "Phenology variables describing changes in vegetation across the annual cycle, where the cycle begins at the start of the phenological year. The phenological year and all variables are derived from polar graphs of the vegetation index data. Mean values for 2000 - 2017 are shown; values for individual years are available.",
+                "active": false
+            },
+            {
+                "id": "summary-phenology",
+                "name": "Summary Phenology Variables",
+                "info": "Summary variables describing over 95 percent of the variation in all of the phenology variables. Produced by factor analysis, a statistical method that reduces variation in many variables, some of which may be duplicative, to a few distinctive core components.",
+                "active": false
+            },
+            {
+                "id": "phenoclasses",
+                "name": "Phenological Classes (phenoclasses)",
+                "info": "Classification of phenological types on the basis of similarities and differences in the phenology variables. Important biophysical and ecological gradients are reflected by their phenologies. Produced by cluster analysis on the four phenology factors—each 'phenoclass' has a unique combination of factor values. Similar phenoclasses have similar color on the basis of their characteristic factor values.",
+                "active": false
+            },
+            {
+                "id": "phenoclass-derived",
+                "name": "Phenological Change Metrics",
+                "info": "Estimates of change within and across the 2000 - 2017 period. Year-to-year change in annual phenology can result from vegetation disturbance and recovery, responses to climate variability, land use change, and other factors. Metrics are calculated from the amount of year-to-year difference in each of the four phenology factors.",
+                "active": false
+            },
+            {
+                "id": "it-metrics",
+                "name": "Landscape Information-Theoretic Metrics",
+                "info": "Metrics for assessing the complexity, organization, and development of landscape dynamics over time. Derived from information theory, as applied in ecosystem ecology. Dynamics are measured as year-to-year changes in phenoclass for individual pixels, compiled across 25-pixel landscapes from 2000 to 2017. Each pixel has the metric value for the landscape that surrounds it.",
+                "active": false
+            },
+            {
+                "id": "longtermlandshift",
+                "name": "Long-term Landscape Shift",
+                "info": "Measures of long-term landscape stability (or instability) implied by the observed phenoclass dynamics. Dynamics are measured as year-to-year changes in phenoclass for individual pixels, compiled across 25-pixel landscapes from 2000 to 2017. These changes cumulatively result in landscape trajectories, for both the phenology variables and the information-theoretic metrics.",
+                "active": false
+            },
+            {
+                "id": "carbon-models",
+                "name": "Carbon Models",
+                "info": "",
+                "active": false
+            },
+            {
+                "id": "ancillary",
+                "name": "Landscape and Climate Characteristics",
+                "info": "Ancillary data from external sources, for comparison with LanDAT metrics",
+                "active": false
+            }
+        ]
+    },
+    "active-layers": [
+        "States"
+    ],
+    "layers" : {
+        "carbon-models": [
+            {
+                "id": "FIACarbonStorage",
+                "name": "Estimated carbon storage, 2000-2009",
+                "info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. USFS Forest Inventory and Analysis (FIA) program.",
+                "legend": "legends/aaz.png"
+            },
+            {
+                "id": "LanDATCStorage",
+                "name": "LanDAT carbon storage model",
+                "info": "Carbon storage, estimated as total carbon density (metric tonnes per hectare) in all vegetation. LanDAT model using 2000-2015 MODIS data, trained on FIA estimates.",
+                "legend": "legends/aay.png"
+            },
+            {
+                "id": "ShiftCarbonStorage",
+                "name": "Landscape Shift in Carbon Storage",
+                "info": "Long-term (decadal) expected gains and losses in carbon density, estimated from observed annual changes in LanDAT phenological variables.",
+                "legend": "legends/abq.png"
+            }
+        ],
+        "boundaries" : [
+            {
+                "id": "na_boundaries",
+                "name": "North American states and provinces (coarse)",
+                "info": "North American political boundaries from the Commission for Environmental Cooperation, a combined effort of the National Atlas program in Canada, the U.S. Geological Survey, and Mexico's Instituto Nacional de Estadística y Geografía.",
+                "url": "https://gis.nemac.org/landat-vector",
+                "legend": "legends/abi.png",
+                "type": "overlay"
+            },
+            {
+                "id": "States",
+                "name": "U.S. states (precise)",
+                "info": "U.S. state borders from the U.S. Census Bureau's TigerLine products",
+                "url": "https://gis.nemac.org/landat-vector",
+                "legend": "legends/abi.png",
+                "type": "overlay"
+            },
+            {
+                "id": "CountiesBlack",
+                "name": "Counties",
+                "info": "U.S. county borders from the U.S. Census Bureau's TigerLine products",
+                "url": "https://gis.nemac.org/landat-vector",
+                "legend": "legends/abj.png",
+                "type": "overlay"
+            }
+        ],
+        "ancillary": [
+            {
+                "id": "NLCD2016",
+                "name": "Land Cover, 2016",
+                "info": "Modified National Land Cover Database (NLCD) extended to North America, 2016",
+                "legend": "legends/aba.png"
+            },
+            {
+                "id": "Riitters_LandPattern",
+                "name": "Landscape Mosaic Pattern",
+                "info": "An index measuring the mixture of agricultural, developed, and semi-natural land cover types within 15-hectare (37-acre) neighborhoods. US Forest Service, based on the 2011 National Land Cover Database.",
+                "legend": "legends/abl.png"
+            },
+            {
+                "id": "Riitters_ForestDensity",
+                "name": "Landscape Forest Density",
+                "info": "An index estimating the proportion of the landscape around a given forest area that is also forested, measured within 15-hectare (37-acre) neighborhoods. Low-density areas may be fragmented by non-forest land uses or natural non-forest cover. US Forest Service, based on the 2011 National Land Cover Database.",
+                "legend": "legends/abk.png"
+            },
+            {
+                "id": "TotalBasalArea",
+                "name": "Total Tree Basal Area",
+                "info": "Estimated total tree basal area. USFS Forest Health Technology Enterprise Team, 2012.",
+                "legend": "legends/abg.png"
+            },
+            {
+                "id": "PercentBasalRisk",
+                "name": "Tree Basal Area at Risk from Insect and Disease Pathogens",
+                "info": "Percent of basal area estimated to be at risk. USFS Forest Health Technology Enterprise Team, 2012.",
+                "legend": "legends/abh.png"
+            },
+            {
+                "id": "EvergreenDecline",
+                "name": "Decline in Evergreen Vegetation, 2000-2011",
+                "info": "Rate of decline in the evergreen (non-deciduous) component of vegetation greenness (NDVI) from 2000 to 2011. Higher values indicate stronger decline.",
+                "legend": "legends/abr.png"
+            },
+            {
+                "id": "HousingDensity",
+                "name": "Housing Density, 2010",
+                "info": "Housing units per squ. km, by partial census block group. US Census Bureau and SILVIS Lab.",
+                "legend": "legends/abo.png"
+            },
+            {
+                "id": "PalmerMonthly",
+                "name": "Palmer Drought Severity Index, 2000-2015 Mean",
+                "info": "Self-calibrated drought index (scPDSI); mean monthly value, 2000-2015. Values below -0.5 indicate drier than normal.",
+                "legend": "legends/abc.png"
+            },
+            {
+                "id": "PalmerAnnual",
+                "name": "Palmer Drought Severity Index, 2000-2015 Variability",
+                "info": "Self-calibrated drought index (scPDSI); inter-annual variability, 2000-2015. Higher values indicate more year-to-year variation.",
+                "legend": "legends/abd.png"
+            },
+            {
+                "id": "mtbs-raster-00-18",
+                "name": "Historical Fires from 2000 to 2018",
+                "info": "Shows locations and intensities of fires that occured from 2000 to 2016",
+                "url": "https://fswms.nemac.org/rlayers",
+                "legend": "legends/abe.png"
+            },
+            {
+                "id": "mtbs-raster-84-99",
+                "name": "Historical Fires from 1984 to 1999",
+                "info": "Shows locations and intensities of fires that occured from 1984 to 1999",
+                "url": "https://fswms.nemac.org/rlayers",
+                "legend": "legends/abf.png"
+            }
+        ],
+        "summary-phenology": [
+            {
+                "id": "Factor1Timing",
+                "name": "Factor 1 - Timing",
+                "info": "Factors 1 and 2 are very closely associated with the day-of-year variables, and therefore represent aspects of timing across the annual cycle. Two factors are required to fully represent timing around the annual cycle in the two-dimensional polar graphs (each timing variable must be represented by its sine and cosine).",
+                "legend": "legends/fscore1.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/factor1_timing.zip"
+            },
+            {
+                "id": "Factor2Timing",
+                "name": "Factor 2 - Timing",
+                "info": "Factors 1 and 2 are very closely associated with the day-of-year variables, and therefore represent aspects of timing across the annual cycle. Two factors are required to fully represent timing around the annual cycle in the two-dimensional polar graphs (each timing variable must be represented by its sine and cosine).",
+                "legend": "legends/fscore2.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/factor2_timing.zip"
+            },
+            {
+                "id": "Factor3Productivity",
+                "name": "Factor 3 - Productivity",
+                "info": "Factor 3 is very closely associated with NDVI greenness, and therefore also corresponds to the amount and productivity of vegetation.",
+                "legend": "legends/green_fscore3.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/factor3_productivity.zip"
+            },
+            {
+                "id": "Factor4Seasonality",
+                "name": "Factor 4 - Seasonality",
+                "info": "Factor 4 is very closely related to variables representing seasonality and growing season length (which are themselves closely related). Lower factor 4 values correspond to stronger seasonality or deciduousness, and shorter growing seasons.",
+                "legend": "legends/gmag_fscore4.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/factor4_seasonality.zip"
+            }
+        ],
+        "it-metrics": [
+            {
+                "id": "DynamicActivity",
+                "name": "Rate of Inter-annual Change",
+                "info": "The proportion of inter-annual change events in which a change in phenoclass occurs (as opposed to phenoclass stability). An indicator of how dynamic a landscape is over the short term.",
+                "legend": "legends/rate.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/rate_inter-annual_change_2000-2016.zip"
+            },
+            {
+                "id": "MeanShannon",
+                "name": "Shannon Entropy",
+                "info": "Measures the total complexity, or diversity, of observed landscape dynamics. Higher values indicate a greater variety of transitions among different phenoclasses.",
+                "legend": "legends/it1_a.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/shannon_entropy_2000-2016.zip"
+            },
+            {
+                "id": "MutualInformation",
+                "name": "Mutual Information",
+                "info": "Measures the component of overall complexity (Shannon Entropy) which is predictable or organized. Higher values indicate that given the phenoclass states in one year, it is easy to predict the states in the next year.",
+                "legend": "legends/it1_b.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/mutual_info_2000-2016.zip"
+            },
+            {
+                "id": "ConditionalEntropy",
+                "name": "Conditional Entropy",
+                "info": "Measures the component of overall complexity (Shannon Entropy) which is unpredictable, disorganized, or redundant. The complement of Mutual Information.",
+                "legend": "legends/it1_c.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/conditional_entropy_2000-2016.zip"
+            },
+            {
+                "id": "Development",
+                "name": "Development",
+                "info": "Mutual Information standardized by Shannon Diversity: the proportion of the overall complexity which is organized and predictable. In other words, the degree of organization, given the amount of complexity present.",
+                "legend": "legends/it1_d.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/development_2000-2016.zip"
+            },
+            {
+                "id": "Capacity",
+                "name": "Capacity",
+                "info": "Shannon Entropy scaled to productivity, by multiplying by mean NDVI. Measures the complexity of landscape dynamics, and overall productivity.",
+                "legend": "legends/it2_a.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/capacity_2000-2016.zip"
+            },
+            {
+                "id": "Ascendency",
+                "name": "Ascendency",
+                "info": "Mutual Information scaled to productivity, by multiplying by mean NDVI. Measures the predictability or organization of landscape dynamics, and overall productivity.",
+                "legend": "legends/it2_b.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/ascendency_2000-2016.zip"
+            },
+            {
+                "id": "Overhead",
+                "name": "Overhead",
+                "info": "Conditional Entropy scaled to productivity, by multiplying by mean NDVI. Measures the unpredictability or disorganization of landscape dynamics, and overall productivity.",
+                "legend": "legends/it3_a.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/overhead_2000-2016.zip"
+            }
+        ],
+        "phenology-variables": [
+            {
+                "id": "MeanAnnualNDVI",
+                "name": "Mean Annual Greenness",
+                "info": "Mean vegetation index (NDVI) value across the phenological year.",
+                "legend": "legends/a_avg.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/mean_annual_green_2000-2016.zip"
+            },
+            {
+                "id": "MeanNDVI",
+                "name": "Mean Growing Season Greenness",
+                "info": "Mean vegetation index (NDVI) value within the growing season, i.e., between the beginning and end of growing season dates.",
+                "legend": "legends/s_avg.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/mean_grow_season_green_2000-2016.zip"
+            },
+            {
+                "id": "Seasonality",
+                "name": "Degree of Seasonality, or Deciduousness",
+                "info": "Dominance of NDVI greenness in one portion of the year, visible in polar graphs as 'off-centered' annual cycles. Measured by the length of the mean NDVI vector in polar graphs. More evergreen vegetation shows lower seasonality.",
+                "legend": "legends/gmag_legend_flip_smag_stand.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/seasonality_2000-2016.zip"
+            },
+            {
+                "id": "NDVIStdDv",
+                "name": "Growing Season Greenness Variability",
+                "info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the growing season.",
+                "legend": "legends/gmag_legend_flip_s_sd.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/grow_season_green_variability_2000-2016.zip"
+            },
+            {
+                "id": "SeasonLength",
+                "name": "Growing Season Length",
+                "info": "Number of days between the beginning and end of growing season dates.",
+                "legend": "legends/gmag_s_intv.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/grow_season_length_2000-2016.zip"
+            },
+            {
+                "id": "BeginningGrowingSeason",
+                "name": "Beginning of Growing Season",
+                "info": "Julian day of year when 15 percent of the total accumulated greenness for the phenological year has already occurred. Fifteen percent is an arbitrary benchmark, applied in a standard way across all places and years.",
+                "legend": "legends/dayofyear_101619.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/grow_season_begin_2000-2016.zip"
+            },
+            {
+                "id": "EarlyGrowingSeasonCenter",
+                "name": "Early Growing Season Center",
+                "info": "Julian day of year marking the 'center of mass' of NDVI values in the first half of the growing season. Measured by the direction of the mean NDVI vector between the start and middle of growing season dates.",
+                "legend": "legends/dayofyear_101619.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/early_grow_season_center_2000-2016.zip"
+            },
+            {
+                "id": "EarlyGrowingSeasonMagnitude",
+                "name": "Early Growing Season Magnitude",
+                "info": "Dominance of greenness in the first half of the growing season. Measured by the length of the mean NDVI vector between the start and middle of growing season dates.",
+                "legend": "legends/ems_mag_101619.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/early_grow_season_mag_2000-2016.zip"
+            },
+            {
+                "id": "Midpoint",
+                "name": "Middle of Growing Season",
+                "info": "Julian day of year marking the middle of the growing season. Measured by the direction of the mean NDVI vector in polar graphs.",
+                "legend": "legends/dayofyear_101619.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/middle_grow_season_2000-2016.zip"
+            },
+            {
+                "id": "LateGrowingSeasonCenter",
+                "name": "Late Growing Season Center",
+                "info": "Julian day of year marking the 'center of mass' of NDVI values in the second half of the growing season. Measured by the direction of the mean NDVI vector between the middle and end of growing season dates.",
+                "legend": "legends/dayofyear_101619.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/late_grow_season_center_2000-2016.zip"
+            },
+            {
+                "id": "LateGrowingSeasonMagnitude",
+                "name": "Late Growing Season Magnitude",
+                "info": "Dominance of greenness in the second half of the growing season. Measured by the length of the mean NDVI vector between the middle and end of growing season dates.",
+                "legend": "legends/lms_mag_green.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/late_grow_season_mag_2000-2016.zip"
+            },
+            {
+                "id": "EndGrowingSeason",
+                "name": "End of Growing Season",
+                "info": "Julian day of year when 80 percent of the total accumulated greenness for the phenological year has already occurred. Eighty percent is an arbitrary benchmark, applied in a standard way across all places and years.",
+                "legend": "legends/dayofyear_101619.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/end_grow_season_2000-2016.zip"
+            }
+        ],
+        "phenoclasses": [
+            {
+                "id": "Phenoclass500_MultiAnnual",
+                "info": "Membership in one of 500 phenological classes, using data from all years",
+                "legend": "legends/phenoclass_legend.png",
+                "name": "500 Phenoclasses, multi-annual",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2000-2016.zip"
+            },
+            {
+                "id": "Phenoclass500_2001",
+                "name": "500 Phenoclasses, 2000",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2000.zip"
+            },
+            {
+                "id": "Phenoclass500_2002",
+                "name": "500 Phenoclasses, 2001",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2001.zip"
+            },
+            {
+                "id": "Phenoclass500_2003",
+                "name": "500 Phenoclasses, 2002",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2002.zip"
+            },
+            {
+                "id": "Phenoclass500_2004",
+                "name": "500 Phenoclasses, 2003",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2003.zip"
+            },
+            {
+                "id": "Phenoclass500_2005",
+                "name": "500 Phenoclasses, 2004",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2004.zip"
+            },
+            {
+                "id": "Phenoclass500_2006",
+                "name": "500 Phenoclasses, 2005",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2005.zip"
+            },
+            {
+                "id": "Phenoclass500_2007",
+                "name": "500 Phenoclasses, 2006",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2006.zip"
+            },
+            {
+                "id": "Phenoclass500_2008",
+                "name": "500 Phenoclasses, 2007",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2007.zip"
+            },
+            {
+                "id": "Phenoclass500_2009",
+                "name": "500 Phenoclasses, 2008",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2008.zip"
+            },
+            {
+                "id": "Phenoclass500_2010",
+                "name": "500 Phenoclasses, 2009",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2009.zip"
+            },
+            {
+                "id": "Phenoclass500_2011",
+                "name": "500 Phenoclasses, 2010",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2010.zip"
+            },
+            {
+                "id": "Phenoclass500_2012",
+                "name": "500 Phenoclasses, 2011",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2011.zip"
+            },
+            {
+                "id": "Phenoclass500_2013",
+                "name": "500 Phenoclasses, 2012",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2012.zip"
+            },
+            {
+                "id": "Phenoclass500_2014",
+                "name": "500 Phenoclasses, 2013",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2013.zip"
+            },
+            {
+                "id": "Phenoclass500_2015",
+                "name": "500 Phenoclasses, 2014",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2014.zip"
+            },
+            {
+                "id": "Phenoclass500_2016",
+                "name": "500 Phenoclasses, 2015",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2015.zip"
+            },
+            {
+                "id": "Phenoclass500_2017",
+                "name": "500 Phenoclasses, 2016",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2016.zip"
+            }
+
+        ],
+        "phenoclass-derived": [
+            {
+                "id": "TotalPath",
+                "name": "Total Year-to-Year Path Length",
+                "info": "Total summed amount or 'length' of all annual changes. Estimates the cumulative variability, which may be large even if the final state is similar to the initial state.",
+                "legend": "legends/change_totpath.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/total_y2y_path_length_2000-2016.zip"
+            },
+            {
+                "id": "FinalDistance",
+                "name": "Final Between-years Distance",
+                "info": "Amount of difference between the first and last years. Analogous to a straight-line distance rather than the path length.",
+                "legend": "legends/change_findist.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/final_between_years_dist_2000-2016.zip"
+            },
+            {
+                "id": "MaximumStep",
+                "name": "Maximum Year-to-Year Step",
+                "info": "The single largest change observed between any two consecutive years.",
+                "legend": "legends/change_maxstep.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/maximum_y2y_step_2000-2016.zip"
+            },
+            {
+                "id": "MeanStep",
+                "name": "Mean Year-to-Year Step",
+                "info": "The mean change observed between consecutive years.",
+                "legend": "legends/change_meanstep.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/mean_y2y_step_2000-2016.zip"
+            },
+            {
+                "id": "MinimumStep",
+                "name": "Minimum Year-to-Year Step",
+                "info": "The smallest change observed between any two consecutive years.",
+                "legend": "legends/change_minstep.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/min_y2y_step_2000-2016.zip"
+            },
+            {
+                "id": "MaximumDistance",
+                "name": "Maximum Between-years Distance",
+                "info": "The difference between the two most different years (the two years need not be consecutive).",
+                "legend": "legends/change_maxdist.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/max_between_years_dist_2000-2016.zip"
+            },
+            {
+                "id": "MeanDistance",
+                "name": "Mean Between-years Distance",
+                "info": "The mean difference between any two years, considering all possible year combinations.",
+                "legend": "legends/change_meandist.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/mean_between_years_dist_2000-2016.zip"
+            },
+            {
+                "id": "MinimumDistance",
+                "name": "Minimum Between-years Distance",
+                "info": "The difference between the two most similar years (the two years need not be consecutive).",
+                "legend": "legends/change_mindist.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/min_between_years_dist_2000-2016.zip"
+            }
+        ],
+        "longtermlandshift": [
+            {
+                "id": "CompositionalShift",
+                "name": "Landscape Compositional Shift",
+                "info": "Gross measure of the degree of stability or instability of landscape dynamics. While short-term phenoclass dynamics may be strong (see Rate of Inter-annual Change, above), those changes may or may not result in long-term changes in overall phenoclass composition and phenological characteristics. Higher values indicate 'instability', that is, a strong trajectory of long-term change.",
+                "legend": "legends/kl_dist.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/landscape_comp_shift_2000-2016.zip"
+            },
+            {
+                "id": "ChangeGrowingSeasonGreenness",
+                "name": "Growing Season Greenness Trajectory",
+                "info": "Trajectory of change in Mean Growing Season Greenness at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift1_s_avg.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/grow_season_green_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "SeasonalityTrajectory",
+                "name": "Seasonality Trajectory",
+                "info": "Trajectory of change in Seasonality at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift1_s_mag.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/seasonality_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "GrowingSeasonLengthTrajectory",
+                "name": "Growing Season Length Trajectory",
+                "info": "Trajectory of change in Growing Season Length at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift1_s_intv.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/mid_grow_season_length_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "MidGrowingSeasonTrajectory",
+                "name": "Middle of Growing Season Trajectory",
+                "info": "Trajectory of change in the Middle of Growing Season date at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift1_ms.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/mid_grow_season_length_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "ChangeFactor1",
+                "name": "Factor 1 Trajectory",
+                "info": "Trajectory of change in Phenology Factor 1 (timing) at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift1_f1.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/factor1_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "ChangeFactor2",
+                "name": "Factor 2 Trajectory",
+                "info": "Trajectory of change in Phenology Factor 2 (timing) at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift1_f2.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/factor2_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "ChangeFactor3",
+                "name": "Factor 3 Trajectory",
+                "info": "Trajectory of change in Phenology Factor 3 (productivity) at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift1_f3.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/factor3_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "ChangeFactor4",
+                "name": "Factor 4 Trajectory",
+                "info": "Trajectory of change in Phenology Factor 4 (seasonality) at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift1_f4.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/factor4_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "ChangeShannon",
+                "name": "Shannon Entropy Trajectory",
+                "info": "Trajectory of change in Shannon Entropy at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift2_hx.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/shannon_entropy_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "ChangeMutualInfo",
+                "name": "Mutual Information Trajectory",
+                "info": "Trajectory of change in Mutual Information at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift2_mi.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/mutual_info_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "ChangeCondEntropy",
+                "name": "Conditional Entropy Trajectory",
+                "info": "Trajectory of change in Conditional Entropy at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift2_condent.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/conditional_entropy_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "ChangeDevelopment",
+                "name": "Development Trajectory",
+                "info": "Trajectory of change in Development at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift2_develop.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/development_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "ChangeCapacity",
+                "name": "Capacity Trajectory",
+                "info": "Trajectory of change in Capacity at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift2_capacity.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/capacity_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "ChangeAscendency",
+                "name": "Ascendency Trajectory",
+                "info": "Trajectory of change in Ascendency at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift2_ascend.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/ascendency_trajectory_2000-2016.zip"
+            },
+            {
+                "id": "ChangeOverhead",
+                "name": "Overhead Trajectory",
+                "info": "Trajectory of change in Overhead at the landscape scale, implied by the observed phenoclass dynamics.",
+                "legend": "legends/shift2_ovhead.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/overhead_trajectory_2000-2016.zip"
+            }
+        ]
+    }
 }

@@ -14,7 +14,7 @@ import {updateShareUrl} from './share';
 import BindMobileMenuEvents from './mobile';
 import BindDesktopMenuEvents from './panelToggle';
 
-var css = require('../css/sass/landat.scss')
+var css = require('../sass/landat.scss')
 
 // Does not rely on map object or config file
 var Base = function (config) {
