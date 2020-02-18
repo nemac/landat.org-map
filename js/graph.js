@@ -39,13 +39,13 @@ function extendDateModule () {
 ////////////////////// GRAPH DATA PROCESSING ///////////////////////////////
 
 function handleGraphDataResponse (div, poi, response) {
-    response = response.replace(/\[|\]|\'/g, "").split(", ");
+    response = JSON.parse(response);
     drawGraph(response, div, poi);
     updatePanelDragOverlayHeight()
 }
 
 function getData(poi, div) {
-    var url = "https://fcav-ndvi.nemac.org/landdat_product.cgi?args=" + poi.lng + "," + poi.lat;
+    var url = "https://pwol6zjt3f.execute-api.us-east-1.amazonaws.com/production/landat-ndvi?lng=" + poi.lng + "&lat=" + poi.lat;
     var oReq = GetAjaxObject(function (response) {
         handleGraphDataResponse(div, poi, response)
     })
