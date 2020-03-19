@@ -37,8 +37,6 @@ const layout = {
     }
 }
 
-let dataPlotly = []
-
 /* END PLOTLY DATA */
 
 export function SetupGraphs () {
@@ -463,9 +461,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
 ///////////////////////// POLAR GRAPH //////////////////////////////////////
 
 function drawPolarGraph(data, div, poi) {
-    if (dataPlotly) {
-        dataPlotly = [] // Clear out the previous polar graph data
-    }
+    let dataPlotly = []
     // Take the existing array of baseline ndvi values and add non-leap year date values to them
     // This is till a work in progress
     var baselineDateAndValuesArray = []
