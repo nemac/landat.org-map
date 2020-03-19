@@ -5,6 +5,42 @@ import {GetAjaxObject} from './parser'
 
 var tip = {};
 
+/* PLOTLY DATA */
+
+const layout = {
+    width: 575,
+    height: 575,
+    legend: {
+        title: {
+            text: 'Click to turn on/off'
+        },
+    },
+    polar: {
+        domain: {
+            x: [0, 100],
+            y: [1, 365]
+        },
+        radialaxis: {
+            visible: true,
+            type: "linear",
+        },
+        angularaxis: {
+            visible: true,
+            type: "linear",
+            tickmode: "array",
+            showticklabels: true,
+            tickvals: [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335],
+            ticktext: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            direction: "clockwise",
+            period: 12
+        }
+    }
+}
+
+let dataPlotly = []
+
+/* END PLOTLY DATA */
+
 export function SetupGraphs () {
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
     extendDateModule();
@@ -249,7 +285,8 @@ function drawGraph(data, div, poi) {
     var reprocessedData = reprocessData(data);
     makeUpDownLineGraph(data, div);
     makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, poi);
-    drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, poi);
+    //drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, poi);
+    drawPolarGraph(reprocessedData, div, poi);
     div.classList.remove("graph-loading");
 }
 
@@ -425,6 +462,67 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
 
 ///////////////////////// POLAR GRAPH //////////////////////////////////////
 
+function drawPolarGraph(data, div, poi) {
+    if (dataPlotly) {
+        dataPlotly = [] // Clear out the previous polar graph data
+    }
+    // Take the existing array of baseline ndvi values and add non-leap year date values to them
+    // This is till a work in progress
+    var baselineDateAndValuesArray = []
+    data[2001].forEach(function (itemOne){
+        data['baseline'].forEach(function (itemTwo){
+            baselineDateAndValuesArray.push([itemOne, itemTwo])
+        })
+    })
+    var wrapper = d3.select(div).append("div").classed("polar-graph", true);
+    for (const [key, value] of Object.entries(data)) {
+        if (key !== 'keys') {
+            if (key === 'baseline') {
+                console.log(baselineDateAndValuesArray)
+                //dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, key, true))
+            } else {
+                dataPlotly = dataPlotly.concat(buildTrace(value, key))
+            }
+        }
+    }
+    Plotly.newPlot(wrapper.node(), dataPlotly, layout)
+}
+
+/* PLOTLY FUNCTIONS */
+
+const getDayOfYear = date => {
+    var start = new Date(date.getFullYear(), 0, 0);
+    var diff = date - start;
+    var oneDay = 1000 * 60 * 60 * 24;
+    var day = Math.floor(diff / oneDay);
+    return day;
+}
+
+function buildTrace(data, traceName, visibility = 'legendonly') {
+    var r = []
+    var theta = []
+    var dateArray = []
+    data.forEach(function (item, index) {
+        let date = new Date(
+            parseInt(item[0].substring(0, 4)), // year
+            (parseInt(item[0].substring(4, 6)) - 1), // months are 0-indexed
+            parseInt(item[0].substring(6, 8))) // day of month
+        r.push(parseInt(item[1], 10))
+        theta.push(getDayOfYear(date))
+        dateArray.push(date)
+    })
+    return [{
+        type: 'scatterpolar',
+        visible: visibility,
+        mode: "lines+markers",
+        name: traceName,
+        r: r,
+        theta: theta,
+        customdata: dateArray,
+        hovertemplate: "%{customdata|%B %d, %Y}<br>NDVI: %{r:.1f}<extra></extra>"
+    }]
+}
+
 function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
     var width = 490,
         height = 490,
@@ -460,8 +558,7 @@ function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
 
     /**
      * Sets up the canvas where the circle will be drawn.
-     */
-    var wrapper = d3.select(div).append("div").classed("polar-graph", true);
+     */  
     var svg = wrapper.append("svg")
         //.attr("width", width)
         //.attr("height", height)
@@ -759,7 +856,6 @@ function findPolarThresholds (data, startDay) {
             continue;
         }
     }
-
     var circleCenter = [0, 0];
 
     var fifteenEnd = [(fifteenIndex * 8) + 3, 100];
@@ -861,7 +957,6 @@ function createCheckbox(wrapper, key, type, poi, charts, data, line, svg, averag
                 dispatchGraphCheckboxClick(newYear + ' ' + type + ' timeseries on');
             }
             handleCheckboxSync(key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""), this.checked);
-            console.log(poi);
             updateShareUrl();
         });
 
