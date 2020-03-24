@@ -428,14 +428,22 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
 
 function drawPolarGraph(data, div, poi) {
     let dataPlotly = []
+
     // Take the existing array of baseline ndvi values and add non-leap year date values to them
-    // This is till a work in progress
     var baselineDateAndValuesArray = []
     var center = findPolarCenter(data)
-    var thresholds = findPolarThresholds(data['baseline'], center[1][0])
     data[2001].forEach(function (item, index){
         baselineDateAndValuesArray.push([item[0], data['baseline'][index]]) 
     })
+
+    // Build data for centerline and thresholds
+    var centerDay = center[1][0]
+    var centerDayOpposite = (centerDay + (365 / 2)) % 365
+    var centerDayData = [centerDay, 100]
+    var centerDayOppositeData = [centerDayOpposite, 100]
+    var centerPoint = center[1][1]
+    var growingSeasonData = [centerDayData, centerDayOppositeData, centerPoint]
+    var thresholds = findPolarThresholds(data['baseline'], center[1][0])
     var wrapper = d3.select(div).append("div").classed("polar-graph", true);
     for (const [key, value] of Object.entries(data)) {
         if (key !== 'keys') {
@@ -447,8 +455,8 @@ function drawPolarGraph(data, div, poi) {
             }
         }
     }
-    dataPlotly = dataPlotly.concat(buildThresholds(thresholds)) // add baseline thresholds
-    var config = {responsive: true}
+    dataPlotly = dataPlotly.concat(buildThresholdsAndCenterline(thresholds, growingSeasonData)) // add baseline thresholds
+    var config = {responsive: true, displayModeBar: false}
     Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
 }
 
@@ -488,33 +496,77 @@ function buildTrace(data, traceName, visibility = 'legendonly',
     }]
 }
 
-function buildThresholds(data, visibility = true) {
-    return [{
+function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility = true) {
+    return [
+    { // 15% threshold
         type: 'scatterpolar',
         visible: visibility,
+        showlegend: false,
         mode: "lines",
         name: "15% threshold",
         r: [0, 80, 100],
-        theta: [0, data.fifteenEnd, data.fifteenEnd],
+        theta: [0, thresholdData.fifteenEnd, thresholdData.fifteenEnd],
         hovertext: ["", "", "Start of Growing Season"],
         hoverinfo: ["none", "none", "text"],
         line: {
             color: "#800080"
         }
     },
-    {
+    { // 80% threshold
         type: 'scatterpolar',
         visible: visibility,
+        showlegend: false,
         mode: "lines",
         name: "80% threshold",
         r: [0, 80, 100],
-        theta: [0, data.eightyEnd, data.eightyEnd],
+        theta: [0, thresholdData.eightyEnd, thresholdData.eightyEnd],
         hovertext: ["", "", "End of Growing Season"],
         hoverinfo: ["none", "none", "text"],
         line: {
             color: "#800080"
         }
-    }]
+    },
+    { // orange centerline
+        type: 'scatterpolar',
+        visible: visibility,
+        showlegend: false,
+        mode: "lines",
+        name: "centerline",
+        r: [centerlineData[0][1], 0, centerlineData[1][1]],
+        theta: [centerlineData[0][0], centerlineData[0][0], centerlineData[1][0]],
+        hovertext: ["Middle of Phenological Year", "", "Beginning of Phenological Year"],
+        hoverinfo: ["text", "none", "text"],
+        line: {
+            color: "#ffa500"
+        }
+    },
+    { // red center dot
+        type: "scatterpolar",
+        mode: "lines+markers",
+        showlegend: false,
+        r: [centerlineData[2]],
+        theta: [centerlineData[0][0]],
+        hovertemplate: "Center: %{r}<extra></extra>",
+        marker: {
+            size: 9
+        },
+        line: {
+            color: "#ff0000"
+        },
+    },
+    { // red center line
+        type: "scatterpolar",
+        mode: "lines",
+        showlegend: false,
+        r: [0, centerlineData[2]],
+        theta: [0, centerlineData[0][0]],
+        hoverinfo: ["none", "none"],
+        line: {
+            color: "#ff0000",
+            width: 4
+        },
+    },
+    ]
 }
 
 const layout = {
