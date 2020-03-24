@@ -524,7 +524,7 @@ const layout = {
   },
   autosize: true,
   width: 575,
-  height: 575,
+  height: 610,
   legend: {
     title: {
       text: "Click to turn on/off"
