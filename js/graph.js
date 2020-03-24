@@ -5,40 +5,6 @@ import {GetAjaxObject} from './parser'
 
 var tip = {};
 
-/* PLOTLY DATA */
-
-const layout = {
-    width: 575,
-    height: 575,
-    legend: {
-        title: {
-            text: 'Click to turn on/off'
-        },
-    },
-    polar: {
-        domain: {
-            x: [0, 100],
-            y: [1, 365]
-        },
-        radialaxis: {
-            visible: true,
-            type: "linear",
-        },
-        angularaxis: {
-            visible: true,
-            type: "linear",
-            tickmode: "array",
-            showticklabels: true,
-            tickvals: [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335],
-            ticktext: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            direction: "clockwise",
-            period: 12
-        }
-    }
-}
-
-/* END PLOTLY DATA */
-
 export function SetupGraphs () {
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
     extendDateModule();
@@ -97,6 +63,7 @@ function splitData(data) {
 }
 
 function reprocessData (origdata) {
+    console.log(origdata)
     var expectedYearLength = 46;
     var data = {};
     var point;
@@ -281,6 +248,7 @@ function makeZoomToMapMarkerButton(poi) {
 function drawGraph(data, div, poi) {
     data = splitData(data);
     var reprocessedData = reprocessData(data);
+    console.log(reprocessedData)
     makeUpDownLineGraph(data, div);
     makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, poi);
     //drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, poi);
@@ -481,10 +449,11 @@ function drawPolarGraph(data, div, poi) {
             }
         }
     }
-    Plotly.newPlot(wrapper.node(), dataPlotly, layout)
+    var config = {responsive: true}
+    Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
 }
 
-/* PLOTLY FUNCTIONS */
+/* PLOTLY FUNCTIONS AND CONSTANTS */
 
 const getDayOfYear = date => {
     var start = new Date(date.getFullYear(), 0, 0);
@@ -518,6 +487,57 @@ function buildTrace(data, traceName, visibility = 'legendonly') {
         hovertemplate: "%{customdata|%B %d, %Y}<br>NDVI: %{r:.1f}<extra></extra>"
     }]
 }
+
+const layout = {
+  //dragmode: false,
+  modebar: {
+    orientation: 'v'
+  },
+  autosize: true,
+  width: 575,
+  height: 575,
+  legend: {
+    title: {
+      text: "Click to turn on/off"
+    }
+  },
+  polar: {
+    domain: {
+      x: [0, 100],
+      y: [1, 365]
+    },
+    radialaxis: {
+      visible: true,
+      type: "linear",
+      range: [0, 100]
+    },
+    angularaxis: {
+      visible: true,
+      type: "linear",
+      tickmode: "array",
+      showticklabels: true,
+      tickvals: [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335],
+      ticktext: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
+      direction: "clockwise",
+      period: 12
+    }
+  }
+}
+
+/* END PLOTLY FUNCTIONS AND CONSTANTS */
 
 function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
     var width = 490,
