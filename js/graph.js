@@ -63,7 +63,6 @@ function splitData(data) {
 }
 
 function reprocessData (origdata) {
-    console.log(origdata)
     var expectedYearLength = 46;
     var data = {};
     var point;
@@ -248,7 +247,6 @@ function makeZoomToMapMarkerButton(poi) {
 function drawGraph(data, div, poi) {
     data = splitData(data);
     var reprocessedData = reprocessData(data);
-    console.log(reprocessedData)
     makeUpDownLineGraph(data, div);
     makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, poi);
     //drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, poi);
@@ -433,22 +431,23 @@ function drawPolarGraph(data, div, poi) {
     // Take the existing array of baseline ndvi values and add non-leap year date values to them
     // This is till a work in progress
     var baselineDateAndValuesArray = []
-    data[2001].forEach(function (itemOne){
-        data['baseline'].forEach(function (itemTwo){
-            baselineDateAndValuesArray.push([itemOne, itemTwo])
-        })
+    var center = findPolarCenter(data)
+    var thresholds = findPolarThresholds(data['baseline'], center[1][0])
+    data[2001].forEach(function (item, index){
+        baselineDateAndValuesArray.push([item[0], data['baseline'][index]]) 
     })
     var wrapper = d3.select(div).append("div").classed("polar-graph", true);
     for (const [key, value] of Object.entries(data)) {
         if (key !== 'keys') {
             if (key === 'baseline') {
-                console.log(baselineDateAndValuesArray)
-                //dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, key, true))
+                dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, key, true, 
+                                                          "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
             } else {
                 dataPlotly = dataPlotly.concat(buildTrace(value, key))
             }
         }
     }
+    dataPlotly = dataPlotly.concat(buildThresholds(thresholds)) // add baseline thresholds
     var config = {responsive: true}
     Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
 }
@@ -463,7 +462,8 @@ const getDayOfYear = date => {
     return day;
 }
 
-function buildTrace(data, traceName, visibility = 'legendonly') {
+function buildTrace(data, traceName, visibility = 'legendonly', 
+                    hovertemplate = "%{customdata|%B %d, %Y}<br>NDVI: %{r:.1f}<extra></extra>") {
     var r = []
     var theta = []
     var dateArray = []
@@ -484,7 +484,36 @@ function buildTrace(data, traceName, visibility = 'legendonly') {
         r: r,
         theta: theta,
         customdata: dateArray,
-        hovertemplate: "%{customdata|%B %d, %Y}<br>NDVI: %{r:.1f}<extra></extra>"
+        hovertemplate: hovertemplate
+    }]
+}
+
+function buildThresholds(data, visibility = true) {
+    return [{
+        type: 'scatterpolar',
+        visible: visibility,
+        mode: "lines",
+        name: "15% threshold",
+        r: [0, 80, 100],
+        theta: [0, data.fifteenEnd, data.fifteenEnd],
+        hovertext: ["", "", "Start of Growing Season"],
+        hoverinfo: ["none", "none", "text"],
+        line: {
+            color: "#800080"
+        }
+    },
+    {
+        type: 'scatterpolar',
+        visible: visibility,
+        mode: "lines",
+        name: "80% threshold",
+        r: [0, 80, 100],
+        theta: [0, data.eightyEnd, data.eightyEnd],
+        hovertext: ["", "", "End of Growing Season"],
+        hoverinfo: ["none", "none", "text"],
+        line: {
+            color: "#800080"
+        }
     }]
 }
 
@@ -843,7 +872,6 @@ function findPolarThresholds (data, startDay) {
     startIndex += (startIndex > 22) ? (-23) : 23;
     var i, j, length, arr;
     var totalSum = 0;
-    var sum;
     length = 46;
 
     for (i = 0; i < length; i++) {
@@ -872,21 +900,11 @@ function findPolarThresholds (data, startDay) {
             continue;
         }
     }
-    var circleCenter = [0, 0];
 
-    var fifteenEnd = [(fifteenIndex * 8) + 3, 100];
-    var eightyEnd = [(eightyIndex * 8) + 3, 100];
+    var fifteenEnd = (fifteenIndex * 8) + 3
+    var eightyEnd = (eightyIndex * 8) + 3
 
-    return [
-        {
-            "label" : "15%",
-            "data" : [circleCenter, fifteenEnd]
-        },
-        {
-            "label" : "80%",
-            "data" : [circleCenter, eightyEnd]
-        }
-    ];
+    return { fifteenEnd, eightyEnd }
 }
 
 //////////////////////// GRAPH HELPERS ///////////////////////////////////
