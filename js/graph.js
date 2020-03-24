@@ -75,9 +75,9 @@ function reprocessData (origdata) {
         key = point[0].substring(0,4);
         // The last data point for a year's data rolls over to the next year
         // at 1/3, so adjust the key (year) accordingly for these cases
-        //if (point[0].substring(4) === "0103" || point[0].substring(4) === "0102") {
-        //  key = String(parseInt(key)-1)
-        //}
+        if (point[0].substring(4) === "0103" || point[0].substring(4) === "0102") {
+          key = String(parseInt(key)-1)
+        }
 
         if (!data.hasOwnProperty(key)) {
             data[key] = [];
@@ -87,7 +87,7 @@ function reprocessData (origdata) {
         data[key].push(point);
     }
 
-    var keysToBeDeleted = [];
+    /*var keysToBeDeleted = [];
     for (i = 0; i < data.keys.length; i++) {
         key = data.keys[i];
         if (data[key].length !== expectedYearLength) {
@@ -99,7 +99,7 @@ function reprocessData (origdata) {
         key = keysToBeDeleted[i];
         delete data[key];
         data.keys.splice(data.keys.indexOf(key), 1);
-    }
+    }*/
 
     var dataForBaseline;
     var mean;
