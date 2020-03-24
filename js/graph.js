@@ -501,7 +501,6 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
     { // 15% threshold
         type: 'scatterpolar',
         visible: visibility,
-        showlegend: false,
         mode: "lines",
         name: "15% threshold",
         r: [0, 80, 100],
@@ -515,7 +514,6 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
     { // 80% threshold
         type: 'scatterpolar',
         visible: visibility,
-        showlegend: false,
         mode: "lines",
         name: "80% threshold",
         r: [0, 80, 100],
