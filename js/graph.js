@@ -456,7 +456,7 @@ function drawPolarGraph(data, div, poi) {
         }
     }
     dataPlotly = dataPlotly.concat(buildThresholdsAndCenterline(thresholds, growingSeasonData)) // add baseline thresholds
-    var config = {responsive: true}
+    var config = {responsive: true, displayModeBar: false}
     Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
 }
 
