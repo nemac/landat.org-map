@@ -519,12 +519,19 @@ function buildThresholds(data, visibility = true) {
 
 const layout = {
   //dragmode: false,
+  //showlegend: false,
   modebar: {
     orientation: 'v'
   },
-  autosize: true,
-  width: 575,
-  height: 610,
+  autoresize: true,
+  margin: {
+    l: 0,
+    r: 0,
+    t: 0,
+    b: 0
+  },
+  //width: 575,
+  //height: 610,
   legend: {
     title: {
       text: "Click to turn on/off"

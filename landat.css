@@ -461,8 +461,8 @@ path {
   z-index: 10; }
   #right-panel.graphs-active {
     padding-top: 105px;
-    min-width: 600px;
-    width: 600px; }
+    min-width: 730px;
+    width: 730px; }
   #right-panel.layers-active {
     min-width: 465px;
     width: 465px; }
