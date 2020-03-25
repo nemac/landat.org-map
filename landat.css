@@ -211,11 +211,6 @@ path {
   fill: none;
   stroke: #000; }
 
-.line {
-  fill: none;
-  stroke: #000;
-  stroke-width: 1px; }
-
 .center-line {
   stroke: #ea0c48;
   stroke-width: 4px; }

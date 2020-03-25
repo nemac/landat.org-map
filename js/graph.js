@@ -459,7 +459,6 @@ const getDayOfYear = date => {
 function buildTrace(data, traceName, color, visibility = 'legendonly',
                     hovertemplate = "%{customdata|%B %d, %Y}<br>NDVI: %{r:.1f}<extra></extra>") {
     var r = []
-    console.log(color)
     var theta = []
     var dateArray = []
     data.forEach(function (item, index) {
