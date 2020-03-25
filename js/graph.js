@@ -434,10 +434,10 @@ function drawPolarGraph(data, div, poi) {
     for (const [key, value] of Object.entries(data)) {
         if (key !== 'keys') {
             if (key === 'baseline') {
-                dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, key, true, 
+                dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, key, true,
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
             } else {
-                dataPlotly = dataPlotly.concat(buildTrace(value, key))
+                dataPlotly = dataPlotly.concat(buildTrace(value, key, pullDistinctColor(key)))
             }
         }
     }
@@ -456,9 +456,10 @@ const getDayOfYear = date => {
     return day;
 }
 
-function buildTrace(data, traceName, visibility = 'legendonly', 
+function buildTrace(data, traceName, color, visibility = 'legendonly',
                     hovertemplate = "%{customdata|%B %d, %Y}<br>NDVI: %{r:.1f}<extra></extra>") {
     var r = []
+    console.log(color)
     var theta = []
     var dateArray = []
     data.forEach(function (item, index) {
@@ -478,13 +479,15 @@ function buildTrace(data, traceName, visibility = 'legendonly',
         r: r,
         theta: theta,
         customdata: dateArray,
+        line: {
+            color: color
+        },
         hovertemplate: hovertemplate
     }]
 }
 
 function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility = true) {
-    return [
-    { // beginning of phenological year
+    return [{ // beginning of phenological year
         type: 'scatterpolar',
         visible: visibility,
         mode: "lines",
