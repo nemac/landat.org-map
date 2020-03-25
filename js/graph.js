@@ -248,7 +248,7 @@ function roundFloat(number, decimalPlaces) {
 
 function makeUpDownLineGraph (data, div) {
     // Set the dimensions of the canvas / graph
-    var margin = {top: 30, right: 20, bottom: 30, left: 29},
+    var margin = {top: 30, right: 20, bottom: 35, left: 29},
     width = 580 - margin.left - margin.right,
     height = 270 - margin.top - margin.bottom;
 
@@ -348,10 +348,29 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
     var yAxis = d3.axisLeft(y)
         .ticks(6);
 
-    // Define the line
-    var valueline = d3.line()
+    // Define the line for baseline
+    var valuelineBaseline = d3.line()
         .x(function(d, i) { return (Array.isArray(d) ? x(parseJulianDay(d[0])) : x((i * 8) + 3 )); })
         .y(function(d) { return (Array.isArray(d) ? y(d[1]) : y(d)); });
+        
+
+    // Define the line for years
+    var xAxisYear // Since last datapoint is Jan 2/3 of following year we need this for comparison
+    var valueline = d3.line()
+        .x(function(d, i) {
+            if (!xAxisYear) {
+                xAxisYear = d[0].substring(0, 4) // grab the year
+            }
+            if (d[0].substring(0, 4) === xAxisYear) { // parse as usual
+                return (Array.isArray(d) ? x(parseJulianDay(d[0])) : x((i * 8) + 3));
+            } else { // add 365 to day since last datapoint is Jan 2/3 of following year
+                xAxisYear = null // null this out so next year dataset can calculate correctly
+                return (Array.isArray(d) ? x(parseJulianDay(d[0]) + 365) : x((i * 8) + 3 + 365));
+            }
+
+        })
+        .y(function(d) { return (Array.isArray(d) ? y(d[1]) : y(d)); });
+        
 
     var wrapper = d3.select(div).append("div").classed("overlapping-graph", true);
 
@@ -387,8 +406,14 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
     for (i = 0, l = poi.plots.length; i < l; i++) {
         plot = poi.plots[i];
         if (plot === "thresholds") continue;
-        charts[plot] = {
-            "path" : drawLinearPath(data[plot], valueline, svg)
+        if (plot === "baseline") {
+            charts[plot] = {
+                "path": drawLinearPath(data[plot], valuelineBaseline, svg)
+            }
+        } else {
+            charts[plot] = {
+                "path" : drawLinearPath(data[plot], valueline, svg)
+            }
         }
     }
 
@@ -398,7 +423,11 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
     for (i = 0, l = poi.plots.length; i < l; i++) {
         plot = poi.plots[i];
         if (plot === "thresholds") continue;
-        charts[plot].points = drawLinearPoints(data[plot], valueline, svg);
+        if (plot === "baseline") {
+            charts[plot].points = drawLinearPoints(data[plot], valuelineBaseline, svg);
+        } else {
+            charts[plot].points = drawLinearPoints(data[plot], valueline, svg);
+        }
     }
 
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
@@ -407,7 +436,7 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
         createCheckbox(inputwrapper, key, "overlapping", poi, charts, data, valueline, svg, averages);
     });
 
-    createCheckbox(inputwrapper, "baseline", "overlapping", poi, charts, data, valueline, svg, averages);
+    createCheckbox(inputwrapper, "baseline", "overlapping", poi, charts, data, valuelineBaseline, svg, averages);
 }
 
 ///////////////////////// POLAR GRAPH //////////////////////////////////////
