@@ -434,7 +434,7 @@ function drawPolarGraph(data, div, poi) {
     for (const [key, value] of Object.entries(data)) {
         if (key !== 'keys') {
             if (key === 'baseline') {
-                dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, key, true,
+                dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, key, pullDistinctColor(key), true,
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
             } else {
                 dataPlotly = dataPlotly.concat(buildTrace(value, key, pullDistinctColor(key)))
