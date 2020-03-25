@@ -87,20 +87,6 @@ function reprocessData (origdata) {
         data[key].push(point);
     }
 
-    /*var keysToBeDeleted = [];
-    for (i = 0; i < data.keys.length; i++) {
-        key = data.keys[i];
-        if (data[key].length !== expectedYearLength) {
-            keysToBeDeleted.push(key);
-        }
-    }
-
-    for (i = 0; i < keysToBeDeleted.length; i++) {
-        key = keysToBeDeleted[i];
-        delete data[key];
-        data.keys.splice(data.keys.indexOf(key), 1);
-    }*/
-
     var dataForBaseline;
     var mean;
     data["baseline"] = [];
@@ -498,6 +484,19 @@ function buildTrace(data, traceName, visibility = 'legendonly',
 
 function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility = true) {
     return [
+    { // beginning of phenological year
+        type: 'scatterpolar',
+        visible: visibility,
+        mode: "lines",
+        name: "start phenological",
+        r: [0, centerlineData[1][1]],
+        theta: [centerlineData[0][0], centerlineData[1][0]],
+        hovertext: ["", "Beginning of Phenological Year"],
+        hoverinfo: ["none", "text"],
+        line: {
+            color: "#429bb8"
+        }
+    },
     { // 15% threshold
         type: 'scatterpolar',
         visible: visibility,
@@ -508,7 +507,20 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
         hovertext: ["", "", "Start of Growing Season"],
         hoverinfo: ["none", "none", "text"],
         line: {
-            color: "#800080"
+            color: "#90ee90"
+        }
+    },
+    { // middle of phenological year
+        type: 'scatterpolar',
+        visible: visibility,
+        mode: "lines",
+        name: "middle phenological",
+        r: [centerlineData[0][1], 0],
+        theta: [centerlineData[0][0], centerlineData[0][0]],
+        hovertext: ["Middle of Phenological Year", ""],
+        hoverinfo: ["text", "none"],
+        line: {
+            color: "#056608"
         }
     },
     { // 80% threshold
@@ -520,20 +532,6 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
         theta: [0, thresholdData.eightyEnd, thresholdData.eightyEnd],
         hovertext: ["", "", "End of Growing Season"],
         hoverinfo: ["none", "none", "text"],
-        line: {
-            color: "#800080"
-        }
-    },
-    { // orange centerline
-        type: 'scatterpolar',
-        visible: visibility,
-        showlegend: false,
-        mode: "lines",
-        name: "centerline",
-        r: [centerlineData[0][1], 0, centerlineData[1][1]],
-        theta: [centerlineData[0][0], centerlineData[0][0], centerlineData[1][0]],
-        hovertext: ["Middle of Phenological Year", "", "Beginning of Phenological Year"],
-        hoverinfo: ["text", "none", "text"],
         line: {
             color: "#ffa500"
         }
@@ -581,7 +579,7 @@ const layout = {
     b: 20
   },
   //width: 575,
-  height: 500,
+  height: 515,
   legend: {
     title: {
       text: "Click to turn on/off"
