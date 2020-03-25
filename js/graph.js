@@ -576,7 +576,7 @@ const layout = {
   },
   autoresize: true,
   margin: {
-    l: 0,
+    l: 10,
     r: 0,
     t: 20,
     b: 20
