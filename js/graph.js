@@ -603,16 +603,17 @@ const layout = {
     },
     autoresize: true,
     margin: {
-        l: 10,
+        l: 28,
         r: 0,
         t: 20,
         b: 20
     },
-    height: 525,
+    height: 570,
     legend: {
         title: {
             text: "Click to turn on/off"
         },
+        x: 1.07,
     },
     polar: {
         domain: {
@@ -621,8 +622,7 @@ const layout = {
         },
         radialaxis: {
             visible: true,
-            //gridcolor: '#ECECEC',
-            color: '#DEDEDE',
+            gridcolor: '#E2E2E2',
             tickfont: {
                 color: '#444',
             },
@@ -631,7 +631,7 @@ const layout = {
         },
         angularaxis: {
             visible: true,
-            gridcolor: '#DEDEDE',
+            gridcolor: '#E2E2E2',
             type: "linear",
             tickmode: "array",
             showticklabels: true,
