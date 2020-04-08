@@ -468,7 +468,7 @@ function drawPolarGraph(data, div, poi) {
     for (const [key, value] of Object.entries(data)) {
         if (key !== 'keys') {
             if (key === 'baseline') {
-                dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, key, pullDistinctColor(key), true,
+                dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, 'All-years mean', pullDistinctColor(key), true,
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
             } else {
                 dataPlotly = dataPlotly.concat(buildTrace(value, key, pullDistinctColor(key)))
@@ -524,13 +524,14 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
         type: 'scatterpolar',
         visible: visibility,
         mode: "lines",
-        name: "start phenological",
+        name: "Start of <br>phenological year",
         r: [0, centerlineData[1][1]],
         theta: [centerlineData[0][0], centerlineData[1][0]],
         hovertext: ["", "Beginning of Phenological Year"],
         hoverinfo: ["none", "text"],
         line: {
-            color: "#429bb8"
+            color: "#429bb8",
+            width: 3
         }
     },
     { // 15% threshold
@@ -543,20 +544,22 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
         hovertext: ["", "", "Start of Growing Season"],
         hoverinfo: ["none", "none", "text"],
         line: {
-            color: "#90ee90"
+            color: "#90ee90",
+            width: 3
         }
     },
     { // middle of phenological year
         type: 'scatterpolar',
         visible: visibility,
         mode: "lines",
-        name: "middle phenological",
+        name: "Middle of <br>growing season",
         r: [centerlineData[0][1], 0],
         theta: [centerlineData[0][0], centerlineData[0][0]],
         hovertext: ["Middle of Phenological Year", ""],
         hoverinfo: ["text", "none"],
         line: {
-            color: "#056608"
+            color: "#056608",
+            width: 3
         }
     },
     { // 80% threshold
@@ -569,30 +572,23 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
         hovertext: ["", "", "End of Growing Season"],
         hoverinfo: ["none", "none", "text"],
         line: {
-            color: "#ffa500"
+            color: "#ffa500",
+            width: 3
         }
     },
-    { // red center dot
+    { // red center line and dot
         type: "scatterpolar",
         mode: "lines+markers",
-        showlegend: false,
-        r: [centerlineData[2]],
-        theta: [centerlineData[0][0]],
-        hovertemplate: "Center: %{r}<extra></extra>",
+        showlegend: true,
+        name: 'Seasonality',
+        r: [centerlineData[2], 0],
+        theta: [centerlineData[0][0], 0],
+        hovertemplate: ["Center: %{r}<extra></extra>", ""],
         marker: {
-            size: 9
+            size: 9,
+            // Markers go from left to right in the 'r' array defined above
+            maxdisplayed: 1 // Value of 1 so dot isn't at both ends of the line. 
         },
-        line: {
-            color: "#ff0000"
-        },
-    },
-    { // red center line
-        type: "scatterpolar",
-        mode: "lines",
-        showlegend: false,
-        r: [0, centerlineData[2]],
-        theta: [0, centerlineData[0][0]],
-        hoverinfo: ["none", "none"],
         line: {
             color: "#ff0000",
             width: 4
@@ -608,16 +604,17 @@ const layout = {
     },
     autoresize: true,
     margin: {
-        l: 10,
+        l: 28,
         r: 0,
         t: 20,
         b: 20
     },
-    height: 515,
+    height: 570,
     legend: {
         title: {
             text: "Click to turn on/off"
-        }
+        },
+        x: 1.07,
     },
     polar: {
         domain: {
@@ -626,11 +623,16 @@ const layout = {
         },
         radialaxis: {
             visible: true,
+            gridcolor: '#E2E2E2',
+            tickfont: {
+                color: '#444',
+            },
             type: "linear",
             range: [0, 100]
         },
         angularaxis: {
             visible: true,
+            gridcolor: '#E2E2E2',
             type: "linear",
             tickmode: "array",
             showticklabels: true,
