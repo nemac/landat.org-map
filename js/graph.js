@@ -583,7 +583,7 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
         name: 'Seasonality',
         r: [centerlineData[2], 0],
         theta: [centerlineData[0][0], 0],
-        hoverinfo: ["none", "none"],
+        hovertemplate: ["Center: %{r}<extra></extra>", ""],
         marker: {
             size: 9,
             maxdisplayed: 1 // Needs to be only one so the dot isn't at both ends of the line
