@@ -576,27 +576,18 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
             width: 3
         }
     },
-    { // red center dot
+    { // red center line and dot
         type: "scatterpolar",
         mode: "lines+markers",
-        showlegend: false,
-        r: [centerlineData[2]],
-        theta: [centerlineData[0][0]],
-        hovertemplate: "Center: %{r}<extra></extra>",
-        marker: {
-            size: 9
-        },
-        line: {
-            color: "#ff0000"
-        },
-    },
-    { // red center line
-        type: "scatterpolar",
-        mode: "lines",
-        showlegend: false,
-        r: [0, centerlineData[2]],
-        theta: [0, centerlineData[0][0]],
+        showlegend: true,
+        name: 'Seasonality',
+        r: [centerlineData[2], 0],
+        theta: [centerlineData[0][0], 0],
         hoverinfo: ["none", "none"],
+        marker: {
+            size: 9,
+            maxdisplayed: 1 // Needs to be only one so the dot isn't at both ends of the line
+        },
         line: {
             color: "#ff0000",
             width: 4
