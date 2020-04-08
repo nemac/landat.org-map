@@ -602,59 +602,57 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
 }
 
 const layout = {
-  //dragmode: false,
-  //showlegend: false,
-  modebar: {
-    orientation: 'v'
-  },
-  autoresize: true,
-  margin: {
-    l: 10,
-    r: 0,
-    t: 20,
-    b: 20
-  },
-  //width: 575,
-  height: 515,
-  legend: {
-    title: {
-      text: "Click to turn on/off"
-    }
-  },
-  polar: {
-    domain: {
-      x: [0, 100],
-      y: [1, 365]
+    dragmode: false, // disables zoom on polar graph
+    modebar: {
+        orientation: 'v'
     },
-    radialaxis: {
-      visible: true,
-      type: "linear",
-      range: [0, 100]
+    autoresize: true,
+    margin: {
+        l: 10,
+        r: 0,
+        t: 20,
+        b: 20
     },
-    angularaxis: {
-      visible: true,
-      type: "linear",
-      tickmode: "array",
-      showticklabels: true,
-      tickvals: [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335],
-      ticktext: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec"
-      ],
-      direction: "clockwise",
-      period: 12
+    height: 515,
+    legend: {
+        title: {
+            text: "Click to turn on/off"
+        }
+    },
+    polar: {
+        domain: {
+            x: [0, 100],
+            y: [1, 365]
+        },
+        radialaxis: {
+            visible: true,
+            type: "linear",
+            range: [0, 100]
+        },
+        angularaxis: {
+            visible: true,
+            type: "linear",
+            tickmode: "array",
+            showticklabels: true,
+            tickvals: [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335],
+            ticktext: [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec"
+            ],
+            direction: "clockwise",
+            period: 12
+        }
     }
-  }
 }
 
 /* POLAR GRAPH HELPERS */
