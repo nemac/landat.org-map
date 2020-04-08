@@ -81,7 +81,7 @@
     .polar-graph {
         display: block;
 
-        svg {
+        /*svg {
             width: 85%;
             min-height: 490px;
 
@@ -93,7 +93,7 @@
                     width: 100%;
                 }
             }
-        }
+        }*/
     }
 }
 
@@ -223,12 +223,6 @@ path {
 .frame {
     fill: none;
     stroke: #000;
-}
-
-.line {
-    fill: none;
-    stroke: #000;
-    stroke-width: 1px;
 }
 
 .center-line {

@@ -98,16 +98,20 @@
         width: 100%; } }
 
 .graph-polar .polar-graph {
-  display: block; }
-  .graph-polar .polar-graph svg {
-    width: 85%;
-    min-height: 490px; }
-    @media only screen and (max-width: 480px) {
-      .graph-polar .polar-graph svg {
-        width: 100%; } }
-    @media only screen and (min-width: 481px) and (max-width: 668px) {
-      .graph-polar .polar-graph svg {
-        width: 100%; } }
+  display: block;
+  /*svg {
+            width: 85%;
+            min-height: 490px;
+
+            & {
+                @include mobile-display("phone-portrait") {
+                    width: 100%;
+                }
+                @include mobile-display("phone-landscape") {
+                    width: 100%;
+                }
+            }
+        }*/ }
 
 .graph-loading .timeseries-graph, .graph-loading .overlapping-graph, .graph-loading .polar-graph {
   display: none; }
@@ -206,11 +210,6 @@ path {
 .frame {
   fill: none;
   stroke: #000; }
-
-.line {
-  fill: none;
-  stroke: #000;
-  stroke-width: 1px; }
 
 .center-line {
   stroke: #ea0c48;
@@ -457,8 +456,8 @@ path {
   z-index: 10; }
   #right-panel.graphs-active {
     padding-top: 105px;
-    min-width: 600px;
-    width: 600px; }
+    min-width: 730px;
+    width: 730px; }
   #right-panel.layers-active {
     min-width: 465px;
     width: 465px; }

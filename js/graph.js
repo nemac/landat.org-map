@@ -9,6 +9,12 @@ export function SetupGraphs () {
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
     extendDateModule();
     tip = d3.tip().attr('class', 'd3-tip').html(function (d) { return d; });
+
+    // Adding a block here to trigger AWS endpoint so lambda function stays hot
+    var url = "https://pwol6zjt3f.execute-api.us-east-1.amazonaws.com/production/landat-ndvi?lng=-82.5515&lat=35.5951" // Asheville, NC
+    var oReq = GetAjaxObject(function () {})
+    oReq.open("GET", url);
+    oReq.send()
 }
 
 export function removeAllGraphs() {
@@ -39,13 +45,13 @@ function extendDateModule () {
 ////////////////////// GRAPH DATA PROCESSING ///////////////////////////////
 
 function handleGraphDataResponse (div, poi, response) {
-    response = response.replace(/\[|\]|\'/g, "").split(", ");
+    response = JSON.parse(response);
     drawGraph(response, div, poi);
     updatePanelDragOverlayHeight()
 }
 
 function getData(poi, div) {
-    var url = "https://fcav-ndvi.nemac.org/landdat_product.cgi?args=" + poi.lng + "," + poi.lat;
+    var url = "https://pwol6zjt3f.execute-api.us-east-1.amazonaws.com/production/landat-ndvi?lng=" + poi.lng + "&lat=" + poi.lat;
     var oReq = GetAjaxObject(function (response) {
         handleGraphDataResponse(div, poi, response)
     })
@@ -75,9 +81,9 @@ function reprocessData (origdata) {
         key = point[0].substring(0,4);
         // The last data point for a year's data rolls over to the next year
         // at 1/3, so adjust the key (year) accordingly for these cases
-        //if (point[0].substring(4) === "0103" || point[0].substring(4) === "0102") {
-        //  key = String(parseInt(key)-1)
-        //}
+        if (point[0].substring(4) === "0103" || point[0].substring(4) === "0102") {
+          key = String(parseInt(key)-1)
+        }
 
         if (!data.hasOwnProperty(key)) {
             data[key] = [];
@@ -85,20 +91,6 @@ function reprocessData (origdata) {
         }
 
         data[key].push(point);
-    }
-
-    var keysToBeDeleted = [];
-    for (i = 0; i < data.keys.length; i++) {
-        key = data.keys[i];
-        if (data[key].length !== expectedYearLength) {
-            keysToBeDeleted.push(key);
-        }
-    }
-
-    for (i = 0; i < keysToBeDeleted.length; i++) {
-        key = keysToBeDeleted[i];
-        delete data[key];
-        data.keys.splice(data.keys.indexOf(key), 1);
     }
 
     var dataForBaseline;
@@ -249,7 +241,7 @@ function drawGraph(data, div, poi) {
     var reprocessedData = reprocessData(data);
     makeUpDownLineGraph(data, div);
     makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, poi);
-    drawUpDownPolarWithCheckboxesAndThresholds(reprocessedData, div, poi);
+    drawPolarGraph(reprocessedData, div, poi);
     div.classList.remove("graph-loading");
 }
 
@@ -261,7 +253,7 @@ function roundFloat(number, decimalPlaces) {
 
 function makeUpDownLineGraph (data, div) {
     // Set the dimensions of the canvas / graph
-    var margin = {top: 30, right: 20, bottom: 30, left: 29},
+    var margin = {top: 30, right: 20, bottom: 35, left: 29},
     width = 580 - margin.left - margin.right,
     height = 270 - margin.top - margin.bottom;
 
@@ -361,10 +353,29 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
     var yAxis = d3.axisLeft(y)
         .ticks(6);
 
-    // Define the line
-    var valueline = d3.line()
+    // Define the line for baseline
+    var valuelineBaseline = d3.line()
         .x(function(d, i) { return (Array.isArray(d) ? x(parseJulianDay(d[0])) : x((i * 8) + 3 )); })
         .y(function(d) { return (Array.isArray(d) ? y(d[1]) : y(d)); });
+        
+
+    // Define the line for years
+    var xAxisYear // Since last datapoint is Jan 2/3 of following year we need this for comparison
+    var valueline = d3.line()
+        .x(function(d, i) {
+            if (!xAxisYear) {
+                xAxisYear = d[0].substring(0, 4) // grab the year
+            }
+            if (d[0].substring(0, 4) === xAxisYear) { // parse as usual
+                return (Array.isArray(d) ? x(parseJulianDay(d[0])) : x((i * 8) + 3));
+            } else { // add 365 to day since last datapoint is Jan 2/3 of following year
+                xAxisYear = null // null this out so next year dataset can calculate correctly
+                return (Array.isArray(d) ? x(parseJulianDay(d[0]) + 365) : x((i * 8) + 3 + 365));
+            }
+
+        })
+        .y(function(d) { return (Array.isArray(d) ? y(d[1]) : y(d)); });
+        
 
     var wrapper = d3.select(div).append("div").classed("overlapping-graph", true);
 
@@ -400,8 +411,14 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
     for (i = 0, l = poi.plots.length; i < l; i++) {
         plot = poi.plots[i];
         if (plot === "thresholds") continue;
-        charts[plot] = {
-            "path" : drawLinearPath(data[plot], valueline, svg)
+        if (plot === "baseline") {
+            charts[plot] = {
+                "path": drawLinearPath(data[plot], valuelineBaseline, svg)
+            }
+        } else {
+            charts[plot] = {
+                "path" : drawLinearPath(data[plot], valueline, svg)
+            }
         }
     }
 
@@ -411,7 +428,11 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
     for (i = 0, l = poi.plots.length; i < l; i++) {
         plot = poi.plots[i];
         if (plot === "thresholds") continue;
-        charts[plot].points = drawLinearPoints(data[plot], valueline, svg);
+        if (plot === "baseline") {
+            charts[plot].points = drawLinearPoints(data[plot], valuelineBaseline, svg);
+        } else {
+            charts[plot].points = drawLinearPoints(data[plot], valueline, svg);
+        }
     }
 
     var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
@@ -420,242 +441,218 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
         createCheckbox(inputwrapper, key, "overlapping", poi, charts, data, valueline, svg, averages);
     });
 
-    createCheckbox(inputwrapper, "baseline", "overlapping", poi, charts, data, valueline, svg, averages);
+    createCheckbox(inputwrapper, "baseline", "overlapping", poi, charts, data, valuelineBaseline, svg, averages);
 }
 
 ///////////////////////// POLAR GRAPH //////////////////////////////////////
 
-function drawUpDownPolarWithCheckboxesAndThresholds (data, div, poi) {
-    var width = 490,
-        height = 490,
-        radius = Math.min(width, height) / 2 - 30;
+function drawPolarGraph(data, div, poi) {
+    let dataPlotly = []
 
-    var averages = data["baseline"];
-    var center = findPolarCenter(data);
-    var thresholds = findPolarThresholds(averages, center[1][0]);
+    // Take the existing array of baseline ndvi values and add non-leap year date values to them
+    var baselineDateAndValuesArray = []
+    var center = findPolarCenter(data)
+    data[2001].forEach(function (item, index){
+        baselineDateAndValuesArray.push([item[0], data['baseline'][index]]) 
+    })
 
-    /**
-     * Sets up scaling of data. We know that the ndvi values fall between
-     * 0 & 100 so we set our domain to that. The range controls where the
-     * points will lie in our graph, so we set them to be between 0 and the
-     * radius.
-     */
-    var r = d3.scaleLinear()
-        .domain([0, 100])
-        .range([0, radius]);
-
-    /**
-     * function which will draw each point. To compute the distance from the
-     * center each point is we pass the datapoint to the function defined above.
-     * To determine the angle from the origin we need to convert the day to
-     * radians, so we convert the day to a number between 0 & 1 and then multiply
-     * it by 2 pi.
-     */
-    var line = d3.radialLine()
-        .radius(function(d) { return Array.isArray(d) ? r(d[1]) : r(d); })
-        .angle(function(d, i) {
-            var day = Array.isArray(d) ? parseJulianDay(d[0]) : (i * 8) + 3;
-            return ((((day - 1)%365)/365) * (2*Math.PI));
-        });
-
-    /**
-     * Sets up the canvas where the circle will be drawn.
-     */
-    var wrapper = d3.select(div).append("div").classed("polar-graph", true);
-    var svg = wrapper.append("svg")
-        //.attr("width", width)
-        //.attr("height", height)
-        .attr('viewBox', function () {
-            return '0 0 '+ width + ' ' + height
-        })
-        .attr('preserveAspectRatio', 'xMidYMid')
-        .append("g")
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-    svg.call(tip);
-
-    /**
-     * This block of code draws the big circles of the graph & their labels
-     */
-    var gr = svg.append("g")
-        .attr("class", "r axis")
-        .selectAll("g")
-        .data(r.ticks(5).slice(1))
-        .enter().append("g");
-
-    gr.append("circle")
-        .attr("r", r);
-
-    gr.append("text")
-        .attr("y", function(d) { return -r(d) - 4; })
-        .attr("transform", "rotate(15)")
-        .style("text-anchor", "middle")
-        .text(function(d) { return d; });
-
-    /**
-     * This block of code draws the labels for each month and the lines
-     * that go out to them.
-     */
-    var ga_a = svg.append("g")
-        .attr("class", "a axis")
-        .selectAll("g")
-        .data(d3.range(0, 360, 30))
-        .enter().append("g")
-            .attr("transform", function(d) { return "rotate(" + (d - 90) + ")"; });
-
-    ga_a.append("line")
-        .attr("x2", radius);
-
-    ga_a.append("text")
-        .attr("x", radius + 6)
-        .attr("dy", ".35em")
-        .style("text-anchor", function(d) { return d < 360 && d > 180 ? "end" : null; })
-        .attr("transform", function(d) { return d < 360 && d > 180 ? "rotate(180 " + (radius + 6) + ",0)" : null; })
-        .text(function(d) { return MONTH_LABELS[d/30]; });
-
-    /**
-     * Draws the threshold lines
-     */
-    var thresholdElem = svg.append("g")
-        .selectAll("g")
-        .data(thresholds)
-        .enter().append("g")
-            .attr("transform", function(d) { return "rotate(" + (d.data[1][0] - 90) + ")"; });
-
-    thresholdElem.append("line")
-        .attr("class", "line")
-        .attr("x2", radius);
-
-    thresholdElem.append("text")
-        .attr("x", function (d) { var day = d.data[1][0]; return day < 360 && day > 180 ? radius + 30 : radius - 30})
-        .attr("y", function (d) { return ((((d.data[1][0])%365)/365) * (2*Math.PI)) + 6; })
-        .attr("dy", ".35em")
-        .style("text-anchor", function(d) { var day = d.data[1][0]; return day < 360 && day > 180 ? "middle" : null; })
-        .attr("transform", function(d) { var day = d.data[1][0]; return day < 360 && day > 180 ? "rotate(180 " + (radius + 6) + ",0)" : null; })
-        .text(function(d) { return d.label; });
-
-    thresholdElem.style("opacity", (poi.plots.indexOf("thresholds") !== -1) ? 1 : 0);
-
-    /**
-     * Draws the line to the center of the data
-     */
-    var centerDay = center[1][0];
-    var centerDayOpposite = (centerDay + (365/2)) % 365;
-    var centerDayData = [centerDay, 100];
-    var centerDayOppositeData = [centerDayOpposite, 100];
-    var growingSeasonData = [centerDayData, centerDayOppositeData]
-
-    drawPolarPath(growingSeasonData, line, svg)
-        .classed("growing-season-line", "true");
-
-    drawPolarPath(center, line, svg)
-        .classed("center-line", "true");
-
-    svg.selectAll("point")
-        .data([center[1]])
-        .enter()
-        .append("circle")
-        .attr("class", "center")
-        .attr("r", 4)
-        .attr("transform", function(d) {
-            var coors = line([d]).slice(1).slice(0, -1);
-            return "translate(" + coors + ")"
-        })
-        .attr("stroke", "#000")
-        .attr("fill", "#ea0c48")
-        .on("mouseover", function(d) {
-            tip.show("Center: "  + String(d[1]).substring(0, 7));
-            this.setAttribute("r", 5)
-        })
-        .on("mouseout", function (d) {
-            tip.hide();
-            this.setAttribute("r", 4)
-        });
-
-    var charts = {};
-
-    /**
-     * This block of code draws the line that the data follows
-     */
-    var plot, i, l;
-    for (i = 0, l = poi.plots.length; i < l; i++) {
-        plot = poi.plots[i];
-        if (plot === "thresholds") continue;
-        charts[plot] = {
-            "path" : drawPolarPath(data[plot], line, svg)
+    // Build data for centerline and thresholds
+    var centerDay = center[1][0]
+    var centerDayOpposite = (centerDay + (365 / 2)) % 365
+    var centerDayData = [centerDay, 100]
+    var centerDayOppositeData = [centerDayOpposite, 100]
+    var centerPoint = center[1][1]
+    var growingSeasonData = [centerDayData, centerDayOppositeData, centerPoint]
+    var thresholds = findPolarThresholds(data['baseline'], center[1][0])
+    var wrapper = d3.select(div).append("div").classed("polar-graph", true)
+    for (const [key, value] of Object.entries(data)) {
+        if (key !== 'keys') {
+            if (key === 'baseline') {
+                dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, key, pullDistinctColor(key), true,
+                                                          "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
+            } else {
+                dataPlotly = dataPlotly.concat(buildTrace(value, key, pullDistinctColor(key)))
+            }
         }
     }
+    dataPlotly = dataPlotly.concat(buildThresholdsAndCenterline(thresholds, growingSeasonData)) // add baseline thresholds
+    var config = {responsive: true, displayModeBar: false}
+    Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
+}
 
-    /**
-     * This block of code draws the point at each data point
-     */
-    for (i = 0, l = poi.plots.length; i < l; i++) {
-        plot = poi.plots[i];
-        if (plot === "thresholds") continue;
-        charts[plot].points = drawLinearPoints(data[plot], line, svg);
+/* PLOTLY FUNCTIONS AND CONSTANTS */
+
+const getDayOfYear = date => {
+    var start = new Date(date.getFullYear(), 0, 0);
+    var diff = date - start;
+    var oneDay = 1000 * 60 * 60 * 24;
+    var day = Math.floor(diff / oneDay);
+    return day;
+}
+
+function buildTrace(data, traceName, color, visibility = 'legendonly',
+                    hovertemplate = "%{customdata|%B %d, %Y}<br>NDVI: %{r:.1f}<extra></extra>") {
+    var r = []
+    var theta = []
+    var dateArray = []
+    data.forEach(function (item, index) {
+        let date = new Date(
+            parseInt(item[0].substring(0, 4)), // year
+            (parseInt(item[0].substring(4, 6)) - 1), // months are 0-indexed
+            parseInt(item[0].substring(6, 8))) // day of month
+        r.push(parseInt(item[1], 10))
+        theta.push(getDayOfYear(date))
+        dateArray.push(date)
+    })
+    return [{
+        type: 'scatterpolar',
+        visible: visibility,
+        mode: "lines+markers",
+        name: traceName,
+        r: r,
+        theta: theta,
+        customdata: dateArray,
+        line: {
+            color: color
+        },
+        hovertemplate: hovertemplate
+    }]
+}
+
+function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility = true) {
+    return [{ // beginning of phenological year
+        type: 'scatterpolar',
+        visible: visibility,
+        mode: "lines",
+        name: "start phenological",
+        r: [0, centerlineData[1][1]],
+        theta: [centerlineData[0][0], centerlineData[1][0]],
+        hovertext: ["", "Beginning of Phenological Year"],
+        hoverinfo: ["none", "text"],
+        line: {
+            color: "#429bb8"
+        }
+    },
+    { // 15% threshold
+        type: 'scatterpolar',
+        visible: visibility,
+        mode: "lines",
+        name: "15% threshold",
+        r: [0, 80, 100],
+        theta: [0, thresholdData.fifteenEnd, thresholdData.fifteenEnd],
+        hovertext: ["", "", "Start of Growing Season"],
+        hoverinfo: ["none", "none", "text"],
+        line: {
+            color: "#90ee90"
+        }
+    },
+    { // middle of phenological year
+        type: 'scatterpolar',
+        visible: visibility,
+        mode: "lines",
+        name: "middle phenological",
+        r: [centerlineData[0][1], 0],
+        theta: [centerlineData[0][0], centerlineData[0][0]],
+        hovertext: ["Middle of Phenological Year", ""],
+        hoverinfo: ["text", "none"],
+        line: {
+            color: "#056608"
+        }
+    },
+    { // 80% threshold
+        type: 'scatterpolar',
+        visible: visibility,
+        mode: "lines",
+        name: "80% threshold",
+        r: [0, 80, 100],
+        theta: [0, thresholdData.eightyEnd, thresholdData.eightyEnd],
+        hovertext: ["", "", "End of Growing Season"],
+        hoverinfo: ["none", "none", "text"],
+        line: {
+            color: "#ffa500"
+        }
+    },
+    { // red center dot
+        type: "scatterpolar",
+        mode: "lines+markers",
+        showlegend: false,
+        r: [centerlineData[2]],
+        theta: [centerlineData[0][0]],
+        hovertemplate: "Center: %{r}<extra></extra>",
+        marker: {
+            size: 9
+        },
+        line: {
+            color: "#ff0000"
+        },
+    },
+    { // red center line
+        type: "scatterpolar",
+        mode: "lines",
+        showlegend: false,
+        r: [0, centerlineData[2]],
+        theta: [0, centerlineData[0][0]],
+        hoverinfo: ["none", "none"],
+        line: {
+            color: "#ff0000",
+            width: 4
+        },
+    },
+    ]
+}
+
+const layout = {
+    dragmode: false, // disables zoom on polar graph
+    modebar: {
+        orientation: 'v'
+    },
+    autoresize: true,
+    margin: {
+        l: 10,
+        r: 0,
+        t: 20,
+        b: 20
+    },
+    height: 515,
+    legend: {
+        title: {
+            text: "Click to turn on/off"
+        }
+    },
+    polar: {
+        domain: {
+            x: [0, 100],
+            y: [1, 365]
+        },
+        radialaxis: {
+            visible: true,
+            type: "linear",
+            range: [0, 100]
+        },
+        angularaxis: {
+            visible: true,
+            type: "linear",
+            tickmode: "array",
+            showticklabels: true,
+            tickvals: [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335],
+            ticktext: [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec"
+            ],
+            direction: "clockwise",
+            period: 12
+        }
     }
-
-    var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
-
-    data.keys.forEach(function (key) {
-        createCheckbox(inputwrapper, key, "polar", poi, charts, data, line, svg, averages);
-    });
-
-    createCheckbox(inputwrapper, "baseline", "polar", poi, charts, data, line, svg, averages);
-
-    var thresholdCheckbox= inputwrapper.append("div")
-        .classed("threshold-checkbox", true);
-
-    thresholdCheckbox.append("input")
-        .attr("type", "checkbox")
-        .attr("id", "threshold-checkbox-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""))
-        .property("checked", poi.plots.indexOf("thresholds") !== -1)
-        .on("change", function (e) {
-            thresholdElem.style("opacity", (this.checked) ? 1 : 0);
-            var offon = this.checked ? 'off' : 'on';
-
-            if (this.checked) {
-                addKeyToPOI(poi, "thresholds");
-            } else {
-                removeKeyFromPOI(poi, "thresholds");
-            }
-
-            updateShareUrl();
-            //send google analytics graph threshold click off
-            dispatchGraphCheckboxClick('threshold polar timeseries ' + offon);
-        });
-
-    thresholdCheckbox.append("label")
-        .text("Thresholds (All Years)")
-        .attr("for", "threshold-checkbox-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""));
-
-    var thresholdActiveCheckbox = inputwrapper.append("div")
-        .classed("threshold-checkbox--active", true);
-
-/*
-    thresholdActiveCheckbox.append("input")
-        .attr("type", "checkbox")
-        .attr("id", "threshold-checkbox--active-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""))
-        .property("checked", poi.plots.indexOf("thresholds") !== -1)
-        .on("change", function (e) {
-            thresholdActiveElem.style("opacity", (this.checked) ? 1 : 0);
-            var offon = this.checked ? 'off' : 'on';
-
-            if (this.checked) {
-                addKeyToPOI(poi, "thresholds");
-            } else {
-                removeKeyFromPOI(poi, "thresholds");
-            }
-
-            updateShareUrl();
-            //send google analytics graph threshold click off
-            dispatchGraphCheckboxClick('threshold polar timeseries ' + offon);
-        });
-
-    thresholdCheckbox.append("label")
-        .text("Thresholds (All data)")
-        .attr("for", "threshold-checkbox-" + poi.lat.toString().replace(".", "") + "-" + poi.lng.toString().replace(".", ""));
-*/
 }
 
 /* POLAR GRAPH HELPERS */
@@ -730,7 +727,6 @@ function findPolarThresholds (data, startDay) {
     startIndex += (startIndex > 22) ? (-23) : 23;
     var i, j, length, arr;
     var totalSum = 0;
-    var sum;
     length = 46;
 
     for (i = 0; i < length; i++) {
@@ -760,21 +756,10 @@ function findPolarThresholds (data, startDay) {
         }
     }
 
-    var circleCenter = [0, 0];
+    var fifteenEnd = (fifteenIndex * 8) + 3
+    var eightyEnd = (eightyIndex * 8) + 3
 
-    var fifteenEnd = [(fifteenIndex * 8) + 3, 100];
-    var eightyEnd = [(eightyIndex * 8) + 3, 100];
-
-    return [
-        {
-            "label" : "15%",
-            "data" : [circleCenter, fifteenEnd]
-        },
-        {
-            "label" : "80%",
-            "data" : [circleCenter, eightyEnd]
-        }
-    ];
+    return { fifteenEnd, eightyEnd }
 }
 
 //////////////////////// GRAPH HELPERS ///////////////////////////////////
@@ -861,7 +846,6 @@ function createCheckbox(wrapper, key, type, poi, charts, data, line, svg, averag
                 dispatchGraphCheckboxClick(newYear + ' ' + type + ' timeseries on');
             }
             handleCheckboxSync(key + lat.toString().replace(".", "") + "-" + lng.toString().replace(".", ""), this.checked);
-            console.log(poi);
             updateShareUrl();
         });
 
