@@ -586,7 +586,8 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
         hovertemplate: ["Center: %{r}<extra></extra>", ""],
         marker: {
             size: 9,
-            maxdisplayed: 1 // Needs to be only one so the dot isn't at both ends of the line
+            // Markers go from left to right in the 'r' array defined above
+            maxdisplayed: 1 // Value of 1 so dot isn't at both ends of the line. 
         },
         line: {
             color: "#ff0000",
