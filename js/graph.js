@@ -465,6 +465,7 @@ function drawPolarGraph(data, div, poi) {
     var growingSeasonData = [centerDayData, centerDayOppositeData, centerPoint]
     var thresholds = findPolarThresholds(data['baseline'], center[1][0])
     var wrapper = d3.select(div).append("div").classed("polar-graph", true)
+    wrapper.attr("id", "plotly-polar-graph")
     for (const [key, value] of Object.entries(data)) {
         if (key !== 'keys') {
             if (key === 'baseline') {
@@ -475,9 +476,18 @@ function drawPolarGraph(data, div, poi) {
             }
         }
     }
+    dataPlotly = dataPlotly.concat(buildDynamicThresholds())
     dataPlotly = dataPlotly.concat(buildThresholdsAndCenterline(thresholds, growingSeasonData)) // add baseline thresholds
     var config = {responsive: true, displayModeBar: false}
-    Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
+
+    var myPlot = document.getElementById('plotly-polar-graph')
+
+    Plotly.react('plotly-polar-graph', dataPlotly, plotlyLayout, config)
+    myPlot.on('plotly_legendclick', function(){
+        let rValues = Array.from({length: 46}, () => Math.floor(Math.random() * 40))
+        dataPlotly[20].r = rValues
+        Plotly.react('plotly-polar-graph', dataPlotly, plotlyLayout, config)
+    })
 }
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
@@ -488,6 +498,22 @@ const getDayOfYear = date => {
     var oneDay = 1000 * 60 * 60 * 24;
     var day = Math.floor(diff / oneDay);
     return day;
+}
+
+function buildDynamicThresholds() {
+    return [{
+        type: 'scatterpolar',
+        visible: true,
+        mode: "lines+markers",
+        name: 'dynamic',
+        r: [10,12,14,16,18,20,22,24,26,28,30,30,30,30,30,32,34,36,38,40,38,36,34,32,30,28,26,26,26,26,24,22,22,21,20,20,19,18,16,16,15,
+        14,13,12,10,10],
+        theta:[0,8,16,24,32,40,48,56,64,72,80,88,96,104,112,120,128,136,144,152,160,168,176,184,192,200,208,216,224,232,
+                240,248,256,264,272,280,288,296,304,312,320,328,336,344,352,360,3],
+        line: {
+            color: '#000'
+        },
+    }]
 }
 
 function buildTrace(data, traceName, color, visibility = 'legendonly',
@@ -597,7 +623,7 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
     ]
 }
 
-const layout = {
+const plotlyLayout = {
     dragmode: false, // disables zoom on polar graph
     modebar: {
         orientation: 'v'
