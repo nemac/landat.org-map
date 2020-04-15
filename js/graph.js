@@ -465,24 +465,61 @@ function drawPolarGraph(data, div, poi) {
     var growingSeasonData = [centerDayData, centerDayOppositeData, centerPoint]
     var thresholds = findPolarThresholds(data['baseline'], center[1][0])
     var wrapper = d3.select(div).append("div").classed("polar-graph", true)
-    wrapper.attr("id", "plotly-polar-graph")
-    for (const [key, value] of Object.entries(data)) {
-        if (key !== 'keys') {
-            if (key === 'baseline') {
-                dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, 'All-years mean', pullDistinctColor(key), true,
-                                                          "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
-            } else {
-                dataPlotly = dataPlotly.concat(buildTrace(value, key, pullDistinctColor(key)))
-            }
-        }
-    }
-    dataPlotly = dataPlotly.concat(buildThresholdsAndCenterline(thresholds, growingSeasonData)) // add baseline thresholds
-    var config = {responsive: true, displayModeBar: false}
-    Plotly.newPlot('plotly-polar-graph', dataPlotly, plotlyLayout, config)
 
+    let phenoYearMap = buildPhenologicalYear(data, centerDayOppositeData[0])
+    let colorRampArray = []
+    for (const [key] of Object.entries(data)) { // Use the year values to build a color ramp array for pheno years
+        colorRampArray.push(pullDistinctColor(key))
+    }
+    let colorRampCounter = 0
+    for (const [key, value] of Object.entries(phenoYearMap)) {
+        dataPlotly = dataPlotly.concat(buildTrace(value, key, colorRampArray[colorRampCounter]))
+        colorRampCounter++
+    }
+    dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, 'All-years mean', pullDistinctColor('baseline'), true,
+                                                          "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
+    dataPlotly = dataPlotly.concat(buildReferenceLines(thresholds, growingSeasonData)) // add reference lines
+    var config = {responsive: true, displayModeBar: false}
+    Plotly.newPlot(wrapper.node(), dataPlotly, plotlyLayout, config)
 }
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
+
+function buildPhenologicalYear(data, startOfPhenoYear) { // takes in a map of year data and returns a phenological year map
+    let phenoYearMap = {}
+    let nextYearValueIndexArray = [] // this will be an array of index values to pull in from next calendar year
+    let previousRunKey = null
+    for (const [key, value] of Object.entries(data.keys)) {
+        phenoYearMap['Pheno Year ' + key] = []
+        if (nextYearValueIndexArray) { // We have an array from the previous run and need to fill out values
+            for (var k = 0; k < nextYearValueIndexArray.length; k++) {
+                phenoYearMap['Pheno Year ' + previousRunKey].push(data[value][k])
+            }
+        }
+        let phenoYearBeginDayIndex = 0
+        let phenoYearFound = false
+        previousRunKey = key
+        nextYearValueIndexArray = [] // empty it for the new pheno year to be built
+        for (var i = 0; i < data[value].length; i++) { // Find where the pheno year begins and capture that value
+            if (phenoYearFound) break
+            let date = new Date(
+                parseInt(data[value][i][0].substring(0, 4)), // year
+                (parseInt(data[value][i][0].substring(4, 6)) - 1), // months are 0-indexed
+                parseInt(data[value][i][0].substring(6, 8))) // day of month
+            if (getDayOfYear(date) >= startOfPhenoYear) {
+                phenoYearFound = true
+                phenoYearBeginDayIndex = i
+            } else {
+                nextYearValueIndexArray.push(i)
+            }
+        }
+        for (var j = phenoYearBeginDayIndex; j < data[value].length; j++) { // start building phenoYearMap of this calendar year
+            phenoYearMap['Pheno Year ' + key].push(data[value][j])
+        }
+    }
+    delete phenoYearMap['Pheno Year 18'] // always delete the last one since it'll be incomplete
+    return phenoYearMap
+}
 
 const getDayOfYear = date => {
     var start = new Date(date.getFullYear(), 0, 0);
@@ -521,7 +558,7 @@ function buildTrace(data, traceName, color, visibility = 'legendonly',
     }]
 }
 
-function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility = true) {
+function buildReferenceLines(thresholdData, centerlineData, visibility = true) {
     return [{ // beginning of phenological year
         type: 'scatterpolar',
         mode: "lines",
