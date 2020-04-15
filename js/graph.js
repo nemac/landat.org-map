@@ -476,18 +476,10 @@ function drawPolarGraph(data, div, poi) {
             }
         }
     }
-    dataPlotly = dataPlotly.concat(buildDynamicThresholds())
     dataPlotly = dataPlotly.concat(buildThresholdsAndCenterline(thresholds, growingSeasonData)) // add baseline thresholds
     var config = {responsive: true, displayModeBar: false}
+    Plotly.newPlot('plotly-polar-graph', dataPlotly, plotlyLayout, config)
 
-    var myPlot = document.getElementById('plotly-polar-graph')
-
-    Plotly.react('plotly-polar-graph', dataPlotly, plotlyLayout, config)
-    myPlot.on('plotly_legendclick', function(){
-        let rValues = Array.from({length: 46}, () => Math.floor(Math.random() * 40))
-        dataPlotly[20].r = rValues
-        Plotly.react('plotly-polar-graph', dataPlotly, plotlyLayout, config)
-    })
 }
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
@@ -498,22 +490,6 @@ const getDayOfYear = date => {
     var oneDay = 1000 * 60 * 60 * 24;
     var day = Math.floor(diff / oneDay);
     return day;
-}
-
-function buildDynamicThresholds() {
-    return [{
-        type: 'scatterpolar',
-        visible: true,
-        mode: "lines+markers",
-        name: 'dynamic',
-        r: [10,12,14,16,18,20,22,24,26,28,30,30,30,30,30,32,34,36,38,40,38,36,34,32,30,28,26,26,26,26,24,22,22,21,20,20,19,18,16,16,15,
-        14,13,12,10,10],
-        theta:[0,8,16,24,32,40,48,56,64,72,80,88,96,104,112,120,128,136,144,152,160,168,176,184,192,200,208,216,224,232,
-                240,248,256,264,272,280,288,296,304,312,320,328,336,344,352,360,3],
-        line: {
-            color: '#000'
-        },
-    }]
 }
 
 function buildTrace(data, traceName, color, visibility = 'legendonly',
@@ -548,9 +524,10 @@ function buildTrace(data, traceName, color, visibility = 'legendonly',
 function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility = true) {
     return [{ // beginning of phenological year
         type: 'scatterpolar',
-        visible: visibility,
         mode: "lines",
         name: "Start of <br>phenological year",
+        visible: visibility,
+        showlegend: false,
         r: [0, centerlineData[1][1]],
         theta: [centerlineData[0][0], centerlineData[1][0]],
         hovertext: ["", "Beginning of Phenological Year"],
@@ -562,9 +539,10 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
     },
     { // 15% threshold
         type: 'scatterpolar',
-        visible: visibility,
         mode: "lines",
         name: "15% threshold",
+        visible: visibility,
+        showlegend: false,
         r: [0, 80, 100],
         theta: [0, thresholdData.fifteenEnd, thresholdData.fifteenEnd],
         hovertext: ["", "", "Start of Growing Season"],
@@ -576,9 +554,10 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
     },
     { // middle of phenological year
         type: 'scatterpolar',
-        visible: visibility,
         mode: "lines",
         name: "Middle of <br>growing season",
+        visible: visibility,
+        showlegend: false,
         r: [centerlineData[0][1], 0],
         theta: [centerlineData[0][0], centerlineData[0][0]],
         hovertext: ["Middle of Phenological Year", ""],
@@ -590,9 +569,10 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
     },
     { // 80% threshold
         type: 'scatterpolar',
-        visible: visibility,
         mode: "lines",
         name: "80% threshold",
+        visible: visibility,
+        showlegend: false,
         r: [0, 80, 100],
         theta: [0, thresholdData.eightyEnd, thresholdData.eightyEnd],
         hovertext: ["", "", "End of Growing Season"],
@@ -605,8 +585,9 @@ function buildThresholdsAndCenterline(thresholdData, centerlineData, visibility 
     { // red center line and dot
         type: "scatterpolar",
         mode: "lines+markers",
-        showlegend: true,
         name: 'Seasonality',
+        visible: visibility,
+        showlegend: false,
         r: [centerlineData[2], 0],
         theta: [centerlineData[0][0], 0],
         hovertemplate: ["Center: %{r}<extra></extra>", ""],

@@ -107,7 +107,11 @@
 	</div>
 	<script src="index_bundle.js"></script>
 	<script>
-		Base("config/config.json");
+		document.addEventListener('readystatechange', event => {
+			if (event.target.readyState === 'complete') {
+				Base("config/config.json");
+			}
+		});
 	</script>
 </body>
 
