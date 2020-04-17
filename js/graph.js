@@ -4,6 +4,7 @@ import {GetMap} from './map'
 import {GetAjaxObject} from './parser'
 
 var tip = {};
+var expectedYearLength = 46;
 
 export function SetupGraphs () {
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
@@ -69,7 +70,6 @@ function splitData(data) {
 }
 
 function reprocessData (origdata) {
-    var expectedYearLength = 46;
     var data = {};
     var point;
     var key;
@@ -93,20 +93,25 @@ function reprocessData (origdata) {
         data[key].push(point);
     }
 
-    var dataForBaseline;
-    var mean;
-    data["baseline"] = [];
-    for (i = 0; i < expectedYearLength; i++) {
-        dataForBaseline = [];
-        for (j = i; j < origdata.length; j += expectedYearLength) {
-            dataForBaseline.push(parseInt(origdata[j][1], 10));
-        }
-
-        mean = computeAverage(dataForBaseline);
-        data["baseline"].push(mean);
-    }
+    data['baseline'] = calculateBaseline(origdata)
 
     return data;
+}
+
+function calculateBaseline (data) {
+    var dataForBaseline
+    var mean
+    data['baseline'] = []
+    for (let i = 0; i < expectedYearLength; i++) {
+        dataForBaseline = []
+        for (let j = i; j < data.length; j += expectedYearLength) {
+            dataForBaseline.push(parseInt(data[j][1], 10));
+        }
+
+        mean = computeAverage(dataForBaseline)
+        data['baseline'].push(mean)
+    }
+    return data['baseline']
 }
 
 function computeAverage (arr) {
@@ -117,6 +122,38 @@ function computeAverage (arr) {
     }
 
     return (sum / l).toString();
+}
+
+function buildPhenologicalYearData (rawJsonData, calendarYearData) {
+    let center = findPolarCenter(calendarYearData)
+    let startDayOfPhenoYear = (center[1][0] + (365 / 2)) % 365 // e.g. 36 would be February 5th
+    let phenoYearFound = false
+    let phenoYearBeginDayIndex = 0
+    let phenoYearArray = []
+
+    // Find where the pheno year begins for one year and capture that value. It will be the same for all years
+    for (let i = 0; i < calendarYearData[2000].length; i++) {
+        if (phenoYearFound) break
+        let dateString = calendarYearData[2000][i][0]
+        if (getDayOfYear(dateString) >= startDayOfPhenoYear) {
+            phenoYearFound = true
+            phenoYearBeginDayIndex = i
+        }
+    }
+
+    // Build an array of 46 values each using the pheno year begin day index found above
+    let numberOfCalendarYears = (rawJsonData.length / expectedYearLength) // 46 data points per calendar year
+    let numberOfPhenoYears = numberOfCalendarYears - 1 // number of pheno years is always one less than your number of calendar years
+    let counter = phenoYearBeginDayIndex
+    for (let i = 0; i <= numberOfPhenoYears; i++) {
+        phenoYearArray[i] = []
+        for (let j = 0; j < expectedYearLength; j++) {
+            phenoYearArray[i].push(rawJsonData[counter]) // start building pheno year array from start of pheno year
+            counter++
+        }
+    }
+    phenoYearArray.pop() // remove the last pheno year from the array since it's incomplete
+    return phenoYearArray
 }
 
 ////////////////////// GRAPH INTERFACE ///////////////////////////
@@ -237,12 +274,13 @@ function makeZoomToMapMarkerButton(poi) {
 }
 
 function drawGraph(data, div, poi) {
-    data = splitData(data);
-    var reprocessedData = reprocessData(data);
-    makeUpDownLineGraph(data, div);
-    makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, poi);
-    drawPolarGraph(reprocessedData, div, poi);
-    div.classList.remove("graph-loading");
+    data = splitData(data)
+    var reprocessedData = reprocessData(data)
+    let phenoYearData = buildPhenologicalYearData(data, reprocessedData)
+    makeUpDownLineGraph(data, div)
+    makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, poi)
+    drawPolarGraph(reprocessedData, div, phenoYearData)
+    div.classList.remove("graph-loading")
 }
 
 function roundFloat(number, decimalPlaces) {
@@ -446,14 +484,15 @@ function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
 
 ///////////////////////// POLAR GRAPH //////////////////////////////////////
 
-function drawPolarGraph(data, div, poi) {
+function drawPolarGraph(data, div, phenoYearData) {
     let dataPlotly = []
 
     // Take the existing array of baseline ndvi values and add non-leap year date values to them
-    var baselineDateAndValuesArray = []
-    var center = findPolarCenter(data)
-    data[2001].forEach(function (item, index){
-        baselineDateAndValuesArray.push([item[0], data['baseline'][index]]) 
+    let baselineDateAndValuesArray = []
+    let phenoYearBaseline = calculateBaseline(phenoYearData.flat())
+    let center = findPolarCenter(data)
+    phenoYearData[1].forEach(function (item, index){ // 2001 date strings
+        baselineDateAndValuesArray.push([item[0], phenoYearBaseline[index]]) 
     })
 
     // Build data for centerline and thresholds
@@ -466,17 +505,16 @@ function drawPolarGraph(data, div, poi) {
     var thresholds = findPolarThresholds(data['baseline'], center[1][0])
     var wrapper = d3.select(div).append("div").classed("polar-graph", true)
 
-    let phenoYearMap = buildPhenologicalYear(data, centerDayOppositeData[0])
     let colorRampArray = []
     for (const [key] of Object.entries(data)) { // Use the year values to build a color ramp array for pheno years
         colorRampArray.push(pullDistinctColor(key))
     }
     let colorRampCounter = 0
-    for (const [key, value] of Object.entries(phenoYearMap)) {
-        dataPlotly = dataPlotly.concat(buildTrace(value, key, colorRampArray[colorRampCounter]))
+    phenoYearData.forEach(function (item, index) {
+        dataPlotly = dataPlotly.concat(buildTrace(item, 'Pheno Year ' + parseInt(index+1), colorRampArray[colorRampCounter]))
         colorRampCounter++
-    }
-    dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, 'All-years mean', pullDistinctColor('baseline'), true,
+    })
+    dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, 'All-years mean', '#000000', true,
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
     dataPlotly = dataPlotly.concat(buildReferenceLines(thresholds, growingSeasonData)) // add reference lines
     var config = {responsive: true, displayModeBar: false}
@@ -485,72 +523,39 @@ function drawPolarGraph(data, div, poi) {
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
 
-function buildPhenologicalYear(data, startOfPhenoYear) { // takes in a map of year data and returns a phenological year map
-    let phenoYearMap = {}
-    let nextYearValueIndexArray = [] // this will be an array of index values to pull in from next calendar year
-    let previousRunKey = null
-    for (const [key, value] of Object.entries(data.keys)) {
-        phenoYearMap['Pheno Year ' + key] = []
-        if (nextYearValueIndexArray) { // We have an array from the previous run and need to fill out values
-            for (var k = 0; k < nextYearValueIndexArray.length; k++) {
-                phenoYearMap['Pheno Year ' + previousRunKey].push(data[value][k])
-            }
-        }
-        let phenoYearBeginDayIndex = 0
-        let phenoYearFound = false
-        previousRunKey = key
-        nextYearValueIndexArray = [] // empty it for the new pheno year to be built
-        for (var i = 0; i < data[value].length; i++) { // Find where the pheno year begins and capture that value
-            if (phenoYearFound) break
-            let date = new Date(
-                parseInt(data[value][i][0].substring(0, 4)), // year
-                (parseInt(data[value][i][0].substring(4, 6)) - 1), // months are 0-indexed
-                parseInt(data[value][i][0].substring(6, 8))) // day of month
-            if (getDayOfYear(date) >= startOfPhenoYear) {
-                phenoYearFound = true
-                phenoYearBeginDayIndex = i
-            } else {
-                nextYearValueIndexArray.push(i)
-            }
-        }
-        for (var j = phenoYearBeginDayIndex; j < data[value].length; j++) { // start building phenoYearMap of this calendar year
-            phenoYearMap['Pheno Year ' + key].push(data[value][j])
-        }
-    }
-    delete phenoYearMap['Pheno Year 18'] // always delete the last one since it'll be incomplete
-    return phenoYearMap
+function getDayOfYear (dateString) {
+    let date = makeDate(dateString)
+    let start = new Date(date.getFullYear(), 0, 0)
+    let diff = date - start
+    let oneDay = 1000 * 60 * 60 * 24
+    let day = Math.floor(diff / oneDay)
+    return day
 }
 
-const getDayOfYear = date => {
-    var start = new Date(date.getFullYear(), 0, 0);
-    var diff = date - start;
-    var oneDay = 1000 * 60 * 60 * 24;
-    var day = Math.floor(diff / oneDay);
-    return day;
+function makeDate (dateString) {
+    let date = new Date(
+        parseInt(dateString.substring(0, 4)), // year
+        (parseInt(dateString.substring(4, 6)) - 1), // months are 0-indexed
+        parseInt(dateString.substring(6, 8))) // day of month
+    return date
 }
 
 function buildTrace(data, traceName, color, visibility = 'legendonly',
                     hovertemplate = "%{customdata|%B %d, %Y}<br>NDVI: %{r:.1f}<extra></extra>") {
-    var r = []
-    var theta = []
-    var dateArray = []
-    data.forEach(function (item, index) {
-        let date = new Date(
-            parseInt(item[0].substring(0, 4)), // year
-            (parseInt(item[0].substring(4, 6)) - 1), // months are 0-indexed
-            parseInt(item[0].substring(6, 8))) // day of month
-        r.push(parseInt(item[1], 10))
-        theta.push(getDayOfYear(date))
-        dateArray.push(date)
+    let traceObject = {'r': [], 'theta': [], 'dateArray': []}
+    data.forEach(function (item) {
+        traceObject.r.push(parseInt(item[1], 10))
+        traceObject.theta.push(getDayOfYear(item[0]))
+        traceObject.dateArray.push(makeDate(item[0]))
     })
     return [{
         type: 'scatterpolar',
         visible: visibility,
         mode: "lines+markers",
         name: traceName,
-        r: r,
-        theta: theta,
-        customdata: dateArray,
+        r: traceObject.r,
+        theta: traceObject.theta,
+        customdata: traceObject.dateArray,
         line: {
             color: color
         },
@@ -708,16 +713,15 @@ function findPolarCenter (data) {
     var totalSum = 0;
     var incompleteYears = 0;
     var sum;
-    length = 46;
 
     for (i = 0; i < data.keys.length; i++) {
         arr = data[data.keys[i]];
-        if (arr.length !== length) {
+        if (arr.length !== expectedYearLength) {
             incompleteYears++;
             continue;
         }
         sum = 0;
-        for (j = 0; j < length/2; j++) {
+        for (j = 0; j < expectedYearLength/2; j++) {
             sum += (arr[j][1] - arr[j+23][1]);
         }
         sum = sum / 23;
@@ -732,12 +736,12 @@ function findPolarCenter (data) {
     var avgs = data.baseline;
     var k, counter;
 
-    for (i = 0; i < length/2; i++) {
+    for (i = 0; i < expectedYearLength/2; i++) {
         leftArea = 0;
         rightArea = 0;
-        for (counter = 0; counter < length/2; counter++) {
-            j = (i + counter) % 46;
-            k = (j + 23) % 46;
+        for (counter = 0; counter < expectedYearLength/2; counter++) {
+            j = (i + counter) % expectedYearLength;
+            k = (j + 23) % expectedYearLength;
 
             leftArea += parseInt(avgs[j], 10);
             rightArea += parseInt(avgs[k],10);
@@ -771,12 +775,11 @@ function findPolarCenter (data) {
 function findPolarThresholds (data, startDay) {
     var startIndex = Math.floor((startDay - 3) / 8);
     startIndex += (startIndex > 22) ? (-23) : 23;
-    var i, j, length, arr;
+    var i, j;
     var totalSum = 0;
-    length = 46;
 
-    for (i = 0; i < length; i++) {
-        j = (startIndex + i) % length;
+    for (i = 0; i < expectedYearLength; i++) {
+        j = (startIndex + i) % expectedYearLength;
         totalSum += parseInt(data[j], 10);
     }
 
@@ -787,8 +790,8 @@ function findPolarThresholds (data, startDay) {
     var fifteenIndex, eightyIndex;
 
     totalSum = 0;
-    for (i = 0; i < length; i++) {
-        j = (startIndex + i) % length;
+    for (i = 0; i < expectedYearLength; i++) {
+        j = (startIndex + i) % expectedYearLength;
         totalSum += parseInt(data[j], 10);
         if (!fifteenIndexFound && totalSum > fifteenThreshold) {
             fifteenIndex = j;
