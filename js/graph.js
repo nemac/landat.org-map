@@ -518,7 +518,7 @@ function drawPolarGraph(data, div, phenoYearData) {
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
     dataPlotly = dataPlotly.concat(buildReferenceLines(thresholds, growingSeasonData)) // add reference lines
     var config = {responsive: true, displayModeBar: false}
-    Plotly.newPlot(wrapper.node(), dataPlotly, plotlyLayout, config)
+    Plotly.newPlot(wrapper.node(), dataPlotly, getPlotlyLayout(), config)
 }
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
@@ -646,64 +646,65 @@ function buildReferenceLines(thresholdData, centerlineData, visibility = true) {
     ]
 }
 
-const plotlyLayout = {
-    dragmode: false, // disables zoom on polar graph
-    modebar: {
-        orientation: 'v'
-    },
-    autoresize: true,
-    margin: {
-        l: 28,
-        r: 0,
-        t: 20,
-        b: 20
-    },
-    height: 570,
-    legend: {
-        title: {
-            text: "Click to turn on/off"
+function getPlotlyLayout() {
+    return {
+        dragmode: false, // disables zoom on polar graph
+        modebar: {
+            orientation: 'v'
         },
-        x: 1.07,
-    },
-    polar: {
-        domain: {
-            x: [0, 100],
-            y: [1, 365]
+        autoresize: true,
+        margin: {
+            l: 28,
+            r: 0,
+            t: 20,
+            b: 20
         },
-        radialaxis: {
-            visible: true,
-            gridcolor: '#E2E2E2',
-            tickfont: {
-                color: '#444',
+        height: 570,
+        legend: {
+            title: {
+                text: "Click to turn on/off"
             },
-            type: "linear",
-            range: [0, 100]
+            x: 1.07,
         },
-        angularaxis: {
-            visible: true,
-            gridcolor: '#E2E2E2',
-            type: "linear",
-            tickmode: "array",
-            showticklabels: true,
-            tickvals: [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335],
-            ticktext: [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec"
-            ],
-            direction: "clockwise",
-            period: 12
+        polar: {
+            domain: {
+                x: [0, 100],
+                y: [1, 365]
+            },
+            radialaxis: {
+                visible: true,
+                gridcolor: '#E2E2E2',
+                tickfont: {
+                    color: '#444',
+                },
+                range: [0, 100]
+            },
+            angularaxis: {
+                visible: true,
+                gridcolor: '#E2E2E2',
+                type: "linear",
+                tickmode: "array",
+                showticklabels: true,
+                tickvals: [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335],
+                ticktext: [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                ],
+                direction: "clockwise",
+                period: 12
+            }
         }
-    }
+    }  
 }
 
 /* POLAR GRAPH HELPERS */
