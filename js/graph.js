@@ -506,6 +506,7 @@ function drawPolarGraph(data, div, phenoYearData) {
     
     // Start plotting the data
     var wrapper = d3.select(div).append("div").classed("polar-graph", true)
+    dataPlotly = dataPlotly.concat(buildReferenceLines(thresholds, growingSeasonData)) // add reference lines
     let colorRampArray = []
     for (const [key] of Object.entries(data)) { // Use the year values to build a color ramp array for pheno years
         colorRampArray.push(pullDistinctColor(key))
@@ -517,7 +518,6 @@ function drawPolarGraph(data, div, phenoYearData) {
     })
     dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, 'All-years mean', '#000000', true, // baseline plot
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
-    dataPlotly = dataPlotly.concat(buildReferenceLines(thresholds, growingSeasonData)) // add reference lines
     var config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtons: modeBarButtons}
     Plotly.newPlot(wrapper.node(), dataPlotly, getPlotlyLayout(), config)
 }
@@ -554,10 +554,10 @@ function buildReferenceLines(thresholdData, centerlineData, visibility = true) {
         name: "Start of <br>phenological year",
         visible: visibility,
         showlegend: false,
-        r: [0, centerlineData[1][1]],
-        theta: [centerlineData[0][0], centerlineData[1][0]],
-        hovertext: ["", "Beginning of Phenological Year"],
-        hoverinfo: ["none", "text"],
+        r: [0, 20, 40, 60, 80, 100],
+        theta: [0, centerlineData[1][0], centerlineData[1][0], centerlineData[1][0], centerlineData[1][0], centerlineData[1][0]],
+        hovertext: "Beginning of Phenological Year",
+        hoverinfo: "text",
         line: {
             color: "#429bb8",
             width: 3
@@ -569,10 +569,10 @@ function buildReferenceLines(thresholdData, centerlineData, visibility = true) {
         name: "15% threshold",
         visible: visibility,
         showlegend: false,
-        r: [0, 80, 100],
-        theta: [0, thresholdData.fifteenEnd, thresholdData.fifteenEnd],
-        hovertext: ["", "", "Start of Growing Season"],
-        hoverinfo: ["none", "none", "text"],
+        r: [0, 20, 40, 60, 80, 100],
+        theta: [0, thresholdData.fifteenEnd, thresholdData.fifteenEnd, thresholdData.fifteenEnd, thresholdData.fifteenEnd, thresholdData.fifteenEnd],
+        hovertext: "Start of Growing Season",
+        hoverinfo: "text",
         line: {
             color: "#90ee90",
             width: 3
@@ -584,10 +584,10 @@ function buildReferenceLines(thresholdData, centerlineData, visibility = true) {
         name: "Middle of <br>growing season",
         visible: visibility,
         showlegend: false,
-        r: [centerlineData[0][1], 0],
-        theta: [centerlineData[0][0], centerlineData[0][0]],
-        hovertext: ["Middle of Phenological Year", ""],
-        hoverinfo: ["text", "none"],
+        r: [0, 20, 40, 60, 80, centerlineData[0][1]],
+        theta: [0, centerlineData[0][0], centerlineData[0][0], centerlineData[0][0], centerlineData[0][0], centerlineData[0][0]],
+        hovertext: "Middle of Phenological Year",
+        hoverinfo: "text",
         line: {
             color: "#056608",
             width: 3
@@ -599,10 +599,10 @@ function buildReferenceLines(thresholdData, centerlineData, visibility = true) {
         name: "80% threshold",
         visible: visibility,
         showlegend: false,
-        r: [0, 80, 100],
-        theta: [0, thresholdData.eightyEnd, thresholdData.eightyEnd],
-        hovertext: ["", "", "End of Growing Season"],
-        hoverinfo: ["none", "none", "text"],
+        r: [0, 20, 40, 60, 80, 100],
+        theta: [0, thresholdData.eightyEnd, thresholdData.eightyEnd, thresholdData.eightyEnd, thresholdData.eightyEnd, thresholdData.eightyEnd],
+        hovertext: "End of Growing Season",
+        hoverinfo: "text",
         line: {
             color: "#ffa500",
             width: 3
@@ -710,7 +710,7 @@ function makeDate (dateString) {
 
 const modeBarButtons = [[
     {
-        name: 'Reset Plot',
+        name: 'Reset Plot Layout',
         icon: Plotly.Icons.home,
         click: function(gd) {
             Plotly.relayout(gd, getPlotlyLayout())
