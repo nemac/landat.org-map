@@ -518,7 +518,7 @@ function drawPolarGraph(data, div, phenoYearData) {
     dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, 'All-years mean', '#000000', true, // baseline plot
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
     dataPlotly = dataPlotly.concat(buildReferenceLines(thresholds, growingSeasonData)) // add reference lines
-    var config = {responsive: true, displaylogo: false, modeBarButtons: modeBarButtons}
+    var config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtons: modeBarButtons}
     Plotly.newPlot(wrapper.node(), dataPlotly, getPlotlyLayout(), config)
 }
 
