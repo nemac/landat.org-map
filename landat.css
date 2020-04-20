@@ -64,7 +64,6 @@
               animation-iteration-count: 1; }
   .graph-elem svg {
     position: relative;
-    min-height: 270px;
     height: 100%; }
 
 @-webkit-keyframes graph-elem-animate {

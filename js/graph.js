@@ -490,12 +490,12 @@ function drawPolarGraph(data, div, phenoYearData) {
     // Take the existing array of baseline ndvi values and add non-leap year date values to them
     let baselineDateAndValuesArray = []
     let phenoYearBaseline = calculateBaseline(phenoYearData.flat())
-    let center = findPolarCenter(data)
     phenoYearData[1].forEach(function (item, index){ // 2001 date strings
         baselineDateAndValuesArray.push([item[0], phenoYearBaseline[index]]) 
     })
 
     // Build data for centerline and thresholds
+    let center = findPolarCenter(data)
     var centerDay = center[1][0]
     var centerDayOpposite = (centerDay + (365 / 2)) % 365
     var centerDayData = [centerDay, 100]
@@ -503,42 +503,26 @@ function drawPolarGraph(data, div, phenoYearData) {
     var centerPoint = center[1][1]
     var growingSeasonData = [centerDayData, centerDayOppositeData, centerPoint]
     var thresholds = findPolarThresholds(data['baseline'], center[1][0])
+    
+    // Start plotting the data
     var wrapper = d3.select(div).append("div").classed("polar-graph", true)
-
     let colorRampArray = []
     for (const [key] of Object.entries(data)) { // Use the year values to build a color ramp array for pheno years
         colorRampArray.push(pullDistinctColor(key))
     }
     let colorRampCounter = 0
-    phenoYearData.forEach(function (item, index) {
+    phenoYearData.forEach(function (item, index) { // Plot all of the pheno years
         dataPlotly = dataPlotly.concat(buildTrace(item, 'Pheno Year ' + parseInt(index+1), colorRampArray[colorRampCounter]))
         colorRampCounter++
     })
-    dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, 'All-years mean', '#000000', true,
+    dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, 'All-years mean', '#000000', true, // baseline plot
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
     dataPlotly = dataPlotly.concat(buildReferenceLines(thresholds, growingSeasonData)) // add reference lines
-    var config = {responsive: true, displayModeBar: false}
+    var config = {responsive: true, displaylogo: false, modeBarButtons: modeBarButtons}
     Plotly.newPlot(wrapper.node(), dataPlotly, getPlotlyLayout(), config)
 }
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
-
-function getDayOfYear (dateString) {
-    let date = makeDate(dateString)
-    let start = new Date(date.getFullYear(), 0, 0)
-    let diff = date - start
-    let oneDay = 1000 * 60 * 60 * 24
-    let day = Math.floor(diff / oneDay)
-    return day
-}
-
-function makeDate (dateString) {
-    let date = new Date(
-        parseInt(dateString.substring(0, 4)), // year
-        (parseInt(dateString.substring(4, 6)) - 1), // months are 0-indexed
-        parseInt(dateString.substring(6, 8))) // day of month
-    return date
-}
 
 function buildTrace(data, traceName, color, visibility = 'legendonly',
                     hovertemplate = "%{customdata|%B %d, %Y}<br>NDVI: %{r:.1f}<extra></extra>") {
@@ -650,12 +634,12 @@ function getPlotlyLayout() {
     return {
         dragmode: false, // disables zoom on polar graph
         modebar: {
-            orientation: 'v'
+            orientation: 'h',
         },
         autoresize: true,
         margin: {
             l: 28,
-            r: 0,
+            r: 40,
             t: 20,
             b: 20
         },
@@ -706,6 +690,34 @@ function getPlotlyLayout() {
         }
     }  
 }
+
+function getDayOfYear (dateString) {
+    let date = makeDate(dateString)
+    let start = new Date(date.getFullYear(), 0, 0)
+    let diff = date - start
+    let oneDay = 1000 * 60 * 60 * 24
+    let day = Math.floor(diff / oneDay)
+    return day
+}
+
+function makeDate (dateString) {
+    let date = new Date(
+        parseInt(dateString.substring(0, 4)), // year
+        (parseInt(dateString.substring(4, 6)) - 1), // months are 0-indexed
+        parseInt(dateString.substring(6, 8))) // day of month
+    return date
+}
+
+const modeBarButtons = [[
+    {
+        name: 'Reset Plot',
+        icon: Plotly.Icons.home,
+        click: function(gd) {
+            Plotly.relayout(gd, getPlotlyLayout())
+        }
+     },
+     "toImage"
+]]
 
 /* POLAR GRAPH HELPERS */
 
