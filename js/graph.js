@@ -5,6 +5,10 @@ import {GetAjaxObject} from './parser'
 
 var tip = {};
 var expectedYearLength = 46;
+const phenoYearKeys = {'Pheno Year 1': 2000, 'Pheno Year 2': 2001, 'Pheno Year 3': 2002, 'Pheno Year 4': 2003, 'Pheno Year 5': 2004,
+                       'Pheno Year 6': 2005, 'Pheno Year 7': 2006, 'Pheno Year 8': 2007, 'Pheno Year 9': 2008, 'Pheno Year 10': 2009,
+                       'Pheno Year 11': 2010, 'Pheno Year 12': 2011, 'Pheno Year 13': 2012, 'Pheno Year 14': 2013, 'Pheno Year 15': 2014,
+                       'Pheno Year 16': 2015, 'Pheno Year 17': 2016, 'Pheno Year 18': 2017}
 
 export function SetupGraphs () {
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
@@ -502,7 +506,7 @@ function drawPolarGraph(data, div, phenoYearData) {
     var centerDayOppositeData = [centerDayOpposite, 100]
     var centerPoint = center[1][1]
     var growingSeasonData = [centerDayData, centerDayOppositeData, centerPoint]
-    var baselineThresholds = findPolarThresholds(data['baseline'], center[1][0])
+    var baselineThresholds = findPolarThresholds(data['baseline'], centerDay)
     
     // Start plotting the data
     var wrapper = d3.select(div).append("div").classed("polar-graph", true)
@@ -521,29 +525,34 @@ function drawPolarGraph(data, div, phenoYearData) {
     var config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtons: modeBarButtons}
     Plotly.newPlot(wrapper.node(), dataPlotly, getPlotlyLayout(), config)
     let traceObject = {}
-    wrapper.node().on('plotly_legendclick', function(data){
-        let traceData = data.node.__data__[0].trace.r
-        let traceName = data.node.__data__[0].trace.name
-        let baseline, centerLineValue, thresholds, fifteenValue, eightyValue
+    wrapper.node().on('plotly_legendclick', function(x){
+        let traceData = x.node.__data__[0].trace.r
+        let traceName = x.node.__data__[0].trace.name
+        let baseline, dynamicCenter, centerLineValue, thresholds, fifteenValue, eightyValue
         if (traceName === 'All-years mean') {
             return // do nothing
         }
         if (traceObject[traceName]) {
             delete traceObject[traceName]
         } else {
-            traceObject[traceName] = traceData
+            //traceObject[traceName] = traceData
+            traceObject[traceName] = data[phenoYearKeys[traceName]]
         }
         if (Object.keys(traceObject).length >= 1) {
             let traceArray = Object.values(traceObject).flat()
-            baseline = calculateDynamicBaseline(traceArray)
-            thresholds = findPolarThresholds(baseline, center[1][0])
+            baseline = calculateBaseline(traceArray)
+            traceObject['keys'] = Object.keys(traceObject)
+            traceObject['baseline'] = baseline
+            dynamicCenter = findPolarCenter(traceObject)
+            thresholds = findPolarThresholds(baseline, dynamicCenter[1][0])
             fifteenValue = thresholds.fifteenEnd
             eightyValue = thresholds.eightyEnd
-            if (fifteenValue > eightyValue) {
+            centerLineValue = dynamicCenter[1][0]
+            /*if (fifteenValue > eightyValue) {
                 centerLineValue = (((fifteenValue + eightyValue) / 2) - 180)
             } else {
                 centerLineValue = ((fifteenValue + eightyValue) / 2)
-            }
+            }*/
         } else {
             fifteenValue = baselineThresholds.fifteenEnd
             eightyValue = baselineThresholds.eightyEnd
@@ -553,6 +562,8 @@ function drawPolarGraph(data, div, phenoYearData) {
         Plotly.restyle(wrapper.node(), {theta: [[0, fifteenValue, fifteenValue, fifteenValue, fifteenValue, fifteenValue]]}, 1)
         Plotly.restyle(wrapper.node(), {theta: [[0, centerLineValue, centerLineValue, centerLineValue, centerLineValue, centerLineValue]]}, 2)
         Plotly.restyle(wrapper.node(), {theta: [[0, eightyValue, eightyValue, eightyValue, eightyValue, eightyValue]]}, 3)
+        delete traceObject['keys']
+        delete traceObject['baseline']
     });
 }
 
@@ -699,6 +710,7 @@ function getPlotlyLayout() {
                 text: "Click to turn on/off"
             },
             x: 1.07,
+            itemdoubleclick: false,
         },
         polar: {
             domain: {
@@ -771,8 +783,8 @@ const modeBarButtons = [[
 
 /* POLAR GRAPH HELPERS */
 
-function findPolarCenter (data) {
-    var i, j, length, arr;
+function findPolarCenter (data, dynamicData = false) {
+    var i, j, arr;
     var totalSum = 0;
     var incompleteYears = 0;
     var sum;
@@ -785,7 +797,11 @@ function findPolarCenter (data) {
         }
         sum = 0;
         for (j = 0; j < expectedYearLength/2; j++) {
-            sum += (arr[j][1] - arr[j+23][1]);
+            if (dynamicData) {
+                sum += (arr[j] - arr[j+23]);
+            } else {
+                sum += (arr[j][1] - arr[j+23][1]);
+            }
         }
         sum = sum / 23;
         totalSum += sum;
