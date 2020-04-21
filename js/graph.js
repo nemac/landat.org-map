@@ -5,10 +5,10 @@ import {GetAjaxObject} from './parser'
 
 var tip = {};
 var expectedYearLength = 46;
-const phenoYearKeys = {'Pheno Year 1': 2000, 'Pheno Year 2': 2001, 'Pheno Year 3': 2002, 'Pheno Year 4': 2003, 'Pheno Year 5': 2004,
-                       'Pheno Year 6': 2005, 'Pheno Year 7': 2006, 'Pheno Year 8': 2007, 'Pheno Year 9': 2008, 'Pheno Year 10': 2009,
-                       'Pheno Year 11': 2010, 'Pheno Year 12': 2011, 'Pheno Year 13': 2012, 'Pheno Year 14': 2013, 'Pheno Year 15': 2014,
-                       'Pheno Year 16': 2015, 'Pheno Year 17': 2016, 'Pheno Year 18': 2017}
+const phenoYearKeys = {'Pheno Year 1': 0, 'Pheno Year 2': 1, 'Pheno Year 3': 2, 'Pheno Year 4': 3, 'Pheno Year 5': 4,
+                       'Pheno Year 6': 5, 'Pheno Year 7': 6, 'Pheno Year 8': 7, 'Pheno Year 9': 8, 'Pheno Year 10': 9,
+                       'Pheno Year 11': 10, 'Pheno Year 12': 11, 'Pheno Year 13': 12, 'Pheno Year 14': 13, 'Pheno Year 15': 14,
+                       'Pheno Year 16': 15, 'Pheno Year 17': 16, 'Pheno Year 18': 17}
 
 export function SetupGraphs () {
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
@@ -535,15 +535,15 @@ function drawPolarGraph(data, div, phenoYearData) {
         if (traceObject[traceName]) {
             delete traceObject[traceName]
         } else {
-            //traceObject[traceName] = traceData
-            traceObject[traceName] = data[phenoYearKeys[traceName]]
+            traceObject[traceName] = traceData
+            //traceObject[traceName] = phenoYearData[phenoYearKeys[traceName]]
         }
         if (Object.keys(traceObject).length >= 1) {
             let traceArray = Object.values(traceObject).flat()
-            baseline = calculateBaseline(traceArray)
+            baseline = calculateDynamicBaseline(traceArray)
             traceObject['keys'] = Object.keys(traceObject)
             traceObject['baseline'] = baseline
-            dynamicCenter = findPolarCenter(traceObject)
+            dynamicCenter = findPolarCenter(traceObject, true)
             thresholds = findPolarThresholds(baseline, dynamicCenter[1][0])
             fifteenValue = thresholds.fifteenEnd
             eightyValue = thresholds.eightyEnd
@@ -789,6 +789,7 @@ function findPolarCenter (data, dynamicData = false) {
     var incompleteYears = 0;
     var sum;
 
+    // line 793-810 calculate the r value for our polar center
     for (i = 0; i < data.keys.length; i++) {
         arr = data[data.keys[i]];
         if (arr.length !== expectedYearLength) {
@@ -808,6 +809,7 @@ function findPolarCenter (data, dynamicData = false) {
     }
     totalSum = Math.abs(totalSum) / (data.keys.length - incompleteYears);
 
+    // lines 813-845 calculate our theta value
     var areaDiff = 1000000;
     var checkDiff;
     var areaIndex = 0;
@@ -815,12 +817,14 @@ function findPolarCenter (data, dynamicData = false) {
     var avgs = data.baseline;
     var k, counter;
 
+    // Iterate through the data 23 times to find out where the minimal amount of difference is between
+    // left area and right area. This should be the line along which the center point will be
     for (i = 0; i < expectedYearLength/2; i++) {
         leftArea = 0;
         rightArea = 0;
         for (counter = 0; counter < expectedYearLength/2; counter++) {
-            j = (i + counter) % expectedYearLength;
-            k = (j + 23) % expectedYearLength;
+            j = (i + counter) % expectedYearLength; // keeps j within limit of array index [0-45]
+            k = (j + 23) % expectedYearLength; // keeps k within limit of array index [0-45]
 
             leftArea += parseInt(avgs[j], 10);
             rightArea += parseInt(avgs[k],10);
