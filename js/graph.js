@@ -502,11 +502,11 @@ function drawPolarGraph(data, div, phenoYearData) {
     var centerDayOppositeData = [centerDayOpposite, 100]
     var centerPoint = center[1][1]
     var growingSeasonData = [centerDayData, centerDayOppositeData, centerPoint]
-    var thresholds = findPolarThresholds(data['baseline'], center[1][0])
+    var baselineThresholds = findPolarThresholds(data['baseline'], center[1][0])
     
     // Start plotting the data
     var wrapper = d3.select(div).append("div").classed("polar-graph", true)
-    dataPlotly = dataPlotly.concat(buildReferenceLines(thresholds, growingSeasonData)) // add reference lines
+    dataPlotly = dataPlotly.concat(buildReferenceLines(baselineThresholds, growingSeasonData)) // add reference lines
     let colorRampArray = []
     for (const [key] of Object.entries(data)) { // Use the year values to build a color ramp array for pheno years
         colorRampArray.push(pullDistinctColor(key))
@@ -520,9 +520,59 @@ function drawPolarGraph(data, div, phenoYearData) {
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
     var config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtons: modeBarButtons}
     Plotly.newPlot(wrapper.node(), dataPlotly, getPlotlyLayout(), config)
+    let traceObject = {}
+    wrapper.node().on('plotly_legendclick', function(data){
+        let traceData = data.node.__data__[0].trace.r
+        let traceName = data.node.__data__[0].trace.name
+        let baseline, centerLineValue, thresholds, fifteenValue, eightyValue
+        if (traceName === 'All-years mean') {
+            return // do nothing
+        }
+        if (traceObject[traceName]) {
+            delete traceObject[traceName]
+        } else {
+            traceObject[traceName] = traceData
+        }
+        if (Object.keys(traceObject).length >= 1) {
+            let traceArray = Object.values(traceObject).flat()
+            baseline = calculateDynamicBaseline(traceArray)
+            thresholds = findPolarThresholds(baseline, center[1][0])
+            fifteenValue = thresholds.fifteenEnd
+            eightyValue = thresholds.eightyEnd
+            if (fifteenValue > eightyValue) {
+                centerLineValue = (((fifteenValue + eightyValue) / 2) - 180)
+            } else {
+                centerLineValue = ((fifteenValue + eightyValue) / 2)
+            }
+        } else {
+            fifteenValue = baselineThresholds.fifteenEnd
+            eightyValue = baselineThresholds.eightyEnd
+            centerLineValue = centerDay
+        }
+
+        Plotly.restyle(wrapper.node(), {theta: [[0, fifteenValue, fifteenValue, fifteenValue, fifteenValue, fifteenValue]]}, 1)
+        Plotly.restyle(wrapper.node(), {theta: [[0, centerLineValue, centerLineValue, centerLineValue, centerLineValue, centerLineValue]]}, 2)
+        Plotly.restyle(wrapper.node(), {theta: [[0, eightyValue, eightyValue, eightyValue, eightyValue, eightyValue]]}, 3)
+    });
 }
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
+
+function calculateDynamicBaseline(data) {
+    var dataForBaseline
+    var mean
+    let dynamicBaseline = []
+    for (let i = 0; i < expectedYearLength; i++) {
+        dataForBaseline = []
+        for (let j = i; j < data.length; j += expectedYearLength) {
+            dataForBaseline.push(parseInt(data[j], 10));
+        }
+
+        mean = computeAverage(dataForBaseline)
+        dynamicBaseline.push(mean)
+    }
+    return dynamicBaseline
+}
 
 function buildTrace(data, traceName, color, visibility = 'legendonly',
                     hovertemplate = "%{customdata|%B %d, %Y}<br>NDVI: %{r:.1f}<extra></extra>") {
