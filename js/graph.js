@@ -5,10 +5,6 @@ import {GetAjaxObject} from './parser'
 
 var tip = {};
 var expectedYearLength = 46;
-const phenoYearKeys = {'Pheno Year 1': 0, 'Pheno Year 2': 1, 'Pheno Year 3': 2, 'Pheno Year 4': 3, 'Pheno Year 5': 4,
-                       'Pheno Year 6': 5, 'Pheno Year 7': 6, 'Pheno Year 8': 7, 'Pheno Year 9': 8, 'Pheno Year 10': 9,
-                       'Pheno Year 11': 10, 'Pheno Year 12': 11, 'Pheno Year 13': 12, 'Pheno Year 14': 13, 'Pheno Year 15': 14,
-                       'Pheno Year 16': 15, 'Pheno Year 17': 16, 'Pheno Year 18': 17}
 
 export function SetupGraphs () {
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
@@ -492,25 +488,33 @@ function drawPolarGraph(data, div, phenoYearData) {
     let dataPlotly = []
 
     // Take the existing array of baseline ndvi values and add non-leap year date values to them
-    let baselineDateAndValuesArray = []
-    let phenoYearBaseline = calculateBaseline(phenoYearData.flat())
+    let phenoYearBaselineDateAndValuesArray = []
+    let phenoYearBaselineValues = calculateBaseline(phenoYearData.flat())
     phenoYearData[1].forEach(function (item, index){ // 2001 date strings
-        baselineDateAndValuesArray.push([item[0], phenoYearBaseline[index]]) 
+        phenoYearBaselineDateAndValuesArray.push([item[0], phenoYearBaselineValues[index]]) 
     })
 
     // Build data for centerline and thresholds
     let center = findPolarCenter(data)
     var centerDay = center[1][0]
-    var centerDayOpposite = (centerDay + (365 / 2)) % 365
-    var centerDayData = [centerDay, 100]
-    var centerDayOppositeData = [centerDayOpposite, 100]
+    let startDayOfPhenoYear = (center[1][0] + (365 / 2)) % 365 // e.g. 36 would be February 5th
     var centerPoint = center[1][1]
-    var growingSeasonData = [centerDayData, centerDayOppositeData, centerPoint]
-    var baselineThresholds = findPolarThresholds(data['baseline'], centerDay)
+    var baselineThresholds = findPolarThresholds(phenoYearBaselineValues, startDayOfPhenoYear)
+    var baselineSeasonalIndex = (baselineThresholds.fifteenEnd + baselineThresholds.eightyEnd) / 2
     
-    // Start plotting the data
+    // Start building the data to be plotted
+    let startPhenoData = {"r": [0, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([startDayOfPhenoYear], 5)) }
+    let fifteenData = {"r": [0, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineThresholds.fifteenEnd], 5)) }
+    let middleGrowingData = {"r": [0, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineSeasonalIndex], 5)) }
+    let eightyData = {"r": [0, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineThresholds.eightyEnd], 5)) }
+    
+    dataPlotly = dataPlotly.concat(buildReferenceLine(startPhenoData, "lines", "start pheno", "Beginning of Phenological Year", "#429bb8"))
+    dataPlotly = dataPlotly.concat(buildReferenceLine(fifteenData, "lines", "15% threshold", "Start of Growing Season", "#90ee90"))
+    dataPlotly = dataPlotly.concat(buildReferenceLine(middleGrowingData, "lines", "middle growing", "Middle of Growing Season", "#056608"))
+    dataPlotly = dataPlotly.concat(buildReferenceLine(eightyData, "lines", "80% threshold", "End of Growing Season", "#ffa500"))
+    dataPlotly = dataPlotly.concat(buildCenterLine([centerDay, centerPoint])) // Red center line
+
     var wrapper = d3.select(div).append("div").classed("polar-graph", true)
-    dataPlotly = dataPlotly.concat(buildReferenceLines(baselineThresholds, growingSeasonData)) // add reference lines
     let colorRampArray = []
     for (const [key] of Object.entries(data)) { // Use the year values to build a color ramp array for pheno years
         colorRampArray.push(pullDistinctColor(key))
@@ -520,15 +524,17 @@ function drawPolarGraph(data, div, phenoYearData) {
         dataPlotly = dataPlotly.concat(buildTrace(item, 'Pheno Year ' + parseInt(index+1), colorRampArray[colorRampCounter]))
         colorRampCounter++
     })
-    dataPlotly = dataPlotly.concat(buildTrace(baselineDateAndValuesArray, 'All-years mean', '#000000', true, // baseline plot
+    dataPlotly = dataPlotly.concat(buildTrace(phenoYearBaselineDateAndValuesArray, 'All-years mean', '#000000', true, // baseline plot
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
     var config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtons: modeBarButtons}
     Plotly.newPlot(wrapper.node(), dataPlotly, getPlotlyLayout(), config)
     let traceObject = {}
+
+    // this block is used to draw dynamic reference lines
     wrapper.node().on('plotly_legendclick', function(x){
         let traceData = x.node.__data__[0].trace.r
         let traceName = x.node.__data__[0].trace.name
-        let baseline, dynamicCenter, centerLineValue, thresholds, fifteenValue, eightyValue
+        let centerLineValue, fifteenValue, eightyValue
         if (traceName === 'All-years mean') {
             return // do nothing
         }
@@ -536,35 +542,23 @@ function drawPolarGraph(data, div, phenoYearData) {
             delete traceObject[traceName]
         } else {
             traceObject[traceName] = traceData
-            //traceObject[traceName] = phenoYearData[phenoYearKeys[traceName]]
         }
         if (Object.keys(traceObject).length >= 1) {
             let traceArray = Object.values(traceObject).flat()
-            baseline = calculateDynamicBaseline(traceArray)
-            traceObject['keys'] = Object.keys(traceObject)
-            traceObject['baseline'] = baseline
-            dynamicCenter = findPolarCenter(traceObject, true)
-            thresholds = findPolarThresholds(baseline, dynamicCenter[1][0])
-            fifteenValue = thresholds.fifteenEnd
-            eightyValue = thresholds.eightyEnd
-            centerLineValue = dynamicCenter[1][0]
-            /*if (fifteenValue > eightyValue) {
-                centerLineValue = (((fifteenValue + eightyValue) / 2) - 180)
-            } else {
-                centerLineValue = ((fifteenValue + eightyValue) / 2)
-            }*/
+            let dynamicBaseline = calculateDynamicBaseline(traceArray)
+            let dynamicThresholds = findPolarThresholds(dynamicBaseline, startDayOfPhenoYear)
+            fifteenValue = dynamicThresholds.fifteenEnd
+            eightyValue = dynamicThresholds.eightyEnd
+            centerLineValue = (dynamicThresholds.fifteenEnd + dynamicThresholds.eightyEnd) / 2
         } else {
             fifteenValue = baselineThresholds.fifteenEnd
             eightyValue = baselineThresholds.eightyEnd
-            centerLineValue = centerDay
+            centerLineValue = baselineSeasonalIndex
         }
-
         Plotly.restyle(wrapper.node(), {theta: [[0, fifteenValue, fifteenValue, fifteenValue, fifteenValue, fifteenValue]]}, 1)
         Plotly.restyle(wrapper.node(), {theta: [[0, centerLineValue, centerLineValue, centerLineValue, centerLineValue, centerLineValue]]}, 2)
         Plotly.restyle(wrapper.node(), {theta: [[0, eightyValue, eightyValue, eightyValue, eightyValue, eightyValue]]}, 3)
-        delete traceObject['keys']
-        delete traceObject['baseline']
-    });
+    })
 }
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
@@ -591,7 +585,7 @@ function buildTrace(data, traceName, color, visibility = 'legendonly',
     data.forEach(function (item) {
         traceObject.r.push(parseInt(item[1], 10))
         traceObject.theta.push(getDayOfYear(item[0]))
-        traceObject.dateArray.push(makeDate(item[0]))
+        traceObject.dateArray.push(parseDate(item[0]))
     })
     return [{
         type: 'scatterpolar',
@@ -608,75 +602,34 @@ function buildTrace(data, traceName, color, visibility = 'legendonly',
     }]
 }
 
-function buildReferenceLines(thresholdData, centerlineData, visibility = true) {
-    return [{ // beginning of phenological year
+function buildReferenceLine(data, mode, traceName, hoverText, lineColor) {
+    return [{
         type: 'scatterpolar',
-        mode: "lines",
-        name: "Start of <br>phenological year",
-        visible: visibility,
+        mode: mode,
+        name: traceName,
+        visible: true,
         showlegend: false,
-        r: [0, 20, 40, 60, 80, 100],
-        theta: [0, centerlineData[1][0], centerlineData[1][0], centerlineData[1][0], centerlineData[1][0], centerlineData[1][0]],
-        hovertext: "Beginning of Phenological Year",
+        r: data.r,
+        theta: data.theta,
+        hovertext: hoverText,
         hoverinfo: "text",
         line: {
-            color: "#429bb8",
+            color: lineColor,
             width: 3
         }
-    },
-    { // 15% threshold
-        type: 'scatterpolar',
-        mode: "lines",
-        name: "15% threshold",
-        visible: visibility,
-        showlegend: false,
-        r: [0, 20, 40, 60, 80, 100],
-        theta: [0, thresholdData.fifteenEnd, thresholdData.fifteenEnd, thresholdData.fifteenEnd, thresholdData.fifteenEnd, thresholdData.fifteenEnd],
-        hovertext: "Start of Growing Season",
-        hoverinfo: "text",
-        line: {
-            color: "#90ee90",
-            width: 3
-        }
-    },
-    { // middle of phenological year
-        type: 'scatterpolar',
-        mode: "lines",
-        name: "Middle of <br>growing season",
-        visible: visibility,
-        showlegend: false,
-        r: [0, 20, 40, 60, 80, centerlineData[0][1]],
-        theta: [0, centerlineData[0][0], centerlineData[0][0], centerlineData[0][0], centerlineData[0][0], centerlineData[0][0]],
-        hovertext: "Middle of Phenological Year",
-        hoverinfo: "text",
-        line: {
-            color: "#056608",
-            width: 3
-        }
-    },
-    { // 80% threshold
-        type: 'scatterpolar',
-        mode: "lines",
-        name: "80% threshold",
-        visible: visibility,
-        showlegend: false,
-        r: [0, 20, 40, 60, 80, 100],
-        theta: [0, thresholdData.eightyEnd, thresholdData.eightyEnd, thresholdData.eightyEnd, thresholdData.eightyEnd, thresholdData.eightyEnd],
-        hovertext: "End of Growing Season",
-        hoverinfo: "text",
-        line: {
-            color: "#ffa500",
-            width: 3
-        }
-    },
+    }]
+}
+
+function buildCenterLine(centerlineData, visibility = true) {
+    return [
     { // red center line and dot
         type: "scatterpolar",
         mode: "lines+markers",
         name: 'Seasonality',
         visible: visibility,
         showlegend: false,
-        r: [centerlineData[2], 0],
-        theta: [centerlineData[0][0], 0],
+        r: [centerlineData[1], 0],
+        theta: [centerlineData[0], 0],
         hovertemplate: ["Center: %{r}<extra></extra>", ""],
         marker: {
             size: 9,
@@ -754,20 +707,12 @@ function getPlotlyLayout() {
 }
 
 function getDayOfYear (dateString) {
-    let date = makeDate(dateString)
+    let date = parseDate(dateString)
     let start = new Date(date.getFullYear(), 0, 0)
     let diff = date - start
     let oneDay = 1000 * 60 * 60 * 24
     let day = Math.floor(diff / oneDay)
     return day
-}
-
-function makeDate (dateString) {
-    let date = new Date(
-        parseInt(dateString.substring(0, 4)), // year
-        (parseInt(dateString.substring(4, 6)) - 1), // months are 0-indexed
-        parseInt(dateString.substring(6, 8))) // day of month
-    return date
 }
 
 const modeBarButtons = [[
@@ -781,9 +726,11 @@ const modeBarButtons = [[
      "toImage"
 ]]
 
+const repeat = (a, n) => Array(n).fill(a).flat(1)
+
 /* POLAR GRAPH HELPERS */
 
-function findPolarCenter (data, dynamicData = false) {
+function findPolarCenter (data) {
     var i, j, arr;
     var totalSum = 0;
     var incompleteYears = 0;
@@ -798,11 +745,7 @@ function findPolarCenter (data, dynamicData = false) {
         }
         sum = 0;
         for (j = 0; j < expectedYearLength/2; j++) {
-            if (dynamicData) {
-                sum += (arr[j] - arr[j+23]);
-            } else {
-                sum += (arr[j][1] - arr[j+23][1]);
-            }
+            sum += (arr[j][1] - arr[j+23][1]);
         }
         sum = sum / 23;
         totalSum += sum;
@@ -856,8 +799,7 @@ function findPolarCenter (data, dynamicData = false) {
  * startDay is actually the seasonality index, it should be flipped
  */
 function findPolarThresholds (data, startDay) {
-    var startIndex = Math.floor((startDay - 3) / 8);
-    startIndex += (startIndex > 22) ? (-23) : 23;
+    var startIndex = 0
     var i, j;
     var totalSum = 0;
 
@@ -888,8 +830,8 @@ function findPolarThresholds (data, startDay) {
         }
     }
 
-    var fifteenEnd = (fifteenIndex * 8) + 3
-    var eightyEnd = (eightyIndex * 8) + 3
+    var fifteenEnd = (fifteenIndex * 8) + 3 + startDay
+    var eightyEnd = (eightyIndex * 8) + 3 + startDay
 
     return { fifteenEnd, eightyEnd }
 }
