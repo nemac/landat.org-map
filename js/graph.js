@@ -277,8 +277,8 @@ function drawGraph(data, div, poi) {
     data = splitData(data)
     var reprocessedData = reprocessData(data)
     let phenoYearData = buildPhenologicalYearData(data, reprocessedData)
-    makeUpDownLineGraph(data, div)
-    makeUpDownOverlapingLineGraphWithCheckboxes(reprocessedData, div, poi)
+    drawAllYearsGraph(data, div)
+    drawOverlappingYearsGraph(reprocessedData, div, poi)
     drawPolarGraph(reprocessedData, div, phenoYearData)
     div.classList.remove("graph-loading")
 }
@@ -287,202 +287,109 @@ function roundFloat(number, decimalPlaces) {
     return Math.round(number * Math.pow(10, decimalPlaces)) / (Math.pow(10, decimalPlaces))
 }
 
-///////////////////// TIMESERIES LINE GRAPH ////////////////////////////////
+function drawAllYearsGraph(data, div) {
+    let ndviData = []
+    let parsedDates = []
+    data.forEach(function (item) {
+        parsedDates.push(parseDate(item[0]))
+        ndviData.push(item[1])
+    })
+    let dataPlotly = [{
+        type: 'scatter',
+        mode: 'lines+markers',
+        y: ndviData,
+        customdata: parsedDates,
+        hovertemplate: "%{customdata|%B %d, %Y}: %{y:.1f}<extra></extra>"
+    }]
 
-function makeUpDownLineGraph (data, div) {
-    // Set the dimensions of the canvas / graph
-    var margin = {top: 30, right: 20, bottom: 35, left: 29},
-    width = 580 - margin.left - margin.right,
-    height = 270 - margin.top - margin.bottom;
-
-    // Set the ranges
-    var x = d3.scaleTime().range([0, width])
-        .domain([
-            parseDate(data[0][0]),
-            parseDate(data[data.length-1][0])
-        ]);
-    var y = d3.scaleLinear().range([height, 0])
-        .domain([0, 100]);
-
-    // Define the axes
-    var xAxis = d3.axisBottom(x)
-        .ticks(17)
-        .tickFormat(function (d) {
-            return d.getFullYear();
-        });
-
-    var yAxis = d3.axisLeft(y)
-        .ticks(6);
-
-    // Define the line
-    var valueline = d3.line()
-        .x(function(d) { return x(parseDate(d[0])); })
-        .y(function(d) { return y(d[1]); });
-
-    var wrapper = d3.select(div)
-        .append("div")
-        .classed("timeseries-graph", true);
-
-    // Adds the svg canvas
-    var svg = wrapper.append("svg")
-        .attr("height", height + margin.top + margin.bottom)
-        .attr('viewBox', function () {
-            var w = width + margin.left + margin.right
-            var h = height + margin.top + margin.bottom
-            return '0 0 ' + w + ' ' + h
-        })
-        .attr('preserveAspectRatio', 'xMidYMid')
-        .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    svg.call(tip);
-
-    // Add the valueline path.
-    drawLinearPath(data, valueline, svg);
-
-    // Add the X Axis
-    svg.append("g")
-         .attr("class", "x axis")
-         .attr("transform", "translate(0," + height + ")")
-         .call(xAxis)
-       .selectAll("text")
-         .attr("y", 13)
-         .attr("x", -20)
-         .attr("dy", ".35em")
-         .attr("transform", "rotate(-40)")
-
-
-    // Add the Y Axis
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
-    /**
-     * This block of code draws the point at each data point
-     */
-    drawLinearPoints(data, valueline, svg);
-}
-
-///////////////// OVERLAPPING TIMESERIES LINE GRAPH ////////////////
-
-function makeUpDownOverlapingLineGraphWithCheckboxes (data, div, poi) {
-    var charts = {};
-
-    // Set the dimensions of the canvas / graph
-    var margin = {top: 30, right: 20, bottom: 30, left: 29},
-        width = 500 - margin.left - margin.right,
-        height = 270 - margin.top - margin.bottom;
-
-    var averages = data.baseline;
-
-    var x = d3.scaleLinear().range([0, width])
-        .domain([0, 365]);
-    var y = d3.scaleLinear().range([height, 0])
-        .domain([0, 100]);
-
-    // Define the axes
-    function formatMonthTick (d) {
-        return (MONTH_LABELS[(d-15)/30]);
-    }
-    var xAxis = d3.axisBottom(x)
-        .ticks(11)
-        .tickValues([15, 45, 75, 105, 135, 165, 195, 225, 255, 285, 315, 345])
-        .tickFormat(formatMonthTick);
-
-    var yAxis = d3.axisLeft(y)
-        .ticks(6);
-
-    // Define the line for baseline
-    var valuelineBaseline = d3.line()
-        .x(function(d, i) { return (Array.isArray(d) ? x(parseJulianDay(d[0])) : x((i * 8) + 3 )); })
-        .y(function(d) { return (Array.isArray(d) ? y(d[1]) : y(d)); });
-        
-
-    // Define the line for years
-    var xAxisYear // Since last datapoint is Jan 2/3 of following year we need this for comparison
-    var valueline = d3.line()
-        .x(function(d, i) {
-            if (!xAxisYear) {
-                xAxisYear = d[0].substring(0, 4) // grab the year
-            }
-            if (d[0].substring(0, 4) === xAxisYear) { // parse as usual
-                return (Array.isArray(d) ? x(parseJulianDay(d[0])) : x((i * 8) + 3));
-            } else { // add 365 to day since last datapoint is Jan 2/3 of following year
-                xAxisYear = null // null this out so next year dataset can calculate correctly
-                return (Array.isArray(d) ? x(parseJulianDay(d[0]) + 365) : x((i * 8) + 3 + 365));
-            }
-
-        })
-        .y(function(d) { return (Array.isArray(d) ? y(d[1]) : y(d)); });
-        
-
-    var wrapper = d3.select(div).append("div").classed("overlapping-graph", true);
-
-    // Adds the svg canvas
-    var svg = wrapper
-        .append("svg")
-            .attr('viewBox', function () {
-                var w = width + margin.left + margin.right
-                var h = height + margin.top + margin.bottom
-                return '0 0 ' + w + ' ' + h
-            })
-            .attr('preserveAspectRatio', 'xMidYMid')
-            //.attr("width", width + margin.left + margin.right)
-            //.attr("height", height + margin.top + margin.bottom)
-        .append("g")
-            .attr("transform",
-                  "translate(" + margin.left + "," + margin.top + ")");
-
-    svg.call(tip);
-
-    // Add the X Axis
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-    // Add the Y Axis
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
-
-    var plot, i, l;
-    for (i = 0, l = poi.plots.length; i < l; i++) {
-        plot = poi.plots[i];
-        if (plot === "thresholds") continue;
-        if (plot === "baseline") {
-            charts[plot] = {
-                "path": drawLinearPath(data[plot], valuelineBaseline, svg)
-            }
-        } else {
-            charts[plot] = {
-                "path" : drawLinearPath(data[plot], valueline, svg)
-            }
+    let layout = {
+        hovermode: 'closest',
+        margin: { l: 28, r: 30, t: 50, b: 30 },
+        modebar: { orientation: 'v' },
+        xaxis: {
+            tickangle: '-45',
+            tickvals: [0, 46, 92, 138, 184, 230, 276, 322, 368, 414, 460, 506, 552, 598, 644, 690, 736, 782, 828, 874],
+            ticktext: ["2000","2001","2002","2003","2004","2005","2006","2007","2008","2009",
+                       "2010","2011","2012","2013","2014","2015","2016","2017","2018","2019"]
+        },
+        yaxis: {
+            range: [0, 100]
         }
     }
 
-    /**
-     * This block of code draws the point at each data point
-     */
-    for (i = 0, l = poi.plots.length; i < l; i++) {
-        plot = poi.plots[i];
-        if (plot === "thresholds") continue;
-        if (plot === "baseline") {
-            charts[plot].points = drawLinearPoints(data[plot], valuelineBaseline, svg);
-        } else {
-            charts[plot].points = drawLinearPoints(data[plot], valueline, svg);
+    var wrapper = d3.select(div).append("div").classed("timeseries-graph", true)
+    let config = {displaylogo: false, displayModeBar: true, modeBarButtonsToRemove: []}
+    Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
+}
+
+function drawOverlappingYearsGraph(data, div) {
+    let dataPlotly = []
+
+    // Take the existing array of baseline ndvi values and add non-leap year date values to them so we can plot them
+    let baselineDateAndValuesArray = []
+    data[2001].forEach(function (item, index){ // 2001 date strings
+        baselineDateAndValuesArray.push([item[0], data['baseline'][index]]) 
+    })
+
+    // plot all year traces
+    data.keys.forEach(function(key) {
+        dataPlotly = dataPlotly.concat(buildScatterTrace(data[key], key, pullDistinctColor(key)))
+    })
+    
+    // plot baseline
+    dataPlotly = dataPlotly.concat(buildScatterTrace(baselineDateAndValuesArray, 'All-years mean', '#000000', true, // baseline plot
+                                                          "%{customdata|%B %d}<br>NDVI: %{y:.1f}<extra></extra>"))
+
+    let layout = {
+        hovermode: 'closest',
+        margin: { l: 28, r: 40, t: 20, b: 20 },
+        modebar: { orientation: 'v' },
+        legend: {
+            title: {
+                text: "Click to turn on/off"
+            },
+            x: 1.07,
+        },
+        xaxis: {
+            showgrid: false,
+            tickangle: '0',
+            tickvals: [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335],
+                ticktext: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+        },
+        yaxis: {
+            showgrid: false,
+            range: [0, 100]
         }
     }
 
-    var inputwrapper = wrapper.append("div").classed("input-wrapper", true);
-
-    data.keys.forEach(function (key) {
-        createCheckbox(inputwrapper, key, "overlapping", poi, charts, data, valueline, svg, averages);
-    });
-
-    createCheckbox(inputwrapper, "baseline", "overlapping", poi, charts, data, valuelineBaseline, svg, averages);
+    var wrapper = d3.select(div).append("div").classed("overlapping-graph", true)
+    let config = {displaylogo: false, displayModeBar: true, modeBarButtonsToRemove: []}
+    Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
 }
 
-///////////////////////// POLAR GRAPH //////////////////////////////////////
+function buildScatterTrace(data, traceName, color, visibility = 'legendonly', 
+                           hovertemplate = "%{customdata|%B %d, %Y}<br>%{y:.1f}<extra></extra>") {
+    let traceObject = {'x': [], 'y': [], 'dateArray': []}
+    data.forEach(function (item, index) {
+        // last day in the dataset is the first day of next year so we add 365 to it so it plots correctly
+        index === 45 ? traceObject.x.push(getDayOfYear(item[0]) + 365) : traceObject.x.push(getDayOfYear(item[0]))
+        traceObject.y.push(parseInt(item[1], 10))
+        traceObject.dateArray.push(parseDate(item[0]))
+    })
+    return [{
+        type: 'scatter',
+        visible: visibility,
+        mode: "lines+markers",
+        name: traceName,
+        x: traceObject.x,
+        y: traceObject.y,
+        customdata: traceObject.dateArray,
+        line: {
+            color: color
+        },
+        hovertemplate: hovertemplate
+    }]
+}
 
 function drawPolarGraph(data, div, phenoYearData) {
     let dataPlotly = []
@@ -503,10 +410,10 @@ function drawPolarGraph(data, div, phenoYearData) {
     var baselineSeasonalIndex = (baselineThresholds.fifteenEnd + baselineThresholds.eightyEnd) / 2
     
     // Start building the data to be plotted
-    let startPhenoData = {"r": [0, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([startDayOfPhenoYear], 5)) }
-    let fifteenData = {"r": [0, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineThresholds.fifteenEnd], 5)) }
-    let middleGrowingData = {"r": [0, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineSeasonalIndex], 5)) }
-    let eightyData = {"r": [0, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineThresholds.eightyEnd], 5)) }
+    let startPhenoData = {"r": [0, 10, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([startDayOfPhenoYear], 6)) }
+    let fifteenData = {"r": [0, 10, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineThresholds.fifteenEnd], 6)) }
+    let middleGrowingData = {"r": [0, 10, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineSeasonalIndex], 6)) }
+    let eightyData = {"r": [0, 10, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineThresholds.eightyEnd], 6)) }
     
     dataPlotly = dataPlotly.concat(buildReferenceLine(startPhenoData, "lines", "start pheno", "Beginning of Phenological Year", "#429bb8"))
     dataPlotly = dataPlotly.concat(buildReferenceLine(fifteenData, "lines", "15% threshold", "Start of Growing Season", "#90ee90"))
@@ -526,11 +433,17 @@ function drawPolarGraph(data, div, phenoYearData) {
     })
     dataPlotly = dataPlotly.concat(buildTrace(phenoYearBaselineDateAndValuesArray, 'All-years mean', '#000000', true, // baseline plot
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
+    
     var config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtons: modeBarButtons}
     Plotly.newPlot(wrapper.node(), dataPlotly, getPlotlyLayout(), config)
     let traceObject = {}
 
-    // this block is used to draw dynamic reference lines
+    /* On a legend click event, find out what trace was clicked on and grab all of the r values for that trace.
+       Add trace name and values to traceObject if it doesn't exist. If it does exist, you can assume that
+       the trace is being turned off and needs to be removed from the traceObject. If you have at least one trace on, 
+       calculate the new baseline and reference lines for those traces otherwise fall back to original reference lines.
+       Restyle the reference lines based on this information.
+    */
     wrapper.node().on('plotly_legendclick', function(x){
         let traceData = x.node.__data__[0].trace.r
         let traceName = x.node.__data__[0].trace.name
@@ -555,9 +468,9 @@ function drawPolarGraph(data, div, phenoYearData) {
             eightyValue = baselineThresholds.eightyEnd
             centerLineValue = baselineSeasonalIndex
         }
-        Plotly.restyle(wrapper.node(), {theta: [[0, fifteenValue, fifteenValue, fifteenValue, fifteenValue, fifteenValue]]}, 1)
-        Plotly.restyle(wrapper.node(), {theta: [[0, centerLineValue, centerLineValue, centerLineValue, centerLineValue, centerLineValue]]}, 2)
-        Plotly.restyle(wrapper.node(), {theta: [[0, eightyValue, eightyValue, eightyValue, eightyValue, eightyValue]]}, 3)
+        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([fifteenValue], 6))]}, 1)
+        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([centerLineValue], 6))]}, 2)
+        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([eightyValue], 6))]}, 3)
     })
 }
 
@@ -628,7 +541,7 @@ function buildCenterLine(centerlineData, visibility = true) {
         name: 'Seasonality',
         visible: visibility,
         showlegend: false,
-        r: [centerlineData[1], 0],
+        r: [parseFloat(centerlineData[1]).toFixed(2), 0],
         theta: [centerlineData[0], 0],
         hovertemplate: ["Center: %{r}<extra></extra>", ""],
         marker: {
@@ -672,6 +585,10 @@ function getPlotlyLayout() {
             },
             radialaxis: {
                 visible: true,
+                fixedrange: true,
+                angle: 180,
+                side: 'counterclockwise',
+                tickangle: -180,
                 gridcolor: '#E2E2E2',
                 tickfont: {
                     color: '#444',
@@ -795,16 +712,13 @@ function findPolarCenter (data) {
     return([circlecenter, datacenter]);
 }
 
-/**
- * startDay is actually the seasonality index, it should be flipped
- */
 function findPolarThresholds (data, startDay) {
     var startIndex = 0
-    var i, j;
     var totalSum = 0;
 
-    for (i = 0; i < expectedYearLength; i++) {
-        j = (startIndex + i) % expectedYearLength;
+    // grab total sum of all ndvi values so you can caclulate the 15% and 80% value below
+    for (let i = 0; i < expectedYearLength; i++) {
+        let j = (startIndex + i) % expectedYearLength;
         totalSum += parseInt(data[j], 10);
     }
 
@@ -814,9 +728,10 @@ function findPolarThresholds (data, startDay) {
         eightyIndexFound = false;
     var fifteenIndex, eightyIndex;
 
+    // Go through every index of the data until you find out where the 15% and 80% value index is
     totalSum = 0;
-    for (i = 0; i < expectedYearLength; i++) {
-        j = (startIndex + i) % expectedYearLength;
+    for (let i = 0; i < expectedYearLength; i++) {
+        let j = (startIndex + i) % expectedYearLength;
         totalSum += parseInt(data[j], 10);
         if (!fifteenIndexFound && totalSum > fifteenThreshold) {
             fifteenIndex = j;

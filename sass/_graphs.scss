@@ -49,10 +49,6 @@
 
     .timeseries-graph {
         display: block;
-
-        svg {
-            width: 100%;
-        }
     }
 }
 
@@ -60,19 +56,6 @@
 
     .overlapping-graph {
         display: block;
-
-        svg {
-            width: 85%;
-
-            & {
-                @include mobile-display("phone-portrait") {
-                    width: 100%;
-                }
-                @include mobile-display("phone-landscape") {
-                    width: 100%;
-                }
-            }
-        }
     }
 }
 
@@ -80,20 +63,6 @@
 
     .polar-graph {
         display: block;
-
-        /*svg {
-            width: 85%;
-            min-height: 490px;
-
-            & {
-                @include mobile-display("phone-portrait") {
-                    width: 100%;
-                }
-                @include mobile-display("phone-landscape") {
-                    width: 100%;
-                }
-            }
-        }*/
     }
 }
 
