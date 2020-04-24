@@ -298,7 +298,7 @@ function drawAllYearsGraph(data, div) {
 
     let layout = {
         hovermode: 'closest',
-        margin: { l: 18, r: 30, t: 50, b: 35 },
+        margin: { l: 23, r: 30, t: 50, b: 35 },
         modebar: { orientation: 'v' },
         xaxis: {
             tickangle: '-45',
