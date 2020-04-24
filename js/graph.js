@@ -646,6 +646,10 @@ function getPlotlyLayout(upperRange = 100) {
 
 const convertDayOfYearToDegrees = date => {
     let dayOfYear = date.getDOY()
+    // if we're in a leap year and later then February, subtract a day from the returned day of year
+    if (date.getFullYear() % 4 === 0 && date.getMonth() > 1) {
+        dayOfYear -= 1
+    }
     return ((dayOfYear - 1) * 360) / 364
 }
 
