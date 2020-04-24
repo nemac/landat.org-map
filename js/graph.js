@@ -427,10 +427,10 @@ function drawPolarGraph(data, div, phenoYearData) {
     var baselineSeasonalIndex = (baselineThresholds.fifteenEnd + baselineThresholds.eightyEnd) / 2
     
     // Start building the data to be plotted
-    let startPhenoData = {"r": [0, 10, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([startDayOfPhenoYear], 6)) }
-    let fifteenData = {"r": [0, 10, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineThresholds.fifteenEnd], 6)) }
-    let middleGrowingData = {"r": [0, 10, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineSeasonalIndex], 6)) }
-    let eightyData = {"r": [0, 10, 20, 40, 60, 80, 100], "theta": [0].concat(repeat([baselineThresholds.eightyEnd], 6)) }
+    let startPhenoData = {"r": [0, 10, 20, 40, 60, 80, 100, 250], "theta": [0].concat(repeat([startDayOfPhenoYear], 7)) }
+    let fifteenData = {"r": [0, 10, 20, 40, 60, 80, 100, 250], "theta": [0].concat(repeat([baselineThresholds.fifteenEnd], 7)) }
+    let middleGrowingData = {"r": [0, 10, 20, 40, 60, 80, 100, 250], "theta": [0].concat(repeat([baselineSeasonalIndex], 7)) }
+    let eightyData = {"r": [0, 10, 20, 40, 60, 80, 100, 250], "theta": [0].concat(repeat([baselineThresholds.eightyEnd], 7)) }
     
     dataPlotly = dataPlotly.concat(buildReferenceLine(startPhenoData, "lines", "start pheno", "Beginning of Phenological Year", "#429bb8"))
     dataPlotly = dataPlotly.concat(buildReferenceLine(fifteenData, "lines", "15% threshold", "Start of Growing Season", "#90ee90"))
@@ -486,9 +486,9 @@ function drawPolarGraph(data, div, phenoYearData) {
             eightyValue = baselineThresholds.eightyEnd
             centerLineValue = baselineSeasonalIndex
         }
-        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([fifteenValue], 6))]}, 1)
-        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([centerLineValue], 6))]}, 2)
-        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([eightyValue], 6))]}, 3)
+        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([fifteenValue], 7))]}, 1)
+        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([centerLineValue], 7))]}, 2)
+        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([eightyValue], 7))]}, 3)
     })
 }
 
