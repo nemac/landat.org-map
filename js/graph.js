@@ -311,33 +311,21 @@ function drawAllYearsGraph(data, div) {
         }
     }
 
+
+    ndviData.forEach(function (item, index){ 
+        console.log(item)
+        console.log(index)
+    })
     let dataPlotly = [{
         type: 'scatter',
         mode: 'lines+markers',
         y: ndviData,
         customdata: dates,
         hovertemplate: "%{customdata|%B %d, %Y}: %{y:.1f}<extra></extra>",
-        line: {
-            //color: ["#23758e","#2c798d","#357e8c","#3e838b","#47878a","#518c89","#5a9088","#639587","#6c9a86","#759e85",
-            //        "#7ea384","#88a883","#91ac82","#9ab181","#a3b580","#acba7f","#b5bf7e","#bec37d","#c8c87c"],
-            //cmin: layout.xaxis.tickvals[0],
-            //cmax: layout.xaxis.tickvals[-1],
-            //autocolorscale: false,
-            colorscale: [
-                ['0', '#23758e'],
-                ['46', '#c8c87c']
-            ]
-        },
-        /*marker: {
-            color: ["#23758e","#2c798d","#357e8c","#3e838b","#47878a","#518c89","#5a9088","#639587","#6c9a86","#759e85",
-                    "#7ea384","#88a883","#91ac82","#9ab181","#a3b580","#acba7f","#b5bf7e","#bec37d","#c8c87c"],
-            cmin: layout.xaxis.tickvals[0],
-            cmax: layout.xaxis.tickvals[-1],
-        },*/
     }]
 
     var wrapper = d3.select(div).append("div").classed("timeseries-graph", true)
-    let config = {displaylogo: false, displayModeBar: true, modeBarButtonsToRemove: []}
+    let config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtonsToRemove: []}
     Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
 }
 
@@ -372,7 +360,7 @@ function drawOverlappingYearsGraph(data, div) {
         xaxis: {
             tickangle: '0',
             tickvals: [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335],
-                ticktext: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+            ticktext: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
         },
         yaxis: {
             range: [0, 100]
@@ -380,7 +368,7 @@ function drawOverlappingYearsGraph(data, div) {
     }
 
     var wrapper = d3.select(div).append("div").classed("overlapping-graph", true)
-    let config = {displaylogo: false, displayModeBar: true, modeBarButtonsToRemove: []}
+    let config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtonsToRemove: []}
     Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
 }
 
@@ -575,7 +563,7 @@ function buildCenterLine(centerlineData, visibility = true) {
     ]
 }
 
-function getPlotlyLayout(upperRange = 100) {
+function getPlotlyLayout(upperRange = 100, tickVals = [0, 20, 40, 60, 80]) {
     return {
         dragmode: false, // disables zoom on polar graph
         modebar: {
@@ -607,8 +595,7 @@ function getPlotlyLayout(upperRange = 100) {
                 angle: 90,
                 side: 'clockwise',
                 tickangle: 90,
-                tickvals: [0, 20, 40, 60, 80],
-                nticks: 5,
+                tickvals: tickVals,
                 gridcolor: '#E2E2E2',
                 tickfont: {
                     color: '#444',
@@ -663,14 +650,22 @@ const modeBarButtons = [[
         name: 'Zoom In',
         icon: Plotly.Icons.zoom_plus,
         click: function(div) {
-            Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] - 10))
+            let tickVals = div.layout.polar.radialaxis.tickvals
+            if ((div.layout.polar.radialaxis.range[1] - 10) % 20 === 0 && 
+                (tickVals[tickVals.length - 1] + 20) != div.layout.polar.radialaxis.range[1] - 10) 
+                tickVals.pop()
+            Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] - 10, tickVals))
         }
     },
     {
        name: 'Zoom Out',
         icon: Plotly.Icons.zoom_minus,
         click: function(div) {
-            Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] + 10))
+            let tickVals = div.layout.polar.radialaxis.tickvals
+            if ((div.layout.polar.radialaxis.range[1] + 10) % 20 === 0 && 
+                (tickVals[tickVals.length - 1] + 20) != div.layout.polar.radialaxis.range[1] + 10) 
+                tickVals.push(div.layout.polar.radialaxis.range[1] - 10)
+            Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] + 10, tickVals))
         }
     },
     {
