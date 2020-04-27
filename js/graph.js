@@ -563,7 +563,7 @@ function buildCenterLine(centerlineData, visibility = true) {
     ]
 }
 
-function getPlotlyLayout(upperRange = 100, tickVals = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]) {
+function getPlotlyLayout(upperRange = 100, tickVals = [0, 20, 40, 60, 80]) {
     return {
         dragmode: false, // disables zoom on polar graph
         modebar: {
@@ -650,8 +650,10 @@ const modeBarButtons = [[
         name: 'Zoom In',
         icon: Plotly.Icons.zoom_plus,
         click: function(div) {
-            let tickVals = div.layout.polar.radialaxis.tickvals 
-            tickVals.pop()
+            let tickVals = div.layout.polar.radialaxis.tickvals
+            if ((div.layout.polar.radialaxis.range[1] - 10) % 20 === 0 && 
+                (tickVals[tickVals.length - 1] + 20) != div.layout.polar.radialaxis.range[1] - 10) 
+                tickVals.pop()
             Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] - 10, tickVals))
         }
     },
@@ -660,7 +662,9 @@ const modeBarButtons = [[
         icon: Plotly.Icons.zoom_minus,
         click: function(div) {
             let tickVals = div.layout.polar.radialaxis.tickvals
-            tickVals.push(tickVals[tickVals.length - 1] + 10)
+            if ((div.layout.polar.radialaxis.range[1] + 10) % 20 === 0 && 
+                (tickVals[tickVals.length - 1] + 20) != div.layout.polar.radialaxis.range[1] + 10) 
+                tickVals.push(div.layout.polar.radialaxis.range[1] - 10)
             Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] + 10, tickVals))
         }
     },
