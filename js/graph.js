@@ -3,8 +3,9 @@ import {updateShareUrl} from './share'
 import {GetMap} from './map'
 import {GetAjaxObject} from './parser'
 
-var tip = {};
-var expectedYearLength = 46;
+var tip = {}
+var expectedYearLength = 46
+const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines', 'zoom2d']
 
 export function SetupGraphs () {
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
@@ -299,7 +300,7 @@ function drawAllYearsGraph(data, div) {
     let layout = {
         hovermode: 'closest',
         margin: { l: 23, r: 30, t: 50, b: 35 },
-        modebar: { orientation: 'v' },
+        modebar: { orientation: 'h' },
         xaxis: {
             tickangle: '-45',
             tickvals: [0, 46, 92, 138, 184, 230, 276, 322, 368, 414, 460, 506, 552, 598, 644, 690, 736, 782, 828, 874],
@@ -325,7 +326,7 @@ function drawAllYearsGraph(data, div) {
     }]
 
     var wrapper = d3.select(div).append("div").classed("timeseries-graph", true)
-    let config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtonsToRemove: []}
+    let config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtonsToRemove: modeBarButtonsToRemove}
     Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
 }
 
@@ -350,7 +351,7 @@ function drawOverlappingYearsGraph(data, div) {
     let layout = {
         hovermode: 'closest',
         margin: { l: 28, r: 40, t: 20, b: 20 },
-        modebar: { orientation: 'v' },
+        modebar: { orientation: 'h' },
         legend: {
             title: {
                 text: "Click to turn on/off"
@@ -368,7 +369,7 @@ function drawOverlappingYearsGraph(data, div) {
     }
 
     var wrapper = d3.select(div).append("div").classed("overlapping-graph", true)
-    let config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtonsToRemove: []}
+    let config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtonsToRemove: modeBarButtonsToRemove}
     Plotly.newPlot(wrapper.node(), dataPlotly, layout, config)
 }
 
