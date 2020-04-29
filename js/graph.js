@@ -446,6 +446,48 @@ function drawPolarGraph(data, div, phenoYearData) {
     dataPlotly = dataPlotly.concat(buildTrace(phenoYearBaselineDateAndValuesArray, 'All-years mean', '#000000', true, // baseline plot
                                                           "%{customdata|%B %d}<br>NDVI: %{r:.1f}<extra></extra>"))
     
+    let modeBarButtons = [[
+        {
+            name: 'Zoom In',
+            icon: Plotly.Icons.zoom_plus,
+            click: function(div) {
+                let tickVals = div.layout.polar.radialaxis.tickvals
+                if ((div.layout.polar.radialaxis.range[1] - 10) % 20 === 0 && 
+                    (tickVals[tickVals.length - 1] + 20) != div.layout.polar.radialaxis.range[1] - 10) 
+                    tickVals.pop()
+                Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] - 10, tickVals))
+            }
+        },
+        {
+        name: 'Zoom Out',
+            icon: Plotly.Icons.zoom_minus,
+            click: function(div) {
+                let tickVals = div.layout.polar.radialaxis.tickvals
+                if ((div.layout.polar.radialaxis.range[1] + 10) % 20 === 0 && 
+                    (tickVals[tickVals.length - 1] + 20) != div.layout.polar.radialaxis.range[1] + 10) 
+                    tickVals.push(div.layout.polar.radialaxis.range[1] - 10)
+                Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] + 10, tickVals))
+            }
+        },
+        { 
+            /* This function turns off every pheno year trace to legend only and turns on all-years mean trace.
+               Additionally, it replots the 15/middle/80 threshold to the original all-years mean thresholds 
+               and resets the traceObject that is used to keep track of what traces are clicked */
+            name: 'Reset axes and traces',
+            icon: Plotly.Icons.home,
+            click: function(div) {
+                Plotly.restyle(div, {visible: 'legendonly'}, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])
+                Plotly.restyle(div, {visible: true}, 23) // turn on all-years mean trace
+                Plotly.restyle(div, {theta: [[0].concat(repeat([baselineThresholds.fifteenEnd], 7))]}, 1) 
+                Plotly.restyle(div, {theta: [[0].concat(repeat([baselineSeasonalIndex], 7))]}, 2)
+                Plotly.restyle(div, {theta: [[0].concat(repeat([baselineThresholds.eightyEnd], 7))]}, 3)
+                Plotly.relayout(div, getPlotlyLayout())
+                traceObject = {} // reset traceObject for dynamic thresholds
+            }
+        },
+        "toImage"
+    ]] 
+
     var config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtons: modeBarButtons}
     let plotlyLayout = getPlotlyLayout()
     Plotly.newPlot(wrapper.node(), dataPlotly, plotlyLayout, config)
@@ -651,43 +693,6 @@ const dayOfYearToDegrees = array => {
     let newArray = array.map(x => ((x - 1 ) * 360) / 364)
     return newArray
 }
-
-let modeBarButtons = [[
-    {
-        name: 'Zoom In',
-        icon: Plotly.Icons.zoom_plus,
-        click: function(div) {
-            let tickVals = div.layout.polar.radialaxis.tickvals
-            if ((div.layout.polar.radialaxis.range[1] - 10) % 20 === 0 && 
-                (tickVals[tickVals.length - 1] + 20) != div.layout.polar.radialaxis.range[1] - 10) 
-                tickVals.pop()
-            Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] - 10, tickVals))
-        }
-    },
-    {
-       name: 'Zoom Out',
-        icon: Plotly.Icons.zoom_minus,
-        click: function(div) {
-            let tickVals = div.layout.polar.radialaxis.tickvals
-            if ((div.layout.polar.radialaxis.range[1] + 10) % 20 === 0 && 
-                (tickVals[tickVals.length - 1] + 20) != div.layout.polar.radialaxis.range[1] + 10) 
-                tickVals.push(div.layout.polar.radialaxis.range[1] - 10)
-            Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] + 10, tickVals))
-        }
-    },
-    { 
-        name: 'Reset axes',
-        icon: Plotly.Icons.home,
-        click: function(div) {
-            // turn every pheno trace back to legendonly
-            // commenting these two out for now since I haven't taken into account dynamic threshold reset
-            //Plotly.restyle(div, {visible: 'legendonly'}, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])
-            //Plotly.restyle(div, {visible: true}, 23) // turn on all-years mean trace
-            Plotly.relayout(div, getPlotlyLayout())
-        }
-    },
-    "toImage"
-]]
 
 const repeat = (a, n) => Array(n).fill(a).flat(1)
 
