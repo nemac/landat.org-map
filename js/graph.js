@@ -5,6 +5,7 @@ import {GetAjaxObject} from './parser'
 
 var tip = {}
 var expectedYearLength = 46
+var numberOfDataYears = 19
 const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines', 'zoom2d']
 
 export function SetupGraphs () {
@@ -299,6 +300,7 @@ function drawAllYearsGraph(data, div) {
 
     let layout = {
         hovermode: 'closest',
+        showlegend: false,
         margin: { l: 23, r: 30, t: 50, b: 35 },
         modebar: { orientation: 'h' },
         xaxis: {
@@ -312,18 +314,26 @@ function drawAllYearsGraph(data, div) {
         }
     }
 
+    let dataPlotly = []
+    let dataIndex = 0 // start at 0 and increment by 46 to dig into all of the data properly
+    let xArrayValues = [...Array(46).keys()] // builds array from [0-45]
 
-    ndviData.forEach(function (item, index){ 
-        console.log(item)
-        console.log(index)
-    })
-    let dataPlotly = [{
-        type: 'scatter',
-        mode: 'lines+markers',
-        y: ndviData,
-        customdata: dates,
-        hovertemplate: "%{customdata|%B %d, %Y}: %{y:.1f}<extra></extra>",
-    }]
+    // Plot all the data as individual traces marching forward on the x-axis so you can color them differently
+    for (let i = 0; i < numberOfDataYears; i++) {
+        dataPlotly = dataPlotly.concat([{
+            type: 'scatter',
+            mode: 'lines+markers',
+            y: ndviData.slice(dataIndex, dataIndex+46),
+            x: xArrayValues,
+            customdata: dates.slice(dataIndex, dataIndex+46),
+            line: {
+                color: colorRamp[i]
+            },
+            hovertemplate: "%{customdata|%B %d, %Y}: %{y:.1f}<extra></extra>",
+        }])
+        dataIndex += 46
+        xArrayValues = xArrayValues.map(function(x) { return x + 46}) // update the xArrayValues for next go around
+    }
 
     var wrapper = d3.select(div).append("div").classed("timeseries-graph", true)
     let config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtonsToRemove: modeBarButtonsToRemove}
@@ -428,13 +438,9 @@ function drawPolarGraph(data, div, phenoYearData) {
     dataPlotly = dataPlotly.concat(buildCenterLine([centerDay, centerPoint])) // Red center line
 
     var wrapper = d3.select(div).append("div").classed("polar-graph", true)
-    let colorRampArray = []
-    for (const [key] of Object.entries(data)) { // Use the year values to build a color ramp array for pheno years
-        colorRampArray.push(pullDistinctColor(key))
-    }
     let colorRampCounter = 0
     phenoYearData.forEach(function (item, index) { // Plot all of the pheno years
-        dataPlotly = dataPlotly.concat(buildTrace(item, 'Pheno Year ' + parseInt(index+1), colorRampArray[colorRampCounter]))
+        dataPlotly = dataPlotly.concat(buildTrace(item, 'Pheno Year ' + parseInt(index+1), colorRamp[colorRampCounter]))
         colorRampCounter++
     })
     dataPlotly = dataPlotly.concat(buildTrace(phenoYearBaselineDateAndValuesArray, 'All-years mean', '#000000', true, // baseline plot
@@ -646,7 +652,7 @@ const dayOfYearToDegrees = array => {
     return newArray
 }
 
-const modeBarButtons = [[
+let modeBarButtons = [[
     {
         name: 'Zoom In',
         icon: Plotly.Icons.zoom_plus,
@@ -669,17 +675,16 @@ const modeBarButtons = [[
             Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] + 10, tickVals))
         }
     },
-    {
+    /*{ // I've commented this out for now since it's a lot to keep track of at the moment
         name: 'Reset axes and traces',
         icon: Plotly.Icons.home,
         click: function(div) {
             // turn every pheno trace back to legendonly
             Plotly.restyle(div, {visible: 'legendonly'}, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])
             Plotly.restyle(div, {visible: true}, 23) // turn on all-years mean trace
-            console.log(div)
             Plotly.relayout(div, getPlotlyLayout())
         }
-    },
+    },*/
     "toImage"
 ]]
 
@@ -792,34 +797,6 @@ function findPolarThresholds (data, startDay) {
 }
 
 function pullDistinctColor (year) {
-    var colorRamp = [
-        "#23758e",
-        "#2c798d",
-        "#357e8c",
-        "#3e838b",
-        "#47878a",
-        "#518c89",
-        "#5a9088",
-        "#639587",
-        "#6c9a86",
-        "#759e85",
-        "#7ea384",
-        "#88a883",
-        "#91ac82",
-        "#9ab181",
-        "#a3b580",
-        "#acba7f",
-        "#b5bf7e",
-        "#bec37d",
-        "#c8c87c",
-        "#d1cc7b",
-        "#dad17a",
-        "#e3d679",
-        "#ecda78",
-        "#f5df77",
-        "#ffe476"    
-    ];
-
     return (year === 0) ? "#fff" : colorRamp[parseInt(year, 10) % colorRamp.length];
 }
 
@@ -831,5 +808,9 @@ function parseDate (date) {
 
     return new Date(year, month, day);
 }
+
+var colorRamp = ["#23758e","#2c798d","#357e8c","#3e838b","#47878a","#518c89","#5a9088","#639587","#6c9a86",
+                 "#759e85","#7ea384","#88a883","#91ac82","#9ab181","#a3b580","#acba7f","#b5bf7e","#bec37d",
+                 "#c8c87c","#d1cc7b","#dad17a","#e3d679","#ecda78","#f5df77","#ffe476"]
 
 var firstOfMonthJulianDays = [ 1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335]
