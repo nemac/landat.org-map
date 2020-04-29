@@ -501,8 +501,9 @@ function drawPolarGraph(data, div, phenoYearData) {
     */
     wrapper.node().on('plotly_legendclick', function(x){
         let traceData = x.node.__data__[0].trace.r
+        let traceTheta = x.node.__data__[0].trace.theta
         let traceName = x.node.__data__[0].trace.name
-        let centerLineValue, fifteenValue, eightyValue
+        let middleLineValue, fifteenValue, eightyValue, centerLineArray
         if (traceName === 'All-years mean') {
             return // do nothing
         }
@@ -517,15 +518,21 @@ function drawPolarGraph(data, div, phenoYearData) {
             let dynamicThresholds = findPolarThresholds(dynamicBaseline, startDayOfPhenoYear)
             fifteenValue = dynamicThresholds.fifteenEnd
             eightyValue = dynamicThresholds.eightyEnd
-            centerLineValue = (dynamicThresholds.fifteenEnd + dynamicThresholds.eightyEnd) / 2
+            middleLineValue = (dynamicThresholds.fifteenEnd + dynamicThresholds.eightyEnd) / 2
+            let dynamicRValue = calculateDynamicRValue(dynamicBaseline, traceTheta, fifteenValue, eightyValue)
+            centerLineArray = [[parseFloat(dynamicRValue).toFixed(2), 0], [middleLineValue, 0]]
+            console.log(centerLineArray)
         } else {
             fifteenValue = baselineThresholds.fifteenEnd
             eightyValue = baselineThresholds.eightyEnd
-            centerLineValue = baselineSeasonalIndex
+            middleLineValue = baselineSeasonalIndex
+            centerLineArray = [[parseFloat(centerPoint).toFixed(2), 0], [centerDay, 0]]
+            console.log(centerLineArray)
         }
         Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([fifteenValue], 7))]}, 1)
-        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([centerLineValue], 7))]}, 2)
+        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([middleLineValue], 7))]}, 2)
         Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([eightyValue], 7))]}, 3)
+        Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4)
     })
 }
 
@@ -698,13 +705,33 @@ const repeat = (a, n) => Array(n).fill(a).flat(1)
 
 /* POLAR GRAPH HELPERS */
 
+function calculateDynamicRValue (ndviValues, thetaValues, fifteenEnd, eightyEnd) {
+    let startIndex, endIndex = 0
+    for (let i = 0; i < thetaValues.length; i++) {
+        if (thetaValues[startIndex] >= fifteenEnd) break
+        startIndex = i
+    }
+    for (let i = 0; i < thetaValues.length; i++) {
+        if (thetaValues[endIndex] >= eightyEnd) break
+        endIndex = i
+    }
+    let length = endIndex - startIndex
+    if (length % 2 != 0) length += 1
+    let sum = 0
+    for (let i = 0; i < length/2; i++) {
+        sum += (ndviValues[i] - ndviValues[i+(length/2)]);
+    }
+    sum = sum / 23
+    return Math.abs(sum)
+}
+
 function findPolarCenter (data) {
     var i, j, arr;
     var totalSum = 0;
     var incompleteYears = 0;
     var sum;
 
-    // line 793-810 calculate the r value for our polar center
+    // line 793-810 calculate the r value for our polar center.
     for (i = 0; i < data.keys.length; i++) {
         arr = data[data.keys[i]];
         if (arr.length !== expectedYearLength) {
