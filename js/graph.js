@@ -481,6 +481,7 @@ function drawPolarGraph(data, div, phenoYearData) {
                 Plotly.restyle(div, {theta: [[0].concat(repeat([baselineThresholds.fifteenEnd], 7))]}, 1) 
                 Plotly.restyle(div, {theta: [[0].concat(repeat([baselineSeasonalIndex], 7))]}, 2)
                 Plotly.restyle(div, {theta: [[0].concat(repeat([baselineThresholds.eightyEnd], 7))]}, 3)
+                Plotly.restyle(wrapper.node(), {r: [[parseFloat(centerPoint).toFixed(2), 0]], theta: [[centerDay, 0]]}, 4)
                 Plotly.relayout(div, getPlotlyLayout())
                 traceObject = {} // reset traceObject for dynamic thresholds
             }
@@ -521,13 +522,11 @@ function drawPolarGraph(data, div, phenoYearData) {
             middleLineValue = (dynamicThresholds.fifteenEnd + dynamicThresholds.eightyEnd) / 2
             let dynamicRValue = calculateDynamicRValue(dynamicBaseline, traceTheta, fifteenValue, eightyValue)
             centerLineArray = [[parseFloat(dynamicRValue).toFixed(2), 0], [middleLineValue, 0]]
-            console.log(centerLineArray)
         } else {
             fifteenValue = baselineThresholds.fifteenEnd
             eightyValue = baselineThresholds.eightyEnd
             middleLineValue = baselineSeasonalIndex
             centerLineArray = [[parseFloat(centerPoint).toFixed(2), 0], [centerDay, 0]]
-            console.log(centerLineArray)
         }
         Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([fifteenValue], 7))]}, 1)
         Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([middleLineValue], 7))]}, 2)
