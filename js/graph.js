@@ -670,9 +670,13 @@ const modeBarButtons = [[
         }
     },
     {
-        name: 'Reset axes',
+        name: 'Reset axes and traces',
         icon: Plotly.Icons.home,
         click: function(div) {
+            // turn every pheno trace back to legendonly
+            Plotly.restyle(div, {visible: 'legendonly'}, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])
+            Plotly.restyle(div, {visible: true}, 23) // turn on all-years mean trace
+            console.log(div)
             Plotly.relayout(div, getPlotlyLayout())
         }
     },
