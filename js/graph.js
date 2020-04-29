@@ -675,16 +675,17 @@ let modeBarButtons = [[
             Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] + 10, tickVals))
         }
     },
-    /*{ // I've commented this out for now since it's a lot to keep track of at the moment
-        name: 'Reset axes and traces',
+    { 
+        name: 'Reset axes',
         icon: Plotly.Icons.home,
         click: function(div) {
             // turn every pheno trace back to legendonly
-            Plotly.restyle(div, {visible: 'legendonly'}, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])
-            Plotly.restyle(div, {visible: true}, 23) // turn on all-years mean trace
+            // commenting these two out for now since I haven't taken into account dynamic threshold reset
+            //Plotly.restyle(div, {visible: 'legendonly'}, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])
+            //Plotly.restyle(div, {visible: true}, 23) // turn on all-years mean trace
             Plotly.relayout(div, getPlotlyLayout())
         }
-    },*/
+    },
     "toImage"
 ]]
 
