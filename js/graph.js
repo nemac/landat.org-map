@@ -135,9 +135,9 @@ function buildPhenologicalYearData (rawJsonData, calendarYearData) {
     let phenoYearArray = []
 
     // Find where the pheno year begins for one year and capture that value. It will be the same for all years
-    for (let i = 0; i < calendarYearData[2000].length; i++) {
+    for (let i = 0; i < calendarYearData[2001].length; i++) {
         if (phenoYearFound) break
-        let date = calendarYearData[2000][i][0]
+        let date = calendarYearData[2001][i][0]
         if (date.getDOY() >= startDayOfPhenoYear) {
             phenoYearFound = true
             phenoYearBeginDayIndex = i
@@ -513,16 +513,31 @@ function drawPolarGraph(data, div, phenoYearData) {
         } else {
             traceObject[traceName] = traceData
         }
-        if (Object.keys(traceObject).length >= 1) {
+        if (Object.keys(traceObject).length >= 1) { // calculate dynamic reference lines
             let traceArray = Object.values(traceObject).flat()
             let dynamicBaseline = calculateDynamicBaseline(traceArray)
             let dynamicThresholds = findPolarThresholds(dynamicBaseline, startDayOfPhenoYear)
             fifteenValue = dynamicThresholds.fifteenEnd
             eightyValue = dynamicThresholds.eightyEnd
             middleLineValue = (dynamicThresholds.fifteenEnd + dynamicThresholds.eightyEnd) / 2
+
+            let startIndex, endIndex = 0
+            for (let i = 0; i < traceTheta.length; i++) {
+                if (traceTheta[startIndex] >= fifteenValue) break
+                startIndex = i
+            }
+            for (let i = 0; i < traceTheta.length; i++) {
+                if (traceTheta[endIndex] >= eightyValue) break
+                endIndex = i
+            }
+            if ((endIndex - startIndex) % 2 != 0) startIndex-=1 // shift start index by one so we have an even number of data points
+            let testMagnitude = calculateCenterMagnitude(dynamicBaseline.slice(startIndex, endIndex))
+            console.log(testMagnitude)
+            let testDirection = calculateCenterDirection(dynamicBaseline)
+            console.log(testDirection)
             let dynamicRValue = calculateDynamicRValue(dynamicBaseline, traceTheta, fifteenValue, eightyValue)
             centerLineArray = [[parseFloat(dynamicRValue).toFixed(2), 0], [middleLineValue, 0]]
-        } else {
+        } else { // use the all-means reference lines calculated above
             fifteenValue = baselineThresholds.fifteenEnd
             eightyValue = baselineThresholds.eightyEnd
             middleLineValue = baselineSeasonalIndex
@@ -704,6 +719,59 @@ const repeat = (a, n) => Array(n).fill(a).flat(1)
 
 /* POLAR GRAPH HELPERS */
 
+function calculateCenterMagnitude(data) {
+    let length = data.length
+    let sum = 0
+    for (let i = 0; i < length/2; i++) {
+        sum += (data[i] - data[i+(length/2)])
+    }
+    sum = sum / (length/2)
+    return Math.abs(sum)
+}
+
+// returns a direction in degrees
+function calculateCenterDirection(data) {
+    let magnitude = calculateCenterMagnitude(data)
+    var areaDiff = 1000000
+    var checkDiff
+    var areaIndex = 0
+    var leftArea, rightArea
+
+    // Iterate through the data 23 times to find out where the minimal amount of difference is between
+    // left area and right area. This should be the line along which the center point will be
+    for (let i = 0; i < data.length/2; i++) {
+        leftArea = 0;
+        rightArea = 0;
+        for (let counter = 0; counter < data.length/2; counter++) {
+            let j = (i + counter) % data.length; // keeps j within limit of array index [0-45]
+            let k = (j + 23) % data.length; // keeps k within limit of array index [0-45]
+
+            leftArea += parseInt(data[j], 10);
+            rightArea += parseInt(data[k],10);
+        }
+        checkDiff = Math.abs(leftArea - rightArea);
+        if (checkDiff < areaDiff) {
+            areaDiff = checkDiff;
+            areaIndex = i;
+        }
+    }
+
+    var firstRadius = parseInt(data[areaIndex], 10);
+    var secondRadius = parseInt(-data[areaIndex + 23], 10);
+
+    var midpoint = (firstRadius + secondRadius) / 2;
+    var firstDiff = Math.abs(magnitude - midpoint);
+    var secondDiff = Math.abs(-magnitude - midpoint);
+    if (secondDiff < firstDiff) {
+        areaIndex = areaIndex + 23;
+    }
+    return (areaIndex * 8) + 3
+}
+
+function calculateFiftyAccumlation(data) {
+    let fiftyThreshold = data
+}
+
 /* This function takes in ndvi values, theta values, and the theta value for the fifteen and eighty threshold
    and then calculates the new r value based on only the data within the growing season (between fifteen and eighty threshold)*/
 function calculateDynamicRValue (ndviValues, thetaValues, fifteenEnd, eightyEnd) {
@@ -721,73 +789,19 @@ function calculateDynamicRValue (ndviValues, thetaValues, fifteenEnd, eightyEnd)
     let sum = 0
     for (let i = 0; i < length/2; i++) {
         sum += (ndviValues[startIndex] - ndviValues[startIndex+(length/2)])
+        startIndex++
     }
     sum = sum / (length/2)
     return Math.abs(sum)
 }
 
 function findPolarCenter (data) {
-    var i, j, arr;
-    var totalSum = 0;
-    var incompleteYears = 0;
-    var sum;
+    let magnitude = calculateCenterMagnitude(data.baseline)
+    let direction = calculateCenterDirection(data.baseline)
 
-    // line 793-810 calculate the r value for our polar center.
-    for (i = 0; i < data.keys.length; i++) {
-        arr = data[data.keys[i]];
-        if (arr.length !== expectedYearLength) {
-            incompleteYears++;
-            continue;
-        }
-        sum = 0;
-        for (j = 0; j < expectedYearLength/2; j++) {
-            sum += (arr[j][1] - arr[j+23][1]);
-        }
-        sum = sum / 23;
-        totalSum += sum;
-    }
-    totalSum = Math.abs(totalSum) / (data.keys.length - incompleteYears);
-
-    // lines 813-845 calculate our theta value
-    var areaDiff = 1000000;
-    var checkDiff;
-    var areaIndex = 0;
-    var leftArea, rightArea;
-    var avgs = data.baseline;
-    var k, counter;
-
-    // Iterate through the data 23 times to find out where the minimal amount of difference is between
-    // left area and right area. This should be the line along which the center point will be
-    for (i = 0; i < expectedYearLength/2; i++) {
-        leftArea = 0;
-        rightArea = 0;
-        for (counter = 0; counter < expectedYearLength/2; counter++) {
-            j = (i + counter) % expectedYearLength; // keeps j within limit of array index [0-45]
-            k = (j + 23) % expectedYearLength; // keeps k within limit of array index [0-45]
-
-            leftArea += parseInt(avgs[j], 10);
-            rightArea += parseInt(avgs[k],10);
-        }
-        checkDiff = Math.abs(leftArea - rightArea);
-        if (checkDiff < areaDiff) {
-            areaDiff = checkDiff;
-            areaIndex = i;
-        }
-    }
-
-    var firstRadius = parseInt(avgs[areaIndex], 10);
-    var secondRadius = parseInt(-avgs[areaIndex + 23], 10);
-
-    var midpoint = (firstRadius + secondRadius) / 2;
-    var firstDiff = Math.abs(totalSum - midpoint);
-    var secondDiff = Math.abs(-totalSum - midpoint);
-    if (secondDiff < firstDiff) {
-        areaIndex = areaIndex + 23;
-    }
-
-    var circlecenter = [0, 0];
-    var datacenter = [(areaIndex * 8) + 3, totalSum];
-
+    let circlecenter = [0, 0]
+    let datacenter = [direction, magnitude]
+    console.log(datacenter)
     return([circlecenter, datacenter]);
 }
 
