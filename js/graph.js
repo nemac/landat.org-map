@@ -471,7 +471,7 @@ function drawPolarGraph(data, div, phenoYearData) {
         },
         { 
             /* This function turns off every pheno year trace to legend only and turns on all-years mean trace.
-               Additionally, it replots the 15/middle/80 threshold to the original all-years mean thresholds 
+               Additionally, it replots the 15/middle/80/center line to the original all-years mean lines 
                and resets the traceObject that is used to keep track of what traces are clicked */
             name: 'Reset axes and traces',
             icon: Plotly.Icons.home,
@@ -528,10 +528,10 @@ function drawPolarGraph(data, div, phenoYearData) {
             middleLineValue = baselineSeasonalIndex
             centerLineArray = [[parseFloat(centerPoint).toFixed(2), 0], [centerDay, 0]]
         }
-        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([fifteenValue], 7))]}, 1)
-        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([middleLineValue], 7))]}, 2)
-        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([eightyValue], 7))]}, 3)
-        Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4)
+        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([fifteenValue], 7))]}, 1) // beginning of growing season
+        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([middleLineValue], 7))]}, 2) // middle of growing season
+        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([eightyValue], 7))]}, 3) // end of growing season
+        Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4) // center red line
     })
 }
 
@@ -704,6 +704,8 @@ const repeat = (a, n) => Array(n).fill(a).flat(1)
 
 /* POLAR GRAPH HELPERS */
 
+/* This function takes in ndvi values, theta values, and the theta value for the fifteen and eighty threshold
+   and then calculates the new r value based on only the data within the growing season (between fifteen and eighty threshold)*/
 function calculateDynamicRValue (ndviValues, thetaValues, fifteenEnd, eightyEnd) {
     let startIndex, endIndex = 0
     for (let i = 0; i < thetaValues.length; i++) {
@@ -714,11 +716,11 @@ function calculateDynamicRValue (ndviValues, thetaValues, fifteenEnd, eightyEnd)
         if (thetaValues[endIndex] >= eightyEnd) break
         endIndex = i
     }
+    if ((endIndex - startIndex) % 2 != 0) startIndex-=1 // shift start index by one so we have an even number of data points
     let length = endIndex - startIndex
-    if (length % 2 != 0) length += 1
     let sum = 0
     for (let i = 0; i < length/2; i++) {
-        sum += (ndviValues[i] - ndviValues[i+(length/2)]);
+        sum += (ndviValues[startIndex] - ndviValues[startIndex+(length/2)])
     }
     sum = sum / 23
     return Math.abs(sum)
