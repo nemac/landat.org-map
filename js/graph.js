@@ -519,7 +519,6 @@ function drawPolarGraph(data, div, phenoYearData) {
             let dynamicThresholds = findPolarThresholds(dynamicBaseline, startDayOfPhenoYear)
             fifteenValue = dynamicThresholds.fifteenEnd
             eightyValue = dynamicThresholds.eightyEnd
-            middleLineValue = (dynamicThresholds.fifteenEnd + dynamicThresholds.eightyEnd) / 2
 
             let startIndex, endIndex = 0
             for (let i = 0; i < traceTheta.length; i++) {
@@ -531,12 +530,10 @@ function drawPolarGraph(data, div, phenoYearData) {
                 endIndex = i
             }
             if ((endIndex - startIndex) % 2 != 0) startIndex-=1 // shift start index by one so we have an even number of data points
-            let testMagnitude = calculateCenterMagnitude(dynamicBaseline.slice(startIndex, endIndex))
-            console.log(testMagnitude)
-            let testDirection = calculateCenterDirection(dynamicBaseline)
-            console.log(testDirection)
-            let dynamicRValue = calculateDynamicRValue(dynamicBaseline, traceTheta, fifteenValue, eightyValue)
-            centerLineArray = [[parseFloat(dynamicRValue).toFixed(2), 0], [middleLineValue, 0]]
+            let dynamicMagnitude = calculateCenterMagnitude(dynamicBaseline.slice(startIndex, endIndex))
+            let dynamicIndex = calculateCenterIndex(dynamicBaseline.slice(startIndex, endIndex))
+            middleLineValue = (dynamicIndex * 8) + 3 + fifteenValue // shift it to the appropriate theta value
+            centerLineArray = [[parseFloat(dynamicMagnitude).toFixed(2), 0], [middleLineValue, 0]]
         } else { // use the all-means reference lines calculated above
             fifteenValue = baselineThresholds.fifteenEnd
             eightyValue = baselineThresholds.eightyEnd
@@ -729,8 +726,8 @@ function calculateCenterMagnitude(data) {
     return Math.abs(sum)
 }
 
-// returns a direction in degrees
-function calculateCenterDirection(data) {
+// returns the index value of the center point of a dataset
+function calculateCenterIndex(data) {
     let magnitude = calculateCenterMagnitude(data)
     var areaDiff = 1000000
     var checkDiff
@@ -739,37 +736,38 @@ function calculateCenterDirection(data) {
 
     // Iterate through the data 23 times to find out where the minimal amount of difference is between
     // left area and right area. This should be the line along which the center point will be
-    for (let i = 0; i < data.length/2; i++) {
+    for (let i = 0; i < (data.length/2); i++) {
         leftArea = 0;
         rightArea = 0;
-        for (let counter = 0; counter < data.length/2; counter++) {
+        for (let counter = 0; counter < (data.length/2); counter++) {
             let j = (i + counter) % data.length; // keeps j within limit of array index [0-45]
-            let k = (j + 23) % data.length; // keeps k within limit of array index [0-45]
+            let k = (j + (data.length/2)) % data.length; // keeps k within limit of array index [0-45]
 
             leftArea += parseInt(data[j], 10);
             rightArea += parseInt(data[k],10);
         }
         checkDiff = Math.abs(leftArea - rightArea);
+        console.log("checkdiff: " + checkDiff)
         if (checkDiff < areaDiff) {
+            console.log("hello")
             areaDiff = checkDiff;
             areaIndex = i;
         }
     }
+    console.log(areaIndex)
 
     var firstRadius = parseInt(data[areaIndex], 10);
-    var secondRadius = parseInt(-data[areaIndex + 23], 10);
+    var secondRadius = parseInt(-data[areaIndex + (data.length)/2], 10);
+    console.log("firstRadius: " + firstRadius)
+    console.log("secondRadius: " + secondRadius)
 
     var midpoint = (firstRadius + secondRadius) / 2;
     var firstDiff = Math.abs(magnitude - midpoint);
     var secondDiff = Math.abs(-magnitude - midpoint);
     if (secondDiff < firstDiff) {
-        areaIndex = areaIndex + 23;
+        areaIndex = areaIndex + (data.length/2);
     }
-    return (areaIndex * 8) + 3
-}
-
-function calculateFiftyAccumlation(data) {
-    let fiftyThreshold = data
+    return areaIndex
 }
 
 /* This function takes in ndvi values, theta values, and the theta value for the fifteen and eighty threshold
@@ -797,10 +795,11 @@ function calculateDynamicRValue (ndviValues, thetaValues, fifteenEnd, eightyEnd)
 
 function findPolarCenter (data) {
     let magnitude = calculateCenterMagnitude(data.baseline)
-    let direction = calculateCenterDirection(data.baseline)
+    let index = calculateCenterIndex(data.baseline)
+    let theta = (index * 8) + 3
 
     let circlecenter = [0, 0]
-    let datacenter = [direction, magnitude]
+    let datacenter = [theta, magnitude]
     console.log(datacenter)
     return([circlecenter, datacenter]);
 }
