@@ -722,7 +722,7 @@ function calculateDynamicRValue (ndviValues, thetaValues, fifteenEnd, eightyEnd)
     for (let i = 0; i < length/2; i++) {
         sum += (ndviValues[startIndex] - ndviValues[startIndex+(length/2)])
     }
-    sum = sum / 23
+    sum = sum / (length/2)
     return Math.abs(sum)
 }
 
