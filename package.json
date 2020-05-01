@@ -3,10 +3,10 @@
     "version": "0.0.1",
     "description": "Creates demo/potential live version of a mapviewer for landat in Leaflet.",
     "scripts": {
-        "build": "webpack --mode=production",
-        "start": "webpack --progress",
-        "start-watch": "webpack --watch --progress",
-        "start-server": "webpack-dev-server"
+        "build-prod": "webpack --mode=production",
+        "build-beta": "webpack --mode=development",
+        "start-server": "webpack-dev-server --mode=development",
+        "start-server-local-api": "webpack-dev-server --mode=none"
     },
     "dependencies": {
         "leaflet-geosearch": "^2.0.3"

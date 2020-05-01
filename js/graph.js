@@ -2,17 +2,19 @@ import {updatePanelDragOverlayHeight} from './panel'
 import {updateShareUrl} from './share'
 import {GetMap} from './map'
 import {GetAjaxObject} from './parser'
+import {getStage} from './base'
 
 var tip = {};
 var expectedYearLength = 46;
 
-export function SetupGraphs () {
+export function SetupGraphs (config, stage) {
+    var dataServiceUrl = config['serviceUrl'][stage];
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
     extendDateModule();
     tip = d3.tip().attr('class', 'd3-tip').html(function (d) { return d; });
 
     // Adding a block here to trigger AWS endpoint so lambda function stays hot
-    var url = "https://pwol6zjt3f.execute-api.us-east-1.amazonaws.com/production/landat-ndvi?lng=-82.5515&lat=35.5951" // Asheville, NC
+    var url = dataServiceUrl + "?lng=-82.5515&lat=35.5951" // Asheville, NC
     var oReq = GetAjaxObject(function () {})
     oReq.open("GET", url);
     oReq.send()
@@ -51,8 +53,10 @@ function handleGraphDataResponse (div, poi, response) {
     updatePanelDragOverlayHeight()
 }
 
-function getData(poi, div) {
-    var url = "https://pwol6zjt3f.execute-api.us-east-1.amazonaws.com/production/landat-ndvi?lng=" + poi.lng + "&lat=" + poi.lat;
+function getData(poi, div, graphConfig) {
+    let stage = getStage();
+    let dataServiceUrl = graphConfig['serviceUrl'][stage]
+    var url = dataServiceUrl + "?lng=" + poi.lng + "&lat=" + poi.lat;
     var oReq = GetAjaxObject(function (response) {
         handleGraphDataResponse(div, poi, response)
     })
@@ -223,7 +227,7 @@ function enableGraphTab (graphType) {
     })
 }
 
-export function createGraphDiv (poi) {
+export function createGraphDiv (poi, graphConfig) {
     var decimalPlaces = 3
     var latShort = roundFloat(poi.lat, decimalPlaces)
     var lngShort = roundFloat(poi.lng, decimalPlaces)
@@ -249,7 +253,7 @@ export function createGraphDiv (poi) {
 
     var list = document.getElementById("graph-list");
     list.appendChild(wrapper);
-    getData(poi, wrapper);
+    getData(poi, wrapper, graphConfig);
     return wrapper;
 }
 
@@ -575,7 +579,7 @@ function buildCenterLine(centerlineData, visibility = true) {
     ]
 }
 
-function getPlotlyLayout(upperRange = 100) {
+function getPlotlyLayout(upperRange = 90) {
     return {
         dragmode: false, // disables zoom on polar graph
         modebar: {
@@ -607,8 +611,8 @@ function getPlotlyLayout(upperRange = 100) {
                 angle: 90,
                 side: 'clockwise',
                 tickangle: 90,
-                tickvals: [0, 20, 40, 60, 80],
-                nticks: 5,
+                tickvals: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200],
+                //nticks: 5,
                 gridcolor: '#E2E2E2',
                 tickfont: {
                     color: '#444',
@@ -663,14 +667,14 @@ const modeBarButtons = [[
         name: 'Zoom In',
         icon: Plotly.Icons.zoom_plus,
         click: function(div) {
-            Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] - 10))
+            Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] - 20))
         }
     },
     {
        name: 'Zoom Out',
         icon: Plotly.Icons.zoom_minus,
         click: function(div) {
-            Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] + 10))
+            Plotly.relayout(div, getPlotlyLayout(div.layout.polar.radialaxis.range[1] + 20))
         }
     },
     {
