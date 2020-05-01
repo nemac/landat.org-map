@@ -128,8 +128,15 @@ function computeAverage (arr) {
 }
 
 function buildPhenologicalYearData (rawJsonData, calendarYearData) {
-    let center = findPolarCenter(calendarYearData)
-    let startDayOfPhenoYear = (center[1][0] + (365 / 2)) % 365 // e.g. 36 would be February 5th
+    let dateArray = []
+    calendarYearData[2001].forEach(function(item) {
+        dateArray.push(convertDayOfYearToDegrees(item[0]))
+    })
+    //let center = findPolarCenter(calendarYearData)
+    let center = findPolarCenterNew(calendarYearData.baseline, dateArray)
+    let startDayOfPhenoYear = (center[1] -180) // opposite your center point
+    console.log(startDayOfPhenoYear)
+    //let startDayOfPhenoYear = (center[1][0] + (365 / 2)) % 365 // e.g. 36 would be February 5th
     let phenoYearFound = false
     let phenoYearBeginDayIndex = 0
     let phenoYearArray = []
@@ -417,13 +424,41 @@ function drawPolarGraph(data, div, phenoYearData) {
         phenoYearBaselineDateAndValuesArray.push([item[0], phenoYearBaselineValues[index]]) 
     })
 
+    let dateArray = []
+    data[2001].forEach(function(item) {
+        dateArray.push(convertDayOfYearToDegrees(item[0]))
+    })
+
+    let phenoDateArray = []
+    phenoYearData[1].forEach(function(item) {
+        phenoDateArray.push(convertDayOfYearToDegrees(item[0]))
+    })
+
     // Build data for centerline and thresholds
-    let center = findPolarCenter(data)
-    var centerDay = center[1][0]
-    let startDayOfPhenoYear = (center[1][0] + (365 / 2)) % 365 // e.g. 36 would be February 5th
-    var centerPoint = center[1][1]
+    //let center = findPolarCenter(data)
+    let center = findPolarCenterNew(data.baseline, dateArray)
+    let startDayOfPhenoYear = center[1] - 180
     var baselineThresholds = findPolarThresholds(phenoYearBaselineValues, startDayOfPhenoYear)
-    var baselineSeasonalIndex = (baselineThresholds.fifteenEnd + baselineThresholds.eightyEnd) / 2
+    let startIndex, endIndex = 0
+    for (let i = 0; i < phenoDateArray.length; i++) {
+        if (phenoDateArray[startIndex] >= baselineThresholds.fifteenEnd) break
+        startIndex = i
+    }
+    for (let i = 0; i < phenoDateArray.length; i++) {
+        if (phenoDateArray[endIndex] >= baselineThresholds.eightyEnd) break
+        endIndex = i
+    }
+    if ((endIndex - startIndex) % 2 != 0) startIndex-=1 // shift start index by one so we have an even number of data points
+    console.log(phenoYearBaselineValues.slice(startIndex, endIndex))
+    console.log(dateArray.slice(startIndex, endIndex))
+    center = findPolarCenterNew(phenoYearBaselineValues.slice(startIndex, endIndex), phenoDateArray.slice(startIndex, endIndex))
+    //var centerDay = center[1][0]
+    var centerDay = center[1]
+    //let startDayOfPhenoYear = (center[1][0] + (365 / 2)) % 365 // e.g. 36 would be February 5th
+    //var centerPoint = center[1][1]
+    var centerPoint = center[0]
+    //var baselineSeasonalIndex = (baselineThresholds.fifteenEnd + baselineThresholds.eightyEnd) / 2
+    var baselineSeasonalIndex = center[1]
     
     // Start building the data to be plotted
     let startPhenoData = {"r": [0, 10, 20, 40, 60, 80, 100, 250], "theta": [0].concat(repeat([startDayOfPhenoYear], 7)) }
@@ -530,10 +565,9 @@ function drawPolarGraph(data, div, phenoYearData) {
                 endIndex = i
             }
             if ((endIndex - startIndex) % 2 != 0) startIndex-=1 // shift start index by one so we have an even number of data points
-            let dynamicMagnitude = calculateCenterMagnitude(dynamicBaseline.slice(startIndex, endIndex))
-            let dynamicIndex = calculateCenterIndex(dynamicBaseline.slice(startIndex, endIndex))
-            middleLineValue = (dynamicIndex * 8) + 3 + fifteenValue // shift it to the appropriate theta value
-            centerLineArray = [[parseFloat(dynamicMagnitude).toFixed(2), 0], [middleLineValue, 0]]
+            let dynamicCenter = findPolarCenterNew(dynamicBaseline.slice(startIndex, endIndex), traceTheta.slice(startIndex, endIndex))
+            middleLineValue = (dynamicCenter[1])
+            centerLineArray = [[parseFloat(dynamicCenter[0]).toFixed(2), 0], [middleLineValue, 0]]
         } else { // use the all-means reference lines calculated above
             fifteenValue = baselineThresholds.fifteenEnd
             eightyValue = baselineThresholds.eightyEnd
@@ -747,19 +781,14 @@ function calculateCenterIndex(data) {
             rightArea += parseInt(data[k],10);
         }
         checkDiff = Math.abs(leftArea - rightArea);
-        console.log("checkdiff: " + checkDiff)
         if (checkDiff < areaDiff) {
-            console.log("hello")
             areaDiff = checkDiff;
             areaIndex = i;
         }
     }
-    console.log(areaIndex)
 
     var firstRadius = parseInt(data[areaIndex], 10);
     var secondRadius = parseInt(-data[areaIndex + (data.length)/2], 10);
-    console.log("firstRadius: " + firstRadius)
-    console.log("secondRadius: " + secondRadius)
 
     var midpoint = (firstRadius + secondRadius) / 2;
     var firstDiff = Math.abs(magnitude - midpoint);
@@ -800,8 +829,31 @@ function findPolarCenter (data) {
 
     let circlecenter = [0, 0]
     let datacenter = [theta, magnitude]
-    console.log(datacenter)
     return([circlecenter, datacenter]);
+}
+
+function findPolarCenterNew (rValues, thetaValues) {
+    let xValueList = [] 
+    let yValueList = []
+
+    rValues.forEach(function(item, index) {
+        xValueList.push(item * Math.cos((Math.PI/180) * thetaValues[index]))
+        yValueList.push(item * Math.sin((Math.PI/180) * thetaValues[index]))
+    })
+
+    let xMean = (xValueList.reduce((a, b) => a + b, 0)) / xValueList.length
+    let yMean = (yValueList.reduce((a, b) => a + b, 0)) / yValueList.length
+
+    let r = Math.sqrt((xMean * xMean) + (yMean * yMean))
+    let theta = (Math.atan(yMean / xMean)) * (180/Math.PI)
+
+    if ((xMean < 0 && yMean > 0) || (xMean < 0 && yMean < 0)) { // quadrant 2 and quadrant 3
+        theta += 180
+      }
+    if (xMean > 0 && yMean < 0) { // quadrant 4
+        theta += 360
+    }
+    return [r, theta]
 }
 
 function findPolarThresholds (data, startDay) {
