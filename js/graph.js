@@ -134,9 +134,7 @@ function buildPhenologicalYearData (rawJsonData, calendarYearData) {
     })
     //let center = findPolarCenter(calendarYearData)
     let center = findPolarCenterNew(calendarYearData.baseline, dateArray)
-    let startDayOfPhenoYear = (center[1] -180) // opposite your center point
-    console.log(startDayOfPhenoYear)
-    //let startDayOfPhenoYear = (center[1][0] + (365 / 2)) % 365 // e.g. 36 would be February 5th
+    let startDayOfPhenoYear = center[1] < 180 ? (center[1] + 180) : (center[1] - 180)
     let phenoYearFound = false
     let phenoYearBeginDayIndex = 0
     let phenoYearArray = []
@@ -437,20 +435,18 @@ function drawPolarGraph(data, div, phenoYearData) {
     // Build data for centerline and thresholds
     //let center = findPolarCenter(data)
     let center = findPolarCenterNew(data.baseline, dateArray)
-    let startDayOfPhenoYear = center[1] - 180
+    let startDayOfPhenoYear = center[1] < 180 ? (center[1] + 180) : (center[1] - 180)
+
     var baselineThresholds = findPolarThresholds(phenoYearBaselineValues, startDayOfPhenoYear)
     let startIndex, endIndex = 0
     for (let i = 0; i < phenoDateArray.length; i++) {
-        if (phenoDateArray[startIndex] >= baselineThresholds.fifteenEnd) break
+        if (phenoDateArray[i] >= baselineThresholds.fifteenEnd) break
         startIndex = i
     }
     for (let i = 0; i < phenoDateArray.length; i++) {
-        if (phenoDateArray[endIndex] >= baselineThresholds.eightyEnd) break
+        if (phenoDateArray[i] >= baselineThresholds.eightyEnd) break
         endIndex = i
     }
-    if ((endIndex - startIndex) % 2 != 0) startIndex-=1 // shift start index by one so we have an even number of data points
-    console.log(phenoYearBaselineValues.slice(startIndex, endIndex))
-    console.log(dateArray.slice(startIndex, endIndex))
     center = findPolarCenterNew(phenoYearBaselineValues.slice(startIndex, endIndex), phenoDateArray.slice(startIndex, endIndex))
     //var centerDay = center[1][0]
     var centerDay = center[1]
@@ -889,8 +885,8 @@ function findPolarThresholds (data, startDay) {
         }
     }
 
-    var fifteenEnd = (fifteenIndex * 8) + 3 + startDay
-    var eightyEnd = (eightyIndex * 8) + 3 + startDay
+    var fifteenEnd = ((fifteenIndex * 8) + 3 + startDay) % 360 // for numbers greater than or equal to 360
+    var eightyEnd = ((eightyIndex * 8) + 3 + startDay) // don't % by 360 so it allows eightyEnd to be greater than 360
 
     return { fifteenEnd, eightyEnd }
 }
