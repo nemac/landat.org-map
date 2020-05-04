@@ -4,6 +4,9 @@
  * of using the config file, since we do not know how long it
  * will take to grab the file.
  */
+
+import {getStage} from './base';
+
 export function ParseConfig (configFile, callback) {
     GetConfig(configFile, callback);
 }
@@ -44,8 +47,9 @@ function formatMap (data) {
 }
 
 function formatLayers (data) {
+    var stage = getStage();
     var layers = data.layers;
-    var defaultMapserverUrl = data.mapserverUrl;
+    var defaultMapserverUrl = data.mapserverUrl[stage];
     var defaultEnabledLayers = data["active-layers"];
     var layergroup;
     var i;
