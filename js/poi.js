@@ -7,8 +7,25 @@ import {updatePanelDragOverlayHeight} from './panel';
 
 var _points_of_interest = []
 
-export function BindGraphEvents (map) {
-	map.on("click", handleMapClick);
+export function BindGraphEvents (map, graphConfig) {
+	map.on("click", function (e) {
+          var map = this;
+          var lat = e.latlng.lat;
+          var lng = e.latlng.lng;
+
+          var poi = createPOI(lat, lng, null);
+          AddPointOfInterestToTracker(poi);
+          SetupPointOfInterestUI(map, poi, graphConfig);
+          updateShareUrl();
+
+          //send google analytics event click on map
+          ga('send', 'event', {
+                  eventCategory: 'map',
+                  eventAction: 'click',
+                  eventLabel: JSON.stringify({"action":"add map marker","lat":lat,"long":lng}),
+                  nonInteraction: false
+          });
+        });
 }
 
 export function removeAllPointsOfInterest () {
@@ -19,24 +36,6 @@ export function removeAllPointsOfInterest () {
 	_points_of_interest = []
 }
 
-function handleMapClick (e) {
-	var map = this;
-	var lat = e.latlng.lat;
-	var lng = e.latlng.lng;
-
-	var poi = createPOI(lat, lng, null);
-	AddPointOfInterestToTracker(poi);
-	SetupPointOfInterestUI(map, poi);
-	updateShareUrl();
-
-	//send google analytics event click on map
-	ga('send', 'event', {
-		eventCategory: 'map',
-		eventAction: 'click',
-		eventLabel: JSON.stringify({"action":"add map marker","lat":lat,"long":lng}),
-		nonInteraction: false
-	});
-}
 
 function createGraphRemover (map, div, marker, poi) {
 	var elem = createGraphRemoverElem();
@@ -82,12 +81,12 @@ function AddPointOfInterestToTracker (poi) {
 	_points_of_interest.push(poi);
 }
 
-export function SetupPointsOfInterest (map, newPois) {
+export function SetupPointsOfInterest (map, newPois, graphConfig) {
 	AddMultiplePointsOfInterest(newPois)
 	var pois = GetAllPointsOfInterest()
 	var map = GetMap()
 	pois.forEach(poi => {
-		SetupPointOfInterestUI(map, poi)
+		SetupPointOfInterestUI(map, poi, graphConfig)
 	})
 }
 
@@ -101,8 +100,8 @@ function RemovePointOfInterestFromTracker(poiToRemove) {
 	});
 }
 
-function SetupPointOfInterestUI (map, poi) {
-	var div = createGraphDiv(poi);
+function SetupPointOfInterestUI (map, poi, graphConfig) {
+	var div = createGraphDiv(poi, graphConfig);
 	var marker = createMarker(poi.lat, poi.lng);
 	poi.graphDiv = div
 	poi.marker = marker

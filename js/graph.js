@@ -2,19 +2,21 @@ import {updatePanelDragOverlayHeight} from './panel'
 import {updateShareUrl} from './share'
 import {GetMap} from './map'
 import {GetAjaxObject} from './parser'
+import {getStage} from './base'
 
 var tip = {}
 var expectedYearLength = 46
 var numberOfDataYears = 19
 const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines', 'zoom2d']
 
-export function SetupGraphs () {
+export function SetupGraphs (config, stage) {
+    var dataServiceUrl = config['serviceUrl'][stage];
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
     extendDateModule();
     tip = d3.tip().attr('class', 'd3-tip').html(function (d) { return d; });
 
     // Adding a block here to trigger AWS endpoint so lambda function stays hot
-    var url = "https://pwol6zjt3f.execute-api.us-east-1.amazonaws.com/production/landat-ndvi?lng=-82.5515&lat=35.5951" // Asheville, NC
+    var url = dataServiceUrl + "?lng=-82.5515&lat=35.5951" // Asheville, NC
     var oReq = GetAjaxObject(function () {})
     oReq.open("GET", url);
     oReq.send()
@@ -53,8 +55,10 @@ function handleGraphDataResponse (div, poi, response) {
     updatePanelDragOverlayHeight()
 }
 
-function getData(poi, div) {
-    var url = "https://pwol6zjt3f.execute-api.us-east-1.amazonaws.com/production/landat-ndvi?lng=" + poi.lng + "&lat=" + poi.lat;
+function getData(poi, div, graphConfig) {
+    let stage = getStage();
+    let dataServiceUrl = graphConfig['serviceUrl'][stage]
+    var url = dataServiceUrl + "?lng=" + poi.lng + "&lat=" + poi.lat;
     var oReq = GetAjaxObject(function (response) {
         handleGraphDataResponse(div, poi, response)
     })
@@ -230,7 +234,7 @@ function enableGraphTab (graphType) {
     })
 }
 
-export function createGraphDiv (poi) {
+export function createGraphDiv (poi, graphConfig) {
     var decimalPlaces = 3
     var latShort = roundFloat(poi.lat, decimalPlaces)
     var lngShort = roundFloat(poi.lng, decimalPlaces)
@@ -256,7 +260,7 @@ export function createGraphDiv (poi) {
 
     var list = document.getElementById("graph-list");
     list.appendChild(wrapper);
-    getData(poi, wrapper);
+    getData(poi, wrapper, graphConfig);
     return wrapper;
 }
 
