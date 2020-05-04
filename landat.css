@@ -83,6 +83,9 @@
 .graph-timeseries .timeseries-graph {
   display: block; }
 
+.js-plotly-plot .plotly .modebar {
+  display: flex; }
+
 .graph-overlapping .overlapping-graph {
   display: block; }
 
