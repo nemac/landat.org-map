@@ -131,14 +131,86 @@ function computeAverage (arr) {
     return (sum / l).toString();
 }
 
+function findPolarCenterJohnOld (data) {
+    var i, j, length, arr;
+    var totalSum = 0;
+    var incompleteYears = 0;
+    var sum;
+    length = 46;
+
+    for (i = 0; i < data.keys.length; i++) {
+        arr = data[data.keys[i]];
+        if (arr.length !== length) {
+            incompleteYears++;
+            continue;
+        }
+        sum = 0;
+        for (j = 0; j < length/2; j++) {
+            sum += (arr[j][1] - arr[j+23][1]);
+        }
+        sum = sum / 23;
+        totalSum += sum;
+    }
+    totalSum = Math.abs(totalSum) / (data.keys.length - incompleteYears);
+
+    var areaDiff = 1000000;
+    var checkDiff;
+    var areaIndex = 0;
+    var leftArea, rightArea;
+    var avgs = data.baseline;
+    var k, counter;
+
+    for (i = 0; i < length/2; i++) {
+        leftArea = 0;
+        rightArea = 0;
+        for (counter = 0; counter < length/2; counter++) {
+            j = (i + counter) % 46;
+            k = (j + 23) % 46;
+
+            leftArea += parseInt(avgs[j], 10);
+            rightArea += parseInt(avgs[k],10);
+        }
+        checkDiff = Math.abs(leftArea - rightArea);
+        if (checkDiff < areaDiff) {
+            areaDiff = checkDiff;
+            areaIndex = i;
+        }
+    }
+
+    var firstRadius = parseInt(avgs[areaIndex], 10);
+    var secondRadius = parseInt(-avgs[areaIndex + 23], 10);
+
+    var midpoint = (firstRadius + secondRadius) / 2;
+    var firstDiff = Math.abs(totalSum - midpoint);
+    var secondDiff = Math.abs(-totalSum - midpoint);
+    if (secondDiff < firstDiff) {
+        areaIndex = areaIndex + 23;
+    }
+
+    var circlecenter = [0, 0];
+    var datacenter = [(areaIndex * 8) + 3, totalSum];
+
+    return([circlecenter, datacenter]);
+}
+
 function buildPhenologicalYearData (rawJsonData, calendarYearData) {
     let dateArray = []
+    let rawThetaValues = []
+    let rawNdviValues = []
     calendarYearData[2001].forEach(function(item) {
         dateArray.push(convertDayOfYearToDegrees(item[0]))
     })
+    rawJsonData.forEach(function(item) {
+        rawNdviValues.push(item[1])
+        rawThetaValues.push(convertDayOfYearToDegrees(item[0]))
+    })
+    let rawCenter = findPolarCenter(rawNdviValues, rawThetaValues)
+    console.log("raw center: " + rawCenter)
     let center = findPolarCenter(calendarYearData.baseline, dateArray)
-    let startDayOfPhenoYear = center[1] < 180 ? ((center[1] + 180)) % 360 + 3 : (center[1] - 180) + 3
-    console.log(startDayOfPhenoYear)
+    console.log("center: " + center)
+    let johnCenter = findPolarCenterJohnOld(calendarYearData)
+    console.log("john center: " + johnCenter[1])
+    let startDayOfPhenoYear = center[1] < 180 ? ((center[1] + 180)) % 360 : (center[1] - 180)
     let phenoYearFound = false
     let phenoYearBeginDayIndex = 0
     let phenoYearArray = []
@@ -434,28 +506,16 @@ function drawPolarGraph(originalData, reprocessedData, div) {
 
     // find our start day of pheno year so we can plot the beginning of the pheno year threshold
     let center = findPolarCenter(reprocessedData.baseline, calendarYearDateArray)
-    let startDayOfPhenoYear = center[1] < 180 ? ((center[1] + 180)) % 360 + 3 : (center[1] - 180) + 3
+    let startDayOfPhenoYear = center[1] < 180 ? ((center[1] + 180)) % 360 : (center[1] - 180)
 
     /* find our 15% and 80% thresholds based on start of pheno year. Then determine where our start and end index is
        in our pheno year date array. This start and end index determines what data is in the growing season */
-    var baselineThresholds = findPolarThresholds(phenoYearBaselineValues, startDayOfPhenoYear)
-    let startIndex, endIndex = 0
-    console.log(baselineThresholds)
-    console.log(phenoDateArray)
-    for (let i = 0; i < phenoDateArray.length; i++) {
-        if (phenoDateArray[i] >= baselineThresholds.fifteenEnd) break
-        startIndex = i
-    }
-    for (let i = 0; i < phenoDateArray.length; i++) {
-        if (phenoDateArray[i] >= baselineThresholds.eightyEnd) break
-        endIndex = i
-    }
+    var baselineThresholds = findPolarThresholds(phenoYearBaselineValues, phenoDateArray, startDayOfPhenoYear)
+    let startIndex = baselineThresholds.fifteenIndex 
+    let endIndex = baselineThresholds.eightyIndex
 
-    console.log(phenoYearBaselineValues.slice(startIndex, endIndex))
-    console.log(phenoDateArray.slice(startIndex, endIndex))
     // recalculate center line based on only the growing season data. findPolarCenter returns [radius, theta] array
     center = findPolarCenter(phenoYearBaselineValues.slice(startIndex, endIndex), phenoDateArray.slice(startIndex, endIndex))
-    console.log(center)
     var centerPoint = center[0] // radius
     var centerDay = center[1] // theta
     
@@ -549,19 +609,13 @@ function drawPolarGraph(originalData, reprocessedData, div) {
         if (Object.keys(traceObject).length >= 1) { // calculate dynamic reference lines
             let traceArray = Object.values(traceObject).flat()
             let dynamicBaseline = calculateDynamicBaseline(traceArray)
-            let dynamicThresholds = findPolarThresholds(dynamicBaseline, startDayOfPhenoYear)
+            let dynamicThresholds = findPolarThresholds(dynamicBaseline, phenoDateArray, startDayOfPhenoYear)
             fifteenValue = dynamicThresholds.fifteenEnd
             eightyValue = dynamicThresholds.eightyEnd
 
-            let startIndex, endIndex = 0
-            for (let i = 0; i < traceTheta.length; i++) {
-                if (traceTheta[startIndex] >= fifteenValue) break
-                startIndex = i
-            }
-            for (let i = 0; i < traceTheta.length; i++) {
-                if (traceTheta[endIndex] >= eightyValue) break
-                endIndex = i
-            }
+            let startIndex = dynamicThresholds.fifteenIndex 
+            let endIndex = dynamicThresholds.eightyIndex
+
             let dynamicCenter = findPolarCenter(dynamicBaseline.slice(startIndex, endIndex), traceTheta.slice(startIndex, endIndex))
             middleLineValue = (dynamicCenter[1])
             centerLineArray = [[parseFloat(dynamicCenter[0]).toFixed(2), 0], [middleLineValue, 0]]
@@ -751,34 +805,37 @@ function findPolarCenter (rValues, thetaValues) {
     let xValueList = [] 
     let yValueList = []
 
-    rValues.forEach(function(item, index) {
+    // convert polar coordinates to cartesian x and y coordinates
+    rValues.forEach(function(item, index) { 
         xValueList.push(item * Math.cos((Math.PI/180) * thetaValues[index]))
         yValueList.push(item * Math.sin((Math.PI/180) * thetaValues[index]))
     })
 
-    let xMean = (xValueList.reduce((a, b) => a + b, 0)) / xValueList.length
+    // find the mean for x and y array
+    let xMean = (xValueList.reduce((a, b) => a + b, 0)) / xValueList.length 
     let yMean = (yValueList.reduce((a, b) => a + b, 0)) / yValueList.length
 
+    // convert back to polar coordinates (r and theta)
     let r = Math.sqrt((xMean * xMean) + (yMean * yMean))
     let theta = (Math.atan(yMean / xMean)) * (180/Math.PI)
 
+    // adjust the angle due to arctangent returning negative values
     if ((xMean < 0 && yMean > 0) || (xMean < 0 && yMean < 0)) { // quadrant 2 and quadrant 3
         theta += 180
       }
     if (xMean > 0 && yMean < 0) { // quadrant 4
         theta += 360
     }
+
     return [r, theta]
 }
 
-function findPolarThresholds (data, startDay) {
-    var startIndex = 0
+function findPolarThresholds (data, dateArray, startDay) {
     var totalSum = 0;
 
     // grab total sum of all ndvi values so you can caclulate the 15% and 80% value below
-    for (let i = 0; i < expectedYearLength; i++) {
-        let j = (startIndex + i) % expectedYearLength;
-        totalSum += parseInt(data[j], 10);
+    for (let i = 0; i < data.length; i++) {
+        totalSum += parseInt(data[i], 10);
     }
 
     var fifteenThreshold = totalSum * .15;
@@ -788,26 +845,29 @@ function findPolarThresholds (data, startDay) {
     var fifteenIndex, eightyIndex;
 
     // Go through every index of the data until you find out where the 15% and 80% value index is
-    totalSum = 0;
-    for (let i = 0; i < expectedYearLength; i++) {
-        let j = (startIndex + i) % expectedYearLength;
-        totalSum += parseInt(data[j], 10);
-        if (!fifteenIndexFound && totalSum > fifteenThreshold) {
-            fifteenIndex = j;
-            fifteenIndexFound = true;
-            continue;
+    let thresholdSum = 0
+    for (let i = 0; i < data.length; i++) {
+        thresholdSum += parseInt(data[i], 10)
+        if (!fifteenIndexFound && thresholdSum > fifteenThreshold) {
+            fifteenIndex = i
+            fifteenIndexFound = true
+            continue
         }
-        if (!eightyIndexFound && totalSum > eightyThreshold) {
-            eightyIndex = j;
-            eightyIndexFound = true;
-            continue;
+        if (!eightyIndexFound && thresholdSum > eightyThreshold) {
+            eightyIndex = i
+            eightyIndexFound = true
+            continue
         }
     }
 
-    var fifteenEnd = ((fifteenIndex * 8) + 3 + startDay) % 360 // mod by 360 to keep values within 0-359 degrees
-    var eightyEnd = ((eightyIndex * 8) + 3 + startDay) % 360 // mod by 360 to keep values within 0-359 degrees
+    // adding by 3 may not need to happen anymore
+    // add fifteenIndex and eightyIndex to return and use that as the subset of your data
+    //var fifteenEnd = ((fifteenIndex * 8) + 3 + startDay) % 360 // mod by 360 to keep values within 0-359 degrees
+    let fifteenEnd = dateArray[fifteenIndex]
+    let eightyEnd = dateArray[eightyIndex]
+    //var eightyEnd = ((eightyIndex * 8) + 3 + startDay) % 360 // mod by 360 to keep values within 0-359 degrees
 
-    return { fifteenEnd, eightyEnd }
+    return { fifteenIndex, fifteenEnd, eightyIndex, eightyEnd }
 }
 
 function pullDistinctColor (year) {
