@@ -36,24 +36,6 @@ export function removeAllPointsOfInterest () {
 	_points_of_interest = []
 }
 
-function handleMapClick (e) {
-	var map = this;
-	var lat = e.latlng.lat;
-	var lng = e.latlng.lng;
-
-	var poi = createPOI(lat, lng, null);
-	AddPointOfInterestToTracker(poi);
-	SetupPointOfInterestUI(map, poi, config);
-	updateShareUrl();
-
-	//send google analytics event click on map
-	ga('send', 'event', {
-		eventCategory: 'map',
-		eventAction: 'click',
-		eventLabel: JSON.stringify({"action":"add map marker","lat":lat,"long":lng}),
-		nonInteraction: false
-	});
-}
 
 function createGraphRemover (map, div, marker, poi) {
 	var elem = createGraphRemoverElem();
