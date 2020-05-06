@@ -75,6 +75,14 @@ function splitData(data) {
     return data;
 }
 
+function objectifyData(data) {
+    let dataArray = []
+    data.forEach(function(item){
+        dataArray.push({'date': item[0], 'ndvi': item[1]})
+    })
+    return dataArray
+}
+
 function reprocessData (origdata) {
     var data = {};
     var point;
@@ -131,68 +139,6 @@ function computeAverage (arr) {
     return (sum / l).toString();
 }
 
-function findPolarCenterJohnOld (data) {
-    var i, j, length, arr;
-    var totalSum = 0;
-    var incompleteYears = 0;
-    var sum;
-    length = 46;
-
-    for (i = 0; i < data.keys.length; i++) {
-        arr = data[data.keys[i]];
-        if (arr.length !== length) {
-            incompleteYears++;
-            continue;
-        }
-        sum = 0;
-        for (j = 0; j < length/2; j++) {
-            sum += (arr[j][1] - arr[j+23][1]);
-        }
-        sum = sum / 23;
-        totalSum += sum;
-    }
-    totalSum = Math.abs(totalSum) / (data.keys.length - incompleteYears);
-
-    var areaDiff = 1000000;
-    var checkDiff;
-    var areaIndex = 0;
-    var leftArea, rightArea;
-    var avgs = data.baseline;
-    var k, counter;
-
-    for (i = 0; i < length/2; i++) {
-        leftArea = 0;
-        rightArea = 0;
-        for (counter = 0; counter < length/2; counter++) {
-            j = (i + counter) % 46;
-            k = (j + 23) % 46;
-
-            leftArea += parseInt(avgs[j], 10);
-            rightArea += parseInt(avgs[k],10);
-        }
-        checkDiff = Math.abs(leftArea - rightArea);
-        if (checkDiff < areaDiff) {
-            areaDiff = checkDiff;
-            areaIndex = i;
-        }
-    }
-
-    var firstRadius = parseInt(avgs[areaIndex], 10);
-    var secondRadius = parseInt(-avgs[areaIndex + 23], 10);
-
-    var midpoint = (firstRadius + secondRadius) / 2;
-    var firstDiff = Math.abs(totalSum - midpoint);
-    var secondDiff = Math.abs(-totalSum - midpoint);
-    if (secondDiff < firstDiff) {
-        areaIndex = areaIndex + 23;
-    }
-
-    var circlecenter = [0, 0];
-    var datacenter = [(areaIndex * 8) + 3, totalSum];
-
-    return([circlecenter, datacenter]);
-}
-
 function buildPhenologicalYearData (rawJsonData, calendarYearData) {
     let dateArray = []
     let rawThetaValues = []
@@ -204,12 +150,7 @@ function buildPhenologicalYearData (rawJsonData, calendarYearData) {
         rawNdviValues.push(item[1])
         rawThetaValues.push(convertDayOfYearToDegrees(item[0]))
     })
-    let rawCenter = findPolarCenter(rawNdviValues, rawThetaValues)
-    console.log("raw center: " + rawCenter)
-    let center = findPolarCenter(calendarYearData.baseline, dateArray)
-    console.log("center: " + center)
-    let johnCenter = findPolarCenterJohnOld(calendarYearData)
-    console.log("john center: " + johnCenter[1])
+    let center = findPolarCenter(rawNdviValues, rawThetaValues)
     let startDayOfPhenoYear = center[1] < 180 ? ((center[1] + 180)) % 360 : (center[1] - 180)
     let phenoYearFound = false
     let phenoYearBeginDayIndex = 0
@@ -307,9 +248,8 @@ function enableGraphTab (graphType) {
 }
 
 export function createGraphDiv (poi, graphConfig) {
-    var decimalPlaces = 3
-    var latShort = roundFloat(poi.lat, decimalPlaces)
-    var lngShort = roundFloat(poi.lng, decimalPlaces)
+    var latShort = parseFloat(poi.lat).toFixed(3)
+    var lngShort = parseFloat(poi.lng).toFixed(3)
     var wrapper = document.createElement("div");
     var header = document.createElement("div");
     wrapper.appendChild(header)
@@ -359,23 +299,20 @@ function makeZoomToMapMarkerButton(poi) {
 
 function drawGraph(data, div, poi) {
     data = splitData(data) // split data and parse all date strings into dates
+    let objectData = objectifyData(data)
     var reprocessedData = reprocessData(data)
-    drawAllYearsGraph(data, div)
+    drawAllYearsGraph(objectData, div)
     drawOverlappingYearsGraph(reprocessedData, div)
     drawPolarGraph(data, reprocessedData, div)
     div.classList.remove("graph-loading")
-}
-
-function roundFloat(number, decimalPlaces) {
-    return Math.round(number * Math.pow(10, decimalPlaces)) / (Math.pow(10, decimalPlaces))
 }
 
 function drawAllYearsGraph(data, div) {
     let ndviData = []
     let dates = []
     data.forEach(function (item) {
-        dates.push(item[0])
-        ndviData.push(item[1])
+        dates.push(item.date)
+        ndviData.push(item.ndvi)
     })
 
     let layout = {
@@ -494,6 +431,8 @@ function drawPolarGraph(originalData, reprocessedData, div) {
     let phenoDateArray = [] 
     let phenoYearBaselineDateAndValuesArray = [] 
     let calendarYearDateArray = []
+    let rawNdviValues = []
+    let rawThetaValues = []
 
     phenoYearData[1].forEach(function (item, index){ // 2001 date strings
         phenoYearBaselineDateAndValuesArray.push([item[0], phenoYearBaselineValues[index]]) // baseline ndvi and dates in one array
@@ -504,8 +443,13 @@ function drawPolarGraph(originalData, reprocessedData, div) {
         calendarYearDateArray.push(convertDayOfYearToDegrees(item[0])) // build our calendar year array
     })
 
+    originalData.forEach(function(item) {
+        rawNdviValues.push(item[1])
+        rawThetaValues.push(convertDayOfYearToDegrees(item[0]))
+    })
+
     // find our start day of pheno year so we can plot the beginning of the pheno year threshold
-    let center = findPolarCenter(reprocessedData.baseline, calendarYearDateArray)
+    let center = findPolarCenter(rawNdviValues, rawThetaValues)
     let startDayOfPhenoYear = center[1] < 180 ? ((center[1] + 180)) % 360 : (center[1] - 180)
 
     /* find our 15% and 80% thresholds based on start of pheno year. Then determine where our start and end index is
@@ -582,6 +526,7 @@ function drawPolarGraph(originalData, reprocessedData, div) {
         "toImage"
     ]] 
 
+    // finally plot all of the data
     var config = {responsive: true, displaylogo: false, displayModeBar: true, modeBarButtons: modeBarButtons}
     let plotlyLayout = getPlotlyLayout()
     Plotly.newPlot(wrapper.node(), dataPlotly, plotlyLayout, config)
@@ -842,7 +787,8 @@ function findPolarThresholds (data, dateArray, startDay) {
     var eightyThreshold = totalSum * .80;
     var fifteenIndexFound = false,
         eightyIndexFound = false;
-    var fifteenIndex, eightyIndex;
+    var fifteenIndex, fifteenEnd, eightyIndex, eightyEnd;
+    var fifteenNdviChunk, fifteenThetaChunk, eightyNdviChunk, eightyThetaChunk;
 
     // Go through every index of the data until you find out where the 15% and 80% value index is
     let thresholdSum = 0
@@ -851,22 +797,33 @@ function findPolarThresholds (data, dateArray, startDay) {
         if (!fifteenIndexFound && thresholdSum > fifteenThreshold) {
             fifteenIndex = i
             fifteenIndexFound = true
+            let ndviChunk = data[i-1] / 8 // divide the previous point ndvi values into chunks of an 1/8th
+            let thetaChunk = (dateArray[i] - dateArray[i-1]) / 8 // divide the previous point theta values into a chunk of an 1/8th
+            fifteenEnd = dateArray[fifteenIndex]
+            // this for loop find the closest approximation of where the threshold is since data comes every 8 days
+            for (let j = 1; j <= 8; j++) {
+                thresholdSum -= ndviChunk
+                fifteenEnd -= thetaChunk
+                if (thresholdSum < fifteenThreshold) break
+            }
             continue
         }
         if (!eightyIndexFound && thresholdSum > eightyThreshold) {
             eightyIndex = i
             eightyIndexFound = true
+            let ndviChunk = data[i-1] / 8 // divide the previous point ndvi values into chunks of an 1/8th
+            let thetaChunk = (dateArray[i] - dateArray[i-1]) / 8 // divide the previous point theta values into a chunk of an 1/8th
+            eightyEnd = dateArray[eightyIndex]
+            // this for loop find the closest approximation of where the threshold is since data comes every 8 days
+            for (let j = 0; j < 8; j++) {
+                thresholdSum -= ndviChunk
+                eightyEnd -= thetaChunk
+                if (thresholdSum < eightyThreshold) break
+            }
             continue
         }
     }
-
-    // adding by 3 may not need to happen anymore
-    // add fifteenIndex and eightyIndex to return and use that as the subset of your data
-    //var fifteenEnd = ((fifteenIndex * 8) + 3 + startDay) % 360 // mod by 360 to keep values within 0-359 degrees
-    let fifteenEnd = dateArray[fifteenIndex]
-    let eightyEnd = dateArray[eightyIndex]
-    //var eightyEnd = ((eightyIndex * 8) + 3 + startDay) % 360 // mod by 360 to keep values within 0-359 degrees
-
+    
     return { fifteenIndex, fifteenEnd, eightyIndex, eightyEnd }
 }
 
