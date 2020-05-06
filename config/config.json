@@ -1,5 +1,16 @@
 {
-    "mapserverUrl": "https://gis.nemac.org/landat",
+    "mapserverUrl": {
+      "local": "https://gis.nemac.org/landat-dev",
+      "beta": "https://gis.nemac.org/landat-dev",
+      "prod": "https://gis.nemac.org/landat"
+    },
+    "graphs": {
+      "serviceUrl": {
+        "local": "http://localhost:3000/dev/landat-ndvi",
+        "beta": "https://fffolb6k21.execute-api.us-east-1.amazonaws.com/beta/landat-ndvi",
+        "prod": "https://4desh2uig8.execute-api.us-east-1.amazonaws.com/prod/landat-ndvi"
+      }
+    },
     "defaultLayerOpacity": 0.75,
     "logo": {
         "image": "imgs/landat_logo_blue.png",

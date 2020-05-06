@@ -19,7 +19,6 @@ var css = require('../sass/landat.scss')
 // Does not rely on map object or config file
 var Base = function (config) {
 	ParseConfig(config, callback);
-	SetupGraphs();
 	BindTabEvents();
 	BindCopyLinkEvents();
 	BindMobileMenuEvents();
@@ -28,6 +27,7 @@ var Base = function (config) {
 
 // Does rely on map object or config file
 var callback = function (data) {
+        let stage = getStage();
 	AddShareSettingsToConfig(data)
 	var map = CreateMap(data.map);
 	CreateBaseLayers(map, data.baselayers);
@@ -37,10 +37,18 @@ var callback = function (data) {
 	CreateLogo(data.logo);
 	if (data.tab) HandleTabChange(data.tab);
 	if (data.graph) HandleGraphTabChange(data.graph);
-	BindGraphEvents(map);
+	BindGraphEvents(map, data.graphs);
 	BindUpdateShareUrl(map);
-	SetupPointsOfInterest(map, data.pois)
+	SetupPointsOfInterest(map, data.pois, data.graphs)
 	updateShareUrl()
+	SetupGraphs(data.graphs, stage);
+}
+
+export function getStage() {
+  let mode = process.env.NODE_ENV;
+  if (mode === 'none') { return 'local' };
+  if (mode === 'development') { return 'beta' };
+  if (mode === 'production') { return 'prod' }; 
 }
 
 window.Base = Base;

@@ -64,7 +64,6 @@
               animation-iteration-count: 1; }
   .graph-elem svg {
     position: relative;
-    min-height: 270px;
     height: 100%; }
 
 @-webkit-keyframes graph-elem-animate {
@@ -83,35 +82,15 @@
 
 .graph-timeseries .timeseries-graph {
   display: block; }
-  .graph-timeseries .timeseries-graph svg {
-    width: 100%; }
+
+.js-plotly-plot .plotly .modebar {
+  display: flex; }
 
 .graph-overlapping .overlapping-graph {
   display: block; }
-  .graph-overlapping .overlapping-graph svg {
-    width: 85%; }
-    @media only screen and (max-width: 480px) {
-      .graph-overlapping .overlapping-graph svg {
-        width: 100%; } }
-    @media only screen and (min-width: 481px) and (max-width: 668px) {
-      .graph-overlapping .overlapping-graph svg {
-        width: 100%; } }
 
 .graph-polar .polar-graph {
-  display: block;
-  /*svg {
-            width: 85%;
-            min-height: 490px;
-
-            & {
-                @include mobile-display("phone-portrait") {
-                    width: 100%;
-                }
-                @include mobile-display("phone-landscape") {
-                    width: 100%;
-                }
-            }
-        }*/ }
+  display: block; }
 
 .graph-loading .timeseries-graph, .graph-loading .overlapping-graph, .graph-loading .polar-graph {
   display: none; }
