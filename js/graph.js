@@ -140,12 +140,9 @@ function computeAverage (arr) {
 }
 
 function buildPhenologicalYearData (rawJsonData, calendarYearData) {
-    let dateArray = []
     let rawThetaValues = []
     let rawNdviValues = []
-    calendarYearData[2001].forEach(function(item) {
-        dateArray.push(convertDayOfYearToDegrees(item[0]))
-    })
+
     rawJsonData.forEach(function(item) {
         rawNdviValues.push(item[1])
         rawThetaValues.push(convertDayOfYearToDegrees(item[0]))
@@ -160,7 +157,7 @@ function buildPhenologicalYearData (rawJsonData, calendarYearData) {
     for (let i = 0; i < calendarYearData[2001].length; i++) {
         if (phenoYearFound) break
         let date = calendarYearData[2001][i][0]
-        if (date.getDOY() >= startDayOfPhenoYear) {
+        if (convertDayOfYearToDegrees(date) >= startDayOfPhenoYear) {
             phenoYearFound = true
             phenoYearBeginDayIndex = i
         }
