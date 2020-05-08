@@ -7,7 +7,7 @@ import {getStage} from './base'
 var tip = {}
 var expectedYearLength = 46
 var numberOfDataYears = 19
-const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines', 'zoom2d']
+const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines']
 
 export function SetupGraphs (config, stage) {
     var dataServiceUrl = config['serviceUrl'][stage];
@@ -324,7 +324,6 @@ function drawAllYearsGraph(data, div) {
                        "2010","2011","2012","2013","2014","2015","2016","2017","2018","2019"]
         },
         yaxis: {
-            fixedrange: true,
             range: [0, 100]
         }
     }
@@ -389,7 +388,6 @@ function drawOverlappingYearsGraph(data, div) {
             ticktext: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
         },
         yaxis: {
-            fixedrange: true,
             range: [0, 100]
         }
     }
