@@ -567,9 +567,13 @@ function drawPolarGraph(originalData, reprocessedData, div) {
             middleLineValue = centerDay
             centerLineArray = [[parseFloat(centerPoint).toFixed(2), 0], [centerDay, 0]]
         }
-        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([fifteenValue], 7))]}, 1) // beginning of growing season
-        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([middleLineValue], 7))]}, 2) // middle of growing season
-        Plotly.restyle(wrapper.node(), {theta: [[0].concat(repeat([eightyValue], 7))]}, 3) // end of growing season
+        // TODO: Update buildReferenceLine to use hovertemplate and not hovertext
+        Plotly.restyle(wrapper.node(), {hovertext: "Start of Growing Season: Julian day " + convertDegreesToDayOfYear(fifteenValue), 
+            theta: [[0].concat(repeat([fifteenValue], 7))]}, 1) // beginning of growing season
+        Plotly.restyle(wrapper.node(), {hovertext: "Middle of Growing Season: Julian day " + convertDegreesToDayOfYear(middleLineValue), 
+            theta: [[0].concat(repeat([middleLineValue], 7))]}, 2) // middle of growing season
+        Plotly.restyle(wrapper.node(), {hovertext: "End of Growing Season: Julian day " + convertDegreesToDayOfYear(eightyValue), 
+            theta: [[0].concat(repeat([eightyValue], 7))]}, 3) // end of growing season
         Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4) // center red line
     })
 }
@@ -735,7 +739,7 @@ const convertDayOfYearToDegrees = date => {
 }
 
 const convertDegreesToDayOfYear = degreeValue => {
-    return parseInt((((degreeValue * 364) / 360) + 1) % 365, 10)
+    return Math.round((((degreeValue * 364) / 360) + 1)) % 365
 }
 
 const dayOfYearToDegrees = array => {
@@ -789,7 +793,6 @@ function findPolarThresholds (data, dateArray, startDay) {
     var fifteenIndexFound = false,
         eightyIndexFound = false;
     var fifteenIndex, fifteenEnd, eightyIndex, eightyEnd;
-    var fifteenNdviChunk, fifteenThetaChunk, eightyNdviChunk, eightyThetaChunk;
 
     // Go through every index of the data until you find out where the 15% and 80% value index is
     let thresholdSum = 0
