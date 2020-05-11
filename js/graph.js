@@ -643,7 +643,7 @@ function buildCenterLine(centerlineData, visibility = true) {
         showlegend: false,
         r: [parseFloat(centerlineData[1]).toFixed(2), 0],
         theta: [centerlineData[0], 0],
-        hovertemplate: ["Center: %{r}<extra></extra>", ""],
+        hovertemplate: ["Seasonality: %{r}<extra></extra>", ""],
         marker: {
             size: 9,
             // Markers go from left to right in the 'r' array defined above
@@ -732,6 +732,11 @@ const convertDayOfYearToDegrees = date => {
         dayOfYear -= 1
     }
     return (((dayOfYear - 1) * 360) / 364) % 360 // mod by 360 to give values less than or equal to 360
+}
+
+// Work in progress right now for converting degree back to day of year
+const convertDegreesToDayOfYear = degreeValue => {
+    return (((degreeValue * 364) / 360) + 1) % 365
 }
 
 const dayOfYearToDegrees = array => {
