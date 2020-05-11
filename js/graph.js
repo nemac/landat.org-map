@@ -734,7 +734,6 @@ const convertDayOfYearToDegrees = date => {
     return (((dayOfYear - 1) * 360) / 364) % 360 // mod by 360 to give values less than or equal to 360
 }
 
-// Work in progress right now for converting degree back to day of year
 const convertDegreesToDayOfYear = degreeValue => {
     return parseInt((((degreeValue * 364) / 360) + 1) % 365, 10)
 }
