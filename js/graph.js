@@ -624,7 +624,7 @@ function buildReferenceLine(data, mode, traceName, hoverText, lineColor) {
         showlegend: false,
         r: data.r,
         theta: data.theta,
-        hovertext: hoverText,
+        hovertext: hoverText + ": Julian day " + convertDegreesToDayOfYear(data.theta[data.theta.length - 1]),
         hoverinfo: "text",
         line: {
             color: lineColor,
@@ -736,7 +736,7 @@ const convertDayOfYearToDegrees = date => {
 
 // Work in progress right now for converting degree back to day of year
 const convertDegreesToDayOfYear = degreeValue => {
-    return (((degreeValue * 364) / 360) + 1) % 365
+    return parseInt((((degreeValue * 364) / 360) + 1) % 365, 10)
 }
 
 const dayOfYearToDegrees = array => {
