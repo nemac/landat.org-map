@@ -7,7 +7,7 @@ import {getStage} from './base'
 var tip = {}
 var expectedYearLength = 46
 var numberOfDataYears = 19
-const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines', 'zoom2d']
+const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines']
 
 export function SetupGraphs (config, stage) {
     var dataServiceUrl = config['serviceUrl'][stage];
