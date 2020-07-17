@@ -527,82 +527,78 @@ function drawPolarGraph(originalData, reprocessedData, div) {
     Plotly.newPlot(wrapper.node(), dataPlotly, plotlyLayout, config)
 
     // create a new div element 
-    //var newDiv = document.createElement("div");
     var currentDiv = wrapper.node();
+    let traceObject = {}
     currentDiv.data.forEach(function(item, index) {
         console.log(item)
         if (item.inLegend) {
-            // and give it some content
             var checkbox = document.createElement('input');
             checkbox.type = "checkbox";
             checkbox.id = item.name;
+            if (item.visible === true) {checkbox.checked = true}
             checkbox.onclick = function() {
-                if (document.getElementById(checkbox.id).checked == true) {
-                    Plotly.restyle(wrapper.node(), {visible: true}, index)
+                /* On a legend click event, find out what trace was clicked on and grab all of the r values for that trace.
+                Add trace name and values to traceObject if it doesn't exist. If it does exist, you can assume that
+                the trace is being turned off and needs to be removed from the traceObject. If you have at least one trace on, 
+                calculate the new baseline and reference lines for those traces otherwise fall back to original reference lines.
+                Restyle the reference lines based on this information.
+                */
+                //let traceData = x.node.__data__[0].trace.r
+                //let traceTheta = x.node.__data__[0].trace.theta
+                //let traceName = x.node.__data__[0].trace.name
+                let traceData = item.r
+                let traceTheta = item.theta
+                let traceName = item.name
+                let middleLineValue, fifteenValue, eightyValue, centerLineArray
+                if (traceName === 'All-years mean') {
+                    return // do nothing
+                }
+                if (traceObject[traceName]) {
+                    delete traceObject[traceName] // delete since we assume it's already in the array
                 } else {
-                    Plotly.restyle(wrapper.node(), {visible: false}, index)
+                    traceObject[traceName] = traceData
+                }
+                if (Object.keys(traceObject).length >= 1) { // calculate dynamic reference lines
+                    let traceArray = Object.values(traceObject).flat()
+                    let dynamicBaseline = calculateDynamicBaseline(traceArray)
+                    let dynamicThresholds = findPolarThresholds(dynamicBaseline, phenoDateArray, startDayOfPhenoYear)
+                    fifteenValue = dynamicThresholds.fifteenEnd
+                    eightyValue = dynamicThresholds.eightyEnd
+
+                    let startIndex = dynamicThresholds.fifteenIndex 
+                    let endIndex = dynamicThresholds.eightyIndex
+
+                    let dynamicCenter = findPolarCenter(dynamicBaseline.slice(startIndex, endIndex), traceTheta.slice(startIndex, endIndex))
+                    middleLineValue = (dynamicCenter[1])
+                    centerLineArray = [[parseFloat(dynamicCenter[0]).toFixed(2), 0], [middleLineValue, 0]]
+                } else { // use the all-means reference lines calculated above
+                    fifteenValue = baselineThresholds.fifteenEnd
+                    eightyValue = baselineThresholds.eightyEnd
+                    middleLineValue = centerDay
+                    centerLineArray = [[parseFloat(centerPoint).toFixed(2), 0], [centerDay, 0]]
+                }
+                // TODO: Update buildReferenceLine to use hovertemplate and not hovertext
+                Plotly.restyle(wrapper.node(), {hovertext: "Start of Growing Season: Julian day " + convertDegreesToDayOfYear(fifteenValue), 
+                    theta: [[0].concat(repeat([fifteenValue], 7))]}, 1) // beginning of growing season
+                Plotly.restyle(wrapper.node(), {hovertext: "Middle of Growing Season: Julian day " + convertDegreesToDayOfYear(middleLineValue), 
+                    theta: [[0].concat(repeat([middleLineValue], 7))]}, 2) // middle of growing season
+                Plotly.restyle(wrapper.node(), {hovertext: "End of Growing Season: Julian day " + convertDegreesToDayOfYear(eightyValue), 
+                    theta: [[0].concat(repeat([eightyValue], 7))]}, 3) // end of growing season
+                Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4) // center red line
+                if (document.getElementById(checkbox.id).checked == true) {
+                    Plotly.restyle(currentDiv, {visible: true}, index)
+                } else {
+                    Plotly.restyle(currentDiv, {visible: false}, index)
                 }
             };
             var label = document.createElement('label')
             label.htmlFor = "id";
             label.appendChild(document.createTextNode(item.name));
-            // add the text node to the newly created div
-            //newDiv.appendChild(checkbox);
-            //newDiv.appendChild(label);
             currentDiv.appendChild(checkbox);
             currentDiv.appendChild(label);
         }
     })
 
-
-    /* On a legend click event, find out what trace was clicked on and grab all of the r values for that trace.
-       Add trace name and values to traceObject if it doesn't exist. If it does exist, you can assume that
-       the trace is being turned off and needs to be removed from the traceObject. If you have at least one trace on, 
-       calculate the new baseline and reference lines for those traces otherwise fall back to original reference lines.
-       Restyle the reference lines based on this information.
-    */
-    let traceObject = {}
-    wrapper.node().on('plotly_legendclick', function(x){
-        let traceData = x.node.__data__[0].trace.r
-        let traceTheta = x.node.__data__[0].trace.theta
-        let traceName = x.node.__data__[0].trace.name
-        let middleLineValue, fifteenValue, eightyValue, centerLineArray
-        if (traceName === 'All-years mean') {
-            return // do nothing
-        }
-        if (traceObject[traceName]) {
-            delete traceObject[traceName] // delete since we assume it's already in the array
-        } else {
-            traceObject[traceName] = traceData
-        }
-        if (Object.keys(traceObject).length >= 1) { // calculate dynamic reference lines
-            let traceArray = Object.values(traceObject).flat()
-            let dynamicBaseline = calculateDynamicBaseline(traceArray)
-            let dynamicThresholds = findPolarThresholds(dynamicBaseline, phenoDateArray, startDayOfPhenoYear)
-            fifteenValue = dynamicThresholds.fifteenEnd
-            eightyValue = dynamicThresholds.eightyEnd
-
-            let startIndex = dynamicThresholds.fifteenIndex 
-            let endIndex = dynamicThresholds.eightyIndex
-
-            let dynamicCenter = findPolarCenter(dynamicBaseline.slice(startIndex, endIndex), traceTheta.slice(startIndex, endIndex))
-            middleLineValue = (dynamicCenter[1])
-            centerLineArray = [[parseFloat(dynamicCenter[0]).toFixed(2), 0], [middleLineValue, 0]]
-        } else { // use the all-means reference lines calculated above
-            fifteenValue = baselineThresholds.fifteenEnd
-            eightyValue = baselineThresholds.eightyEnd
-            middleLineValue = centerDay
-            centerLineArray = [[parseFloat(centerPoint).toFixed(2), 0], [centerDay, 0]]
-        }
-        // TODO: Update buildReferenceLine to use hovertemplate and not hovertext
-        Plotly.restyle(wrapper.node(), {hovertext: "Start of Growing Season: Julian day " + convertDegreesToDayOfYear(fifteenValue), 
-            theta: [[0].concat(repeat([fifteenValue], 7))]}, 1) // beginning of growing season
-        Plotly.restyle(wrapper.node(), {hovertext: "Middle of Growing Season: Julian day " + convertDegreesToDayOfYear(middleLineValue), 
-            theta: [[0].concat(repeat([middleLineValue], 7))]}, 2) // middle of growing season
-        Plotly.restyle(wrapper.node(), {hovertext: "End of Growing Season: Julian day " + convertDegreesToDayOfYear(eightyValue), 
-            theta: [[0].concat(repeat([eightyValue], 7))]}, 3) // end of growing season
-        Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4) // center red line
-    })
 }
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
