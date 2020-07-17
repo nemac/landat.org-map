@@ -530,13 +530,18 @@ function drawPolarGraph(originalData, reprocessedData, div) {
     var currentDiv = wrapper.node();
     let traceObject = {}
     currentDiv.data.forEach(function(item, index) {
-        console.log(item)
         if (item.inLegend) {
             var checkbox = document.createElement('input');
             checkbox.type = "checkbox";
             checkbox.id = item.name;
             if (item.visible === true) {checkbox.checked = true}
             checkbox.onclick = function() {
+                // logic to turn on and off traces
+                if (document.getElementById(checkbox.id).checked == true) {
+                    Plotly.restyle(currentDiv, {visible: true}, index)
+                } else {
+                    Plotly.restyle(currentDiv, {visible: false}, index)
+                }
                 /* On a legend click event, find out what trace was clicked on and grab all of the r values for that trace.
                 Add trace name and values to traceObject if it doesn't exist. If it does exist, you can assume that
                 the trace is being turned off and needs to be removed from the traceObject. If you have at least one trace on, 
@@ -585,11 +590,6 @@ function drawPolarGraph(originalData, reprocessedData, div) {
                 Plotly.restyle(wrapper.node(), {hovertext: "End of Growing Season: Julian day " + convertDegreesToDayOfYear(eightyValue), 
                     theta: [[0].concat(repeat([eightyValue], 7))]}, 3) // end of growing season
                 Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4) // center red line
-                if (document.getElementById(checkbox.id).checked == true) {
-                    Plotly.restyle(currentDiv, {visible: true}, index)
-                } else {
-                    Plotly.restyle(currentDiv, {visible: false}, index)
-                }
             };
             var label = document.createElement('label')
             label.htmlFor = "id";
