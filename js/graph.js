@@ -4,7 +4,6 @@ import {GetMap} from './map'
 import {GetAjaxObject} from './parser'
 import {getStage} from './base'
 
-var tip = {}
 var expectedYearLength = 46
 var numberOfDataYears = 19
 const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines']
@@ -13,7 +12,6 @@ export function SetupGraphs (config, stage) {
     var dataServiceUrl = config['serviceUrl'][stage];
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
     extendDateModule();
-    tip = d3.tip().attr('class', 'd3-tip').html(function (d) { return d; });
 
     // Adding a block here to trigger AWS endpoint so lambda function stays hot
     var url = dataServiceUrl + "?lng=-82.5515&lat=35.5951" // Asheville, NC
@@ -528,6 +526,35 @@ function drawPolarGraph(originalData, reprocessedData, div) {
     let plotlyLayout = getPlotlyLayout()
     Plotly.newPlot(wrapper.node(), dataPlotly, plotlyLayout, config)
 
+    // create a new div element 
+    //var newDiv = document.createElement("div");
+    var currentDiv = wrapper.node();
+    currentDiv.data.forEach(function(item, index) {
+        console.log(item)
+        if (item.inLegend) {
+            // and give it some content
+            var checkbox = document.createElement('input');
+            checkbox.type = "checkbox";
+            checkbox.id = item.name;
+            checkbox.onclick = function() {
+                if (document.getElementById(checkbox.id).checked == true) {
+                    Plotly.restyle(wrapper.node(), {visible: true}, index)
+                } else {
+                    Plotly.restyle(wrapper.node(), {visible: false}, index)
+                }
+            };
+            var label = document.createElement('label')
+            label.htmlFor = "id";
+            label.appendChild(document.createTextNode(item.name));
+            // add the text node to the newly created div
+            //newDiv.appendChild(checkbox);
+            //newDiv.appendChild(label);
+            currentDiv.appendChild(checkbox);
+            currentDiv.appendChild(label);
+        }
+    })
+
+
     /* On a legend click event, find out what trace was clicked on and grab all of the r values for that trace.
        Add trace name and values to traceObject if it doesn't exist. If it does exist, you can assume that
        the trace is being turned off and needs to be removed from the traceObject. If you have at least one trace on, 
@@ -605,6 +632,7 @@ function buildTrace(data, traceName, color, visibility = 'legendonly',
         traceObject.dateArray.push(item[0])
     })
     return [{
+        inLegend: true,
         type: 'scatterpolar',
         visible: visibility,
         mode: "lines+markers",
@@ -663,6 +691,7 @@ function buildCenterLine(centerlineData, visibility = true) {
 
 function getPlotlyLayout(upperRange = 100, tickVals = [0, 20, 40, 60, 80]) {
     return {
+        showlegend: false,
         dragmode: false, // disables zoom on polar graph
         modebar: {
             orientation: 'h',
@@ -674,7 +703,8 @@ function getPlotlyLayout(upperRange = 100, tickVals = [0, 20, 40, 60, 80]) {
             t: 20,
             b: 20
         },
-        height: 570,
+        height: 475,
+        width: 625,
         legend: {
             title: {
                 text: "Click to turn on/off"
