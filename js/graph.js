@@ -531,11 +531,15 @@ function drawPolarGraph(originalData, reprocessedData, div) {
     let plotlyLayout = getPlotlyLayout()
     Plotly.newPlot(wrapper.node(), dataPlotly, plotlyLayout, config)
 
-    // create a new div element 
+    // create a new div element
+    var newDiv = document.createElement('div')
+    newDiv.id = 'plotly-legend'
+    newDiv.className = 'plotly-legend' 
     var currentDiv = wrapper.node();
     let traceObject = {}
     currentDiv.data.forEach(function(item, index) {
         if (item.inLegend) {
+            let newList = document.createElement('ul')
             var checkbox = document.createElement('input');
             checkbox.type = "checkbox";
             checkbox.id = item.name;
@@ -599,10 +603,12 @@ function drawPolarGraph(originalData, reprocessedData, div) {
             var label = document.createElement('label')
             label.htmlFor = "id";
             label.appendChild(document.createTextNode(item.name));
-            currentDiv.appendChild(checkbox);
-            currentDiv.appendChild(label);
+            newList.appendChild(checkbox);
+            newList.appendChild(label);
+            newDiv.appendChild(newList)
         }
     })
+    currentDiv.appendChild(newDiv)
 
 }
 
@@ -705,7 +711,7 @@ function getPlotlyLayout(upperRange = 100, tickVals = [0, 20, 40, 60, 80]) {
             b: 20
         },
         height: 475,
-        width: 625,
+        width: 575,
         legend: {
             title: {
                 text: "Click to turn on/off"

@@ -90,7 +90,7 @@
   display: block; }
 
 .graph-polar .polar-graph {
-  display: block; }
+  display: flex; }
 
 .graph-loading .timeseries-graph, .graph-loading .overlapping-graph, .graph-loading .polar-graph {
   display: none; }
