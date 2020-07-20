@@ -508,7 +508,12 @@ function drawPolarGraph(originalData, reprocessedData, div) {
             name: 'Reset axes and traces',
             icon: Plotly.Icons.home,
             click: function(div) {
-                Plotly.restyle(div, {visible: 'legendonly'}, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])
+                // uncheck all of the pheno year checkboxes
+                for (let i = 1; i < numberOfDataYears; i++) {
+                    document.getElementById('Pheno Year ' + i).checked = false
+                }
+                document.getElementById('All-years mean').checked = true // check all-years mean checkbox
+                Plotly.restyle(div, {visible: false}, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])
                 Plotly.restyle(div, {visible: true}, 23) // turn on all-years mean trace
                 Plotly.restyle(div, {theta: [[0].concat(repeat([baselineThresholds.fifteenEnd], 7))]}, 1) 
                 Plotly.restyle(div, {theta: [[0].concat(repeat([centerDay], 7))]}, 2)
