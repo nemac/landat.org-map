@@ -299,7 +299,7 @@ function drawGraph(data, div, poi) {
     var reprocessedData = reprocessData(data)
     drawAllYearsGraph(objectData, div)
     drawOverlappingYearsGraph(reprocessedData, div)
-    drawPolarGraph(data, reprocessedData, div)
+    drawPolarGraph(data, reprocessedData, div, poi)
     div.classList.remove("graph-loading")
 }
 
@@ -420,7 +420,7 @@ function buildScatterTrace(data, traceName, color, visibility = 'legendonly',
     }]
 }
 
-function drawPolarGraph(originalData, reprocessedData, div) {
+function drawPolarGraph(originalData, reprocessedData, div, poi) {
     let phenoYearData = buildPhenologicalYearData(originalData, reprocessedData)
     let phenoYearBaselineValues = calculateBaseline(phenoYearData.flat())
     let dataPlotly = [] 
@@ -511,9 +511,9 @@ function drawPolarGraph(originalData, reprocessedData, div) {
             click: function(div) {
                 // uncheck all of the pheno year checkboxes
                 for (let i = 1; i < numberOfDataYears; i++) {
-                    document.getElementById('Pheno Year ' + i).checked = false
+                    document.getElementById('Pheno Year ' + i + poi.lat + poi.lng).checked = false
                 }
-                document.getElementById('All-years mean').checked = true // check all-years mean checkbox
+                document.getElementById('All-years mean' + poi.lat + poi.lng).checked = true // check all-years mean checkbox
                 Plotly.restyle(div, {visible: false}, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])
                 Plotly.restyle(div, {visible: true}, 23) // turn on all-years mean trace
                 Plotly.restyle(div, {theta: [[0].concat(repeat([baselineThresholds.fifteenEnd], 7))]}, 1) 
@@ -538,12 +538,13 @@ function drawPolarGraph(originalData, reprocessedData, div) {
     newDiv.className = 'plotly-legend' 
     var currentDiv = wrapper.node();
     let traceObject = {}
+    console.log(poi)
     currentDiv.data.forEach(function(item, index) {
         if (item.inLegend) {
             let newList = document.createElement('ul')
             var checkbox = document.createElement('input')
             checkbox.type = "checkbox"
-            checkbox.id = item.name
+            checkbox.id = item.name + poi.lat + poi.lng
             if (item.visible === true) {checkbox.checked = true}
             checkbox.onclick = function() {
                 // logic to turn on and off traces
@@ -603,9 +604,8 @@ function drawPolarGraph(originalData, reprocessedData, div) {
             };
             var label = document.createElement('label')
             label.htmlFor = "id";
-            /*if (item.name === 'All-years mean') {
-                label.appendChild(document.createTextNode(item.name)) // attach label for all-years
-            }*/
+            label.appendChild(document.createTextNode(item.name)) // attach label for all-years
+            
             newList.appendChild(checkbox);
             newList.appendChild(label);
             newDiv.appendChild(newList)
