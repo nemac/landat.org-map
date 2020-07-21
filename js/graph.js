@@ -6,6 +6,7 @@ import {getStage} from './base'
 
 var expectedYearLength = 46
 var numberOfDataYears = 19
+var legendPixelLength = 335
 const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines']
 
 export function SetupGraphs (config, stage) {
@@ -540,9 +541,9 @@ function drawPolarGraph(originalData, reprocessedData, div) {
     currentDiv.data.forEach(function(item, index) {
         if (item.inLegend) {
             let newList = document.createElement('ul')
-            var checkbox = document.createElement('input');
-            checkbox.type = "checkbox";
-            checkbox.id = item.name;
+            var checkbox = document.createElement('input')
+            checkbox.type = "checkbox"
+            checkbox.id = item.name
             if (item.visible === true) {checkbox.checked = true}
             checkbox.onclick = function() {
                 // logic to turn on and off traces
@@ -602,7 +603,9 @@ function drawPolarGraph(originalData, reprocessedData, div) {
             };
             var label = document.createElement('label')
             label.htmlFor = "id";
-            label.appendChild(document.createTextNode(item.name));
+            /*if (item.name === 'All-years mean') {
+                label.appendChild(document.createTextNode(item.name)) // attach label for all-years
+            }*/
             newList.appendChild(checkbox);
             newList.appendChild(label);
             newDiv.appendChild(newList)
@@ -711,14 +714,7 @@ function getPlotlyLayout(upperRange = 100, tickVals = [0, 20, 40, 60, 80]) {
             b: 20
         },
         height: 475,
-        width: 575,
-        legend: {
-            title: {
-                text: "Click to turn on/off"
-            },
-            x: 1.07,
-            itemdoubleclick: false,
-        },
+        width: 525,
         polar: {
             domain: {
                 x: [0, 100],

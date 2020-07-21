@@ -310,3 +310,16 @@ path {
 .d3-tip {
     z-index: 100;
 }
+
+.plotly-legend {
+    margin-top: 30px;
+    border-right: 1px solid black;
+    height: 335px;
+}
+
+input[type="checkbox"] {
+    height: 30px;
+    width: 30px;
+    margin-top: -12px;
+    margin-bottom: -12px;
+}
