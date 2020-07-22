@@ -538,13 +538,22 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
     newDiv.className = 'plotly-legend' 
     var currentDiv = wrapper.node();
     let traceObject = {}
-    console.log(poi)
     currentDiv.data.forEach(function(item, index) {
         if (item.inLegend) {
             let newList = document.createElement('ul')
-            var checkbox = document.createElement('input')
+            let checkbox = document.createElement('input')
+            let span = document.createElement('span')
+            span.style.backgroundColor = item.line.color
+            span.className = "checkmark"
             checkbox.type = "checkbox"
             checkbox.id = item.name + poi.lat + poi.lng
+            let label = document.createElement('label')
+            label.className = "container"
+            label.appendChild(document.createTextNode(item.name))
+            label.appendChild(checkbox)
+            label.appendChild(span)
+            newList.appendChild(label);
+            newDiv.appendChild(newList)
             if (item.visible === true) {checkbox.checked = true}
             checkbox.onclick = function() {
                 // logic to turn on and off traces
@@ -602,13 +611,6 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
                     theta: [[0].concat(repeat([eightyValue], 7))]}, 3) // end of growing season
                 Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4) // center red line
             };
-            var label = document.createElement('label')
-            label.htmlFor = "id";
-            label.appendChild(document.createTextNode(item.name)) // attach label for all-years
-            
-            newList.appendChild(checkbox);
-            newList.appendChild(label);
-            newDiv.appendChild(newList)
         }
     })
     currentDiv.appendChild(newDiv)
