@@ -532,7 +532,7 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
     let plotlyLayout = getPlotlyLayout()
     Plotly.newPlot(wrapper.node(), dataPlotly, plotlyLayout, config)
 
-    // create a new div element
+    // create custom legend and attach onclick behavior to it
     var newDiv = document.createElement('div')
     newDiv.id = 'plotly-legend'
     newDiv.className = 'plotly-legend' 
@@ -614,6 +614,11 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
         }
     })
     currentDiv.appendChild(newDiv)
+    var testDiv = document.createElement('div')
+    testDiv.innerHTML += jsMonthArray[phenoYearData[0][0][0].getMonth()] + " " + phenoYearData[0][0][0].getDate() + " to "
+    + jsMonthArray[phenoYearData[0][45][0].getMonth()] + " " + phenoYearData[0][45][0].getDate()
+    console.log(phenoYearData[0][0][0].getMonth())
+    currentDiv.appendChild(testDiv)
 
 }
 
@@ -716,7 +721,7 @@ function getPlotlyLayout(upperRange = 100, tickVals = [0, 20, 40, 60, 80]) {
             b: 20
         },
         height: 475,
-        width: 525,
+        width: 475,
         polar: {
             domain: {
                 x: [0, 100],
@@ -884,3 +889,5 @@ var colorRamp = ["#23758e","#2c798d","#357e8c","#3e838b","#47878a","#518c89","#5
                  "#c8c87c","#d1cc7b","#dad17a","#e3d679","#ecda78","#f5df77","#ffe476"]
 
 var firstOfMonthJulianDays = [ 1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335]
+
+let jsMonthArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
