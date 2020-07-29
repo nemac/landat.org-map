@@ -614,12 +614,6 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
         }
     })
     currentDiv.appendChild(newDiv)
-    var testDiv = document.createElement('div')
-    testDiv.innerHTML += jsMonthArray[phenoYearData[0][0][0].getMonth()] + " " + phenoYearData[0][0][0].getDate() + " to "
-    + jsMonthArray[phenoYearData[0][45][0].getMonth()] + " " + phenoYearData[0][45][0].getDate()
-    console.log(phenoYearData[0][0][0].getMonth())
-    currentDiv.appendChild(testDiv)
-
 }
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
