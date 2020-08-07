@@ -532,35 +532,84 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
     let plotlyLayout = getPlotlyLayout()
     Plotly.newPlot(wrapper.node(), dataPlotly, plotlyLayout, config)
 
-    // create custom legend and attach onclick behavior to it
-    var newDiv = document.createElement('div')
-    newDiv.id = 'plotly-legend'
-    newDiv.className = 'plotly-legend' 
-    var currentDiv = wrapper.node();
+    let plotContainer = wrapper.node();
+    let legendContainer = document.createElement('div')
+    legendContainer.className = 'polar-legend-wrapper'
+    plotContainer.appendChild(legendContainer)
+
+    let phenoLegendLeftWrapper = document.createElement('div')
+    phenoLegendLeftWrapper.id = 'polar-legend-pheno'
+    phenoLegendLeftWrapper.className = 'polar-legend-pheno'
+    let calendarAxisTopOffset = 20
+
+    // TODO get the magic numbers OUT OF HERE WTF
+    let checkboxSideLength = 20
+    let phenoStartDay = plotContainer.data[5]['customdata'][0].getDOY()
+    let percentThroughYear = phenoStartDay / 365.0
+    print(percentThroughYear)
+
+    let phenoStartOffset = checkboxSideLength * percentThroughYear
+    phenoLegendLeftWrapper.style.paddingTop = `${phenoStartOffset}px`
+
+    let numTicks = 19
+    // add one extra "year" of space so the calendar line straddles both sides of the checkbox div
+    let calendarLineContainerHeight = checkboxSideLength * numTicks
+    let calendarScale = d3.scaleLinear()
+        .domain([2000, 2019])
+        .range([0, calendarLineContainerHeight])
+
+    let calendarAxis = d3.axisRight(calendarScale)
+        .ticks(20)
+        .tickFormat(d3.format('d'))
+
+    let svgWrapper = d3.select(legendContainer).append('div')
+                       .attr('class', 'calendar-svg-wrapper')
+
+    let svg = svgWrapper.append('svg')
+      .attr('width', 100)
+      .attr('height', calendarLineContainerHeight + 150)
+    
+    let calendarLineContainer = svg.append("g")
+      .attr('width', 100)
+      .attr('height', `${calendarLineContainerHeight + calendarAxisTopOffset}`)
+      .attr('transform', `translate(0, ${calendarAxisTopOffset})`)
+      .call(calendarAxis)
+
+    let calendarLinePath = calendarLineContainer.select('path').node()
+
+    let lineBBoxHeight
+    checkboxSideLength = '20'
+
     let traceObject = {}
-    currentDiv.data.forEach(function(item, index) {
-        if (item.inLegend) {
-            let newList = document.createElement('ul')
+    plotContainer.data.forEach(function(item, index) {
+        // TODO put the all-years mean back
+        if (item.inLegend && item.name != 'All-years mean') {
+            let phenoSelectWrapper = document.createElement('div')
+            phenoSelectWrapper.style.height = '20px' //`${checkboxSideLength}px`
             let checkbox = document.createElement('input')
             let span = document.createElement('span')
+            span.style.width = `${checkboxSideLength}px`
+            span.style.height = '20px'//`${checkboxSideLength}px`
             span.style.backgroundColor = item.line.color
             span.className = "checkmark"
             checkbox.type = "checkbox"
             checkbox.id = item.name + poi.lat + poi.lng
             let label = document.createElement('label')
             label.className = "container"
-            label.appendChild(document.createTextNode(item.name))
+            // TODO implement clean access to pheno year number and remove this hack
+            let phenoYearNum = item.name.split(' ').splice(-1)
+            label.appendChild(document.createTextNode(phenoYearNum))
             label.appendChild(checkbox)
             label.appendChild(span)
-            newList.appendChild(label);
-            newDiv.appendChild(newList)
+            phenoSelectWrapper.appendChild(label);
+            phenoLegendLeftWrapper.appendChild(phenoSelectWrapper)
             if (item.visible === true) {checkbox.checked = true}
             checkbox.onclick = function() {
                 // logic to turn on and off traces
                 if (document.getElementById(checkbox.id).checked == true) {
-                    Plotly.restyle(currentDiv, {visible: true}, index)
+                    Plotly.restyle(plotContainer, {visible: true}, index)
                 } else {
-                    Plotly.restyle(currentDiv, {visible: false}, index)
+                    Plotly.restyle(plotContainer, {visible: false}, index)
                 }
                 /* On a legend click event, find out what trace was clicked on and grab all of the r values for that trace.
                 Add trace name and values to traceObject if it doesn't exist. If it does exist, you can assume that
@@ -613,8 +662,10 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
             };
         }
     })
-    currentDiv.appendChild(newDiv)
+    legendContainer.insertBefore(phenoLegendLeftWrapper, svgWrapper.node())
+
 }
+
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
 

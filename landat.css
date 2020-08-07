@@ -236,18 +236,20 @@ path {
 .d3-tip {
   z-index: 100; }
 
-.plotly-legend {
-  margin-top: 30px;
-  height: 335px; }
+.polar-legend-wrapper {
+  display: flex; }
+
+.polar-legend-pheno {
+  height: 335px;
+  margin-top: 20px; }
 
 /* Customize the label (the container) */
 .container {
   display: block;
   position: relative;
   padding-left: 20px;
-  margin-bottom: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 1.3em;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -265,10 +267,9 @@ path {
 .checkmark {
   position: absolute;
   top: 0;
-  left: 0;
-  height: 15px;
-  width: 15px;
-  background-color: #eee; }
+  right: 0;
+  background-color: #eee;
+  border: 1px solid black; }
 
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
