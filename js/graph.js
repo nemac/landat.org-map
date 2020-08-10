@@ -5,6 +5,7 @@ import {GetAjaxObject} from './parser'
 import {getStage} from './base'
 
 var expectedYearLength = 46
+// TODO derive from data (#27)
 var numberOfDataYears = 19
 var legendPixelLength = 335
 const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines']
@@ -540,63 +541,63 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
     let phenoLegendLeftWrapper = document.createElement('div')
     phenoLegendLeftWrapper.id = 'polar-legend-pheno'
     phenoLegendLeftWrapper.className = 'polar-legend-pheno'
+
+    // TODO set in SASS? (#27)
     let calendarAxisTopOffset = 20
 
-    // TODO get the magic numbers OUT OF HERE WTF
+    // I think we need this here because we use it to calculate phenoStartOffset
     let checkboxSideLength = 20
+
+    // TODO remove hardcoded index and get trace another way (#27)
     let phenoStartDay = plotContainer.data[5]['customdata'][0].getDOY()
     let percentThroughYear = phenoStartDay / 365.0
-    print(percentThroughYear)
 
+    // Positions the first checkbox on the calendar line according to start day
     let phenoStartOffset = checkboxSideLength * percentThroughYear
     phenoLegendLeftWrapper.style.paddingTop = `${phenoStartOffset}px`
 
-    let numTicks = 19
     // add one extra "year" of space so the calendar line straddles both sides of the checkbox div
-    let calendarLineContainerHeight = checkboxSideLength * numTicks
+    let calendarLineContainerHeight = checkboxSideLength * numberOfDataYears
     let calendarScale = d3.scaleLinear()
+        // TODO derive from data (#27)
         .domain([2000, 2019])
         .range([0, calendarLineContainerHeight])
 
     let calendarAxis = d3.axisRight(calendarScale)
-        .ticks(20)
+        .ticks(numberOfPhenoYears+1)
         .tickFormat(d3.format('d'))
 
     let svgWrapper = d3.select(legendContainer).append('div')
                        .attr('class', 'calendar-svg-wrapper')
 
     let svg = svgWrapper.append('svg')
+      // TODO magic numbers
       .attr('width', 100)
       .attr('height', calendarLineContainerHeight + 150)
     
     let calendarLineContainer = svg.append("g")
-      .attr('width', 100)
+      .attr('width', 100) // TODO magic numbers
       .attr('height', `${calendarLineContainerHeight + calendarAxisTopOffset}`)
       .attr('transform', `translate(0, ${calendarAxisTopOffset})`)
       .call(calendarAxis)
-
-    let calendarLinePath = calendarLineContainer.select('path').node()
-
-    let lineBBoxHeight
-    checkboxSideLength = '20'
 
     let traceObject = {}
     plotContainer.data.forEach(function(item, index) {
         // TODO put the all-years mean back
         if (item.inLegend && item.name != 'All-years mean') {
             let phenoSelectWrapper = document.createElement('div')
-            phenoSelectWrapper.style.height = '20px' //`${checkboxSideLength}px`
+            phenoSelectWrapper.style.height = `${checkboxSideLength}px`
             let checkbox = document.createElement('input')
             let span = document.createElement('span')
             span.style.width = `${checkboxSideLength}px`
-            span.style.height = '20px'//`${checkboxSideLength}px`
+            span.style.height = `${checkboxSideLength}px`
             span.style.backgroundColor = item.line.color
             span.className = "checkmark"
             checkbox.type = "checkbox"
             checkbox.id = item.name + poi.lat + poi.lng
             let label = document.createElement('label')
             label.className = "container"
-            // TODO implement clean access to pheno year number and remove this hack
+            // TODO clean access to pheno year number to remove this hack
             let phenoYearNum = item.name.split(' ').splice(-1)
             label.appendChild(document.createTextNode(phenoYearNum))
             label.appendChild(checkbox)
@@ -662,6 +663,7 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
             };
         }
     })
+    // parent.insertBefore(newElement, referenceElement)
     legendContainer.insertBefore(phenoLegendLeftWrapper, svgWrapper.node())
 
 }
