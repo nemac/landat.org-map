@@ -6,8 +6,8 @@ import {getStage} from './base'
 
 var expectedYearLength = 46
 // TODO derive from data (#27)
-var numberOfDataYears = 19
-var legendPixelLength = 335
+let numberOfCalendarYears // global variable - will receive value later
+let numberOfPhenoYears // global variable - will receive value later
 const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines']
 
 export function SetupGraphs (config, stage) {
@@ -164,8 +164,8 @@ function buildPhenologicalYearData (rawJsonData, calendarYearData) {
     }
 
     // Build an array of 46 values each using the pheno year begin day index found above
-    let numberOfCalendarYears = (rawJsonData.length / expectedYearLength) // 46 data points per calendar year
-    let numberOfPhenoYears = numberOfCalendarYears - 1 // number of pheno years is always one less than your number of calendar years
+    numberOfCalendarYears = (rawJsonData.length / expectedYearLength) // 46 data points per calendar year
+    numberOfPhenoYears = numberOfCalendarYears - 1 // number of pheno years is always one less than your number of calendar years
     let counter = phenoYearBeginDayIndex
     for (let i = 0; i <= numberOfPhenoYears; i++) {
         phenoYearArray[i] = []
@@ -333,7 +333,7 @@ function drawAllYearsGraph(data, div) {
     let xArrayValues = [...Array(46).keys()] // builds array from [0-45]
 
     // Plot all the data as individual traces marching forward on the x-axis so you can color them differently
-    for (let i = 0; i < numberOfDataYears; i++) {
+    for (let i = 0; i < numberOfCalendarYears; i++) {
         dataPlotly = dataPlotly.concat([{
             type: 'scatter',
             mode: 'lines+markers',
@@ -511,7 +511,7 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
             icon: Plotly.Icons.home,
             click: function(div) {
                 // uncheck all of the pheno year checkboxes
-                for (let i = 1; i < numberOfDataYears; i++) {
+                for (let i = 1; i < numberOfCalendarYears; i++) {
                     document.getElementById('Pheno Year ' + i + poi.lat + poi.lng).checked = false
                 }
                 document.getElementById('All-years mean' + poi.lat + poi.lng).checked = true // check all-years mean checkbox
@@ -557,7 +557,7 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
     phenoLegendLeftWrapper.style.paddingTop = `${phenoStartOffset}px`
 
     // add one extra "year" of space so the calendar line straddles both sides of the checkbox div
-    let calendarLineContainerHeight = checkboxSideLength * numberOfDataYears
+    let calendarLineContainerHeight = checkboxSideLength * numberOfCalendarYears
     let calendarScale = d3.scaleLinear()
         // TODO derive from data (#27)
         .domain([2000, 2019])
