@@ -5,7 +5,6 @@ import {GetAjaxObject} from './parser'
 import {getStage} from './base'
 
 var expectedYearLength = 46
-// TODO derive from data (#27)
 let numberOfCalendarYears // global variable - will receive value later
 let numberOfPhenoYears // global variable - will receive value later
 const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines']
@@ -164,6 +163,7 @@ function buildPhenologicalYearData (rawJsonData, calendarYearData) {
     }
 
     // Build an array of 46 values each using the pheno year begin day index found above
+    // Global variables numberOfCalendarYears and numberOfPhenoYears are being set here
     numberOfCalendarYears = (rawJsonData.length / expectedYearLength) // 46 data points per calendar year
     numberOfPhenoYears = numberOfCalendarYears - 1 // number of pheno years is always one less than your number of calendar years
     let counter = phenoYearBeginDayIndex
@@ -584,7 +584,7 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
     let traceObject = {}
     plotContainer.data.forEach(function(item, index) {
         // TODO put the all-years mean back
-        if (item.inLegend && item.name != 'All-years mean') {
+        if (item.inLegend) {
             let phenoSelectWrapper = document.createElement('div')
             phenoSelectWrapper.style.height = `${checkboxSideLength}px`
             let checkbox = document.createElement('input')
