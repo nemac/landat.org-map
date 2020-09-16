@@ -298,9 +298,10 @@ function drawGraph(data, div, poi) {
     data = splitData(data) // split data and parse all date strings into dates
     let objectData = objectifyData(data)
     var reprocessedData = reprocessData(data)
+    let phenoYearData = buildPhenologicalYearData(data, reprocessedData)
     drawAllYearsGraph(objectData, div)
     drawOverlappingYearsGraph(reprocessedData, div)
-    drawPolarGraph(data, reprocessedData, div, poi)
+    drawPolarGraph(data, reprocessedData, phenoYearData, div, poi)
     div.classList.remove("graph-loading")
 }
 
@@ -421,8 +422,7 @@ function buildScatterTrace(data, traceName, color, visibility = 'legendonly',
     }]
 }
 
-function drawPolarGraph(originalData, reprocessedData, div, poi) {
-    let phenoYearData = buildPhenologicalYearData(originalData, reprocessedData)
+function drawPolarGraph(originalData, reprocessedData, phenoYearData, div, poi) {
     let phenoYearBaselineValues = calculateBaseline(phenoYearData.flat())
     let dataPlotly = [] 
     let phenoDateArray = [] 
