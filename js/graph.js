@@ -584,7 +584,7 @@ function drawPolarGraph(originalData, reprocessedData, div, poi) {
     let traceObject = {}
     plotContainer.data.forEach(function(item, index) {
         // TODO put the all-years mean back
-        if (item.inLegend) {
+        if (item.inLegend && item.name != 'All-years mean') {
             let phenoSelectWrapper = document.createElement('div')
             phenoSelectWrapper.style.height = `${checkboxSideLength}px`
             let checkbox = document.createElement('input')

@@ -260,6 +260,7 @@ path {
 
 .polar-legend-wrapper {
     display: flex;
+    padding-left: 75px;
 }
 
 .polar-legend-pheno {
@@ -272,6 +273,7 @@ path {
     display: block;
     position: relative;
     padding-left: 20px;
+    padding-right: 30px;
     cursor: pointer;
     font-size: 1.3em;
     -webkit-user-select: none;
@@ -322,3 +324,7 @@ path {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
   } 
+
+  .checkbox {
+      padding-right: 20px;
+  }
