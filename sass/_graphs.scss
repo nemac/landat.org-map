@@ -134,6 +134,10 @@ div.tooltip:after {
 
 /* SVG */
 
+path.domain {
+		stroke: transparent;
+}
+
 path {
     stroke: steelblue;
     stroke-width: 1px;
@@ -260,12 +264,42 @@ path {
 
 .polar-legend-wrapper {
     display: flex;
-    padding-left: 75px;
+    padding-left: 40px;
+		padding-top: 20px;
 }
 
-.polar-legend-pheno {
-    height: 335px;
-    margin-top: 20px;
+.polar-legend-header {
+		font-size: 1.2em;
+}
+
+.polar-legend-pheno-wrapper {
+		border-right: 1px solid black;
+		max-width: 90px;
+		min-height: 427px;
+}
+
+
+.polar-legend-calendar-header {
+		max-width: 65px;
+		text-align: left;
+		padding-left: 4px;
+		border-bottom: 1px solid black;
+}
+
+.polar-legend-pheno-header-buffer {
+		/* must be the same as calendarAxisTopOffset in graph.js */
+		height: 8px;
+}
+
+.polar-legend-pheno-boxes-wrapper {
+		float: right;
+		max-width: 65px;
+}
+
+.polar-legend-pheno-header {
+		padding-right: 4px;
+		text-align: right;	
+		border-bottom: 1px solid black;
 }
 
  /* Customize the label (the container) */
@@ -297,7 +331,9 @@ path {
     top: 0;
     right: 0;
     background-color: #eee;
-    border: 1px solid black;
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
   }
   
   /* Create the checkmark/indicator (hidden when not checked) */
@@ -314,12 +350,12 @@ path {
   
   /* Style the checkmark/indicator */
   .container .checkmark:after {
-    left: 5px;
-    top: 2px;
-    width: 5px;
-    height: 10px;
+    left: 6px;
+    top: 1px;
+    width: 8px;
+    height: 13px;
     border: solid white;
-    border-width: 0 3px 3px 0;
+    border-width: 0 4px 4px 0;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);

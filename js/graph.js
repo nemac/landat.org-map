@@ -538,12 +538,31 @@ function drawPolarGraph(originalData, reprocessedData, phenoYearData, div, poi) 
     legendContainer.className = 'polar-legend-wrapper'
     plotContainer.appendChild(legendContainer)
 
-    let phenoLegendLeftWrapper = document.createElement('div')
-    phenoLegendLeftWrapper.id = 'polar-legend-pheno'
-    phenoLegendLeftWrapper.className = 'polar-legend-pheno'
+		let phenoLegendWrapper = document.createElement('div')
+		phenoLegendWrapper.className = 'polar-legend-pheno-wrapper'
 
-    // TODO set in SASS? (#27)
-    let calendarAxisTopOffset = 20
+    let phenoLegendBoxesWrapper = document.createElement('div')
+    phenoLegendBoxesWrapper.className = 'polar-legend-pheno-boxes-wrapper'
+
+		let phenoLegendHeader = document.createElement('div')
+		phenoLegendHeader.classList.add('polar-legend-pheno-header')
+		phenoLegendHeader.classList.add('polar-legend-header')
+		phenoLegendHeader.innerHTML = 'Phenological Year'
+
+		let phenoLegendHeaderBuffer = document.createElement('div')
+		phenoLegendHeaderBuffer.className = 'polar-legend-pheno-header-buffer'
+
+		phenoLegendWrapper.appendChild(phenoLegendHeader)
+		phenoLegendWrapper.appendChild(phenoLegendHeaderBuffer)
+		phenoLegendWrapper.appendChild(phenoLegendBoxesWrapper)
+
+		let calendarYearHeader = document.createElement('div')
+		calendarYearHeader.classList.add('polar-legend-calendar-header')
+		calendarYearHeader.classList.add('polar-legend-header')
+		calendarYearHeader.innerHTML = 'Calendar Year'
+
+    // Must be the same as height of polar-legend-pheno-header-buffer class in graphs.scss
+    let calendarAxisTopOffset = 8
 
     // I think we need this here because we use it to calculate phenoStartOffset
     let checkboxSideLength = 20
@@ -554,7 +573,7 @@ function drawPolarGraph(originalData, reprocessedData, phenoYearData, div, poi) 
 
     // Positions the first checkbox on the calendar line according to start day
     let phenoStartOffset = checkboxSideLength * percentThroughYear
-    phenoLegendLeftWrapper.style.paddingTop = `${phenoStartOffset}px`
+    phenoLegendBoxesWrapper.style.paddingTop = `${phenoStartOffset}px`
 
     // add one extra "year" of space so the calendar line straddles both sides of the checkbox div
     let calendarLineContainerHeight = checkboxSideLength * numberOfCalendarYears
@@ -570,10 +589,12 @@ function drawPolarGraph(originalData, reprocessedData, phenoYearData, div, poi) 
     let svgWrapper = d3.select(legendContainer).append('div')
                        .attr('class', 'calendar-svg-wrapper')
 
+		svgWrapper.node().appendChild(calendarYearHeader)
+
     let svg = svgWrapper.append('svg')
       // TODO magic numbers
       .attr('width', 100)
-      .attr('height', calendarLineContainerHeight + 150)
+      .attr('height', calendarLineContainerHeight)
     
     let calendarLineContainer = svg.append("g")
       .attr('width', 100) // TODO magic numbers
@@ -603,7 +624,7 @@ function drawPolarGraph(originalData, reprocessedData, phenoYearData, div, poi) 
             label.appendChild(checkbox)
             label.appendChild(span)
             phenoSelectWrapper.appendChild(label);
-            phenoLegendLeftWrapper.appendChild(phenoSelectWrapper)
+            phenoLegendBoxesWrapper.appendChild(phenoSelectWrapper)
             if (item.visible === true) {checkbox.checked = true}
             checkbox.onclick = function() {
                 // logic to turn on and off traces
@@ -664,7 +685,7 @@ function drawPolarGraph(originalData, reprocessedData, phenoYearData, div, poi) 
         }
     })
     // parent.insertBefore(newElement, referenceElement)
-    legendContainer.insertBefore(phenoLegendLeftWrapper, svgWrapper.node())
+    legendContainer.insertBefore(phenoLegendWrapper, svgWrapper.node())
 
 }
 
