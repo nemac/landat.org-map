@@ -250,7 +250,7 @@ path {
 .polar-legend-pheno-wrapper {
   border-right: 1px solid black;
   max-width: 90px;
-  min-height: 427px; }
+  max-height: 427px; }
 
 .polar-legend-calendar-header {
   max-width: 65px;
