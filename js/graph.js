@@ -676,14 +676,14 @@ function drawPolarGraph(originalData, reprocessedData, phenoYearData, div, poi) 
                 Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4) // center red line
             };
             if (item.name === 'All-years mean') {
-                // do something else
+                phenoSelectWrapper.className = 'pheno-select-wrapper-all-years'
                 label.appendChild(checkbox)
                 label.appendChild(span)
                 label.appendChild(document.createTextNode(item.name))
                 phenoSelectWrapper.appendChild(label);
                 phenoLegendBoxesWrapper.appendChild(phenoSelectWrapper)
             }
-            else { // This is for all the years in the legend  
+            else { // This is for all the pheno years in the legend  
                 // TODO clean access to pheno year number to remove this hack
                 let phenoYearNum = item.name.split(' ').splice(-1)
                 label.appendChild(document.createTextNode(phenoYearNum))
