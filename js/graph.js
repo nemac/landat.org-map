@@ -605,27 +605,20 @@ function drawPolarGraph(originalData, reprocessedData, phenoYearData, div, poi) 
     let traceObject = {}
     plotContainer.data.forEach(function(item, index) {
         // TODO put the all-years mean back
-        if (item.inLegend && item.name != 'All-years mean') {
+        if (item.inLegend) {
             let phenoSelectWrapper = document.createElement('div')
             phenoSelectWrapper.style.height = `${checkboxSideLength}px`
             let checkbox = document.createElement('input')
             let span = document.createElement('span')
-            span.style.width = `${checkboxSideLength}px`
-            span.style.height = `${checkboxSideLength}px`
-            span.style.backgroundColor = item.line.color
             span.className = "checkmark"
             checkbox.type = "checkbox"
             checkbox.id = item.name + poi.lat + poi.lng
             let label = document.createElement('label')
             label.className = "container"
-            // TODO clean access to pheno year number to remove this hack
-            let phenoYearNum = item.name.split(' ').splice(-1)
-            label.appendChild(document.createTextNode(phenoYearNum))
-            label.appendChild(checkbox)
-            label.appendChild(span)
-            phenoSelectWrapper.appendChild(label);
-            phenoLegendBoxesWrapper.appendChild(phenoSelectWrapper)
             if (item.visible === true) {checkbox.checked = true}
+            span.style.width = `${checkboxSideLength}px`
+            span.style.height = `${checkboxSideLength}px`
+            span.style.backgroundColor = item.line.color
             checkbox.onclick = function() {
                 // logic to turn on and off traces
                 if (document.getElementById(checkbox.id).checked == true) {
@@ -682,6 +675,23 @@ function drawPolarGraph(originalData, reprocessedData, phenoYearData, div, poi) 
                     theta: [[0].concat(repeat([eightyValue], 7))]}, 3) // end of growing season
                 Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4) // center red line
             };
+            if (item.name === 'All-years mean') {
+                // do something else
+                label.appendChild(checkbox)
+                label.appendChild(span)
+                label.appendChild(document.createTextNode(item.name))
+                phenoSelectWrapper.appendChild(label);
+                phenoLegendBoxesWrapper.appendChild(phenoSelectWrapper)
+            }
+            else { // This is for all the years in the legend  
+                // TODO clean access to pheno year number to remove this hack
+                let phenoYearNum = item.name.split(' ').splice(-1)
+                label.appendChild(document.createTextNode(phenoYearNum))
+                label.appendChild(checkbox)
+                label.appendChild(span)
+                phenoSelectWrapper.appendChild(label);
+                phenoLegendBoxesWrapper.appendChild(phenoSelectWrapper)
+            }
         }
     })
     // parent.insertBefore(newElement, referenceElement)
