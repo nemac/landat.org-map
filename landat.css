@@ -263,8 +263,9 @@ path {
   height: 8px; }
 
 .polar-legend-pheno-boxes-wrapper {
+  text-align: right;
   float: right;
-  max-width: 65px; }
+  max-width: 66px; }
 
 .polar-legend-pheno-header {
   padding-right: 4px;
