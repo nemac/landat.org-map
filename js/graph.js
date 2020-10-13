@@ -4,16 +4,15 @@ import {GetMap} from './map'
 import {GetAjaxObject} from './parser'
 import {getStage} from './base'
 
-var tip = {}
 var expectedYearLength = 46
-var numberOfDataYears = 19
+let numberOfCalendarYears // global variable - will receive value later
+let numberOfPhenoYears // global variable - will receive value later
 const modeBarButtonsToRemove = ['hoverClosestCartesian', 'hoverCompareCartesian', 'lasso2d', 'select2d', 'toggleSpikelines']
 
 export function SetupGraphs (config, stage) {
     var dataServiceUrl = config['serviceUrl'][stage];
     d3.selectAll(".graph-type-btn").on("click", handleGraphTypeBtnClick);
     extendDateModule();
-    tip = d3.tip().attr('class', 'd3-tip').html(function (d) { return d; });
 
     // Adding a block here to trigger AWS endpoint so lambda function stays hot
     var url = dataServiceUrl + "?lng=-82.5515&lat=35.5951" // Asheville, NC
@@ -164,8 +163,9 @@ function buildPhenologicalYearData (rawJsonData, calendarYearData) {
     }
 
     // Build an array of 46 values each using the pheno year begin day index found above
-    let numberOfCalendarYears = (rawJsonData.length / expectedYearLength) // 46 data points per calendar year
-    let numberOfPhenoYears = numberOfCalendarYears - 1 // number of pheno years is always one less than your number of calendar years
+    // Global variables numberOfCalendarYears and numberOfPhenoYears are being set here
+    numberOfCalendarYears = (rawJsonData.length / expectedYearLength) // 46 data points per calendar year
+    numberOfPhenoYears = numberOfCalendarYears - 1 // number of pheno years is always one less than your number of calendar years
     let counter = phenoYearBeginDayIndex
     for (let i = 0; i <= numberOfPhenoYears; i++) {
         phenoYearArray[i] = []
@@ -298,9 +298,10 @@ function drawGraph(data, div, poi) {
     data = splitData(data) // split data and parse all date strings into dates
     let objectData = objectifyData(data)
     var reprocessedData = reprocessData(data)
+    let phenoYearData = buildPhenologicalYearData(data, reprocessedData)
     drawAllYearsGraph(objectData, div)
     drawOverlappingYearsGraph(reprocessedData, div)
-    drawPolarGraph(data, reprocessedData, div)
+    drawPolarGraph(data, reprocessedData, phenoYearData, div, poi)
     div.classList.remove("graph-loading")
 }
 
@@ -333,7 +334,7 @@ function drawAllYearsGraph(data, div) {
     let xArrayValues = [...Array(46).keys()] // builds array from [0-45]
 
     // Plot all the data as individual traces marching forward on the x-axis so you can color them differently
-    for (let i = 0; i < numberOfDataYears; i++) {
+    for (let i = 0; i < numberOfCalendarYears; i++) {
         dataPlotly = dataPlotly.concat([{
             type: 'scatter',
             mode: 'lines+markers',
@@ -421,8 +422,7 @@ function buildScatterTrace(data, traceName, color, visibility = 'legendonly',
     }]
 }
 
-function drawPolarGraph(originalData, reprocessedData, div) {
-    let phenoYearData = buildPhenologicalYearData(originalData, reprocessedData)
+function drawPolarGraph(originalData, reprocessedData, phenoYearData, div, poi) {
     let phenoYearBaselineValues = calculateBaseline(phenoYearData.flat())
     let dataPlotly = [] 
     let phenoDateArray = [] 
@@ -510,7 +510,12 @@ function drawPolarGraph(originalData, reprocessedData, div) {
             name: 'Reset axes and traces',
             icon: Plotly.Icons.home,
             click: function(div) {
-                Plotly.restyle(div, {visible: 'legendonly'}, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])
+                // uncheck all of the pheno year checkboxes
+                for (let i = 1; i < numberOfCalendarYears; i++) {
+                    document.getElementById('Pheno Year ' + i + poi.lat + poi.lng).checked = false
+                }
+                document.getElementById('All-years mean' + poi.lat + poi.lng).checked = true // check all-years mean checkbox
+                Plotly.restyle(div, {visible: false}, [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])
                 Plotly.restyle(div, {visible: true}, 23) // turn on all-years mean trace
                 Plotly.restyle(div, {theta: [[0].concat(repeat([baselineThresholds.fifteenEnd], 7))]}, 1) 
                 Plotly.restyle(div, {theta: [[0].concat(repeat([centerDay], 7))]}, 2)
@@ -528,55 +533,172 @@ function drawPolarGraph(originalData, reprocessedData, div) {
     let plotlyLayout = getPlotlyLayout()
     Plotly.newPlot(wrapper.node(), dataPlotly, plotlyLayout, config)
 
-    /* On a legend click event, find out what trace was clicked on and grab all of the r values for that trace.
-       Add trace name and values to traceObject if it doesn't exist. If it does exist, you can assume that
-       the trace is being turned off and needs to be removed from the traceObject. If you have at least one trace on, 
-       calculate the new baseline and reference lines for those traces otherwise fall back to original reference lines.
-       Restyle the reference lines based on this information.
-    */
+    let plotContainer = wrapper.node();
+    let legendContainer = document.createElement('div')
+    legendContainer.className = 'polar-legend-wrapper'
+    plotContainer.appendChild(legendContainer)
+
+		let phenoLegendWrapper = document.createElement('div')
+		phenoLegendWrapper.className = 'polar-legend-pheno-wrapper'
+
+    let phenoLegendBoxesWrapper = document.createElement('div')
+    phenoLegendBoxesWrapper.className = 'polar-legend-pheno-boxes-wrapper'
+
+		let phenoLegendHeader = document.createElement('div')
+		phenoLegendHeader.classList.add('polar-legend-pheno-header')
+		phenoLegendHeader.classList.add('polar-legend-header')
+		phenoLegendHeader.innerHTML = 'Phenological Year'
+
+		let phenoLegendHeaderBuffer = document.createElement('div')
+		phenoLegendHeaderBuffer.className = 'polar-legend-pheno-header-buffer'
+
+		phenoLegendWrapper.appendChild(phenoLegendHeader)
+		phenoLegendWrapper.appendChild(phenoLegendHeaderBuffer)
+		phenoLegendWrapper.appendChild(phenoLegendBoxesWrapper)
+
+		let calendarYearHeader = document.createElement('div')
+		calendarYearHeader.classList.add('polar-legend-calendar-header')
+		calendarYearHeader.classList.add('polar-legend-header')
+		calendarYearHeader.innerHTML = 'Calendar Year'
+
+    // Must be the same as height of polar-legend-pheno-header-buffer class in graphs.scss
+    let calendarAxisTopOffset = 8
+
+    // I think we need this here because we use it to calculate phenoStartOffset
+    let checkboxSideLength = 20
+
+    // TODO remove hardcoded index and get trace another way (#27)
+    let phenoStartDay = plotContainer.data[5]['customdata'][0].getDOY()
+    let percentThroughYear = phenoStartDay / 365.0
+
+    // Positions the first checkbox on the calendar line according to start day
+    let phenoStartOffset = checkboxSideLength * percentThroughYear
+    phenoLegendBoxesWrapper.style.paddingTop = `${phenoStartOffset}px`
+
+    // add one extra "year" of space so the calendar line straddles both sides of the checkbox div
+    let calendarLineContainerHeight = checkboxSideLength * numberOfCalendarYears
+    let calendarScale = d3.scaleLinear()
+        // TODO derive from data (#27)
+        .domain([2000, 2019])
+        .range([0, calendarLineContainerHeight])
+
+    let calendarAxis = d3.axisRight(calendarScale)
+        .ticks(numberOfPhenoYears+1)
+        .tickFormat(d3.format('d'))
+
+    let svgWrapper = d3.select(legendContainer).append('div')
+                       .attr('class', 'calendar-svg-wrapper')
+
+		svgWrapper.node().appendChild(calendarYearHeader)
+
+    let svg = svgWrapper.append('svg')
+      // TODO magic numbers
+      .attr('width', 100)
+      .attr('height', calendarLineContainerHeight)
+    
+    let calendarLineContainer = svg.append("g")
+      .attr('width', 100) // TODO magic numbers
+      .attr('height', `${calendarLineContainerHeight + calendarAxisTopOffset}`)
+      .attr('transform', `translate(0, ${calendarAxisTopOffset})`)
+      .call(calendarAxis)
+
     let traceObject = {}
-    wrapper.node().on('plotly_legendclick', function(x){
-        let traceData = x.node.__data__[0].trace.r
-        let traceTheta = x.node.__data__[0].trace.theta
-        let traceName = x.node.__data__[0].trace.name
-        let middleLineValue, fifteenValue, eightyValue, centerLineArray
-        if (traceName === 'All-years mean') {
-            return // do nothing
-        }
-        if (traceObject[traceName]) {
-            delete traceObject[traceName] // delete since we assume it's already in the array
-        } else {
-            traceObject[traceName] = traceData
-        }
-        if (Object.keys(traceObject).length >= 1) { // calculate dynamic reference lines
-            let traceArray = Object.values(traceObject).flat()
-            let dynamicBaseline = calculateDynamicBaseline(traceArray)
-            let dynamicThresholds = findPolarThresholds(dynamicBaseline, phenoDateArray, startDayOfPhenoYear)
-            fifteenValue = dynamicThresholds.fifteenEnd
-            eightyValue = dynamicThresholds.eightyEnd
+    plotContainer.data.forEach(function(item, index) {
+        // TODO put the all-years mean back
+        if (item.inLegend) {
+            let phenoSelectWrapper = document.createElement('div')
+            phenoSelectWrapper.style.height = `${checkboxSideLength}px`
+            let checkbox = document.createElement('input')
+            let span = document.createElement('span')
+            span.className = "checkmark"
+            checkbox.type = "checkbox"
+            checkbox.id = item.name + poi.lat + poi.lng
+            let label = document.createElement('label')
+            label.className = "container"
+            if (item.visible === true) {checkbox.checked = true}
+            span.style.width = `${checkboxSideLength}px`
+            span.style.height = `${checkboxSideLength}px`
+            span.style.backgroundColor = item.line.color
+            checkbox.onclick = function() {
+                // logic to turn on and off traces
+                if (document.getElementById(checkbox.id).checked == true) {
+                    Plotly.restyle(plotContainer, {visible: true}, index)
+                } else {
+                    Plotly.restyle(plotContainer, {visible: false}, index)
+                }
+                /* On a legend click event, find out what trace was clicked on and grab all of the r values for that trace.
+                Add trace name and values to traceObject if it doesn't exist. If it does exist, you can assume that
+                the trace is being turned off and needs to be removed from the traceObject. If you have at least one trace on, 
+                calculate the new baseline and reference lines for those traces otherwise fall back to original reference lines.
+                Restyle the reference lines based on this information.
+                */
+                //let traceData = x.node.__data__[0].trace.r
+                //let traceTheta = x.node.__data__[0].trace.theta
+                //let traceName = x.node.__data__[0].trace.name
+                let traceData = item.r
+                let traceTheta = item.theta
+                let traceName = item.name
+                let middleLineValue, fifteenValue, eightyValue, centerLineArray
+                if (traceName === 'All-years mean') {
+                    return // do nothing
+                }
+                if (traceObject[traceName]) {
+                    delete traceObject[traceName] // delete since we assume it's already in the array
+                } else {
+                    traceObject[traceName] = traceData
+                }
+                if (Object.keys(traceObject).length >= 1) { // calculate dynamic reference lines
+                    let traceArray = Object.values(traceObject).flat()
+                    let dynamicBaseline = calculateDynamicBaseline(traceArray)
+                    let dynamicThresholds = findPolarThresholds(dynamicBaseline, phenoDateArray, startDayOfPhenoYear)
+                    fifteenValue = dynamicThresholds.fifteenEnd
+                    eightyValue = dynamicThresholds.eightyEnd
 
-            let startIndex = dynamicThresholds.fifteenIndex 
-            let endIndex = dynamicThresholds.eightyIndex
+                    let startIndex = dynamicThresholds.fifteenIndex 
+                    let endIndex = dynamicThresholds.eightyIndex
 
-            let dynamicCenter = findPolarCenter(dynamicBaseline.slice(startIndex, endIndex), traceTheta.slice(startIndex, endIndex))
-            middleLineValue = (dynamicCenter[1])
-            centerLineArray = [[parseFloat(dynamicCenter[0]).toFixed(2), 0], [middleLineValue, 0]]
-        } else { // use the all-means reference lines calculated above
-            fifteenValue = baselineThresholds.fifteenEnd
-            eightyValue = baselineThresholds.eightyEnd
-            middleLineValue = centerDay
-            centerLineArray = [[parseFloat(centerPoint).toFixed(2), 0], [centerDay, 0]]
+                    let dynamicCenter = findPolarCenter(dynamicBaseline.slice(startIndex, endIndex), traceTheta.slice(startIndex, endIndex))
+                    middleLineValue = (dynamicCenter[1])
+                    centerLineArray = [[parseFloat(dynamicCenter[0]).toFixed(2), 0], [middleLineValue, 0]]
+                } else { // use the all-means reference lines calculated above
+                    fifteenValue = baselineThresholds.fifteenEnd
+                    eightyValue = baselineThresholds.eightyEnd
+                    middleLineValue = centerDay
+                    centerLineArray = [[parseFloat(centerPoint).toFixed(2), 0], [centerDay, 0]]
+                }
+                // TODO: Update buildReferenceLine to use hovertemplate and not hovertext
+                Plotly.restyle(wrapper.node(), {hovertext: "Start of Growing Season: Julian day " + convertDegreesToDayOfYear(fifteenValue), 
+                    theta: [[0].concat(repeat([fifteenValue], 7))]}, 1) // beginning of growing season
+                Plotly.restyle(wrapper.node(), {hovertext: "Middle of Growing Season: Julian day " + convertDegreesToDayOfYear(middleLineValue), 
+                    theta: [[0].concat(repeat([middleLineValue], 7))]}, 2) // middle of growing season
+                Plotly.restyle(wrapper.node(), {hovertext: "End of Growing Season: Julian day " + convertDegreesToDayOfYear(eightyValue), 
+                    theta: [[0].concat(repeat([eightyValue], 7))]}, 3) // end of growing season
+                Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4) // center red line
+            };
+            if (item.name === 'All-years mean') {
+                phenoSelectWrapper.className = 'pheno-select-wrapper-all-years'
+                label.appendChild(checkbox)
+                label.appendChild(span)
+                label.appendChild(document.createTextNode(item.name))
+                phenoSelectWrapper.appendChild(label);
+                phenoLegendBoxesWrapper.appendChild(phenoSelectWrapper)
+            }
+            else { // This is for all the pheno years in the legend  
+                // TODO clean access to pheno year number to remove this hack
+                let phenoYearNum = item.name.split(' ').splice(-1)
+                label.appendChild(document.createTextNode(phenoYearNum))
+                label.appendChild(checkbox)
+                label.appendChild(span)
+                phenoSelectWrapper.appendChild(label);
+                phenoLegendBoxesWrapper.appendChild(phenoSelectWrapper)
+            }
         }
-        // TODO: Update buildReferenceLine to use hovertemplate and not hovertext
-        Plotly.restyle(wrapper.node(), {hovertext: "Start of Growing Season: Julian day " + convertDegreesToDayOfYear(fifteenValue), 
-            theta: [[0].concat(repeat([fifteenValue], 7))]}, 1) // beginning of growing season
-        Plotly.restyle(wrapper.node(), {hovertext: "Middle of Growing Season: Julian day " + convertDegreesToDayOfYear(middleLineValue), 
-            theta: [[0].concat(repeat([middleLineValue], 7))]}, 2) // middle of growing season
-        Plotly.restyle(wrapper.node(), {hovertext: "End of Growing Season: Julian day " + convertDegreesToDayOfYear(eightyValue), 
-            theta: [[0].concat(repeat([eightyValue], 7))]}, 3) // end of growing season
-        Plotly.restyle(wrapper.node(), {r: [centerLineArray[0]], theta: [centerLineArray[1]]}, 4) // center red line
     })
+    // parent.insertBefore(newElement, referenceElement)
+    legendContainer.insertBefore(phenoLegendWrapper, svgWrapper.node())
+
 }
+
 
 /* PLOTLY FUNCTIONS AND CONSTANTS */
 
@@ -605,6 +727,7 @@ function buildTrace(data, traceName, color, visibility = 'legendonly',
         traceObject.dateArray.push(item[0])
     })
     return [{
+        inLegend: true,
         type: 'scatterpolar',
         visible: visibility,
         mode: "lines+markers",
@@ -663,6 +786,7 @@ function buildCenterLine(centerlineData, visibility = true) {
 
 function getPlotlyLayout(upperRange = 100, tickVals = [0, 20, 40, 60, 80]) {
     return {
+        showlegend: false,
         dragmode: false, // disables zoom on polar graph
         modebar: {
             orientation: 'h',
@@ -674,14 +798,8 @@ function getPlotlyLayout(upperRange = 100, tickVals = [0, 20, 40, 60, 80]) {
             t: 20,
             b: 20
         },
-        height: 570,
-        legend: {
-            title: {
-                text: "Click to turn on/off"
-            },
-            x: 1.07,
-            itemdoubleclick: false,
-        },
+        height: 475,
+        width: 475,
         polar: {
             domain: {
                 x: [0, 100],
@@ -849,3 +967,5 @@ var colorRamp = ["#23758e","#2c798d","#357e8c","#3e838b","#47878a","#518c89","#5
                  "#c8c87c","#d1cc7b","#dad17a","#e3d679","#ecda78","#f5df77","#ffe476"]
 
 var firstOfMonthJulianDays = [ 1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335]
+
+let jsMonthArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]

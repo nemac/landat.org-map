@@ -16,6 +16,9 @@ import BindDesktopMenuEvents from './panelToggle';
 
 var css = require('../sass/landat.scss')
 
+// screw it
+window.print = str => console && console.log(str)
+
 // Does not rely on map object or config file
 var Base = function (config) {
 	ParseConfig(config, callback);
