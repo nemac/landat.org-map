@@ -466,7 +466,7 @@ function drawPolarGraph(originalData, reprocessedData, phenoYearData, div, poi) 
     let middleGrowingData = {"r": [0, 10, 20, 40, 60, 80, 100, 250], "theta": [0].concat(repeat([centerDay], 7)) }
     let eightyData = {"r": [0, 10, 20, 40, 60, 80, 100, 250], "theta": [0].concat(repeat([baselineThresholds.eightyEnd], 7)) }
     
-    dataPlotly = dataPlotly.concat(buildReferenceLine(startPhenoData, "lines", "start pheno", "Beginning of Phenological Year", "#429bb8"))
+    dataPlotly = dataPlotly.concat(buildReferenceLine(startPhenoData, "lines", "start pheno", "Start of Phenological Year", "#429bb8"))
     dataPlotly = dataPlotly.concat(buildReferenceLine(fifteenData, "lines", "15% threshold", "Start of Growing Season", "#90ee90"))
     dataPlotly = dataPlotly.concat(buildReferenceLine(middleGrowingData, "lines", "middle growing", "Middle of Growing Season", "#056608"))
     dataPlotly = dataPlotly.concat(buildReferenceLine(eightyData, "lines", "80% threshold", "End of Growing Season", "#ffa500"))
