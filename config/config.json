@@ -540,6 +540,13 @@
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/500_phenoclasses_2016.zip"
+            },
+            {
+                "id": "Phenoclass500_2018",
+                "name": "500 Phenoclasses, 2017",
+                "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "legend": "legends/phenoclass_legend.png",
+                "download": "https://fixthisjeff.zip"
             }
 
         ],
