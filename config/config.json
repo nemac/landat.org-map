@@ -258,16 +258,16 @@
             {
                 "id": "Factor3Seasonality",
                 "name": "Factor 3 - Seasonality",
-                "info": "Factor 3 is very closely related to variables representing seasonality and growing season length (which are themselves closely related). Lower factor 4 values correspond to stronger seasonality or deciduousness, and shorter growing seasons.",
+                "info": "Factor 3 is very closely related to variables representing seasonality and growing season length (which are themselves closely related). Lower factor 3 values correspond to stronger seasonality or deciduousness, and shorter growing seasons.",
                 "legend": "legends/gmag_fscore4.png",
-                "download": "https://efetac-landat.s3.amazonaws.com/2020/fscore4_y1-18mean_int.tif.zip"
+                "download": "https://efetac-landat.s3.amazonaws.com/2020/fscore3_y1-18mean_int.tif.zip"
             },
             {
                 "id": "Factor4Productivity",
                 "name": "Factor 4 - Productivity",
                 "info": "Factor 4 is very closely associated with NDVI greenness, and therefore also corresponds to the amount and productivity of vegetation.",
                 "legend": "legends/green_fscore3.png",
-                "download": "https://efetac-landat.s3.amazonaws.com/2020/fscore3_y1-18mean_int.tif.zip"
+                "download": "https://efetac-landat.s3.amazonaws.com/2020/fscore4_y1-18mean_int.tif.zip"
             }
         ],
         "it-metrics": [
