@@ -73,7 +73,7 @@
             {
                 "id": "phenology-variables",
                 "name": "Annual Phenology Variables",
-                "info": "Phenology variables describing changes in vegetation across the annual cycle, where the cycle begins at the start of the phenological year. The phenological year and all variables are derived from polar graphs of the vegetation index data. Mean values for 2000 - 2017 are shown; values for individual years are available.",
+                "info": "Phenology variables describing changes in vegetation across the annual cycle, where the cycle begins at the start of the phenological year. The phenological year and all variables are derived from polar graphs of the vegetation index data (see Vegetation Index Graphs). Mean values for 2000 - 2018 are shown; values for individual years are available.",
                 "active": false
             },
             {
@@ -91,19 +91,19 @@
             {
                 "id": "phenoclass-derived",
                 "name": "Phenological Change Metrics",
-                "info": "Estimates of change within and across the 2000 - 2017 period. Year-to-year change in annual phenology can result from vegetation disturbance and recovery, responses to climate variability, land use change, and other factors. Metrics are calculated from the amount of year-to-year difference in each of the four phenology factors.",
+                "info": "Estimates of change within and across the 2000 - 2018 period. Year-to-year change in annual phenology can result from vegetation disturbance and recovery, responses to climate variability, land use change, and other factors. Metrics are calculated from the amount of year-to-year difference in each of the four phenology factors.",
                 "active": false
             },
             {
-                "id": "it-metrics",
-                "name": "Landscape Information-Theoretic Metrics",
-                "info": "Metrics for assessing the complexity, organization, and development of landscape dynamics over time. Derived from information theory, as applied in ecosystem ecology. Dynamics are measured as year-to-year changes in phenoclass for individual pixels, compiled across 25-pixel landscapes from 2000 to 2017. Each pixel has the metric value for the landscape that surrounds it.",
+                "id": "complexityOrganizationLandscapeChange",
+                "name": "Complexity and Organization of Landscape Change",
+                "info": "Metrics for assessing the complexity, organization, and development of landscape dynamics over time. Dynamics are measured as year-to-year changes in phenoclass for individual pixels, compiled across 25-pixel landscapes from 2000 to 2018. Each pixel has the metric value for the landscape that surrounds it. Based on information theory (see LanDAT Overview).",
                 "active": false
             },
             {
                 "id": "longtermlandshift",
                 "name": "Long-term Landscape Shift",
-                "info": "Measures of long-term landscape stability (or instability) implied by the observed phenoclass dynamics. Dynamics are measured as year-to-year changes in phenoclass for individual pixels, compiled across 25-pixel landscapes from 2000 to 2017. These changes cumulatively result in landscape trajectories, for both the phenology variables and the information-theoretic metrics.",
+                "info": "Measures of long-term landscape stability (or instability) implied by the observed phenoclass dynamics. Dynamics are measured as year-to-year changes in phenoclass for individual pixels, compiled across 25-pixel landscapes from 2000 to 2018. These changes cumulatively result in landscape trajectories, for both the phenology variables and the information-theoretic metrics.",
                 "active": false
             },
             {
@@ -204,13 +204,13 @@
             {
                 "id": "EvergreenDecline",
                 "name": "Decline in Evergreen Vegetation, 2000-2011",
-                "info": "Rate of decline in the evergreen (non-deciduous) component of vegetation greenness (NDVI) from 2000 to 2011. Higher values indicate stronger decline.",
+                "info": "Rate of decline in the evergreen (non-deciduous) component of vegetation greenness (NDVI) from 2000 to 2011. Higher values indicate stronger decline. US Forest Service Eastern Threat Center.",
                 "legend": "legends/abr.png"
             },
             {
                 "id": "HousingDensity",
                 "name": "Housing Density, 2010",
-                "info": "Housing units per squ. km, by partial census block group. US Census Bureau and SILVIS Lab.",
+                "info": "Housing units per squ. km, by partial census block group. US Census Bureau and SILVIS Lab, University of Wisconsin-Madison.",
                 "legend": "legends/abo.png"
             },
             {
@@ -228,14 +228,14 @@
             {
                 "id": "mtbs-raster-00-18",
                 "name": "Historical Fires from 2000 to 2018",
-                "info": "Shows locations and intensities of fires that occured from 2000 to 2016",
+                "info": "Locations of wildfires that occured from 2000 to 2018. Monitoring Trends in Burn Severity program, US Geological Survey and US Forest Service.",
                 "url": "https://fswms.nemac.org/rlayers",
                 "legend": "legends/abe.png"
             },
             {
                 "id": "mtbs-raster-84-99",
                 "name": "Historical Fires from 1984 to 1999",
-                "info": "Shows locations and intensities of fires that occured from 1984 to 1999",
+                "info": "Locations of wildfires that occured from 1984 to 1999. Monitoring Trends in Burn Severity program, US Geological Survey and US Forest Service.",
                 "url": "https://fswms.nemac.org/rlayers",
                 "legend": "legends/abf.png"
             }
@@ -258,19 +258,19 @@
             {
                 "id": "Factor3Seasonality",
                 "name": "Factor 3 - Seasonality",
-                "info": "Factor 3 is very closely related to variables representing seasonality and growing season length (which are themselves closely related). Lower factor 3 values correspond to stronger seasonality or deciduousness, and shorter growing seasons.",
+                "info": "Factor 3 is very closely related to seasonality and growing season length (which are themselves closely related). Lower factor 3 values reflect stronger seasonality or deciduousness, and shorter growing seasons.",
                 "legend": "legends/gmag_fscore4.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/fscore3_y1-18mean_int.tif.zip"
             },
             {
                 "id": "Factor4Productivity",
                 "name": "Factor 4 - Productivity",
-                "info": "Factor 4 is very closely associated with NDVI greenness, and therefore also corresponds to the amount and productivity of vegetation.",
+                "info": "Factor 4 is very closely associated with NDVI greenness, and reflects the amount and productivity of vegetation during the growing season.",
                 "legend": "legends/green_fscore3.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/fscore4_y1-18mean_int.tif.zip"
             }
         ],
-        "it-metrics": [
+        "complexityOrganizationLandscapeChange": [
             {
                 "id": "DynamicActivity",
                 "name": "Rate of Inter-annual Change",
@@ -302,7 +302,7 @@
             {
                 "id": "Development",
                 "name": "Development",
-                "info": "Mutual Information standardized by Shannon Diversity: the proportion of the overall complexity which is organized and predictable. In other words, the degree of organization, given the amount of complexity present.",
+                "info": "Measures the proportion of the overall complexity which is organized and predictable. In other words, the degree of organization, given the amount of complexity present (Mutual Information standardized by Shannon Entropy).",
                 "legend": "legends/it1_d.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/develop_5win.tif.zip"
             },
@@ -346,7 +346,7 @@
             {
                 "id": "Seasonality",
                 "name": "Degree of Seasonality, or Deciduousness",
-                "info": "Dominance of NDVI greenness in one portion of the year, visible in polar graphs as 'off-centered' annual cycles. Measured by the length of the mean NDVI vector in polar graphs. More evergreen vegetation shows lower seasonality.",
+                "info": "Dominance of NDVI greenness in one portion of the year, visible in polar graphs as 'off-centered' annual cycles. Measured by the length of the mean vector in polar graphs, divided by the mean NDVI. More evergreen vegetation shows lower seasonality.",
                 "legend": "legends/gmag_legend_flip_smag_stand.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/s_mag_standardized_y1-18mean.tif.zip"
             },
@@ -388,7 +388,7 @@
             {
                 "id": "Midpoint",
                 "name": "Middle of Growing Season",
-                "info": "Julian day of year marking the middle of the growing season. Measured by the direction of the mean NDVI vector in polar graphs.",
+                "info": "Julian day of year marking the middle of the growing season. Measured by the direction of the mean growing season NDVI vector in polar graphs.",
                 "legend": "legends/dayofyear_101619.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/ms_doy_y1-18mean_int.tif.zip"
             },
@@ -612,7 +612,7 @@
             {
                 "id": "CompositionalShift",
                 "name": "Landscape Compositional Shift",
-                "info": "Gross measure of the degree of stability or instability of landscape dynamics. While short-term phenoclass dynamics may be strong (see Rate of Inter-annual Change, above), those changes may or may not result in long-term changes in overall phenoclass composition and phenological characteristics. Higher values indicate 'instability', that is, a strong trajectory of long-term change.",
+                "info": "Gross measure of the instability of landscape dynamics. While short-term phenoclass dynamics may be strong (Rate of Inter-annual Change above), those changes may or may not result in long-term change in overall phenoclass composition and phenological characteristics. Higher values indicate a stronger trajectory of long-term change.",
                 "legend": "legends/kl_dist.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/kl.dist_5win.tif.zip"
             },
@@ -661,14 +661,14 @@
             {
                 "id": "ChangeFactor3",
                 "name": "Factor 3 Trajectory",
-                "info": "Trajectory of change in Phenology Factor 3 (productivity) at the landscape scale, implied by the observed phenoclass dynamics.",
+                "info": "Trajectory of change in Phenology Factor 3 (seasonality) at the landscape scale, implied by the observed phenoclass dynamics.",
                 "legend": "legends/shift1_f3.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f3.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeFactor4",
                 "name": "Factor 4 Trajectory",
-                "info": "Trajectory of change in Phenology Factor 4 (seasonality) at the landscape scale, implied by the observed phenoclass dynamics.",
+                "info": "Trajectory of change in Phenology Factor 4 (productivity) at the landscape scale, implied by the observed phenoclass dynamics.",
                 "legend": "legends/shift1_f4.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f4.eqdif_5win.tif.zip"
             },
