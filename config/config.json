@@ -226,9 +226,9 @@
                 "legend": "legends/abd.png"
             },
             {
-                "id": "mtbs-raster-00-18",
-                "name": "Historical Fires from 2000 to 2018",
-                "info": "Locations of wildfires that occured from 2000 to 2018. Monitoring Trends in Burn Severity program, US Geological Survey and US Forest Service.",
+                "id": "mtbs-raster-00-14",
+                "name": "Historical Fires from 2000 to 2014",
+                "info": "Locations of wildfires that occured from 2000 to 2014. Monitoring Trends in Burn Severity program, US Geological Survey and US Forest Service.",
                 "url": "https://fswms.nemac.org/rlayers",
                 "legend": "legends/abe.png"
             },
