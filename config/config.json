@@ -245,28 +245,28 @@
                 "id": "Factor1Timing",
                 "name": "Factor 1 - Timing",
                 "info": "Factors 1 and 2 are very closely associated with the day-of-year variables, and therefore represent aspects of timing across the annual cycle. Two factors are required to fully represent timing around the annual cycle in the two-dimensional polar graphs (each timing variable must be represented by its sine and cosine).",
-                "legend": "legends/fscore1.png",
+                "legend": "legends/2020_changed_legends/fscore1.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/fscore1_y1-18mean_int.tif.zip"
             },
             {
                 "id": "Factor2Timing",
                 "name": "Factor 2 - Timing",
                 "info": "Factors 1 and 2 are very closely associated with the day-of-year variables, and therefore represent aspects of timing across the annual cycle. Two factors are required to fully represent timing around the annual cycle in the two-dimensional polar graphs (each timing variable must be represented by its sine and cosine).",
-                "legend": "legends/fscore2.png",
+                "legend": "legends/2020_changed_legends/fscore2.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/fscore2_y1-18mean_int.tif.zip"
             },
             {
                 "id": "Factor3Seasonality",
                 "name": "Factor 3 - Seasonality",
                 "info": "Factor 3 is very closely related to seasonality and growing season length (which are themselves closely related). Lower factor 3 values reflect stronger seasonality or deciduousness, and shorter growing seasons.",
-                "legend": "legends/gmag_fscore4.png",
+                "legend": "legends/2020_changed_legends/gmag_fscore3.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/fscore3_y1-18mean_int.tif.zip"
             },
             {
                 "id": "Factor4Productivity",
                 "name": "Factor 4 - Productivity",
                 "info": "Factor 4 is very closely associated with NDVI greenness, and reflects the amount and productivity of vegetation during the growing season.",
-                "legend": "legends/green_fscore3.png",
+                "legend": "legends/2020_changed_legends/green_fscore4.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/fscore4_y1-18mean_int.tif.zip"
             }
         ],
@@ -282,21 +282,21 @@
                 "id": "MeanShannon",
                 "name": "Shannon Entropy",
                 "info": "Measures the total complexity, or diversity, of observed landscape dynamics. Higher values indicate a greater variety of transitions among different phenoclasses.",
-                "legend": "legends/it1_a.png",
+                "legend": "legends/2020_changed_legends/it1_a.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/hx_5win.tif.zip"
             },
             {
                 "id": "MutualInformation",
                 "name": "Mutual Information",
                 "info": "Measures the component of overall complexity (Shannon Entropy) which is predictable or organized. Higher values indicate that given the phenoclass states in one year, it is easy to predict the states in the next year.",
-                "legend": "legends/it1_b.png",
+                "legend": "legends/2020_changed_legends/it1_b.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/mi_5win.tif.zip"
             },
             {
                 "id": "ConditionalEntropy",
                 "name": "Conditional Entropy",
                 "info": "Measures the component of overall complexity (Shannon Entropy) which is unpredictable, disorganized, or redundant. The complement of Mutual Information.",
-                "legend": "legends/it1_c.png",
+                "legend": "legends/2020_changed_legends/it1_c.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/condent_5win.tif.zip"
             },
             {
@@ -310,21 +310,21 @@
                 "id": "Capacity",
                 "name": "Capacity",
                 "info": "Shannon Entropy scaled to productivity, by multiplying by mean NDVI. Measures the complexity of landscape dynamics, and overall productivity.",
-                "legend": "legends/it2_a.png",
+                "legend": "legends/2020_changed_legends/it2_a.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/capacity_5win.tif.zip"
             },
             {
                 "id": "Ascendency",
                 "name": "Ascendency",
                 "info": "Mutual Information scaled to productivity, by multiplying by mean NDVI. Measures the predictability or organization of landscape dynamics, and overall productivity.",
-                "legend": "legends/it2_b.png",
+                "legend": "legends/2020_changed_legends/it2_b.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/ascend_5win.tif.zip"
             },
             {
                 "id": "Overhead",
                 "name": "Overhead",
                 "info": "Conditional Entropy scaled to productivity, by multiplying by mean NDVI. Measures the unpredictability or disorganization of landscape dynamics, and overall productivity.",
-                "legend": "legends/it3_a.png",
+                "legend": "legends/2020_changed_legends/it3_a.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/ovhead_5win.tif.zip"
             }
         ],
@@ -347,21 +347,21 @@
                 "id": "Seasonality",
                 "name": "Degree of Seasonality, or Deciduousness",
                 "info": "Dominance of NDVI greenness in one portion of the year, visible in polar graphs as 'off-centered' annual cycles. Measured by the length of the mean vector in polar graphs, divided by the mean NDVI. More evergreen vegetation shows lower seasonality.",
-                "legend": "legends/gmag_legend_flip_smag_stand.png",
+                "legend": "legends/2020_changed_legends/gmag_legend_flip_smag_stand.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/s_mag_standardized_y1-18mean.tif.zip"
             },
             {
                 "id": "NDVIStdDv",
                 "name": "Growing Season Greenness Variability",
                 "info": "Standard deviation of NDVI; a measure of variability in greenness among 8-day periods within the growing season.",
-                "legend": "legends/gmag_legend_flip_s_sd.png",
+                "legend": "legends/2020_changed_legends/gmag_legend_flip_s_sd.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/s_sd_y1-18mean_int.tif.zip"
             },
             {
                 "id": "SeasonLength",
                 "name": "Growing Season Length",
                 "info": "Number of days between the beginning and end of growing season dates.",
-                "legend": "legends/gmag_s_intv.png",
+                "legend": "legends/2020_changed_legends/gmag_s_intv.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/s_intv_y1-18mean_int.tif.zip"
             },
             {
@@ -555,56 +555,56 @@
                 "id": "TotalPath",
                 "name": "Total Year-to-Year Path Length",
                 "info": "Total summed amount or 'length' of all annual changes. Estimates the cumulative variability, which may be large even if the final state is similar to the initial state.",
-                "legend": "legends/change_totpath.png",
+                "legend": "legends/2020_changed_legends/change_totpath.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/phenodistance_totpath_y1-18.tif.zip"
             },
             {
                 "id": "FinalDistance",
                 "name": "Final Between-years Distance",
                 "info": "Amount of difference between the first and last years. Analogous to a straight-line distance rather than the path length.",
-                "legend": "legends/change_findist.png",
+                "legend": "legends/2020_changed_legends/change_findist.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/phenodistance_findist_y1-18.tif.zip"
             },
             {
                 "id": "MaximumStep",
                 "name": "Maximum Year-to-Year Step",
                 "info": "The single largest change observed between any two consecutive years.",
-                "legend": "legends/change_maxstep.png",
+                "legend": "legends/2020_changed_legends/change_maxstep.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/phenodistance_maxstep_y1-18.tif.zip"
             },
             {
                 "id": "MeanStep",
                 "name": "Mean Year-to-Year Step",
                 "info": "The mean change observed between consecutive years.",
-                "legend": "legends/change_meanstep.png",
+                "legend": "legends/2020_changed_legends/change_meanstep.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/phenodistance_meanstep_y1-18.tif.zip"
             },
             {
                 "id": "MinimumStep",
                 "name": "Minimum Year-to-Year Step",
                 "info": "The smallest change observed between any two consecutive years.",
-                "legend": "legends/change_minstep.png",
+                "legend": "legends/2020_changed_legends/change_minstep.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/phenodistance_minstep_y1-18.tif.zip"
             },
             {
                 "id": "MaximumDistance",
                 "name": "Maximum Between-years Distance",
                 "info": "The difference between the two most different years (the two years need not be consecutive).",
-                "legend": "legends/change_maxdist.png",
+                "legend": "legends/2020_changed_legends/change_maxdist.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/phenodistance_maxdist_y1-18.tif.zip"
             },
             {
                 "id": "MeanDistance",
                 "name": "Mean Between-years Distance",
                 "info": "The mean difference between any two years, considering all possible year combinations.",
-                "legend": "legends/change_meandist.png",
+                "legend": "legends/2020_changed_legends/change_meandist.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/phenodistance_meandist_y1-18.tif.zip"
             },
             {
                 "id": "MinimumDistance",
                 "name": "Minimum Between-years Distance",
                 "info": "The difference between the two most similar years (the two years need not be consecutive).",
-                "legend": "legends/change_mindist.png",
+                "legend": "legends/2020_changed_legends/change_mindist.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/phenodistance_mindist_y1-18.tif.zip"
             }
         ],
@@ -613,112 +613,112 @@
                 "id": "CompositionalShift",
                 "name": "Landscape Compositional Shift",
                 "info": "Gross measure of the instability of landscape dynamics. While short-term phenoclass dynamics may be strong (Rate of Inter-annual Change above), those changes may or may not result in long-term change in overall phenoclass composition and phenological characteristics. Higher values indicate a stronger trajectory of long-term change.",
-                "legend": "legends/kl_dist.png",
+                "legend": "legends/2020_changed_legends/kl_dist.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/kl.dist_5win.tif.zip"
             },
             {
                 "id": "ChangeGrowingSeasonGreenness",
                 "name": "Growing Season Greenness Trajectory",
                 "info": "Trajectory of change in Mean Growing Season Greenness at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1_s_avg.png",
+                "legend": "legends/2020_changed_legends/shift1_s_avg.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/s_avg.eqdif_5win.tif.zip"
             },
             {
                 "id": "SeasonalityTrajectory",
                 "name": "Seasonality Trajectory",
                 "info": "Trajectory of change in Seasonality at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1_s_mag.png",
+                "legend": "legends/2020_changed_legends/shift1_s_mag.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/s_mag.eqdif_5win.tif.zip"
             },
             {
                 "id": "GrowingSeasonLengthTrajectory",
                 "name": "Growing Season Length Trajectory",
                 "info": "Trajectory of change in Growing Season Length at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1_s_intv.png",
+                "legend": "legends/2020_changed_legends/shift1_s_intv.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/s_intv.eqdif_5win.tif.zip"
             },
             {
                 "id": "MidGrowingSeasonTrajectory",
                 "name": "Middle of Growing Season Trajectory",
                 "info": "Trajectory of change in the Middle of Growing Season date at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1_ms.png",
+                "legend": "legends/2020_changed_legends/shift1_ms.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/ms_doy.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeFactor1",
                 "name": "Factor 1 Trajectory",
                 "info": "Trajectory of change in Phenology Factor 1 (timing) at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1_f1.png",
+                "legend": "legends/2020_changed_legends/shift1_f1.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeFactor2",
                 "name": "Factor 2 Trajectory",
                 "info": "Trajectory of change in Phenology Factor 2 (timing) at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1_f2.png",
+                "legend": "legends/2020_changed_legends/shift1_f2.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f2.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeFactor3",
                 "name": "Factor 3 Trajectory",
                 "info": "Trajectory of change in Phenology Factor 3 (seasonality) at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1_f3.png",
+                "legend": "legends/2020_changed_legends/shift1_f3.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f3.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeFactor4",
                 "name": "Factor 4 Trajectory",
                 "info": "Trajectory of change in Phenology Factor 4 (productivity) at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift1_f4.png",
+                "legend": "legends/2020_changed_legends/shift1_f4.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f4.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeShannon",
                 "name": "Shannon Entropy Trajectory",
                 "info": "Trajectory of change in Shannon Entropy at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2_hx.png",
+                "legend": "legends/2020_changed_legends/shift2_hx.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/hx.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeMutualInfo",
                 "name": "Mutual Information Trajectory",
                 "info": "Trajectory of change in Mutual Information at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2_mi.png",
+                "legend": "legends/2020_changed_legends/shift2_mi.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/mi.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeCondEntropy",
                 "name": "Conditional Entropy Trajectory",
                 "info": "Trajectory of change in Conditional Entropy at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2_condent.png",
+                "legend": "legends/2020_changed_legends/shift2_condent.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/condent.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeDevelopment",
                 "name": "Development Trajectory",
                 "info": "Trajectory of change in Development at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2_develop.png",
+                "legend": "legends/2020_changed_legends/shift2_develop.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/develop.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeCapacity",
                 "name": "Capacity Trajectory",
                 "info": "Trajectory of change in Capacity at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2_capacity.png",
+                "legend": "legends/2020_changed_legends/shift2_capacity.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/capacity.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeAscendency",
                 "name": "Ascendency Trajectory",
                 "info": "Trajectory of change in Ascendency at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2_ascend.png",
+                "legend": "legends/2020_changed_legends/shift2_ascend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/ascend.eqdif_5win.tif.zip"
             },
             {
                 "id": "ChangeOverhead",
                 "name": "Overhead Trajectory",
                 "info": "Trajectory of change in Overhead at the landscape scale, implied by the observed phenoclass dynamics.",
-                "legend": "legends/shift2_ovhead.png",
+                "legend": "legends/2020_changed_legends/shift2_ovhead.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/ovhead.eqdif_5win.tif.zip"
             }
         ]
