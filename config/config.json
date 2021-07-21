@@ -86,6 +86,7 @@
                 "id": "phenoclasses",
                 "name": "Phenological Classes (phenoclasses)",
                 "info": "Classification of phenological types on the basis of similarities and differences in the phenology variables. Important biophysical and ecological gradients are reflected by their phenologies. Produced by cluster analysis on the four phenology factors—each 'phenoclass' has a unique combination of factor values. Similar phenoclasses have similar color on the basis of their characteristic factor values.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "active": false
             },
             {
@@ -418,6 +419,7 @@
             {
                 "id": "Phenoclass500_MultiAnnual",
                 "info": "Membership in one of 500 phenological classes, using data from all years",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "name": "500 Phenoclasses, multi-annual",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/fscore1234_y1-18mean_int.tif.zip"
@@ -426,6 +428,7 @@
                 "id": "Phenoclass500_2001",
                 "name": "500 Phenoclasses, 2000",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y01_int_v2.tif.zip"
             },
@@ -433,6 +436,7 @@
                 "id": "Phenoclass500_2002",
                 "name": "500 Phenoclasses, 2001",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y02_int_v2.tif.zip"
             },
@@ -440,6 +444,7 @@
                 "id": "Phenoclass500_2003",
                 "name": "500 Phenoclasses, 2002",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y03_int_v2.tif.zip"
             },
@@ -447,6 +452,7 @@
                 "id": "Phenoclass500_2004",
                 "name": "500 Phenoclasses, 2003",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y04_int_v2.tif.zip"
             },
@@ -454,6 +460,7 @@
                 "id": "Phenoclass500_2005",
                 "name": "500 Phenoclasses, 2004",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y05_int_v2.tif.zip"
             },
@@ -461,6 +468,7 @@
                 "id": "Phenoclass500_2006",
                 "name": "500 Phenoclasses, 2005",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y06_int_v2.tif.zip"
             },
@@ -468,6 +476,7 @@
                 "id": "Phenoclass500_2007",
                 "name": "500 Phenoclasses, 2006",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y07_int_v2.tif.zip"
             },
@@ -475,6 +484,7 @@
                 "id": "Phenoclass500_2008",
                 "name": "500 Phenoclasses, 2007",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y08_int_v2.tif.zip"
             },
@@ -482,6 +492,7 @@
                 "id": "Phenoclass500_2009",
                 "name": "500 Phenoclasses, 2008",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y09_int_v2.tif.zip"
             },
@@ -489,6 +500,7 @@
                 "id": "Phenoclass500_2010",
                 "name": "500 Phenoclasses, 2009",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y10_int_v2.tif.zip"
             },
@@ -496,6 +508,7 @@
                 "id": "Phenoclass500_2011",
                 "name": "500 Phenoclasses, 2010",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y11_int_v2.tif.zip"
             },
@@ -503,6 +516,7 @@
                 "id": "Phenoclass500_2012",
                 "name": "500 Phenoclasses, 2011",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y12_int_v2.tif.zip"
             },
@@ -510,6 +524,7 @@
                 "id": "Phenoclass500_2013",
                 "name": "500 Phenoclasses, 2012",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y13_int_v2.tif.zip"
             },
@@ -517,6 +532,7 @@
                 "id": "Phenoclass500_2014",
                 "name": "500 Phenoclasses, 2013",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y14_int_v2.tif.zip"
             },
@@ -524,6 +540,7 @@
                 "id": "Phenoclass500_2015",
                 "name": "500 Phenoclasses, 2014",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y15_int_v2.tif.zip"
             },
@@ -531,6 +548,7 @@
                 "id": "Phenoclass500_2016",
                 "name": "500 Phenoclasses, 2015",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y16_int_v2.tif.zip"
             },
@@ -538,6 +556,7 @@
                 "id": "Phenoclass500_2017",
                 "name": "500 Phenoclasses, 2016",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y17_int_v2.tif.zip"
             },
@@ -545,6 +564,7 @@
                 "id": "Phenoclass500_2018",
                 "name": "500 Phenoclasses, 2017",
                 "info": "Membership in one of 500 phenological classes, using data from a single phenological year.  (see polar graphs for explanation of the phenological year). Year to year phenoclass changes normally result from disturbance, recovery, and other changes in vegetation.",
+                "infoAfterLineBreak": "Legend: Colors reflect three of the four factor scores associated with phenoclasses. White = mixture of all high values; Black = all low values. Dominance of one color indicates that the other two have low values.",
                 "legend": "legends/phenoclass_legend.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/2020/f1234centroids_y18_int_v2.tif.zip"
             }

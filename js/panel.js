@@ -242,10 +242,17 @@ function makeDescription (layer, layerDiv) {
                 .attr("alt", "Read more about the " + layer.name + " layer")
                 .attr("title", "Read more about the " + layer.name + " layer")
 
+        // I know this is terrible, but I was having a rough time figuring out how to insert a line break
+        // Essentially, it looks for newLineInfo in the config.json and inserts it after the original info
+        if (layer.infoAfterLineBreak) {    
         layerDiv.append('div')
             .attr('class', 'layer-info-wrapper')
-            .text(layer => layer.info);
-
+            .html(layer => layer.info + "<br><br>" + layer.infoAfterLineBreak);
+        } else { // this is the original and what we can revert back to just this if we figure out a better way
+            layerDiv.append('div')
+                .attr('class', 'layer-info-wrapper')
+                .text(layer => layer.info);
+        }
     }
 
 
