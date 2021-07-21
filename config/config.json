@@ -227,18 +227,18 @@
                 "legend": "legends/abd.png"
             },
             {
+                "id": "mtbs-nifc-raster-15-20",
+                "name": "Historical Fires from 2015 to 2020",
+                "info": "Locations of wildfires that occured from 2015 to 2020. Monitoring Trends in Burn Severity program, US Geological Survey and US Forest Service.",
+                "url": "https://fswms.nemac.org/rlayers",
+                "legend": "legends/2020_changed_legends/wildfire2015-2020.png"
+            },
+            {
                 "id": "mtbs-raster-00-14",
                 "name": "Historical Fires from 2000 to 2014",
                 "info": "Locations of wildfires that occured from 2000 to 2014. Monitoring Trends in Burn Severity program, US Geological Survey and US Forest Service.",
                 "url": "https://fswms.nemac.org/rlayers",
-                "legend": "legends/abe.png"
-            },
-            {
-                "id": "mtbs-raster-84-99",
-                "name": "Historical Fires from 1984 to 1999",
-                "info": "Locations of wildfires that occured from 1984 to 1999. Monitoring Trends in Burn Severity program, US Geological Survey and US Forest Service.",
-                "url": "https://fswms.nemac.org/rlayers",
-                "legend": "legends/abf.png"
+                "legend": "legends/2020_changed_legends/wildfire2000-2014.png"
             }
         ],
         "summary-phenology": [
