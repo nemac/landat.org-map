@@ -14,9 +14,8 @@ import {updateShareUrl} from './share';
 import BindMobileMenuEvents from './mobile';
 import BindDesktopMenuEvents from './panelToggle';
 
-var css = require('../sass/landat.scss')
+import '../sass/landat.scss';
 
-// screw it
 window.print = str => console && console.log(str)
 
 // Does not rely on map object or config file

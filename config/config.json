@@ -1,12 +1,10 @@
 {
     "mapserverUrl": {
-      "local": "https://gis.nemac.org/landat-dev",
-      "beta": "https://gis.nemac.org/landat-dev",
+      "beta": "https://mapserver.landat.org?map=/maps/landat.map",
       "prod": "https://gis.nemac.org/landat"
     },
     "graphs": {
       "serviceUrl": {
-        "local": "http://localhost:3000/dev/landat-ndvi",
         "beta": "https://fffolb6k21.execute-api.us-east-1.amazonaws.com/beta/landat-ndvi",
         "prod": "https://4desh2uig8.execute-api.us-east-1.amazonaws.com/prod/landat-ndvi"
       }
@@ -256,19 +254,20 @@
                 "download": "https://efetac-landat.s3.amazonaws.com/factor2_timing.zip"
             },
             {
-                "id": "Factor3Productivity",
-                "name": "Factor 3 - Productivity",
-                "info": "Factor 3 is very closely associated with NDVI greenness, and therefore also corresponds to the amount and productivity of vegetation.",
-                "legend": "legends/green_fscore3.png",
-                "download": "https://efetac-landat.s3.amazonaws.com/factor3_productivity.zip"
-            },
-            {
-                "id": "Factor4Seasonality",
-                "name": "Factor 4 - Seasonality",
-                "info": "Factor 4 is very closely related to variables representing seasonality and growing season length (which are themselves closely related). Lower factor 4 values correspond to stronger seasonality or deciduousness, and shorter growing seasons.",
+                "id": "Factor3Seasonality",
+                "name": "Factor 3 - Seasonality",
+                "info": "Factor 3 is very closely related to variables representing seasonality and growing season length (which are themselves closely related). Lower factor 4 values correspond to stronger seasonality or deciduousness, and shorter growing seasons.",
                 "legend": "legends/gmag_fscore4.png",
                 "download": "https://efetac-landat.s3.amazonaws.com/factor4_seasonality.zip"
+            },
+            {
+                "id": "Factor4Productivity",
+                "name": "Factor 4 - Productivity",
+                "info": "Factor 4 is very closely associated with NDVI greenness, and therefore also corresponds to the amount and productivity of vegetation.",
+                "legend": "legends/green_fscore3.png",
+                "download": "https://efetac-landat.s3.amazonaws.com/factor3_productivity.zip"
             }
+
         ],
         "it-metrics": [
             {

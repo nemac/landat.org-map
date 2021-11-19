@@ -1,7 +1,9 @@
 const webpack = require('webpack');
 const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+const devMode = process.env.NODE_ENV !== 'production'
 
 var config = {
     context: __dirname, // `__dirname` is root of project
@@ -9,18 +11,22 @@ var config = {
         app: './js/base.js',
     },
     output: {
-        path: path.resolve(__dirname),
+        path: path.resolve(__dirname, 'dist'),
         filename: 'index_bundle.js'
+    },
+    devServer: {
+        static: {
+            directory: path.join(__dirname)
+        },
+        compress: true,
+        port: 8080
     },
     module: {
         rules: [
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: { presets: ["es2015", "stage-2"] }
-                }
+                use: ['babel-loader']
             },
             {
                 test: /\.(png|jpg|gif)$/,
@@ -60,28 +66,18 @@ var config = {
             {
                 test: /\.scss$/,
                 use: [
-                    {
-                        loader: "style-loader"
-                    },
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: "css-loader"
-                    },
-                    {
-                        loader: "postcss-loader"
-                    },
-                    {
-                        loader: "sass-loader"
-                    }
+                  devMode ? "style-loader" : new MiniCssExtractPlugin({
+                    filename: "landat.css"
+                  }),
+                  // Translates CSS into CommonJS
+                  "css-loader",
+                  // Compiles Sass to CSS
+                  "sass-loader"
                 ]
             }
         ]
     },
-    plugins: [
-        new MiniCssExtractPlugin({
-            filename: "./landat.css"
-        })
-    ]
+    plugins: [ new HtmlWebpackPlugin({ template: './index.html', filename: 'index.html' }) ]
 };
 
 module.exports = config;

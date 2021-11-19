@@ -7,38 +7,36 @@
         "build-beta": "webpack --mode=development",
         "start-server": "webpack-dev-server --mode=development",
         "start-server-prod": "webpack-dev-server --mode=production",
-        "start-server-local-api": "webpack-dev-server --mode=none",
         "test": "mocha"
+    },
+    "babel": {
+        "presets": [
+            "@babel/preset-env"
+        ]
     },
     "dependencies": {
         "leaflet-geosearch": "^2.0.3"
     },
     "devDependencies": {
+        "@babel/core": "^7.16.0",
+        "@babel/preset-env": "^7.16.4",
         "autoprefixer": "^8.5.2",
-        "babel-core": "^6.26.3",
-        "babel-loader": "^7.1.4",
-        "babel-polyfill": "^6.26.0",
-        "babel-preset-env": "^1.7.0",
-        "babel-preset-es2015": "^6.24.1",
-        "babel-preset-stage-2": "^6.24.1",
+        "babel-loader": "^8.2.3",
         "chai": "^4.2.0",
-        "copy-webpack-plugin": "^4.5.1",
-        "css-loader": "^3.0.0",
-        "exports-loader": "^0.7.0",
-        "file-loader": "^1.1.11",
-        "html-webpack-plugin": "^3.2.0",
-        "image-webpack-loader": "^4.2.0",
-        "mini-css-extract-plugin": "^0.7.0",
+        "css-loader": "^6.5.0",
+        "exports-loader": "^3.1.0",
+        "file-loader": "^6.2.0",
+        "html-webpack-plugin": "5.5.0",
+        "image-webpack-loader": "^8.0.1",
+        "mini-css-extract-plugin": "^2.4.5",
         "mocha": "^7.1.2",
-        "node-sass": "^4.9.2",
-        "postcss-loader": "^2.1.5",
-        "postcss-normalize": "^4.0.0",
-        "sass-loader": "^7.0.1",
-        "style-loader": "^0.21.0",
+        "node-sass": "^6.0.1",
+        "sass-loader": "^12.3.0",
+        "style-loader": "^3.3.1",
         "transform-loader": "^0.2.4",
-        "url-loader": "^1.0.1",
-        "webpack": "^4.10.2",
-        "webpack-cli": "^3.1.2",
-        "webpack-dev-server": "^3.1.14"
+        "url-loader": "^4.1.1",
+        "webpack": "^5.64.1",
+        "webpack-cli": "^4.9.1",
+        "webpack-dev-server": "^4.5.0"
     }
 }
