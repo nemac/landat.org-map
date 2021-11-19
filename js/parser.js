@@ -26,24 +26,14 @@ export function GetAjaxObject(responseHandler) {
     return xmlhttp
 }
 
-function GetConfig (configFile, callback) {
-    var xmlhttp = GetAjaxObject(function (response) {
-        var data = responseHandler(response)
-        callback(data)
-    })
-    xmlhttp.open("GET", configFile, true);
-    xmlhttp.send();
-}
-
-function responseHandler (response) {
-    response = JSON.parse(response)
-    formatMap(response);
-    formatLayers(response);
+function responseHandler (config) {
+    formatMap(config);
+    formatLayers(config);
     return response
 }
 
-function formatMap (data) {
-    if (!data.map) data.map = {};
+function formatMap () {
+    window.map = {}
 }
 
 function formatLayers (data) {

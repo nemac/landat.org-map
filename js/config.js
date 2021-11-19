@@ -1,4 +1,4 @@
-{
+export const config = {
     "mapserverUrl": {
       "beta": "https://mapserver.landat.org?map=/maps/landat.map",
       "prod": "https://gis.nemac.org/landat"

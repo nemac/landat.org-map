@@ -1,4 +1,3 @@
-import {ParseConfig} from './parser';
 import CreateSearch from './search';
 import {SetupPanel} from './panel';
 import {CreateBaseLayers} from './baselayer';
@@ -13,14 +12,16 @@ import {SetupPointsOfInterest} from './poi';
 import {updateShareUrl} from './share';
 import BindMobileMenuEvents from './mobile';
 import BindDesktopMenuEvents from './panelToggle';
+import {config} from './config';
 
 import '../sass/landat.scss';
 
 window.print = str => console && console.log(str)
 
 // Does not rely on map object or config file
-var Base = function (config) {
-	ParseConfig(config, callback);
+var Base = function () {
+  window.app = config
+  callback()
 	BindTabEvents();
 	BindCopyLinkEvents();
 	BindMobileMenuEvents();
@@ -28,22 +29,23 @@ var Base = function (config) {
 }
 
 // Does rely on map object or config file
-var callback = function (data) {
-        let stage = getStage();
-	AddShareSettingsToConfig(data)
-	var map = CreateMap(data.map);
-	CreateBaseLayers(map, data.baselayers);
-	CreateDefaultLayers(data.layers, data["active-layers"]);
-	SetupPanel(data.layers, data.layout);
+var callback = function () {
+  const app = window.app
+  let stage = getStage();
+	AddShareSettingsToConfig(app)
+	var map = CreateMap(app.map);
+	CreateBaseLayers(map, app.baselayers);
+	CreateDefaultLayers(app.layers, app["active-layers"]);
+	SetupPanel(app.layers, app.layout);
 	CreateSearch(map);
-	CreateLogo(data.logo);
-	if (data.tab) HandleTabChange(data.tab);
-	if (data.graph) HandleGraphTabChange(data.graph);
-	BindGraphEvents(map, data.graphs);
+	CreateLogo(app.logo);
+	if (app.tab) HandleTabChange(app.tab);
+	if (app.graph) HandleGraphTabChange(app.graph);
+	BindGraphEvents(map, app.graphs);
 	BindUpdateShareUrl(map);
-	SetupPointsOfInterest(map, data.pois, data.graphs)
+	SetupPointsOfInterest(map, app.pois, app.graphs)
 	updateShareUrl()
-	SetupGraphs(data.graphs, stage);
+	SetupGraphs(app.graphs, stage);
 }
 
 export function getStage() {

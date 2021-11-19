@@ -66,9 +66,7 @@ var config = {
             {
                 test: /\.scss$/,
                 use: [
-                  devMode ? "style-loader" : new MiniCssExtractPlugin({
-                    filename: "landat.css"
-                  }),
+                  "style-loader",
                   // Translates CSS into CommonJS
                   "css-loader",
                   // Compiles Sass to CSS
@@ -77,7 +75,7 @@ var config = {
             }
         ]
     },
-    plugins: [ new HtmlWebpackPlugin({ template: './index.html', filename: 'index.html' }) ]
+    plugins: [ new HtmlWebpackPlugin({ template: './index.html', filename: 'index.html' })]
 };
 
 module.exports = config;
