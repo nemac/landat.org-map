@@ -227,7 +227,7 @@
                 "legend": "legends/abd.png"
             },
             {
-                "id": "mtbs-nifc-raster-15-20",
+                "id": "mtbs-nifc-raster-15-21",
                 "name": "Historical Fires from 2015 to 2020",
                 "info": "Locations of wildfires that occured from 2015 to 2020. Monitoring Trends in Burn Severity program, US Geological Survey and US Forest Service.",
                 "url": "https://fswms.nemac.org/rlayers",
